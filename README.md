@@ -95,7 +95,7 @@ Clokey/
 │   └── SceneDelegate.swift
 ├── Resources/          # 정적 리소스 (이미지, 폰트 등)
 │   ├── Assets.xcassets
-│   ├── Fonts/
+│   └── Fonts/
 ├── Sources/            # 앱 주요 소스
 │   ├── Models/         # 데이터 모델 정의
 │   ├── Views/          # UI 구성 요소
@@ -103,11 +103,13 @@ Clokey/
 │   │   └── Components/ # 재사용 가능한 UI 컴포넌트
 │   ├── ViewModels/     # 뷰와 모델 간의 중간 로직 (데이터 가공, 상태 관리)
 │   ├── Services/       # 네트워크 요청 및 API 호출
-│   ├── Utilities/      # 공통 함수 및 확장 기능
+│   └── Utilities/      # 공통 함수 및 확장 기능
 └── Supporting Files/   # 프로젝트 설정 파일
     └── Info.plist
 ```
-> 이 디렉터리 구조는 프로젝트 요구사항에 따라 변경될 수 있습니다.
+> 이 디렉터리 구조는 프로젝트 요구사항에 따라 변경될 수 있습니다. <br>
+> Signing & Capabilities에서 자신의 Apple ID로 Team을 변경해주세요. <br>
+> Bundle Identifier를 자신의 것으로 수정해주세요. <br>
 
 <br>
 
