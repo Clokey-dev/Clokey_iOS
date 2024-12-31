@@ -27,6 +27,7 @@ DerivedData/
 # CocoaPods로 관리하는 의존성 무시
 Pods/
 Podfile.lock
+.Pdfs/
 
 # Carthage
 #
