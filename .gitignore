@@ -1,0 +1,64 @@
+# Xcode
+#
+# 개발 환경과 무관하게 프로젝트를 빌드할 때 생성되는 파일들 무시
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.user
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+*.xcworkspace
+xcuserdata/
+
+# 빌드 디렉토리
+build/
+DerivedData/
+*.log
+
+# Test 결과물
+*.plist
+*.gcda
+
+# CocoaPods
+#
+# CocoaPods로 관리하는 의존성 무시
+Pods/
+Podfile.lock
+
+# Carthage
+#
+# Carthage로 관리하는 의존성 무시
+Carthage/Build/
+Carthage/Checkouts/
+
+# Swift Package Manager
+#
+# Swift Package Manager 관련 파일 무시
+.swiftpm/
+Package.resolved
+.build/
+
+# Fastlane
+#
+# Fastlane 사용 시 무시할 파일
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+
+# 기타
+#
+# 비주얼 스튜디오 코드 설정 파일
+.vscode/
+
+# Tuist
+#
+# Tuist 프로젝트의 설정 파일
+/.tuist/
+
+# 환경설정 파일
+*.env
+*.env.default
