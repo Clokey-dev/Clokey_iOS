@@ -7,10 +7,10 @@ Clokey iOS 팀과 컨벤션 규칙을 소개합니다.
 ## 👥 팀원
 | 이름          | 역할              | GitHub ID           |
 |---------------|-------------------|---------------------|
-| 황상환         | iOS 팀 리더       | @Hrepay |
-| 한태빈         | iOS 개발자        | @taebin2 |
-| 한금준         | iOS 개발자        | @Funital |
-| 소민준         | iOS 개발자        | @sososominjun |
+| 황상환         | iOS 팀 리더       | [@Hrepay](https://github.com/Hrepay) |
+| 한태빈         | iOS 개발자        | [@taebin2](https://github.com/taebin2) |
+| 한금준         | iOS 개발자        | [@Funital](https://github.com/Funital) |
+| 소민준         | iOS 개발자        | [@sososominjun](https://github.com/sososominjun) |
 
 <br>
 
