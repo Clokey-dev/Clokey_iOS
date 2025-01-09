@@ -63,3 +63,6 @@ fastlane/test_output/
 # 환경설정 파일
 *.env
 *.env.default
+
+# xcconfig 파일 (환경 변수 설정)
+*.xcconfig
