@@ -103,12 +103,12 @@ Clokey/
 │   ├── Assets.xcassets
 │   └── Fonts/
 ├── Sources/            # 앱 주요 소스
-│   ├── Models/         # 데이터 모델 정의
+│   ├── Models/         # 데이터 모델 정의 
 │   ├── Views/          # UI 구성 요소
-│   │   ├── Screens/    # 화면 단위 ViewController
-│   │   └── Components/ # 재사용 가능한 UI 컴포넌트
-│   ├── ViewModels/     # 뷰와 모델 간의 중간 로직 (데이터 가공, 상태 관리)
-│   ├── Services/       # 네트워크 요청 및 API 호출
+│   ├── ViewControllers/ # 화면(View) 관리 및 이벤트 처리 로직
+│   ├── ViewModels/     # 뷰와 모델 간의 중간 로직 
+│   ├── Services/       # 외부 API 호출 및 비즈니스 로직 
+│   ├── Network/        # 네트워크 요청 및 응답 처리 
 │   └── Utilities/      # 공통 함수 및 확장 기능
 └── Supporting Files/   # 프로젝트 설정 파일
     └── Info.plist
