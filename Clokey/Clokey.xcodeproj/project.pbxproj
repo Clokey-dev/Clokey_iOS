@@ -6,46 +6,243 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		070258A32D30FEC700065369 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258A22D30FEC700065369 /* MainView.swift */; };
+		070258AC2D31079B00065369 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258AB2D31079B00065369 /* HomeView.swift */; };
+		070258AE2D3107A800065369 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258AD2D3107A800065369 /* HomeViewController.swift */; };
+		070258B02D3107B200065369 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258AF2D3107B200065369 /* HomeViewModel.swift */; };
+		070258B22D3107C200065369 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258B12D3107C200065369 /* CalendarView.swift */; };
+		070258B42D3107C900065369 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258B32D3107C900065369 /* CalendarViewController.swift */; };
+		070258B62D3107E400065369 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258B52D3107E400065369 /* CalendarViewModel.swift */; };
+		070258B82D31083D00065369 /* AddClothView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258B72D31083D00065369 /* AddClothView.swift */; };
+		070258BA2D31084300065369 /* AddClothViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258B92D31084300065369 /* AddClothViewController.swift */; };
+		070258BC2D31084A00065369 /* AddClothViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258BB2D31084A00065369 /* AddClothViewModel.swift */; };
+		070258BE2D31085900065369 /* ClosetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258BD2D31085900065369 /* ClosetView.swift */; };
+		070258C02D31086A00065369 /* ClosetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258BF2D31086A00065369 /* ClosetViewController.swift */; };
+		070258C22D31087C00065369 /* ClosetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258C12D31087C00065369 /* ClosetViewModel.swift */; };
+		070258C42D31088300065369 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258C32D31088300065369 /* ProfileViewController.swift */; };
+		070258C62D31088D00065369 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258C52D31088D00065369 /* ProfileViewModel.swift */; };
+		070258C82D31089300065369 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258C72D31089300065369 /* ProfileView.swift */; };
+		070258CA2D3108C600065369 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258C92D3108C600065369 /* MainViewModel.swift */; };
+		076FAB1D2D2E5DD800FF3979 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 076FAB1C2D2E5DD800FF3979 /* Then */; };
+		076FAB202D2E5DE700FF3979 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 076FAB1F2D2E5DE700FF3979 /* SnapKit */; };
+		076FAB232D2E5FD600FF3979 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 076FAB222D2E5FD600FF3979 /* Alamofire */; };
+		076FAB262D2E60A500FF3979 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 076FAB252D2E60A500FF3979 /* KakaoSDK */; };
+		076FAB282D2E60A500FF3979 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 076FAB272D2E60A500FF3979 /* KakaoSDKAuth */; };
+		076FAB2A2D2E60A500FF3979 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 076FAB292D2E60A500FF3979 /* KakaoSDKCommon */; };
+		076FAB2C2D2E60A500FF3979 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 076FAB2B2D2E60A500FF3979 /* KakaoSDKUser */; };
+		076FAB3F2D2E6E0200FF3979 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB2F2D2E6E0200FF3979 /* AppDelegate.swift */; };
+		076FAB402D2E6E0200FF3979 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB302D2E6E0200FF3979 /* SceneDelegate.swift */; };
+		076FAB422D2E6E0200FF3979 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 076FAB322D2E6E0200FF3979 /* Assets.xcassets */; };
+		076FAB432D2E6E0200FF3979 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 076FAB332D2E6E0200FF3979 /* Config.xcconfig */; };
+		076FAB4A2D2E748B00FF3979 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB492D2E748B00FF3979 /* LoginView.swift */; };
+		076FAB4C2D2EBB1000FF3979 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB4B2D2EBB1000FF3979 /* LoginViewModel.swift */; };
+		076FAB4E2D2EBB3A00FF3979 /* KakaoAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB4D2D2EBB3A00FF3979 /* KakaoAuthService.swift */; };
+		076FAB5A2D3020D800FF3979 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB572D3020D800FF3979 /* LoginViewController.swift */; };
+		076FAB5B2D3020D800FF3979 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB582D3020D800FF3979 /* MainViewController.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		070258A12D30DD0E00065369 /* Clokey.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Clokey.entitlements; sourceTree = "<group>"; };
+		070258A22D30FEC700065369 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		070258AB2D31079B00065369 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		070258AD2D3107A800065369 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		070258AF2D3107B200065369 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		070258B12D3107C200065369 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		070258B32D3107C900065369 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		070258B52D3107E400065369 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
+		070258B72D31083D00065369 /* AddClothView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothView.swift; sourceTree = "<group>"; };
+		070258B92D31084300065369 /* AddClothViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothViewController.swift; sourceTree = "<group>"; };
+		070258BB2D31084A00065369 /* AddClothViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothViewModel.swift; sourceTree = "<group>"; };
+		070258BD2D31085900065369 /* ClosetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetView.swift; sourceTree = "<group>"; };
+		070258BF2D31086A00065369 /* ClosetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetViewController.swift; sourceTree = "<group>"; };
+		070258C12D31087C00065369 /* ClosetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetViewModel.swift; sourceTree = "<group>"; };
+		070258C32D31088300065369 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		070258C52D31088D00065369 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		070258C72D31089300065369 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		070258C92D3108C600065369 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		076FAB2F2D2E6E0200FF3979 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		076FAB302D2E6E0200FF3979 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		076FAB322D2E6E0200FF3979 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		076FAB332D2E6E0200FF3979 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		076FAB3C2D2E6E0200FF3979 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		076FAB492D2E748B00FF3979 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		076FAB4B2D2EBB1000FF3979 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		076FAB4D2D2EBB3A00FF3979 /* KakaoAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthService.swift; sourceTree = "<group>"; };
+		076FAB572D3020D800FF3979 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		076FAB582D3020D800FF3979 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		07F093102D2418380075659F /* Clokey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clokey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		0797AB3D2D2425BB00ED6A7A /* Exceptions for "Clokey" folder in "Clokey" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"Supporting Files/Info.plist",
-			);
-			target = 07F0930F2D2418380075659F /* Clokey */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		07F093122D2418380075659F /* Clokey */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				0797AB3D2D2425BB00ED6A7A /* Exceptions for "Clokey" folder in "Clokey" target */,
-			);
-			path = Clokey;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		07F0930D2D2418380075659F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				076FAB232D2E5FD600FF3979 /* Alamofire in Frameworks */,
+				076FAB262D2E60A500FF3979 /* KakaoSDK in Frameworks */,
+				076FAB1D2D2E5DD800FF3979 /* Then in Frameworks */,
+				076FAB2C2D2E60A500FF3979 /* KakaoSDKUser in Frameworks */,
+				076FAB202D2E5DE700FF3979 /* SnapKit in Frameworks */,
+				076FAB2A2D2E60A500FF3979 /* KakaoSDKCommon in Frameworks */,
+				076FAB282D2E60A500FF3979 /* KakaoSDKAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		070258A42D31071900065369 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				070258A22D30FEC700065369 /* MainView.swift */,
+				076FAB582D3020D800FF3979 /* MainViewController.swift */,
+				070258C92D3108C600065369 /* MainViewModel.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		070258A52D31071D00065369 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				070258AB2D31079B00065369 /* HomeView.swift */,
+				070258AD2D3107A800065369 /* HomeViewController.swift */,
+				070258AF2D3107B200065369 /* HomeViewModel.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		070258A62D31072000065369 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				070258B12D3107C200065369 /* CalendarView.swift */,
+				070258B32D3107C900065369 /* CalendarViewController.swift */,
+				070258B52D3107E400065369 /* CalendarViewModel.swift */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		070258A72D31072800065369 /* AddCloth */ = {
+			isa = PBXGroup;
+			children = (
+				070258B72D31083D00065369 /* AddClothView.swift */,
+				070258B92D31084300065369 /* AddClothViewController.swift */,
+				070258BB2D31084A00065369 /* AddClothViewModel.swift */,
+			);
+			path = AddCloth;
+			sourceTree = "<group>";
+		};
+		070258A82D31074100065369 /* Closet */ = {
+			isa = PBXGroup;
+			children = (
+				070258BD2D31085900065369 /* ClosetView.swift */,
+				070258BF2D31086A00065369 /* ClosetViewController.swift */,
+				070258C12D31087C00065369 /* ClosetViewModel.swift */,
+			);
+			path = Closet;
+			sourceTree = "<group>";
+		};
+		070258A92D31074500065369 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				070258C72D31089300065369 /* ProfileView.swift */,
+				070258C32D31088300065369 /* ProfileViewController.swift */,
+				070258C52D31088D00065369 /* ProfileViewModel.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		070258AA2D31074E00065369 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				076FAB492D2E748B00FF3979 /* LoginView.swift */,
+				076FAB572D3020D800FF3979 /* LoginViewController.swift */,
+				076FAB4B2D2EBB1000FF3979 /* LoginViewModel.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		076FAB312D2E6E0200FF3979 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				076FAB2F2D2E6E0200FF3979 /* AppDelegate.swift */,
+				076FAB302D2E6E0200FF3979 /* SceneDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		076FAB342D2E6E0200FF3979 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				076FAB322D2E6E0200FF3979 /* Assets.xcassets */,
+				076FAB332D2E6E0200FF3979 /* Config.xcconfig */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		076FAB362D2E6E0200FF3979 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				076FAB4D2D2EBB3A00FF3979 /* KakaoAuthService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		076FAB372D2E6E0200FF3979 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		076FAB3B2D2E6E0200FF3979 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				070258AA2D31074E00065369 /* Login */,
+				070258A42D31071900065369 /* Main */,
+				070258A52D31071D00065369 /* Home */,
+				070258A62D31072000065369 /* Calendar */,
+				070258A72D31072800065369 /* AddCloth */,
+				070258A82D31074100065369 /* Closet */,
+				070258A92D31074500065369 /* Profile */,
+				076FAB362D2E6E0200FF3979 /* Services */,
+				076FAB5C2D3020E100FF3979 /* Network */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		076FAB3D2D2E6E0200FF3979 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				076FAB3C2D2E6E0200FF3979 /* Info.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		076FAB3E2D2E6E0200FF3979 /* Clokey */ = {
+			isa = PBXGroup;
+			children = (
+				070258A12D30DD0E00065369 /* Clokey.entitlements */,
+				076FAB312D2E6E0200FF3979 /* Application */,
+				076FAB342D2E6E0200FF3979 /* Resources */,
+				076FAB3B2D2E6E0200FF3979 /* Sources */,
+				076FAB372D2E6E0200FF3979 /* Utilities */,
+				076FAB3D2D2E6E0200FF3979 /* Supporting Files */,
+			);
+			path = Clokey;
+			sourceTree = "<group>";
+		};
+		076FAB5C2D3020E100FF3979 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
 		07F093072D2418380075659F = {
 			isa = PBXGroup;
 			children = (
-				07F093122D2418380075659F /* Clokey */,
+				076FAB3E2D2E6E0200FF3979 /* Clokey */,
 				07F093112D2418380075659F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -73,11 +270,15 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				07F093122D2418380075659F /* Clokey */,
-			);
 			name = Clokey;
 			packageProductDependencies = (
+				076FAB1C2D2E5DD800FF3979 /* Then */,
+				076FAB1F2D2E5DE700FF3979 /* SnapKit */,
+				076FAB222D2E5FD600FF3979 /* Alamofire */,
+				076FAB252D2E60A500FF3979 /* KakaoSDK */,
+				076FAB272D2E60A500FF3979 /* KakaoSDKAuth */,
+				076FAB292D2E60A500FF3979 /* KakaoSDKCommon */,
+				076FAB2B2D2E60A500FF3979 /* KakaoSDKUser */,
 			);
 			productName = Clokey;
 			productReference = 07F093102D2418380075659F /* Clokey.app */;
@@ -107,6 +308,12 @@
 			);
 			mainGroup = 07F093072D2418380075659F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				076FAB1B2D2E5DD800FF3979 /* XCRemoteSwiftPackageReference "Then" */,
+				076FAB1E2D2E5DE700FF3979 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				076FAB212D2E5FD600FF3979 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				076FAB242D2E60A500FF3979 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 07F093112D2418380075659F /* Products */;
 			projectDirPath = "";
@@ -122,6 +329,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				076FAB422D2E6E0200FF3979 /* Assets.xcassets in Resources */,
+				076FAB432D2E6E0200FF3979 /* Config.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,6 +341,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				070258AC2D31079B00065369 /* HomeView.swift in Sources */,
+				070258B02D3107B200065369 /* HomeViewModel.swift in Sources */,
+				070258C22D31087C00065369 /* ClosetViewModel.swift in Sources */,
+				070258BE2D31085900065369 /* ClosetView.swift in Sources */,
+				070258B22D3107C200065369 /* CalendarView.swift in Sources */,
+				070258BC2D31084A00065369 /* AddClothViewModel.swift in Sources */,
+				076FAB4E2D2EBB3A00FF3979 /* KakaoAuthService.swift in Sources */,
+				070258A32D30FEC700065369 /* MainView.swift in Sources */,
+				070258C02D31086A00065369 /* ClosetViewController.swift in Sources */,
+				076FAB3F2D2E6E0200FF3979 /* AppDelegate.swift in Sources */,
+				070258B62D3107E400065369 /* CalendarViewModel.swift in Sources */,
+				070258B82D31083D00065369 /* AddClothView.swift in Sources */,
+				076FAB4C2D2EBB1000FF3979 /* LoginViewModel.swift in Sources */,
+				070258BA2D31084300065369 /* AddClothViewController.swift in Sources */,
+				070258AE2D3107A800065369 /* HomeViewController.swift in Sources */,
+				070258B42D3107C900065369 /* CalendarViewController.swift in Sources */,
+				076FAB5A2D3020D800FF3979 /* LoginViewController.swift in Sources */,
+				070258C82D31089300065369 /* ProfileView.swift in Sources */,
+				076FAB5B2D3020D800FF3979 /* MainViewController.swift in Sources */,
+				070258C62D31088D00065369 /* ProfileViewModel.swift in Sources */,
+				070258C42D31088300065369 /* ProfileViewController.swift in Sources */,
+				076FAB402D2E6E0200FF3979 /* SceneDelegate.swift in Sources */,
+				076FAB4A2D2E748B00FF3979 /* LoginView.swift in Sources */,
+				070258CA2D3108C600065369 /* MainViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,9 +373,11 @@
 /* Begin XCBuildConfiguration section */
 		07F093242D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 076FAB332D2E6E0200FF3979 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BBVZV8T99P;
@@ -167,9 +402,11 @@
 		};
 		07F093252D24183A0075659F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 076FAB332D2E6E0200FF3979 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BBVZV8T99P;
@@ -194,6 +431,7 @@
 		};
 		07F093262D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 076FAB332D2E6E0200FF3979 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -257,6 +495,7 @@
 		};
 		07F093272D24183A0075659F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 076FAB332D2E6E0200FF3979 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -333,6 +572,79 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		076FAB1B2D2E5DD800FF3979 /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+		076FAB1E2D2E5DE700FF3979 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		076FAB212D2E5FD600FF3979 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+		076FAB242D2E60A500FF3979 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.23.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		076FAB1C2D2E5DD800FF3979 /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 076FAB1B2D2E5DD800FF3979 /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
+		076FAB1F2D2E5DE700FF3979 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 076FAB1E2D2E5DE700FF3979 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		076FAB222D2E5FD600FF3979 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 076FAB212D2E5FD600FF3979 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		076FAB252D2E60A500FF3979 /* KakaoSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 076FAB242D2E60A500FF3979 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDK;
+		};
+		076FAB272D2E60A500FF3979 /* KakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 076FAB242D2E60A500FF3979 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKAuth;
+		};
+		076FAB292D2E60A500FF3979 /* KakaoSDKCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 076FAB242D2E60A500FF3979 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKCommon;
+		};
+		076FAB2B2D2E60A500FF3979 /* KakaoSDKUser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 076FAB242D2E60A500FF3979 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKUser;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 07F093082D2418380075659F /* Project object */;
 }
