@@ -7,14 +7,15 @@
 
 import Foundation
 import Combine
+import AuthenticationServices
 
-final class LoginViewModel {
+final class LoginViewModel: NSObject {
     
     //MARK: - Properties
     @Published var isLoggedIn = false
     @Published var errorMessage: String?
     private let authService = KakaoAuthService.shared
-   
+
     // MARK: - Methods
         
     // 카카오 로그인
@@ -29,9 +30,28 @@ final class LoginViewModel {
         }
     }
     
-    // 애플 로그인
-    func handleAppleLogin() {
-        // 애플 로그인 구현 예정
+    // 애플 로그인 요청 생성
+    func createAppleLoginRequest() -> ASAuthorizationAppleIDRequest {
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        return request
+    }
+    
+    // 애플 로그인 결과 처리
+    func handleAppleLoginResult(with credential: ASAuthorizationAppleIDCredential) {
+        // 애플 토큰
+        /* TODO: 서버로 identityToken을 전송하여 사용자 인증 로직 처리 필요
+         
+        guard let identityToken = credential.identityToken,
+              let tokenString = String(data: identityToken, encoding: .utf8) else { return }
+        print(identityToken)
+        print(tokenString)
+                
+        */
+        
+        // 로그인 성공 처리
+        handleSuccessfulLogin()
     }
     
     // 로그인 성공

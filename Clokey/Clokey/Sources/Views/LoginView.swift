@@ -30,7 +30,7 @@ final class LoginView: UIView {
     
     // 카카오 로그인
     let kakaoLoginButton = UIButton().then {
-        $0.setImage(UIImage(named: "kakao_login_large_wide"), for: .normal)
+        $0.setImage(UIImage(named: "kakao_login_large_wide_en"), for: .normal)
         $0.imageView?.contentMode = .scaleToFill
         $0.contentHorizontalAlignment = .fill
         $0.contentVerticalAlignment = .fill
@@ -38,11 +38,10 @@ final class LoginView: UIView {
     
     // 애플 로그인
     let appleLoginButton = UIButton().then {
-        $0.setTitle("Apple로 시작하기", for: .normal)
-        $0.setTitleColor(.white, for: .normal)
-        $0.backgroundColor = .black
-        $0.layer.cornerRadius = 8
-        $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
+        $0.setImage(UIImage(named: "appleid_button_bk"), for: .normal)
+        $0.imageView?.contentMode = .scaleToFill
+        $0.contentHorizontalAlignment = .fill
+        $0.contentVerticalAlignment = .fill
     }
     
     // MARK: - Lifecycle
