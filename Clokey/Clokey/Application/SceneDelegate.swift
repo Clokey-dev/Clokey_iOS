@@ -7,6 +7,7 @@
 
 import UIKit
 import KakaoSDKAuth
+import AuthenticationServices
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
@@ -79,8 +80,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidEnterBackground(_ scene: UIScene) {
      
     }
-    
-    
 }
 
 extension SceneDelegate: Coordinator {
@@ -97,5 +96,13 @@ extension SceneDelegate: Coordinator {
         let loginVC = LoginViewController(coordinator: self)
         window?.rootViewController = loginVC
         window?.makeKeyAndVisible()
+    }
+    
+    // 에플 로그인 - 필요한 window 객체 제공
+    func getPresentationAnchor() -> ASPresentationAnchor {
+        guard let window = window else {
+            fatalError("Window is not available")
+        }
+        return window
     }
 }
