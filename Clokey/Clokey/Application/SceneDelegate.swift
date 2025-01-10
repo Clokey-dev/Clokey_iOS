@@ -31,7 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        
 //        if isLoggedIn {
 //            // 로그인 상태라면 메인 화면으로 이동
-//            let mainViewController = MainViewController()
+//            let mainViewController = MainViewController(viewModel: MainViewModel())
 //            let navigationController = UINavigationController(rootViewController: mainViewController)
 //            window?.rootViewController = navigationController
 //        } else {
@@ -85,7 +85,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 extension SceneDelegate: Coordinator {
     // 화면 전환 메서드 -> MainViewController
     func switchToMain() {
-        let mainVC = MainViewController()
+        let mainViewModel = MainViewModel()
+        let mainVC = MainViewController(viewModel: mainViewModel)
         let navigationController = UINavigationController(rootViewController: mainVC)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
