@@ -43,6 +43,15 @@
 		07E1CAE12D3646C600F86BB8 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 07E1CAE02D3646C600F86BB8 /* Moya */; };
 		07E1CAE32D3646C600F86BB8 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 07E1CAE22D3646C600F86BB8 /* ReactiveMoya */; };
 		07E1CAE52D3646C600F86BB8 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 07E1CAE42D3646C600F86BB8 /* RxMoya */; };
+		07E1CB392D364BDA00F86BB8 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 07E1CB352D364BDA00F86BB8 /* Pretendard-Medium.otf */; };
+		07E1CB3A2D364BDA00F86BB8 /* Pretendard-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 07E1CB382D364BDA00F86BB8 /* Pretendard-Thin.otf */; };
+		07E1CB3B2D364BDA00F86BB8 /* Pretendard-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 07E1CB302D364BDA00F86BB8 /* Pretendard-Black.otf */; };
+		07E1CB3C2D364BDA00F86BB8 /* Pretendard-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 07E1CB322D364BDA00F86BB8 /* Pretendard-ExtraBold.otf */; };
+		07E1CB3D2D364BDA00F86BB8 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 07E1CB312D364BDA00F86BB8 /* Pretendard-Bold.otf */; };
+		07E1CB3E2D364BDA00F86BB8 /* Pretendard-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 07E1CB342D364BDA00F86BB8 /* Pretendard-Light.otf */; };
+		07E1CB3F2D364BDA00F86BB8 /* Pretendard-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 07E1CB332D364BDA00F86BB8 /* Pretendard-ExtraLight.otf */; };
+		07E1CB402D364BDA00F86BB8 /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 07E1CB372D364BDA00F86BB8 /* Pretendard-SemiBold.otf */; };
+		07E1CB412D364BDA00F86BB8 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 07E1CB362D364BDA00F86BB8 /* Pretendard-Regular.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +83,15 @@
 		076FAB4D2D2EBB3A00FF3979 /* KakaoAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthService.swift; sourceTree = "<group>"; };
 		076FAB572D3020D800FF3979 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		076FAB582D3020D800FF3979 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		07E1CB302D364BDA00F86BB8 /* Pretendard-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Black.otf"; sourceTree = "<group>"; };
+		07E1CB312D364BDA00F86BB8 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
+		07E1CB322D364BDA00F86BB8 /* Pretendard-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraBold.otf"; sourceTree = "<group>"; };
+		07E1CB332D364BDA00F86BB8 /* Pretendard-ExtraLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraLight.otf"; sourceTree = "<group>"; };
+		07E1CB342D364BDA00F86BB8 /* Pretendard-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Light.otf"; sourceTree = "<group>"; };
+		07E1CB352D364BDA00F86BB8 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
+		07E1CB362D364BDA00F86BB8 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
+		07E1CB372D364BDA00F86BB8 /* Pretendard-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.otf"; sourceTree = "<group>"; };
+		07E1CB382D364BDA00F86BB8 /* Pretendard-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Thin.otf"; sourceTree = "<group>"; };
 		07F093102D2418380075659F /* Clokey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clokey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -180,6 +198,7 @@
 		076FAB342D2E6E0200FF3979 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				07E1CB2F2D364BD100F86BB8 /* Fonts */,
 				076FAB322D2E6E0200FF3979 /* Assets.xcassets */,
 				076FAB332D2E6E0200FF3979 /* Config.xcconfig */,
 			);
@@ -251,6 +270,22 @@
 				076FAB362D2E6E0200FF3979 /* Services */,
 			);
 			path = Feature;
+			sourceTree = "<group>";
+		};
+		07E1CB2F2D364BD100F86BB8 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				07E1CB302D364BDA00F86BB8 /* Pretendard-Black.otf */,
+				07E1CB312D364BDA00F86BB8 /* Pretendard-Bold.otf */,
+				07E1CB322D364BDA00F86BB8 /* Pretendard-ExtraBold.otf */,
+				07E1CB332D364BDA00F86BB8 /* Pretendard-ExtraLight.otf */,
+				07E1CB342D364BDA00F86BB8 /* Pretendard-Light.otf */,
+				07E1CB352D364BDA00F86BB8 /* Pretendard-Medium.otf */,
+				07E1CB362D364BDA00F86BB8 /* Pretendard-Regular.otf */,
+				07E1CB372D364BDA00F86BB8 /* Pretendard-SemiBold.otf */,
+				07E1CB382D364BDA00F86BB8 /* Pretendard-Thin.otf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		07F093072D2418380075659F = {
@@ -346,6 +381,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07E1CB392D364BDA00F86BB8 /* Pretendard-Medium.otf in Resources */,
+				07E1CB3A2D364BDA00F86BB8 /* Pretendard-Thin.otf in Resources */,
+				07E1CB3B2D364BDA00F86BB8 /* Pretendard-Black.otf in Resources */,
+				07E1CB3C2D364BDA00F86BB8 /* Pretendard-ExtraBold.otf in Resources */,
+				07E1CB3D2D364BDA00F86BB8 /* Pretendard-Bold.otf in Resources */,
+				07E1CB3E2D364BDA00F86BB8 /* Pretendard-Light.otf in Resources */,
+				07E1CB3F2D364BDA00F86BB8 /* Pretendard-ExtraLight.otf in Resources */,
+				07E1CB402D364BDA00F86BB8 /* Pretendard-SemiBold.otf in Resources */,
+				07E1CB412D364BDA00F86BB8 /* Pretendard-Regular.otf in Resources */,
 				076FAB422D2E6E0200FF3979 /* Assets.xcassets in Resources */,
 				076FAB432D2E6E0200FF3979 /* Config.xcconfig in Resources */,
 			);
