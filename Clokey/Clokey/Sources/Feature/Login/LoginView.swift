@@ -18,7 +18,7 @@ final class LoginView: UIView {
         $0.text = "Clokey와 함께\n스마트한 옷장 관리를\n시작해보세요!"
         $0.numberOfLines = 3
         $0.textAlignment = .left
-        $0.font = .systemFont(ofSize: 24, weight: .bold)
+        $0.font = UIFont.ptdBoldFont(ofSize: 24)
     }
     
     // 소셜 로그인 스택뷰
