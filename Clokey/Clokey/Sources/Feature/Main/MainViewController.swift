@@ -16,11 +16,11 @@ final class MainViewController: UIViewController {
     private let mainView = MainView()
     
     // 각 탭의 뷰컨트롤러
-    private lazy var homeVC = HomeViewController(viewModel: HomeViewModel())
-    private lazy var calendarVC = CalendarViewController(viewModel: CalendarViewModel())
-    private lazy var addClothVC = AddClothViewController(viewModel: AddClothViewModel())
-    private lazy var closetVC = ClosetViewController(viewModel: ClosetViewModel())
-    private lazy var profileVC = ProfileViewController(viewModel: ProfileViewModel())
+    private lazy var homeVC = HomeViewController()
+    private lazy var calendarVC = CalendarViewController()
+    private lazy var addClothVC = AddClothViewController()
+    private lazy var closetVC = ClosetViewController()
+    private lazy var profileVC = ProfileViewController()
         
     
     // MARK: - Init
