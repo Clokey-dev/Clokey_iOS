@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		070258A32D30FEC700065369 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258A22D30FEC700065369 /* MainView.swift */; };
-		070258AC2D31079B00065369 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258AB2D31079B00065369 /* HomeView.swift */; };
-		070258AE2D3107A800065369 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258AD2D3107A800065369 /* HomeViewController.swift */; };
-		070258B02D3107B200065369 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258AF2D3107B200065369 /* HomeViewModel.swift */; };
 		070258B22D3107C200065369 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258B12D3107C200065369 /* CalendarView.swift */; };
 		070258B42D3107C900065369 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258B32D3107C900065369 /* CalendarViewController.swift */; };
 		070258B82D31083D00065369 /* AddClothView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258B72D31083D00065369 /* AddClothView.swift */; };
@@ -56,14 +53,13 @@
 		07E1CB662D36A63200F86BB8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E1CB652D36A63200F86BB8 /* ViewController.swift */; };
 		07E1CB682D36B47C00F86BB8 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E1CB672D36B47C00F86BB8 /* MainViewModel.swift */; };
 		07E1CB912D3814AA00F86BB8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07E1CB902D3814AA00F86BB8 /* LaunchScreen.storyboard */; };
+		A6548E532D3F47DE00F79B66 /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */; };
+		A6548E562D3F485B00F79B66 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = A6548E552D3F485B00F79B66 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		070258A12D30DD0E00065369 /* Clokey.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Clokey.entitlements; sourceTree = "<group>"; };
 		070258A22D30FEC700065369 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		070258AB2D31079B00065369 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		070258AD2D3107A800065369 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		070258AF2D3107B200065369 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		070258B12D3107C200065369 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		070258B32D3107C900065369 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		070258B72D31083D00065369 /* AddClothView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothView.swift; sourceTree = "<group>"; };
@@ -102,7 +98,31 @@
 		07E1CB672D36B47C00F86BB8 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		07E1CB8F2D3814AA00F86BB8 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		07F093102D2418380075659F /* Clokey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clokey.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		A6548E182D3F47C400F79B66 /* Cells */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		A6548E232D3F47C400F79B66 /* ViewControllers */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		A6548E2F2D3F47C400F79B66 /* Views */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A6548E382D3F47C400F79B66 /* Models */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Models;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		07F0930D2D2418380075659F /* Frameworks */ = {
@@ -117,6 +137,7 @@
 				07E1CADF2D3646C600F86BB8 /* CombineMoya in Frameworks */,
 				07E1CAE32D3646C600F86BB8 /* ReactiveMoya in Frameworks */,
 				076FAB202D2E5DE700FF3979 /* SnapKit in Frameworks */,
+				A6548E562D3F485B00F79B66 /* Kingfisher in Frameworks */,
 				076FAB2A2D2E60A500FF3979 /* KakaoSDKCommon in Frameworks */,
 				076FAB282D2E60A500FF3979 /* KakaoSDKAuth in Frameworks */,
 			);
@@ -138,9 +159,10 @@
 		070258A52D31071D00065369 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				070258AB2D31079B00065369 /* HomeView.swift */,
-				070258AD2D3107A800065369 /* HomeViewController.swift */,
-				070258AF2D3107B200065369 /* HomeViewModel.swift */,
+				A6548E182D3F47C400F79B66 /* Cells */,
+				A6548E232D3F47C400F79B66 /* ViewControllers */,
+				A6548E2F2D3F47C400F79B66 /* Views */,
+				A6548E382D3F47C400F79B66 /* Models */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -213,6 +235,7 @@
 		076FAB362D2E6E0200FF3979 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */,
 				076FAB4D2D2EBB3A00FF3979 /* KakaoAuthService.swift */,
 			);
 			path = Services;
@@ -349,6 +372,12 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				A6548E182D3F47C400F79B66 /* Cells */,
+				A6548E232D3F47C400F79B66 /* ViewControllers */,
+				A6548E2F2D3F47C400F79B66 /* Views */,
+				A6548E382D3F47C400F79B66 /* Models */,
+			);
 			name = Clokey;
 			packageProductDependencies = (
 				076FAB1C2D2E5DD800FF3979 /* Then */,
@@ -361,6 +390,7 @@
 				07E1CAE02D3646C600F86BB8 /* Moya */,
 				07E1CAE22D3646C600F86BB8 /* ReactiveMoya */,
 				07E1CAE42D3646C600F86BB8 /* RxMoya */,
+				A6548E552D3F485B00F79B66 /* Kingfisher */,
 			);
 			productName = Clokey;
 			productReference = 07F093102D2418380075659F /* Clokey.app */;
@@ -395,6 +425,7 @@
 				076FAB1E2D2E5DE700FF3979 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				076FAB242D2E60A500FF3979 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				07E1CADD2D3646C600F86BB8 /* XCRemoteSwiftPackageReference "Moya" */,
+				A6548E542D3F485B00F79B66 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 07F093112D2418380075659F /* Products */;
@@ -432,13 +463,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				070258AC2D31079B00065369 /* HomeView.swift in Sources */,
-				070258B02D3107B200065369 /* HomeViewModel.swift in Sources */,
 				070258BE2D31085900065369 /* ClosetView.swift in Sources */,
 				070258B22D3107C200065369 /* CalendarView.swift in Sources */,
 				076FAB4E2D2EBB3A00FF3979 /* KakaoAuthService.swift in Sources */,
 				070258A32D30FEC700065369 /* MainView.swift in Sources */,
 				070258C02D31086A00065369 /* ClosetViewController.swift in Sources */,
+				A6548E532D3F47DE00F79B66 /* WeatherAPI.swift in Sources */,
 				07E1CB682D36B47C00F86BB8 /* MainViewModel.swift in Sources */,
 				076FAB3F2D2E6E0200FF3979 /* AppDelegate.swift in Sources */,
 				07E1CB4B2D3668CE00F86BB8 /* Constants.swift in Sources */,
@@ -451,7 +481,6 @@
 				07E1CB442D3662D900F86BB8 /* UIFont+Extensions.swift in Sources */,
 				07E1CB582D3679A800F86BB8 /* CustomTextField.swift in Sources */,
 				070258BA2D31084300065369 /* AddClothViewController.swift in Sources */,
-				070258AE2D3107A800065369 /* HomeViewController.swift in Sources */,
 				070258B42D3107C900065369 /* CalendarViewController.swift in Sources */,
 				076FAB5A2D3020D800FF3979 /* LoginViewController.swift in Sources */,
 				070258C82D31089300065369 /* ProfileView.swift in Sources */,
@@ -712,6 +741,14 @@
 				minimumVersion = 15.0.3;
 			};
 		};
+		A6548E542D3F485B00F79B66 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.1.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -764,6 +801,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 07E1CADD2D3646C600F86BB8 /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = RxMoya;
+		};
+		A6548E552D3F485B00F79B66 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A6548E542D3F485B00F79B66 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
