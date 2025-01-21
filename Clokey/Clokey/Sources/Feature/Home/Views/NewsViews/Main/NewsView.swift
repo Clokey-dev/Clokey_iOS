@@ -115,10 +115,34 @@ class NewsView: UIView {
         $0.backgroundColor = .gray
     }
     
+    let followingCalendarProfileIcon1: UIImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+        $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
+        $0.clipsToBounds = true
+    }
+    
+    let followingCalendarProfileName1 = UILabel().then{
+        $0.font = UIFont.ptdSemiBoldFont(ofSize: 14)
+        $0.textColor = .black
+        $0.text = "티라미수케이크"
+    }
+    
     let followingCalendarUpdateImageView2: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
         $0.backgroundColor = .gray
+    }
+    
+    let followingCalendarProfileIcon2: UIImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+        $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
+        $0.clipsToBounds = true
+    }
+    
+    let followingCalendarProfileName2 = UILabel().then{
+        $0.font = UIFont.ptdSemiBoldFont(ofSize: 14)
+        $0.textColor = .black
+        $0.text = "티라미수케이크"
     }
     
     let followingCalendarBottomButtonLabel: UILabel = UILabel().then {
@@ -196,7 +220,11 @@ class NewsView: UIView {
         contentView.addSubview(followingCalendarUpdateTitle)
         contentView.addSubview(followingCalendarUpdateContainerView)
         followingCalendarUpdateContainerView.addSubview(followingCalendarUpdateImageView1)
+        followingCalendarUpdateContainerView.addSubview(followingCalendarProfileIcon1)
+        followingCalendarUpdateContainerView.addSubview(followingCalendarProfileName1)
         followingCalendarUpdateContainerView.addSubview(followingCalendarUpdateImageView2)
+        followingCalendarUpdateContainerView.addSubview(followingCalendarProfileIcon2)
+        followingCalendarUpdateContainerView.addSubview(followingCalendarProfileName2)
         contentView.addSubview(followingCalendarBottomButtonLabel)
         contentView.addSubview(followingCalendarBottomArrowIcon)
         
@@ -297,13 +325,37 @@ class NewsView: UIView {
             make.width.equalTo(followingCalendarUpdateContainerView.snp.width).multipliedBy(0.5).offset(-5)
         }
         
+        followingCalendarProfileIcon1.snp.makeConstraints {
+            $0.top.equalTo(followingCalendarUpdateImageView1.snp.bottom).offset(8)
+            $0.leading.equalTo(followingCalendarUpdateImageView1.snp.leading)
+            $0.width.height.equalTo(20) // 아이콘 크기
+        }
+        
+        // 제목 레이블 레이아웃
+        followingCalendarProfileName1.snp.makeConstraints {
+            $0.centerY.equalTo(followingCalendarProfileIcon1) // 아이콘과 수직 정렬
+            $0.leading.equalTo(followingCalendarProfileIcon1.snp.trailing).offset(8)
+        }
+        
         followingCalendarUpdateImageView2.snp.makeConstraints { make in
             make.top.bottom.trailing.equalToSuperview()
             make.width.equalTo(followingCalendarUpdateContainerView.snp.width).multipliedBy(0.5).offset(-5)
         }
         
+        followingCalendarProfileIcon2.snp.makeConstraints {
+            $0.top.equalTo(followingCalendarUpdateImageView2.snp.bottom).offset(8)
+            $0.leading.equalTo(followingCalendarUpdateImageView2.snp.leading)
+            $0.width.height.equalTo(20) // 아이콘 크기
+        }
+        
+        // 제목 레이블 레이아웃
+        followingCalendarProfileName2.snp.makeConstraints {
+            $0.centerY.equalTo(followingCalendarProfileIcon2) // 아이콘과 수직 정렬
+            $0.leading.equalTo(followingCalendarProfileIcon2.snp.trailing).offset(8)
+        }
+        
         followingCalendarBottomButtonLabel.snp.makeConstraints { make in
-            make.top.equalTo(followingCalendarUpdateContainerView.snp.bottom).offset(5)
+            make.top.equalTo(followingCalendarProfileName2.snp.bottom).offset(10)
             make.trailing.equalToSuperview().inset(30)
         }
         

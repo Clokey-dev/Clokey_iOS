@@ -37,7 +37,7 @@ class PickView: UIView {
 
     /// 위치 아이콘을 표시하는 이미지 뷰
     let locationIconView: UIImageView = UIImageView().then {
-        $0.image = UIImage(systemName: "dot.scope") // 시스템 이미지 사용
+        $0.image = UIImage(named: "location_icon") // 시스템 이미지 사용
         $0.contentMode = .scaleAspectFit // 이미지 크기 비율 유지
         $0.tintColor = .gray // 색상 변경
     }
@@ -59,7 +59,7 @@ class PickView: UIView {
         $0.font = UIFont.ptdMediumFont(ofSize: 16)
         $0.textColor = .gray // 텍스트 색상
         $0.textAlignment = .center // 텍스트 중앙 정렬
-        $0.text = "12:00 PM 대한민국 서울시 기준" // 기본 텍스트
+        $0.text = "12:00 PM 대한민국 ??? 기준" // 기본 텍스트
     }
 
     /// 최고/최저 기온을 표시하는 레이블
@@ -213,7 +213,7 @@ class PickView: UIView {
         
         // 기존 UI 요소 제약 추가
         seasonLabel.snp.makeConstraints { make in
-            make.top.equalTo(contentView.safeAreaLayoutGuide).offset(10)
+            make.top.equalTo(contentView.safeAreaLayoutGuide).offset(26)
             make.leading.equalToSuperview().offset(20)
             make.width.equalTo(50)
             make.height.equalTo(30)
