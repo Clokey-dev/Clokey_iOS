@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>앱 사용 중 위치 접근 권한이 필요합니다.</string>
     <key>OPEN_WEATHER_MAP_KEY</key>
     <string>${OPEN_WEATHER_MAP_KEY}</string>
     <key>VISUAL_CROSSING_WEATHER_KEY</key>

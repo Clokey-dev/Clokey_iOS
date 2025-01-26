@@ -9,9 +9,12 @@
 
 import UIKit
 import Kingfisher
+import MapKit
 
-class PickViewController: UIViewController {
+class PickViewController: UIViewController, CLLocationManagerDelegate {
     private let pickView = PickView()
+    
+    let locationManager = CLLocationManager()
     
     // 더미 데이터 예시
     private let model = PickImageModel(
@@ -41,6 +44,13 @@ class PickViewController: UIViewController {
         setupBottomLabelTap()
         bindData()
         
+        locationManager.delegate = self
+        locationManager.distanceFilter = kCLDistanceFilterNone
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+        
+        setupLocationIconTap()
     }
     
     private func bindData() {
@@ -83,7 +93,91 @@ class PickViewController: UIViewController {
     func updateTimeLabel() {
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
-        pickView.timeLabel.text = formatter.string(from: Date()) + " 대한민국 서울시 기준"
+        //        pickView.timeLabel.text = formatter.string(from: Date()) + " 대한민국 서울시 기준"
+        let currentTime = formatter.string(from: Date())
+        pickView.timeLabel.text = "\(currentTime) 대한민국 \(address) 기준"
+    }
+    
+    // address 값을 저장할 변수
+    private var address: String = "" // 기본값 설정
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+            if let error = error {
+                print("Geocoding error: \(error.localizedDescription)")
+                return
+            }
+            if let placemark = placemarks?.first {
+                var subAddress = ""
+                //                self.address = ""
+                
+                if let administrativeArea = placemark.administrativeArea {
+                    // "서울특별시"를 "서울시"로 변환
+                    if administrativeArea.contains("특별시") {
+                        subAddress += administrativeArea.replacingOccurrences(of: "특별시", with: "시")
+                    } else if administrativeArea.contains("광역시") {
+                        subAddress += administrativeArea.replacingOccurrences(of: "광역시", with: "시")
+                    } else if administrativeArea.contains("특별자치도") {
+                        subAddress += administrativeArea.replacingOccurrences(of: "특별자치도", with: "도")
+                    }
+                    else {
+                        subAddress += administrativeArea
+                        if let locality = placemark.locality {
+                            subAddress += "\(locality) "
+                        }
+                    }
+                }
+                DispatchQueue.main.async {
+                    self.address = subAddress
+                    self.updateTimeLabel() // 주소 업데이트 후 시간 레이블 갱신
+                }
+            }
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Failed to get location: \(error.localizedDescription)")
+    }
+    
+    private func setupLocationIconTap() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleLocationIconTap))
+        pickView.locationIconView.isUserInteractionEnabled = true
+        pickView.locationIconView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func handleLocationIconTap() {
+        print("locationIconView tapped")
+        
+        // 권한 상태 확인
+        let authorizationStatus = locationManager.authorizationStatus
+        
+        switch authorizationStatus {
+        case .notDetermined:
+            // 위치 권한 요청
+            locationManager.requestWhenInUseAuthorization()
+        case .restricted, .denied:
+            // 설정 앱으로 이동하여 권한 요청
+            let alert = UIAlertController(
+                title: "위치 권한 필요",
+                message: "앱에서 위치 정보를 사용하려면 설정에서 권한을 허용해주세요.",
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+            alert.addAction(UIAlertAction(title: "설정으로 이동", style: .default, handler: { _ in
+                guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
+                if UIApplication.shared.canOpenURL(settingsURL) {
+                    UIApplication.shared.open(settingsURL)
+                }
+            }))
+            present(alert, animated: true)
+        case .authorizedWhenInUse, .authorizedAlways:
+            // 위치 업데이트 시작
+            locationManager.startUpdatingLocation()
+        @unknown default:
+            break
+        }
     }
     
     // MARK: - 날씨 아이콘 가져오기
@@ -127,7 +221,7 @@ class PickViewController: UIViewController {
         // WeatherAPI에서 fetchTemperatureChange를 호출하고 결과를 처리
         WeatherAPI.shared.fetchTemperatureChange(for: "Seoul") { [weak self] resultText in
             guard let self = self else { return }
-
+            
             DispatchQueue.main.async {
                 // 결과를 temperatureChangeLabel에 표시
                 self.pickView.temperatureChangeLabel.text = resultText
@@ -141,21 +235,20 @@ class PickViewController: UIViewController {
         pickView.tempDetailsLabel.text = "최고/최저 기온 없음"
         pickView.weatherIconView.image = nil
     }
-    
-    // MARK: - bottomLabel에 TapGestureRecognizer 추가
     private func setupBottomLabelTap() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleBottomLabelTap))
         pickView.bottomButtonLabel.isUserInteractionEnabled = true
         pickView.bottomButtonLabel.addGestureRecognizer(tapGesture)
     }
+    
     @objc private func handleBottomLabelTap() {
-        // ClosetViewController가 포함된 탭의 index를 설정하세요.
-        guard let tabBarController = self.tabBarController else {
-            print("TabBarController가 없습니다.")
-            return
-        }
+        // Create an instance of the destination view controller
+        let closetViewController = ClosetViewController()
+        closetViewController.modalPresentationStyle = .fullScreen // Present it as a full-screen modal
         
-        // ClosetViewController가 포함된 탭의 index (예: 2번째 탭이라면 index는 1)
-        tabBarController.selectedIndex = 1 // ClosetViewController가 연결된 탭 index로 변경
+        // Navigate without keeping the TabBar
+        self.present(closetViewController, animated: true, completion: nil)
     }
 }
+
+
