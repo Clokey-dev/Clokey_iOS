@@ -102,22 +102,22 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		A6548E182D3F47C400F79B66 /* Cells */ = {
+		A64C54312D3F97B3000CCB62 /* Cells */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		A6548E232D3F47C400F79B66 /* ViewControllers */ = {
+		A64C54402D3F97BB000CCB62 /* ViewControllers */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
-		A6548E2F2D3F47C400F79B66 /* Views */ = {
+		A64C54522D3F97C6000CCB62 /* Views */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Views;
 			sourceTree = "<group>";
 		};
-		A6548E382D3F47C400F79B66 /* Models */ = {
+		A64C54612D3F97CF000CCB62 /* Models */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Models;
 			sourceTree = "<group>";
@@ -159,10 +159,10 @@
 		070258A52D31071D00065369 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				A6548E182D3F47C400F79B66 /* Cells */,
-				A6548E232D3F47C400F79B66 /* ViewControllers */,
-				A6548E2F2D3F47C400F79B66 /* Views */,
-				A6548E382D3F47C400F79B66 /* Models */,
+				A64C54612D3F97CF000CCB62 /* Models */,
+				A64C54522D3F97C6000CCB62 /* Views */,
+				A64C54402D3F97BB000CCB62 /* ViewControllers */,
+				A64C54312D3F97B3000CCB62 /* Cells */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -373,10 +373,10 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				A6548E182D3F47C400F79B66 /* Cells */,
-				A6548E232D3F47C400F79B66 /* ViewControllers */,
-				A6548E2F2D3F47C400F79B66 /* Views */,
-				A6548E382D3F47C400F79B66 /* Models */,
+				A64C54312D3F97B3000CCB62 /* Cells */,
+				A64C54402D3F97BB000CCB62 /* ViewControllers */,
+				A64C54522D3F97C6000CCB62 /* Views */,
+				A64C54612D3F97CF000CCB62 /* Models */,
 			);
 			name = Clokey;
 			packageProductDependencies = (

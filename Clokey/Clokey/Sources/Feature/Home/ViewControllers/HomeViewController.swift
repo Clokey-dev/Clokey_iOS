@@ -36,7 +36,6 @@ final class HomeViewController: UIViewController {
         super.viewDidLoad()
         setupActions()  // 버튼 액션 설정
         selectTab(.pick) // 초기 탭 설정
-        
     }
     
     // MARK: - Actions
@@ -123,4 +122,5 @@ final class HomeViewController: UIViewController {
         }
         selectedVC.didMove(toParent: self)
     }
+
 }
