@@ -14,6 +14,8 @@ final class ProfileViewController: UIViewController {
     // MARK: - Properties
     private let profileView = ProfileView()
     
+    private let model = ProfileModel.dummy()
+    
     // MARK: - Lifecycle
     override func loadView() {
         view = profileView
@@ -21,11 +23,14 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
+
+        bindData()
     }
     
-    // MARK: - Setup
-    private func setupUI() {
-        view.backgroundColor = .gray
+    private func bindData() {
+        // 데이터를 PickView에 바인딩
+        profileView.clothesImageView1.kf.setImage(with: URL(string: model.profileImageURLs[0]))
+        profileView.clothesImageView2.kf.setImage(with: URL(string: model.profileImageURLs[1]))
+        profileView.clothesImageView3.kf.setImage(with: URL(string: model.profileImageURLs[2]))
     }
 }
