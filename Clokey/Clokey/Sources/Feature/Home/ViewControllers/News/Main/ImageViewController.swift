@@ -6,14 +6,13 @@
 //
 
 import UIKit
+import Kingfisher
 
 class ImageViewController: UIViewController {
     
     var slideModel: RecommandNewsSlideModel?
     
     let imageView = ImageView() // ImageView 인스턴스 생성
-    let titleLabel = UILabel()
-    let descriptionLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +25,9 @@ class ImageViewController: UIViewController {
     private func setupImageView() {
         view.addSubview(imageView)
         imageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview() // ImageView를 전체 화면에 맞게 배치
+//            make.edges.equalToSuperview() // ImageView를 전체 화면에 맞게 배치
+            make.leading.trailing.equalToSuperview().inset(24)
+            make.size.equalTo(300)
         }
     }
     
@@ -34,7 +35,9 @@ class ImageViewController: UIViewController {
     // UI 업데이트
     private func updateUI() {
         if let slideModel = slideModel {
-            imageView.imageView.image = UIImage(named: slideModel.image) // 이미지 설정
+            if let imageURL = URL(string: slideModel.image) {
+                imageView.imageView.kf.setImage(with: imageURL) // URL을 통해 이미지 로드
+            }
             imageView.titleLabel.text = slideModel.title // 제목 설정
             imageView.hashtagLabel.text = slideModel.hashtag // 해시태그 설정
         }

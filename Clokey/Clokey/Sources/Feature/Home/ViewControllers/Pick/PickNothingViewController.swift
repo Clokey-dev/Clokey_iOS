@@ -11,15 +11,15 @@ import UIKit
 import Kingfisher
 import MapKit
 
-class PickViewController: UIViewController, CLLocationManagerDelegate {
-    private let pickView = PickView()
+class PickNothingViewController: UIViewController, CLLocationManagerDelegate {
+    private let pickNothingView = PickNothingView()
     
     let locationManager = CLLocationManager()
     
     private let model = PickImageModel.dummy()
     
     override func loadView() {
-        self.view = pickView
+        self.view = pickNothingView
     }
     
     override func viewDidLoad() {
@@ -29,8 +29,6 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         updateTimeLabel() // 현재 시간 업데이트
         fetchWeatherData() // 날씨 데이터 가져오기
         fetchVisualCrossingWeatherData(for: "Seoul") // 기본 위치: 서울
-        updateYesterdayWeatherUI()
-        setupBottomLabelTap()
         bindData()
         
         locationManager.delegate = self
@@ -43,13 +41,8 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     private func bindData() {
-        // 데이터를 PickView에 바인딩
-        pickView.weatherImageView1.kf.setImage(with: URL(string: model.weatherImageURLs[0]))
-        pickView.weatherImageView2.kf.setImage(with: URL(string: model.weatherImageURLs[1]))
-        pickView.weatherImageView3.kf.setImage(with: URL(string: model.weatherImageURLs[2]))
-        
-        pickView.recapImageView1.kf.setImage(with: URL(string: model.recapImageURLs[0]))
-        pickView.recapImageView2.kf.setImage(with: URL(string: model.recapImageURLs[1]))
+        pickNothingView.recapImageView1.kf.setImage(with: URL(string: model.recapImageURLs[0]))
+        pickNothingView.recapImageView2.kf.setImage(with: URL(string: model.recapImageURLs[1]))
     }
     
     // MARK: - 날씨 데이터 요청
@@ -84,7 +77,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         formatter.dateFormat = "h:mm a"
         //        pickView.timeLabel.text = formatter.string(from: Date()) + " 대한민국 서울시 기준"
         let currentTime = formatter.string(from: Date())
-        pickView.timeLabel.text = "\(currentTime) 대한민국 \(address) 기준"
+        pickNothingView.timeLabel.text = "\(currentTime) 대한민국 \(address) 기준"
     }
     
     // address 값을 저장할 변수
@@ -131,8 +124,8 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     
     private func setupLocationIconTap() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleLocationIconTap))
-        pickView.locationIconView.isUserInteractionEnabled = true
-        pickView.locationIconView.addGestureRecognizer(tapGesture)
+        pickNothingView.locationIconView.isUserInteractionEnabled = true
+        pickNothingView.locationIconView.addGestureRecognizer(tapGesture)
     }
     
     @objc private func handleLocationIconTap() {
@@ -184,14 +177,14 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
             }
             
             DispatchQueue.main.async {
-                self.pickView.weatherIconView.image = image
+                self.pickNothingView.weatherIconView.image = image
             }
         }.resume()
     }
     
     // MARK: - 날씨 데이터 업데이트
     func updateTemperatureUI(weather: WeatherData) {
-        pickView.temperatureLabel.text = "\(Int(weather.main.temp))°C"
+        pickNothingView.temperatureLabel.text = "\(Int(weather.main.temp))°C"
         
         // 아이콘 가져오기
         if let icon = weather.weather.first?.icon {
@@ -202,41 +195,17 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     
     /// 최고/최저 온도 업데이트
     func updateWeatherHighLowUI(weather: DailyWeather) {
-        pickView.tempDetailsLabel.text = " (최고: \(Int(weather.tempmax))° / 최저: \(Int(weather.tempmin))°)"
+        pickNothingView.tempDetailsLabel.text = " (최고: \(Int(weather.tempmax))° / 최저: \(Int(weather.tempmin))°)"
     }
     
-    func updateYesterdayWeatherUI() {
-        // WeatherAPI에서 fetchTemperatureChange를 호출하고 결과를 처리
-        WeatherAPI.shared.fetchTemperatureChange(for: "Seoul") { [weak self] resultText in
-            guard let self = self else { return }
-            
-            DispatchQueue.main.async {
-                // 결과를 temperatureChangeLabel에 표시
-                self.pickView.temperatureChangeLabel.text = resultText
-            }
-        }
-    }
     
     // MARK: - 에러 처리
     func showError() {
-        pickView.temperatureLabel.text = "데이터를 가져올 수 없음"
-        pickView.tempDetailsLabel.text = "최고/최저 기온 없음"
-        pickView.weatherIconView.image = nil
+        pickNothingView.temperatureLabel.text = "데이터를 가져올 수 없음"
+        pickNothingView.tempDetailsLabel.text = "최고/최저 기온 없음"
+        pickNothingView.weatherIconView.image = nil
     }
-    private func setupBottomLabelTap() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleBottomLabelTap))
-        pickView.bottomButtonLabel.isUserInteractionEnabled = true
-        pickView.bottomButtonLabel.addGestureRecognizer(tapGesture)
-    }
-    
-    @objc private func handleBottomLabelTap() {
-        // Create an instance of the destination view controller
-        let closetViewController = ClosetViewController()
-        closetViewController.modalPresentationStyle = .fullScreen // Present it as a full-screen modal
-        
-        // Navigate without keeping the TabBar
-        self.present(closetViewController, animated: true, completion: nil)
-    }
+
 }
 
 

@@ -104,22 +104,22 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		A64C54312D3F97B3000CCB62 /* Cells */ = {
+		A62A42DD2D4D30F700672D3F /* Cells */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		A64C54402D3F97BB000CCB62 /* ViewControllers */ = {
+		A62A42E92D4D30F700672D3F /* ViewControllers */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
-		A64C54522D3F97C6000CCB62 /* Views */ = {
+		A62A42F52D4D30F700672D3F /* Views */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Views;
 			sourceTree = "<group>";
 		};
-		A64C54612D3F97CF000CCB62 /* Models */ = {
+		A62A42FD2D4D30F700672D3F /* Models */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Models;
 			sourceTree = "<group>";
@@ -156,17 +156,6 @@
 				07E1CB672D36B47C00F86BB8 /* MainViewModel.swift */,
 			);
 			path = Main;
-			sourceTree = "<group>";
-		};
-		070258A52D31071D00065369 /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				A64C54612D3F97CF000CCB62 /* Models */,
-				A64C54522D3F97C6000CCB62 /* Views */,
-				A64C54402D3F97BB000CCB62 /* ViewControllers */,
-				A64C54312D3F97B3000CCB62 /* Cells */,
-			);
-			path = Home;
 			sourceTree = "<group>";
 		};
 		070258A62D31072000065369 /* Calendar */ = {
@@ -297,7 +286,7 @@
 				07E1CB652D36A63200F86BB8 /* ViewController.swift */,
 				070258AA2D31074E00065369 /* Login */,
 				070258A42D31071900065369 /* Main */,
-				070258A52D31071D00065369 /* Home */,
+				A62A42FE2D4D30F700672D3F /* Home */,
 				070258A62D31072000065369 /* Calendar */,
 				070258A72D31072800065369 /* AddCloth */,
 				070258A82D31074100065369 /* Closet */,
@@ -360,6 +349,17 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		A62A42FE2D4D30F700672D3F /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				A62A42DD2D4D30F700672D3F /* Cells */,
+				A62A42E92D4D30F700672D3F /* ViewControllers */,
+				A62A42F52D4D30F700672D3F /* Views */,
+				A62A42FD2D4D30F700672D3F /* Models */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -376,10 +376,10 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				A64C54312D3F97B3000CCB62 /* Cells */,
-				A64C54402D3F97BB000CCB62 /* ViewControllers */,
-				A64C54522D3F97C6000CCB62 /* Views */,
-				A64C54612D3F97CF000CCB62 /* Models */,
+				A62A42DD2D4D30F700672D3F /* Cells */,
+				A62A42E92D4D30F700672D3F /* ViewControllers */,
+				A62A42F52D4D30F700672D3F /* Views */,
+				A62A42FD2D4D30F700672D3F /* Models */,
 			);
 			name = Clokey;
 			packageProductDependencies = (
