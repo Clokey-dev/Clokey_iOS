@@ -89,22 +89,49 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 }
 
 extension SceneDelegate: Coordinator {
-    // 화면 전환 메서드 -> MainViewController
     func switchToMain() {
         let mainViewModel = MainViewModel()
         let mainVC = MainViewController(viewModel: mainViewModel)
-        let navigationController = UINavigationController(rootViewController: mainVC)
+
+        // ✅ AgreementViewController를 네비게이션 스택에서 제거하고 새로운 네비게이션 설정
+        let navController = UINavigationController(rootViewController: mainVC)
+
+        // ✅ 기존 뷰컨트롤러들 완전히 삭제
+        window?.rootViewController = nil
+        window?.subviews.forEach { $0.removeFromSuperview() }
+        
+        window?.rootViewController = navController
+        window?.makeKeyAndVisible()
+
+        print("✅ switchToMain() 실행 완료. 새로운 네비게이션 스택: \(navController.viewControllers)")
+    }
+    // 화면 전환 메서드 -> AgreementViewController
+    func navigateToAgreement() {
+        let agreementVC = AgreementViewController()
+        let navigationController = UINavigationController(rootViewController: agreementVC)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
-    
     // 화면 전환 메서드 -> LoginViewController
     func switchToLogin() {
         let loginVC = LoginViewController(coordinator: self)
         window?.rootViewController = loginVC
         window?.makeKeyAndVisible()
     }
-    
+    func switchToAddCloth() {
+        let addClothVC = AddClothViewController()
+        
+        if let navController = window?.rootViewController as? UINavigationController {
+            print("✅ 네비게이션 컨트롤러 확인됨! 화면 이동 실행")
+            navController.pushViewController(addClothVC, animated: true)
+        } else {
+            print("🚨 기존 네비게이션 컨트롤러 없음. 새로 생성")
+
+            let navController = UINavigationController(rootViewController: addClothVC)
+            window?.rootViewController = navController
+            window?.makeKeyAndVisible()
+        }
+    }
     // 에플 로그인 - 필요한 window 객체 제공
     func getPresentationAnchor() -> ASPresentationAnchor {
         guard let window = window else {
