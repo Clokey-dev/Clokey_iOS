@@ -1,21 +1,21 @@
 //
-//  ProfileModel.swift
+//  FollowProfileModel.swift
 //  Clokey
 //
-//  Created by 한금준 on 1/27/25.
+//  Created by 한금준 on 1/29/25.
 //
 
-import UIKit
+import Foundation
 
 // 모델 정의
-struct ProfileModel {
+struct FollowProfileModel {
     let profileImageURLs: [String]
 }
 
 // 더미 데이터 관련 기능을 분리한 extension
-extension ProfileModel {
-    static func dummy() -> ProfileModel {
-        return ProfileModel(
+extension FollowProfileModel {
+    static func dummy() -> FollowProfileModel {
+        return FollowProfileModel(
             profileImageURLs: [
                 "https://img.danawa.com/prod_img/500000/436/224/img/17224436_1.jpg?_v=20220610092752",
                 "https://www.ocokorea.com//upload/images/product/111/111888/Product_1670035608378.jpg",
