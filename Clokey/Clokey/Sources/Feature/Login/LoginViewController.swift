@@ -14,7 +14,9 @@ import AuthenticationServices
 
 protocol Coordinator: AnyObject {
     func switchToMain()
+    func navigateToAgreement() // 약관동의 화면으로 이동
     func getPresentationAnchor() -> ASPresentationAnchor
+    func switchToAddCloth() 
 }
 
 final class LoginViewController: UIViewController {
@@ -70,7 +72,7 @@ final class LoginViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isLoggedIn in
                 if isLoggedIn {
-                    self?.navigateToMain()
+                    self?.navigateToAgreement()
                 }
             }
             .store(in: &cancellables)
@@ -132,8 +134,11 @@ final class LoginViewController: UIViewController {
     }
     
     // 로그인 -> 메인
-    private func navigateToMain() {
-        coordinator?.switchToMain()
+    private func navigateToAgreement() {
+        guard let SceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
+            fatalError("SceneDelegate not found")
+        }
+        SceneDelegate.navigateToAgreement()
     }
 }
 

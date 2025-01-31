@@ -55,6 +55,9 @@
 		07E1CB602D36A10000F86BB8 /* CustomButtonTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E1CB5E2D36A10000F86BB8 /* CustomButtonTextField.swift */; };
 		07E1CB662D36A63200F86BB8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E1CB652D36A63200F86BB8 /* ViewController.swift */; };
 		07E1CB682D36B47C00F86BB8 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E1CB672D36B47C00F86BB8 /* MainViewModel.swift */; };
+		485A906F2D37730500B69CA4 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 485A906E2D37730500B69CA4 /* Config.xcconfig */; };
+		48EAA8D62D4B38270095DA0F /* CategorySelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48EAA8D52D4B38270095DA0F /* CategorySelectionViewController.swift */; };
+		48EAA8D82D4C123F0095DA0F /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48EAA8D72D4C123F0095DA0F /* UIApplication+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,7 +77,6 @@
 		076FAB2F2D2E6E0200FF3979 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		076FAB302D2E6E0200FF3979 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		076FAB322D2E6E0200FF3979 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		076FAB332D2E6E0200FF3979 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		076FAB3C2D2E6E0200FF3979 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		076FAB492D2E748B00FF3979 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		076FAB4D2D2EBB3A00FF3979 /* KakaoAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthService.swift; sourceTree = "<group>"; };
@@ -100,7 +102,38 @@
 		07E1CB652D36A63200F86BB8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		07E1CB672D36B47C00F86BB8 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		07F093102D2418380075659F /* Clokey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clokey.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		485A906E2D37730500B69CA4 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		48EAA8D52D4B38270095DA0F /* CategorySelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectionViewController.swift; sourceTree = "<group>"; };
+		48EAA8D72D4C123F0095DA0F /* UIApplication+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		48AC8AF62D48E37000613954 /* AddClothing */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AddClothing;
+			sourceTree = "<group>";
+		};
+		48D9A68A2D38FEBA00473CDE /* Agreement */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Agreement;
+			sourceTree = "<group>";
+		};
+		48D9A6962D3BBF0300473CDE /* AddProfile */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AddProfile;
+			sourceTree = "<group>";
+		};
+		48EAA8E92D4C28410095DA0F /* Temperature */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Temperature;
+			sourceTree = "<group>";
+		};
+		48EAA8F42D4C379D0095DA0F /* Thick */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Thick;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		07F0930D2D2418380075659F /* Frameworks */ = {
@@ -155,8 +188,11 @@
 		070258A72D31072800065369 /* AddCloth */ = {
 			isa = PBXGroup;
 			children = (
+				48EAA8F42D4C379D0095DA0F /* Thick */,
+				48EAA8E92D4C28410095DA0F /* Temperature */,
 				070258B72D31083D00065369 /* AddClothView.swift */,
 				070258B92D31084300065369 /* AddClothViewController.swift */,
+				48EAA8D52D4B38270095DA0F /* CategorySelectionViewController.swift */,
 			);
 			path = AddCloth;
 			sourceTree = "<group>";
@@ -202,7 +238,7 @@
 			children = (
 				07E1CB2F2D364BD100F86BB8 /* Fonts */,
 				076FAB322D2E6E0200FF3979 /* Assets.xcassets */,
-				076FAB332D2E6E0200FF3979 /* Config.xcconfig */,
+				485A906E2D37730500B69CA4 /* Config.xcconfig */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -266,6 +302,9 @@
 			isa = PBXGroup;
 			children = (
 				07E1CB652D36A63200F86BB8 /* ViewController.swift */,
+				48AC8AF62D48E37000613954 /* AddClothing */,
+				48D9A6962D3BBF0300473CDE /* AddProfile */,
+				48D9A68A2D38FEBA00473CDE /* Agreement */,
 				070258AA2D31074E00065369 /* Login */,
 				070258A42D31071900065369 /* Main */,
 				070258A52D31071D00065369 /* Home */,
@@ -311,6 +350,7 @@
 				07E1CB5E2D36A10000F86BB8 /* CustomButtonTextField.swift */,
 				07E1CB4E2D36721900F86BB8 /* CustomNavigationBar.swift */,
 				07E1CB572D3679A800F86BB8 /* CustomTextField.swift */,
+				48EAA8D72D4C123F0095DA0F /* UIApplication+Extension.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -346,6 +386,13 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				48AC8AF62D48E37000613954 /* AddClothing */,
+				48D9A68A2D38FEBA00473CDE /* Agreement */,
+				48D9A6962D3BBF0300473CDE /* AddProfile */,
+				48EAA8E92D4C28410095DA0F /* Temperature */,
+				48EAA8F42D4C379D0095DA0F /* Thick */,
+			);
 			name = Clokey;
 			packageProductDependencies = (
 				076FAB1C2D2E5DD800FF3979 /* Then */,
@@ -379,11 +426,12 @@
 				};
 			};
 			buildConfigurationList = 07F0930B2D2418380075659F /* Build configuration list for PBXProject "Clokey" */;
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = 07F093072D2418380075659F;
 			minimizedProjectReferenceProxies = 1;
@@ -411,6 +459,7 @@
 				07E1CB392D364BDA00F86BB8 /* Pretendard-Medium.otf in Resources */,
 				07E1CB3A2D364BDA00F86BB8 /* Pretendard-Thin.otf in Resources */,
 				07E1CB3B2D364BDA00F86BB8 /* Pretendard-Black.otf in Resources */,
+				485A906F2D37730500B69CA4 /* Config.xcconfig in Resources */,
 				07E1CB3C2D364BDA00F86BB8 /* Pretendard-ExtraBold.otf in Resources */,
 				07E1CB3D2D364BDA00F86BB8 /* Pretendard-Bold.otf in Resources */,
 				07E1CB3E2D364BDA00F86BB8 /* Pretendard-Light.otf in Resources */,
@@ -431,6 +480,7 @@
 				070258AC2D31079B00065369 /* HomeView.swift in Sources */,
 				070258B02D3107B200065369 /* HomeViewModel.swift in Sources */,
 				070258BE2D31085900065369 /* ClosetView.swift in Sources */,
+				48EAA8D82D4C123F0095DA0F /* UIApplication+Extension.swift in Sources */,
 				070258B22D3107C200065369 /* CalendarView.swift in Sources */,
 				076FAB4E2D2EBB3A00FF3979 /* KakaoAuthService.swift in Sources */,
 				070258A32D30FEC700065369 /* MainView.swift in Sources */,
@@ -446,6 +496,7 @@
 				07E1CB482D3662EC00F86BB8 /* UIImage+Extensions.swift in Sources */,
 				07E1CB442D3662D900F86BB8 /* UIFont+Extensions.swift in Sources */,
 				07E1CB582D3679A800F86BB8 /* CustomTextField.swift in Sources */,
+				48EAA8D62D4B38270095DA0F /* CategorySelectionViewController.swift in Sources */,
 				070258BA2D31084300065369 /* AddClothViewController.swift in Sources */,
 				070258AE2D3107A800065369 /* HomeViewController.swift in Sources */,
 				070258B42D3107C900065369 /* CalendarViewController.swift in Sources */,
@@ -464,16 +515,19 @@
 /* Begin XCBuildConfiguration section */
 		07F093242D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 076FAB332D2E6E0200FF3979 /* Config.xcconfig */;
+			baseConfigurationReference = 485A906E2D37730500B69CA4 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BBVZV8T99P;
+				DEVELOPMENT_TEAM = XVJ8MJCWJ8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "프로필 이미지를 촬영하려면 카메라 접근 권한이 필요합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "프로필 이미지를 선택하려면 사진 라이브러리에 접근해야 합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -485,6 +539,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.soongsil.cs.20213583.Clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -493,16 +548,19 @@
 		};
 		07F093252D24183A0075659F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 076FAB332D2E6E0200FF3979 /* Config.xcconfig */;
+			baseConfigurationReference = 485A906E2D37730500B69CA4 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BBVZV8T99P;
+				DEVELOPMENT_TEAM = XVJ8MJCWJ8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "프로필 이미지를 촬영하려면 카메라 접근 권한이 필요합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "프로필 이미지를 선택하려면 사진 라이브러리에 접근해야 합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -514,6 +572,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.soongsil.cs.20213583.Clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -522,7 +581,7 @@
 		};
 		07F093262D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 076FAB332D2E6E0200FF3979 /* Config.xcconfig */;
+			baseConfigurationReference = 485A906E2D37730500B69CA4 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -586,7 +645,7 @@
 		};
 		07F093272D24183A0075659F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 076FAB332D2E6E0200FF3979 /* Config.xcconfig */;
+			baseConfigurationReference = 485A906E2D37730500B69CA4 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

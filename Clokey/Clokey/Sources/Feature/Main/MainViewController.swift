@@ -48,23 +48,49 @@ final class MainViewController: UIViewController {
     private func setupTabBar() {
         mainView.tabBar.delegate = self
     }
-    
-    // MARK: - Methods
+   
+        
     private func showViewController(_ viewController: UIViewController) {
-        // 현재 표시된 뷰컨트롤러 해제
+        if viewController is AddClothViewController {
+            print("✅ '옷 추가' 화면으로 이동 시도")
+            
+            if let navController = navigationController {
+                print("✅ 네비게이션 컨트롤러 확인됨! 화면 이동 실행")
+                navController.pushViewController(viewController, animated: true)
+            } else if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
+                      let rootNav = sceneDelegate.window?.rootViewController as? UINavigationController {
+                print("🚀 SceneDelegate에서 네비게이션 컨트롤러 가져옴")
+                rootNav.pushViewController(viewController, animated: true)
+            } else {
+                print("🚨 네비게이션 컨트롤러 없음! SceneDelegate에서 강제 재설정 필요")
+            }
+            return
+        }
+
+        // ✅ 기존 뷰 제거 후 새 뷰 추가
         children.forEach {
             $0.willMove(toParent: nil)
             $0.view.removeFromSuperview()
             $0.removeFromParent()
         }
         
-        // 새로운 뷰컨트롤러 추가
         addChild(viewController)
         mainView.contentView.addSubview(viewController.view)
         viewController.view.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         viewController.didMove(toParent: self)
+    }
+       
+    
+
+    /// ✅ 네비게이션 스택을 출력하는 함수
+    private func printNavigationStack() {
+        if let navController = navigationController {
+            print("📌 현재 네비게이션 스택: \(navController.viewControllers)")
+        } else {
+            print("❌ 네비게이션 컨트롤러가 없음!")
+        }
     }
 }
 
@@ -78,7 +104,21 @@ extension MainViewController: UITabBarDelegate {
         case 1:
             showViewController(calendarVC)
         case 2:
-            showViewController(addClothVC)
+            print("✅ '옷 추가' 화면으로 이동 시도")
+                        let addClothVC = AddClothViewController()
+                        
+                        if let navController = navigationController {
+                            print("✅ 네비게이션 컨트롤러 확인됨! 화면 이동 실행")
+                            navController.pushViewController(addClothVC, animated: true)
+                            print("🛠 현재 네비게이션 스택: \(navController.viewControllers)")
+                        } else if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
+                                  let rootNav = sceneDelegate.window?.rootViewController as? UINavigationController {
+                            print("🚀 SceneDelegate에서 네비게이션 컨트롤러 가져옴")
+                            rootNav.pushViewController(addClothVC, animated: true)
+                            print("🛠 SceneDelegate 사용 후 네비게이션 스택: \(rootNav.viewControllers)")
+                        } else {
+                            print("🚨 네비게이션 컨트롤러 없음! `SceneDelegate`에서 설정했는지 확인 필요")
+                        }
         case 3:
             showViewController(closetVC)
         case 4:

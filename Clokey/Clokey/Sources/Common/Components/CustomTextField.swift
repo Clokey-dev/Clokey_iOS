@@ -34,6 +34,7 @@ class CustomTextField: UIView {
         textField.borderStyle = .none
         textField.font = UIFont.ptdMediumFont(ofSize: 20)
         textField.textColor = UIColor.mainBrown600
+        
 
         // placeholder 스타일 설정
         let placeholderText = " "
@@ -111,4 +112,14 @@ class CustomTextField: UIView {
     func setPlaceholder(_ placeholder: String) {
         textField.placeholder = placeholder
     }
-}
+    var text: String? {
+            get {
+                return textField.text // 내부 textField의 text를 반환
+            }
+            set {
+                textField.text = newValue // 외부에서 설정 가능하도록 허용
+            }
+        }
+    }
+
+
