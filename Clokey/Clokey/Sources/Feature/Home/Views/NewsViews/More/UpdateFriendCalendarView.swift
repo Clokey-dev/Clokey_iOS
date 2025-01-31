@@ -23,21 +23,38 @@ class UpdateFriendCalendarView: UIView {
     }
     
     let title: UILabel = UILabel().then {
-        $0.text = "친구의 캘린더 업데이트 소식"
-        $0.font = UIFont.ptdMediumFont(ofSize: 20)
-        $0.textColor = .black
+        let fullText = "친구의 캘린더 업데이트 소식"
+        let targetText = "캘린더"
+        let attributedString = NSMutableAttributedString(string: fullText)
+        
+        // 전체 텍스트 스타일
+        attributedString.addAttributes([
+            .font: UIFont.ptdMediumFont(ofSize: 20),
+            .foregroundColor: UIColor.black
+        ], range: NSRange(location: 0, length: fullText.count))
+        
+        // "옷장"에 다른 스타일 적용
+        if let targetRange = fullText.range(of: targetText) {
+            let nsRange = NSRange(targetRange, in: fullText)
+            attributedString.addAttributes([
+                .font: UIFont.ptdSemiBoldFont(ofSize: 20), // 예시로 굵게 처리
+                .foregroundColor: UIColor.black // 색상을 변경하려면 여기 설정
+            ], range: nsRange)
+        }
+        
+        $0.attributedText = attributedString
     }
     
     let subTitle: UILabel = UILabel().then {
         $0.text = "24.01.08"
-        $0.font = UIFont.ptdMediumFont(ofSize: 14)
-        $0.textColor = .mainBrown400
+        $0.font = UIFont.ptdRegularFont(ofSize: 14)
+        $0.textColor = .black
     }
     
     let updateFriendCalendarCollectionView: UICollectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout().then {
-            $0.estimatedItemSize = .init(width: 171, height: 248)
+            $0.estimatedItemSize = .init(width: 171, height: 251)
             $0.minimumInteritemSpacing = 8
         }
     ).then {
@@ -51,13 +68,6 @@ class UpdateFriendCalendarView: UIView {
         super.init(frame: frame)
         setupUI()
         setupConstraints()
-        
-        // 데이터를 로드한 후 컬렉션 뷰 갱신
-        DispatchQueue.main.async { [weak self] in
-            self?.updateFriendCalendarCollectionView.reloadData()
-            self?.updateCollectionViewHeight()
-        }
-        
     }
     
     required init?(coder: NSCoder) {
@@ -92,34 +102,23 @@ class UpdateFriendCalendarView: UIView {
         // Layout using SnapKit
         // 기존 UI 요소 제약 추가
         title.snp.makeConstraints { make in
-            make.top.equalTo(contentView.safeAreaLayoutGuide).offset(10)
+            make.top.equalTo(contentView.safeAreaLayoutGuide).offset(21)
             make.leading.equalToSuperview().offset(20)
             make.width.equalTo(224)
             make.height.equalTo(24)
         }
         subTitle.snp.makeConstraints { make in
-            make.top.equalTo(title.snp.bottom).offset(10)
+            make.top.equalTo(title.snp.bottom).offset(7)
             make.leading.equalToSuperview().offset(20)
             make.width.equalTo(233)
             make.height.equalTo(16)
         }
         
         updateFriendCalendarCollectionView.snp.makeConstraints{ make in
-            make.top.equalTo(subTitle.snp.bottom).offset(10)
+            make.top.equalTo(subTitle.snp.bottom).offset(12)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(1) // 초기 높이 (1로 설정하여 콘텐츠 크기 업데이트 유도)
             
         }
     }
-    
-    private func updateCollectionViewHeight() {
-        updateFriendCalendarCollectionView.layoutIfNeeded()
-        let contentHeight = updateFriendCalendarCollectionView.contentSize.height
-        print("Content Height: \(contentHeight)") // 디버깅용 출력
-        
-        updateFriendCalendarCollectionView.snp.updateConstraints { make in
-            make.height.equalTo(contentHeight)
-        }
-    }
-    
 }
