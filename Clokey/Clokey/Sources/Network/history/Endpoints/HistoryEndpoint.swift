@@ -11,6 +11,9 @@ import Moya
 public enum HistoryEndpoint {
     case historyMonth(clokeyId: String?, month: String)
     case historyDetail(historyId: Int)
+    case historyLike(data: HistoryLikeRequestDTO)
+    case historyComments(historyId: Int, page: Int)
+    case historyCommentWrite(historyId: Int, data: HistoryCommentWriteRequestDTO)
     // 추가적인 API는 여기 케이스로 정의
 }
 
@@ -29,17 +32,23 @@ extension HistoryEndpoint: TargetType {
             return "/histories/monthly"
         case .historyDetail(let historyId):
             return "/histories/\(historyId)"
+        case .historyLike:
+            return "/histories/like"
+        case .historyComments(let historyId, _):
+            return "/histories/\(historyId)/comments"
+        case .historyCommentWrite(let historyId, _):
+            return "/histories/\(historyId)/comments"
         }
     }
     
     // HTTP 메서드
     public var method: Moya.Method {
         switch self {
-//        case
-//            return .post
+        case .historyLike, .historyCommentWrite:
+            return .post
 //        case
 //            return .patch
-        case .historyMonth, .historyDetail:
+        case .historyMonth, .historyDetail, .historyComments:
             return .get
 //        case
 //            return .delete
@@ -56,7 +65,16 @@ extension HistoryEndpoint: TargetType {
             }
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .historyDetail:
-            return .requestPlain // ✅ Path Parameter만 사용 (Body 필요 없음)
+            return .requestPlain // Path Parameter만 사용 (Body 필요 없음)
+        case .historyLike(let data):
+            return .requestJSONEncodable(data)
+        case .historyComments(_, let page):
+            return .requestParameters(
+                parameters: ["page": page],
+                encoding: URLEncoding.queryString
+            )
+        case .historyCommentWrite(_, let data):
+            return .requestJSONEncodable(data)
         }
     }
 

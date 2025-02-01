@@ -19,5 +19,7 @@ public struct MembersInfoResponseDTO: Codable {
     public let nickname: String
     public let bio: String
     public let profileBackImageUrl: String
+    public let visibility: String
+    public let following: Bool
 }
 

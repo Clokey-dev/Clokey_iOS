@@ -19,15 +19,7 @@ public struct HistoryDTO: Codable {
     public let imageUrl: String
 }
 
-//// 일별 기록 조회
-//public struct HistoryDayResponseDTO: Codable {
-//    public let memberId: Int
-//    public let memberImageUrl: String
-//    public let nickname: String
-////    public let clokeyId: long
-//}
-
-// 날짜 세부 페이지 
+// 날짜 세부 페이지 - 일별
 public struct HistoryDetailResponseDTO: Codable {
     public let memberId: Int64
     public let memberImageUrl: String
@@ -46,4 +38,41 @@ public struct HistoryDetailResponseDTO: Codable {
 public struct ClothDTO: Codable {
     public let clothId: Int
     public let clothImageUrl: String
+}
+
+// 좋아요
+public struct HistoryLikeResponseDTO: Codable {
+    public let historyId: String
+    public let isLiked: Bool
+    public let likeCount: Int64
+}
+
+// 댓글 조회
+public struct HistoryCommentsResponseDTO: Codable {
+    public let comments: [CommentDTO]
+    public let listSize: Int
+    public let totalPage: Int
+    public let totalElements: Int
+    public let isFirst: Bool
+    public let isLast: Bool
+}
+
+public struct CommentDTO: Codable {
+    public let commentId: Int
+    public let memberId: Int
+    public let ImageUrl: String
+    public let content: String
+    public let replies: [ReplyDTO]
+}
+
+public struct ReplyDTO: Codable {
+    public let commentId: Int
+    public let memberId: Int
+    public let ImageUrl: String
+    public let content: String
+}
+
+// 댓글 작성
+public struct HistoryCommentWriteResponseDTO: Codable {
+    public let commentId: Int64
 }

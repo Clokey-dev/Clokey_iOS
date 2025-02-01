@@ -63,7 +63,7 @@ class CalendarDetailView: UIView {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
 
-        collectionView.register(ImageCell.self, forCellWithReuseIdentifier: ImageCell.identifier)
+        collectionView.register(CalendarImageCell.self, forCellWithReuseIdentifier: CalendarImageCell.identifier)
         return collectionView
     }()
     
@@ -86,7 +86,7 @@ class CalendarDetailView: UIView {
         $0.backgroundColor = .clear
     }
     
-    private let likeButton = UIButton().then {
+    let likeButton = UIButton().then {
         $0.setImage(UIImage(systemName: "heart"), for: .normal)
     }
 
@@ -96,7 +96,7 @@ class CalendarDetailView: UIView {
         $0.textColor = .black
     }
     
-    private let commentButton = UIButton().then {
+    let commentButton = UIButton().then {
         $0.setImage(UIImage(systemName: "message"), for: .normal)
     }
     
@@ -303,7 +303,7 @@ extension CalendarDetailView: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.identifier, for: indexPath) as! ImageCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarImageCell.identifier, for: indexPath) as! CalendarImageCell
         cell.configure(with: images[indexPath.item])
         return cell
     }
@@ -318,38 +318,10 @@ extension CalendarDetailView: UICollectionViewDataSource, UICollectionViewDelega
     }
 }
 
-// MARK: - ImageCell (UICollectionViewCell)
-class ImageCell: UICollectionViewCell {
-    static let identifier = "ImageCell"
-    
-    private let imageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFill
-        $0.clipsToBounds = true
-        $0.layer.cornerRadius = 10
-    }
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        contentView.addSubview(imageView)
-        
-        imageView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    func configure(with imageUrl: String) {
-        imageView.kf.setImage(with: URL(string: imageUrl), placeholder: UIImage(named: "placeholder"))
-    }
-}
-
-
+// 회원 조회 API 업데이트
 extension CalendarDetailView {
     func configure(with data: HistoryDetailResponseDTO) {
-        // 프로필 이미지 설정 (Kingfisher 사용)
+        // 프로필 이미지 설정
         profileImage.kf.setImage(with: URL(string: data.memberImageUrl), placeholder: UIImage(named: "profile_placeholder"))
         
         // 닉네임 설정
@@ -366,13 +338,24 @@ extension CalendarDetailView {
         // 좋아요 수 설정
         likeLabel.text = "\(data.likeCount)"
         
-        // 컨텐츠 (글) 설정
+        // 컨텐츠 설정
         contentLabel.text = data.content
         
         // 해시태그 설정
         configureHashtags(data.hashtags)
         
         // 날짜 설정
-        dateLabel.text = data.date // (날짜 포맷 변환 필요하면 추가)
+        dateLabel.text = data.date 
+    }
+}
+
+// 좋아요 처리
+extension CalendarDetailView {
+    func updateLikeState(isLiked: Bool, likeCount: Int64) {
+        let heartImage = isLiked ? "heart.fill" : "heart"
+        likeButton.setImage(UIImage(systemName: heartImage), for: .normal)
+        likeButton.tintColor = isLiked ? .red : .black
+        
+        likeLabel.text = "\(likeCount)"
     }
 }

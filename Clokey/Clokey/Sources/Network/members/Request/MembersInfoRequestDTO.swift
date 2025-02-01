@@ -11,7 +11,6 @@ import Foundation
 
 // 회원 조회
 public struct MembersInfoRequestDTO: Codable {
-    // TODO: memberId로 수정해야함
     public let clokeyId: String
 }
 

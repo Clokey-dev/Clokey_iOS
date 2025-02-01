@@ -28,7 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         
         // 로그인 화면을 초기 화면으로 설정
-        let loginViewController = LoginViewController(coordinator: self)
+        let loginViewController = CalendarDetailViewController()
         window?.rootViewController = loginViewController
        
 //        let loginViewController = CalendarDetailViewController()

@@ -37,7 +37,7 @@ public final class HistoryService: NetworkManager {
             completion: completion
         )
     }
-
+    
     // 개별 기록 조회 GET API
     public func historyDetail(
         historyId: Int,
@@ -49,5 +49,46 @@ public final class HistoryService: NetworkManager {
             completion: completion
         )
     }
-
+    
+    // 좋아요 POST API
+    public func historyLike(
+        data: HistoryLikeRequestDTO,
+        completion: @escaping (Result<HistoryLikeResponseDTO,
+            NetworkError>) -> Void
+    ) {
+        request(
+            target: .historyLike(data: data),
+            decodingType: HistoryLikeResponseDTO.self,
+            completion: completion
+        )
+    }
+    
+    // 댓글 조회
+    public func historyComment(
+        historyId: Int,
+        page: Int,
+        completion: @escaping (Result<HistoryCommentsResponseDTO,
+           NetworkError>) -> Void
+    ) {
+        request(
+            target: .historyComments(historyId: historyId, page: page),
+            decodingType: HistoryCommentsResponseDTO.self,
+            completion: completion
+        )
+    }
+    
+    // 댓글 작성 POST API
+    public func historyCommentWrite(
+        historyId: Int,
+        data: HistoryCommentWriteRequestDTO,
+        completion: @escaping (Result<HistoryCommentWriteResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .historyCommentWrite(historyId: historyId, data: data),
+            decodingType: HistoryCommentWriteResponseDTO.self,
+            completion: completion
+        )
+    }
 }
+
+
