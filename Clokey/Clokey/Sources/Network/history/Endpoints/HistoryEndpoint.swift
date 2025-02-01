@@ -14,6 +14,9 @@ public enum HistoryEndpoint {
     case historyLike(data: HistoryLikeRequestDTO)
     case historyComments(historyId: Int, page: Int)
     case historyCommentWrite(historyId: Int, data: HistoryCommentWriteRequestDTO)
+    case historyCommentDelete(commentId: Int)
+    case historyCommentUpdate(commentId: Int, data: HistoryCommentUpdateRequestDTO)
+
     // 추가적인 API는 여기 케이스로 정의
 }
 
@@ -38,6 +41,10 @@ extension HistoryEndpoint: TargetType {
             return "/histories/\(historyId)/comments"
         case .historyCommentWrite(let historyId, _):
             return "/histories/\(historyId)/comments"
+        case .historyCommentDelete(let commentId):
+            return "/histories/comments/\(commentId)"
+        case .historyCommentUpdate(let commentId, _):
+            return "/histories/comment/\(commentId)"
         }
     }
     
@@ -46,12 +53,12 @@ extension HistoryEndpoint: TargetType {
         switch self {
         case .historyLike, .historyCommentWrite:
             return .post
-//        case
-//            return .patch
+        case .historyCommentUpdate:
+            return .patch
         case .historyMonth, .historyDetail, .historyComments:
             return .get
-//        case
-//            return .delete
+        case .historyCommentDelete:
+            return .delete
         }
     }
     
@@ -65,7 +72,7 @@ extension HistoryEndpoint: TargetType {
             }
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .historyDetail:
-            return .requestPlain // Path Parameter만 사용 (Body 필요 없음)
+            return .requestPlain
         case .historyLike(let data):
             return .requestJSONEncodable(data)
         case .historyComments(_, let page):
@@ -74,6 +81,10 @@ extension HistoryEndpoint: TargetType {
                 encoding: URLEncoding.queryString
             )
         case .historyCommentWrite(_, let data):
+            return .requestJSONEncodable(data)
+        case .historyCommentDelete:
+            return .requestPlain
+        case .historyCommentUpdate(_, let data):
             return .requestJSONEncodable(data)
         }
     }

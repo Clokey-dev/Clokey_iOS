@@ -19,3 +19,8 @@ public struct HistoryCommentWriteRequestDTO: Codable {
     public let content: String
     public let commentId: Int64?
 }
+
+// 댓글 수정
+public struct HistoryCommentUpdateRequestDTO: Codable {
+    public let content: String
+}

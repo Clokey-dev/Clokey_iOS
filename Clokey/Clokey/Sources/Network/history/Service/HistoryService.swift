@@ -89,6 +89,45 @@ public final class HistoryService: NetworkManager {
             completion: completion
         )
     }
+    
+    // 댓글 삭제 DELETE API
+    public func historyCommentDelete(
+        commentId: Int,
+        completion: @escaping (Result<Void, NetworkError>) -> Void
+    ) {
+        request(
+            target: .historyCommentDelete(commentId: commentId),
+            decodingType: EmptyResponse.self,
+            completion: { result in
+                switch result {
+                case .success:
+                    completion(.success(())) // 성공 처리
+                case .failure(let error):
+                    completion(.failure(error)) // 실패 처리
+                }
+            }
+        )
+    }
+    
+    // 댓글 수정 PATCH API
+    public func historyCommentUpdate(
+        commentId: Int,
+        data: HistoryCommentUpdateRequestDTO,
+        completion: @escaping (Result<Void, NetworkError>) -> Void
+    ) {
+        request(
+            target: .historyCommentUpdate(commentId: commentId, data: data),
+            decodingType: EmptyResponse.self,
+            completion: { result in
+                switch result {
+                case .success:
+                    completion(.success(())) // 성공 처리
+                case .failure(let error):
+                    completion(.failure(error)) // 실패 처리
+                }
+            }
+        )
+    }
 }
 
 
