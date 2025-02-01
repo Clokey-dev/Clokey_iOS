@@ -100,10 +100,6 @@
 		A62A429F2D4D2ADE00672D3F /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429C2D4D2ADE00672D3F /* HeaderView.swift */; };
 		A62A42A02D4D2ADE00672D3F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429B2D4D2ADE00672D3F /* MainViewController.swift */; };
 		A62A42A12D4D2ADE00672D3F /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429D2D4D2ADE00672D3F /* TabBarView.swift */; };
-		A653E81F2D4E1CCB00A29126 /* AddClothesRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A653E81E2D4E1CCB00A29126 /* AddClothesRequestDTO.swift */; };
-		A653E8212D4E1CD700A29126 /* InquiryClothesDetailResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A653E8202D4E1CD700A29126 /* InquiryClothesDetailResponseDTO.swift */; };
-		A653E8232D4E1CDE00A29126 /* ClothesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A653E8222D4E1CDE00A29126 /* ClothesService.swift */; };
-		A653E8A92D4E1E9600A29126 /* ClothesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A653E8A82D4E1E9600A29126 /* ClothesEndpoint.swift */; };
 		A6548E532D3F47DE00F79B66 /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */; };
 		A6548E562D3F485B00F79B66 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = A6548E552D3F485B00F79B66 /* Kingfisher */; };
 /* End PBXBuildFile section */
@@ -190,10 +186,6 @@
 		A62A429B2D4D2ADE00672D3F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		A62A429C2D4D2ADE00672D3F /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		A62A429D2D4D2ADE00672D3F /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
-		A653E81E2D4E1CCB00A29126 /* AddClothesRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AddClothesRequestDTO.swift; path = ../../Desktop/NetworkTest/NetworkTest/Network/Clothes/Request/AddClothesRequestDTO.swift; sourceTree = "<group>"; };
-		A653E8202D4E1CD700A29126 /* InquiryClothesDetailResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InquiryClothesDetailResponseDTO.swift; path = ../../Desktop/NetworkTest/NetworkTest/Network/Clothes/Response/InquiryClothesDetailResponseDTO.swift; sourceTree = "<group>"; };
-		A653E8222D4E1CDE00A29126 /* ClothesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ClothesService.swift; path = ../../Desktop/NetworkTest/NetworkTest/Network/Clothes/Service/ClothesService.swift; sourceTree = "<group>"; };
-		A653E8A82D4E1E9600A29126 /* ClothesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ClothesEndpoint.swift; path = ../../Desktop/NetworkTest/NetworkTest/Network/Clothes/Endpoints/ClothesEndpoint.swift; sourceTree = "<group>"; };
 		A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -277,6 +269,11 @@
 		A64C54312D3F97B3000CCB62 /* Cells */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		A653EAA82D4E249100A29126 /* Clothes */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Clothes;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -419,49 +416,6 @@
 				07649EA42D4DE58900B6B2B2 /* Service */,
 			);
 			path = categories;
-			sourceTree = "<group>";
-		};
-		07649EA62D4DE58900B6B2B2 /* Endpoints */ = {
-			isa = PBXGroup;
-			children = (
-				A653E8A82D4E1E9600A29126 /* ClothesEndpoint.swift */,
-			);
-			path = Endpoints;
-			sourceTree = "<group>";
-		};
-		07649EA72D4DE58900B6B2B2 /* Request */ = {
-			isa = PBXGroup;
-			children = (
-				A653E81E2D4E1CCB00A29126 /* AddClothesRequestDTO.swift */,
-			);
-			path = Request;
-			sourceTree = "<group>";
-		};
-		07649EA82D4DE58900B6B2B2 /* Response */ = {
-			isa = PBXGroup;
-			children = (
-				A653E8202D4E1CD700A29126 /* InquiryClothesDetailResponseDTO.swift */,
-			);
-			path = Response;
-			sourceTree = "<group>";
-		};
-		07649EA92D4DE58900B6B2B2 /* Service */ = {
-			isa = PBXGroup;
-			children = (
-				A653E8222D4E1CDE00A29126 /* ClothesService.swift */,
-			);
-			path = Service;
-			sourceTree = "<group>";
-		};
-		07649EAA2D4DE58900B6B2B2 /* clothes */ = {
-			isa = PBXGroup;
-			children = (
-				07649EA62D4DE58900B6B2B2 /* Endpoints */,
-				07649EA72D4DE58900B6B2B2 /* Request */,
-				07649EA82D4DE58900B6B2B2 /* Response */,
-				07649EA92D4DE58900B6B2B2 /* Service */,
-			);
-			path = clothes;
 			sourceTree = "<group>";
 		};
 		07649EAC2D4DE58900B6B2B2 /* Extensions */ = {
@@ -865,8 +819,8 @@
 		076FAB5C2D3020E100FF3979 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				A653EAA82D4E249100A29126 /* Clothes */,
 				07649EA52D4DE58900B6B2B2 /* categories */,
-				07649EAA2D4DE58900B6B2B2 /* clothes */,
 				07649EB52D4DE58900B6B2B2 /* Common */,
 				07649EBA2D4DE58900B6B2B2 /* folder */,
 				07649EC32D4DE58900B6B2B2 /* history */,
@@ -1049,6 +1003,7 @@
 				A62A428F2D4D2A8D00672D3F /* Your */,
 				A62A42932D4D2A8D00672D3F /* My */,
 				A64C54312D3F97B3000CCB62 /* Cells */,
+				A653EAA82D4E249100A29126 /* Clothes */,
 			);
 			name = Clokey;
 			packageProductDependencies = (
@@ -1194,13 +1149,10 @@
 				07649EEB2D4DE58900B6B2B2 /* NetworkError.swift in Sources */,
 				07649EEC2D4DE58900B6B2B2 /* HistoryRequestDTO.swift in Sources */,
 				07649EED2D4DE58900B6B2B2 /* NetworkManager+Protocol.swift in Sources */,
-				A653E8232D4E1CDE00A29126 /* ClothesService.swift in Sources */,
 				07649EEE2D4DE58900B6B2B2 /* CommonReponseDTOs.swift in Sources */,
-				A653E8A92D4E1E9600A29126 /* ClothesEndpoint.swift in Sources */,
 				07649EEF2D4DE58900B6B2B2 /* HistoryEndpoint.swift in Sources */,
 				07649EF02D4DE58900B6B2B2 /* Domain.swift in Sources */,
 				07649EF12D4DE58900B6B2B2 /* MembersInfoResponseDTO.swift in Sources */,
-				A653E8212D4E1CD700A29126 /* InquiryClothesDetailResponseDTO.swift in Sources */,
 				07649EF22D4DE58900B6B2B2 /* HistoryService.swift in Sources */,
 				07E1CB662D36A63200F86BB8 /* ViewController.swift in Sources */,
 				07E1CB472D3662EC00F86BB8 /* UIColor+Extension.swift in Sources */,
@@ -1209,7 +1161,6 @@
 				07E1CB582D3679A800F86BB8 /* CustomTextField.swift in Sources */,
 				070258BA2D31084300065369 /* AddClothViewController.swift in Sources */,
 				076FAB5A2D3020D800FF3979 /* LoginViewController.swift in Sources */,
-				A653E81F2D4E1CCB00A29126 /* AddClothesRequestDTO.swift in Sources */,
 				07649FF82D4DE9AC00B6B2B2 /* KeychainHelper.swift in Sources */,
 				07E1CB4F2D36721900F86BB8 /* CustomNavigationBar.swift in Sources */,
 				076FAB402D2E6E0200FF3979 /* SceneDelegate.swift in Sources */,
