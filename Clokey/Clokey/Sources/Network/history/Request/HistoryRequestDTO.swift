@@ -6,3 +6,16 @@
 //
 
 import Foundation
+
+
+// 좋아요
+public struct HistoryLikeRequestDTO: Codable {
+    public let historyId: String
+    public let isLiked: Bool
+}
+
+// 댓글 작성
+public struct HistoryCommentWriteRequestDTO: Codable {
+    public let content: String
+    public let commentId: Int64?
+}
