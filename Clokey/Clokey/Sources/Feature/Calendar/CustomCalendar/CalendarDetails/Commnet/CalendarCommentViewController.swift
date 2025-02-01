@@ -208,7 +208,7 @@ extension CalendarCommentViewController: UITableViewDataSource, UITableViewDeleg
             profileImage: comment.imageUrl,
             name: "닉네임",
             comment: comment.content,
-            isLastReply: isLastReply(comment: comment),
+            isLastReply: comment.parentCommentId == nil, // parentCommentId가 nil인 경우에만 답글 달기 표시
             commentId: comment.id
         )
 

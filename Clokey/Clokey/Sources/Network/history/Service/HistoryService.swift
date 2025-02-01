@@ -128,6 +128,37 @@ public final class HistoryService: NetworkManager {
             }
         )
     }
+    
+    // 기록 삭제 DELETE API
+    public func historyDelete(
+        historyId: Int,
+        completion: @escaping (Result<Void, NetworkError>) -> Void
+    ) {
+        request(
+            target: .historyDelete(historyId: historyId),
+            decodingType: EmptyResponse.self,
+            completion: { result in
+                switch result {
+                case .success:
+                    completion(.success(())) // 성공 처리
+                case .failure(let error):
+                    completion(.failure(error)) // 실패 처리
+                }
+            }
+        )
+    }
+    
+    // 좋아요 목록 조회 GET API
+    public func historyLikeList(
+        historyId: Int,
+        completion: @escaping (Result<HistoryLikeListResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .historyLikeList(historyId: historyId),
+            decodingType: HistoryLikeListResponseDTO.self,
+            completion: completion
+        )
+    }
 }
 
 

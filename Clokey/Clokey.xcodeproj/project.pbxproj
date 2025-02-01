@@ -102,6 +102,10 @@
 		07ECCEA72D4E7ECA00AFF486 /* CalendarCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCEA62D4E7ECA00AFF486 /* CalendarCommentViewController.swift */; };
 		07ECCEA92D4E834300AFF486 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCEA82D4E834300AFF486 /* CommentCell.swift */; };
 		07ECCEAC2D4E857B00AFF486 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCEAB2D4E857B00AFF486 /* Comment.swift */; };
+		07ECCEAE2D4EAA2400AFF486 /* CustomActionSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCEAD2D4EAA2400AFF486 /* CustomActionSheetViewController.swift */; };
+		07ECCEB02D4EAEF700AFF486 /* LikeUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCEAF2D4EAEF700AFF486 /* LikeUserCell.swift */; };
+		07ECCEB32D4EAF1C00AFF486 /* LikeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCEB22D4EAF1C00AFF486 /* LikeListViewController.swift */; };
+		07ECCEB52D4EAF5800AFF486 /* LikeUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCEB42D4EAF5800AFF486 /* LikeUserModel.swift */; };
 		A62A429E2D4D2ADE00672D3F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429A2D4D2ADE00672D3F /* MainView.swift */; };
 		A62A429F2D4D2ADE00672D3F /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429C2D4D2ADE00672D3F /* HeaderView.swift */; };
 		A62A42A02D4D2ADE00672D3F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429B2D4D2ADE00672D3F /* MainViewController.swift */; };
@@ -193,6 +197,10 @@
 		07ECCEA62D4E7ECA00AFF486 /* CalendarCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCommentViewController.swift; sourceTree = "<group>"; };
 		07ECCEA82D4E834300AFF486 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		07ECCEAB2D4E857B00AFF486 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		07ECCEAD2D4EAA2400AFF486 /* CustomActionSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomActionSheetViewController.swift; sourceTree = "<group>"; };
+		07ECCEAF2D4EAEF700AFF486 /* LikeUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeUserCell.swift; sourceTree = "<group>"; };
+		07ECCEB22D4EAF1C00AFF486 /* LikeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeListViewController.swift; sourceTree = "<group>"; };
+		07ECCEB42D4EAF5800AFF486 /* LikeUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeUserModel.swift; sourceTree = "<group>"; };
 		07F093102D2418380075659F /* Clokey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clokey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A62A429A2D4D2ADE00672D3F /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		A62A429B2D4D2ADE00672D3F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -940,10 +948,12 @@
 		07ECCB352D4E34DF00AFF486 /* CalendarDetails */ = {
 			isa = PBXGroup;
 			children = (
+				07ECCEB12D4EAF0A00AFF486 /* LikeUser */,
 				07ECCEAA2D4E835C00AFF486 /* Commnet */,
 				07ECCB332D4E34DF00AFF486 /* CalendarDetailView.swift */,
 				07ECCB342D4E34DF00AFF486 /* CalendarDetailViewController.swift */,
 				07ECCEA22D4E79C000AFF486 /* CalendarImageCell.swift */,
+				07ECCEAD2D4EAA2400AFF486 /* CustomActionSheetViewController.swift */,
 			);
 			path = CalendarDetails;
 			sourceTree = "<group>";
@@ -980,6 +990,16 @@
 				07ECCEAB2D4E857B00AFF486 /* Comment.swift */,
 			);
 			path = Commnet;
+			sourceTree = "<group>";
+		};
+		07ECCEB12D4EAF0A00AFF486 /* LikeUser */ = {
+			isa = PBXGroup;
+			children = (
+				07ECCEAF2D4EAEF700AFF486 /* LikeUserCell.swift */,
+				07ECCEB22D4EAF1C00AFF486 /* LikeListViewController.swift */,
+				07ECCEB42D4EAF5800AFF486 /* LikeUserModel.swift */,
+			);
+			path = LikeUser;
 			sourceTree = "<group>";
 		};
 		07F093072D2418380075659F = {
@@ -1128,6 +1148,7 @@
 				076FAB4E2D2EBB3A00FF3979 /* KakaoAuthService.swift in Sources */,
 				070258C02D31086A00065369 /* ClosetViewController.swift in Sources */,
 				A6548E532D3F47DE00F79B66 /* WeatherAPI.swift in Sources */,
+				07ECCEB02D4EAEF700AFF486 /* LikeUserCell.swift in Sources */,
 				A62A429E2D4D2ADE00672D3F /* MainView.swift in Sources */,
 				A62A429F2D4D2ADE00672D3F /* HeaderView.swift in Sources */,
 				A62A42A02D4D2ADE00672D3F /* MainViewController.swift in Sources */,
@@ -1146,6 +1167,7 @@
 				07ECCB422D4E34DF00AFF486 /* CalendarView.swift in Sources */,
 				07ECCEA32D4E79C000AFF486 /* CalendarImageCell.swift in Sources */,
 				07ECCEA52D4E7AE400AFF486 /* CalendarCommentView.swift in Sources */,
+				07ECCEB52D4EAF5800AFF486 /* LikeUserModel.swift in Sources */,
 				07ECCB432D4E34DF00AFF486 /* UploadModalViewController.swift in Sources */,
 				07ECCB442D4E34DF00AFF486 /* PhotoEditViewController.swift in Sources */,
 				07ECCB452D4E34DF00AFF486 /* TagClothView.swift in Sources */,
@@ -1166,6 +1188,7 @@
 				076FAB3F2D2E6E0200FF3979 /* AppDelegate.swift in Sources */,
 				07E1CB4B2D3668CE00F86BB8 /* Constants.swift in Sources */,
 				070258B82D31083D00065369 /* AddClothView.swift in Sources */,
+				07ECCEB32D4EAF1C00AFF486 /* LikeListViewController.swift in Sources */,
 				07649FFA2D4DEA9000B6B2B2 /* AccessTokenPlugin.swift in Sources */,
 				07E1CB5F2D36A10000F86BB8 /* CustomButton.swift in Sources */,
 				07E1CB602D36A10000F86BB8 /* CustomButtonTextField.swift in Sources */,
@@ -1191,6 +1214,7 @@
 				07E1CB442D3662D900F86BB8 /* UIFont+Extensions.swift in Sources */,
 				07E1CB582D3679A800F86BB8 /* CustomTextField.swift in Sources */,
 				070258BA2D31084300065369 /* AddClothViewController.swift in Sources */,
+				07ECCEAE2D4EAA2400AFF486 /* CustomActionSheetViewController.swift in Sources */,
 				076FAB5A2D3020D800FF3979 /* LoginViewController.swift in Sources */,
 				07ECCEAC2D4E857B00AFF486 /* Comment.swift in Sources */,
 				07649FF82D4DE9AC00B6B2B2 /* KeychainHelper.swift in Sources */,

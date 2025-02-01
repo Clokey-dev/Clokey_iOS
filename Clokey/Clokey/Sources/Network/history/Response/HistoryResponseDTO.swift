@@ -76,3 +76,17 @@ public struct ReplyDTO: Codable {
 public struct HistoryCommentWriteResponseDTO: Codable {
     public let commentId: Int64
 }
+
+// 좋아요한 사람
+public struct HistoryLikeListResponseDTO: Codable {
+    public let likes: [LikeDTO]
+    
+    public struct LikeDTO: Codable {
+        public let memberId: Int64
+        public let clokeyId: String
+        public let nickname: String
+        public let followStatus: Bool
+    }
+}
+
+

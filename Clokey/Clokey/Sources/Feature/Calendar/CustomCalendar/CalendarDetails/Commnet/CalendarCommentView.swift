@@ -246,17 +246,7 @@ extension CalendarCommentView: UITableViewDataSource, UITableViewDelegate {
     }
 
     private func isLastReply(comment: Comment) -> Bool {
-        // 일반 댓글인 경우
-        if comment.parentCommentId == nil {
-            // 대댓글이 없는 경우에만 답글 달기 버튼 표시
-            return !comments.contains { $0.parentCommentId == comment.id }
-        }
-        
-        // 대댓글인 경우
-        let parentId = comment.parentCommentId!
-        // 같은 부모를 가진 댓글들을 찾아서
-        let repliesWithSameParent = comments.filter { $0.parentCommentId == parentId }
-        // 현재 댓글이 그 중 마지막인지 확인
-        return repliesWithSameParent.last?.id == comment.id
+        // 부모 댓글(일반 댓글)인 경우에만 답글 달기 버튼 표시
+        return comment.parentCommentId == nil
     }
 }

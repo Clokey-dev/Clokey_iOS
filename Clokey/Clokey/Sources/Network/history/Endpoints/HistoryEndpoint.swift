@@ -16,6 +16,8 @@ public enum HistoryEndpoint {
     case historyCommentWrite(historyId: Int, data: HistoryCommentWriteRequestDTO)
     case historyCommentDelete(commentId: Int)
     case historyCommentUpdate(commentId: Int, data: HistoryCommentUpdateRequestDTO)
+    case historyDelete(historyId: Int)
+    case historyLikeList(historyId: Int)
 
     // 추가적인 API는 여기 케이스로 정의
 }
@@ -45,6 +47,10 @@ extension HistoryEndpoint: TargetType {
             return "/histories/comments/\(commentId)"
         case .historyCommentUpdate(let commentId, _):
             return "/histories/comment/\(commentId)"
+        case .historyDelete(let historyId):
+            return "/histories/\(historyId)"
+        case .historyLikeList(let historyId):
+            return "/histories/\(historyId)/like"
         }
     }
     
@@ -55,9 +61,9 @@ extension HistoryEndpoint: TargetType {
             return .post
         case .historyCommentUpdate:
             return .patch
-        case .historyMonth, .historyDetail, .historyComments:
+        case .historyMonth, .historyDetail, .historyComments, .historyLikeList:
             return .get
-        case .historyCommentDelete:
+        case .historyCommentDelete, .historyDelete:
             return .delete
         }
     }
@@ -86,6 +92,10 @@ extension HistoryEndpoint: TargetType {
             return .requestPlain
         case .historyCommentUpdate(_, let data):
             return .requestJSONEncodable(data)
+        case .historyDelete:
+            return .requestPlain
+        case .historyLikeList:
+            return .requestPlain
         }
     }
 

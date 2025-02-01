@@ -47,7 +47,7 @@ class CalendarDetailView: UIView {
         $0.alignment = .center
     }
     
-    private let plusButton = UIButton().then {
+    let plusButton = UIButton().then {
         $0.setImage(UIImage(systemName: "ellipsis"), for: .normal)
         $0.tintColor = .black
     }
@@ -90,7 +90,7 @@ class CalendarDetailView: UIView {
         $0.setImage(UIImage(systemName: "heart"), for: .normal)
     }
 
-    private let likeLabel = UILabel().then {
+    let likeLabel = UILabel().then {
         $0.text = "250"
         $0.font = .systemFont(ofSize: 16)
         $0.textColor = .black
