@@ -82,8 +82,8 @@ final class LoginViewController: UIViewController {
     @objc private func kakaoLoginButtonTapped() {
         authService.handleKakaoLogin { [weak self] result in
             switch result {
-            case .success:
-                self?.handleSuccessfulLogin()
+            case .success(let accessToken):
+                self?.sendKakaoLoginRequest(accessToken: accessToken)
             case .failure(let error):
                 self?.errorMessage = error.localizedDescription
             }
@@ -134,6 +134,25 @@ final class LoginViewController: UIViewController {
     // 로그인 -> 메인
     private func navigateToMain() {
         coordinator?.switchToMain()
+    }
+    
+    // MARK: - API
+    
+    // Kakao Login
+    private func sendKakaoLoginRequest(accessToken: String) {
+        let requestDTO = KakaoLoginRequestDTO(type: "kakao", accessToken: accessToken)
+        
+        let memberService = MembersService()
+        memberService.kaKaoLogin(data: requestDTO) { result in
+            switch result {
+            case .success(let response):
+                print("로그인 성공: \(response)")
+                self.handleSuccessfulLogin()
+            case .failure(let error):
+                print("로그인 실패: \(error.localizedDescription)")
+                self.errorMessage = error.localizedDescription
+            }
+        }
     }
 }
 
