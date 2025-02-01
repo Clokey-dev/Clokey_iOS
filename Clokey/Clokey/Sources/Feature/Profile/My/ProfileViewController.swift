@@ -5,12 +5,13 @@
 //  Created by 황상환 on 1/10/25.
 //
 
-import Foundation
 import UIKit
 import SnapKit
 import Then
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
+    private let mainView = MainView()
     // MARK: - Properties
     private let profileView = ProfileView()
     
@@ -18,11 +19,13 @@ final class ProfileViewController: UIViewController {
     
     // MARK: - Lifecycle
     override func loadView() {
+        
         view = profileView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        profileView.scrollView.contentInsetAdjustmentBehavior = .never
 
         bindData()
     }
