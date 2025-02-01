@@ -23,7 +23,7 @@ class NavigationBarManager {
         tintColor: UIColor = .mainBrown800
     ) {
         let backButton = UIButton(type: .system)
-        let config = UIImage.SymbolConfiguration(weight: .bold) // Bold 설정
+        let config = UIImage.SymbolConfiguration(weight: .bold)
         let backImage = UIImage(systemName: "chevron.left", withConfiguration: config)
         backButton.setImage(backImage, for: .normal)
         backButton.tintColor = tintColor
