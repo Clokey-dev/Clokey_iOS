@@ -13,8 +13,6 @@
 		070258B02D3107B200065369 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258AF2D3107B200065369 /* HomeViewModel.swift */; };
 		070258B22D3107C200065369 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258B12D3107C200065369 /* CalendarView.swift */; };
 		070258B42D3107C900065369 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258B32D3107C900065369 /* CalendarViewController.swift */; };
-		070258B82D31083D00065369 /* AddClothView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258B72D31083D00065369 /* AddClothView.swift */; };
-		070258BA2D31084300065369 /* AddClothViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258B92D31084300065369 /* AddClothViewController.swift */; };
 		070258BE2D31085900065369 /* ClosetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258BD2D31085900065369 /* ClosetView.swift */; };
 		070258C02D31086A00065369 /* ClosetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258BF2D31086A00065369 /* ClosetViewController.swift */; };
 		070258C42D31088300065369 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258C32D31088300065369 /* ProfileViewController.swift */; };
@@ -56,7 +54,6 @@
 		07E1CB662D36A63200F86BB8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E1CB652D36A63200F86BB8 /* ViewController.swift */; };
 		07E1CB682D36B47C00F86BB8 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E1CB672D36B47C00F86BB8 /* MainViewModel.swift */; };
 		485A906F2D37730500B69CA4 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 485A906E2D37730500B69CA4 /* Config.xcconfig */; };
-		48EAA8D62D4B38270095DA0F /* CategorySelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48EAA8D52D4B38270095DA0F /* CategorySelectionViewController.swift */; };
 		48EAA8D82D4C123F0095DA0F /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48EAA8D72D4C123F0095DA0F /* UIApplication+Extension.swift */; };
 /* End PBXBuildFile section */
 
@@ -68,8 +65,6 @@
 		070258AF2D3107B200065369 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		070258B12D3107C200065369 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		070258B32D3107C900065369 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
-		070258B72D31083D00065369 /* AddClothView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothView.swift; sourceTree = "<group>"; };
-		070258B92D31084300065369 /* AddClothViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothViewController.swift; sourceTree = "<group>"; };
 		070258BD2D31085900065369 /* ClosetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetView.swift; sourceTree = "<group>"; };
 		070258BF2D31086A00065369 /* ClosetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetViewController.swift; sourceTree = "<group>"; };
 		070258C32D31088300065369 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -103,39 +98,28 @@
 		07E1CB672D36B47C00F86BB8 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		07F093102D2418380075659F /* Clokey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clokey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		485A906E2D37730500B69CA4 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
-		48EAA8D52D4B38270095DA0F /* CategorySelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectionViewController.swift; sourceTree = "<group>"; };
 		48EAA8D72D4C123F0095DA0F /* UIApplication+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		48AC8AF62D48E37000613954 /* AddClothing */ = {
+		A653E9A22D4E20A900A29126 /* AddCloth */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AddCloth;
+			sourceTree = "<group>";
+		};
+		A653E9A42D4E20A900A29126 /* AddClothing */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = AddClothing;
 			sourceTree = "<group>";
 		};
-		48D9A68A2D38FEBA00473CDE /* Agreement */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Agreement;
-			sourceTree = "<group>";
-		};
-		48D9A6962D3BBF0300473CDE /* AddProfile */ = {
+		A653E9A82D4E20A900A29126 /* AddProfile */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = AddProfile;
 			sourceTree = "<group>";
 		};
-		48EAA8E92D4C28410095DA0F /* Temperature */ = {
+		A653E9AD2D4E20A900A29126 /* Agreement */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Temperature;
-			sourceTree = "<group>";
-		};
-		48EAA8F42D4C379D0095DA0F /* Thick */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Thick;
-			sourceTree = "<group>";
-		};
-		48EAA9092D4D9C580095DA0F /* Popup */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Popup;
+			path = Agreement;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -188,19 +172,6 @@
 				070258B32D3107C900065369 /* CalendarViewController.swift */,
 			);
 			path = Calendar;
-			sourceTree = "<group>";
-		};
-		070258A72D31072800065369 /* AddCloth */ = {
-			isa = PBXGroup;
-			children = (
-				48EAA9092D4D9C580095DA0F /* Popup */,
-				48EAA8F42D4C379D0095DA0F /* Thick */,
-				48EAA8E92D4C28410095DA0F /* Temperature */,
-				070258B72D31083D00065369 /* AddClothView.swift */,
-				070258B92D31084300065369 /* AddClothViewController.swift */,
-				48EAA8D52D4B38270095DA0F /* CategorySelectionViewController.swift */,
-			);
-			path = AddCloth;
 			sourceTree = "<group>";
 		};
 		070258A82D31074100065369 /* Closet */ = {
@@ -307,15 +278,15 @@
 		07E1CADC2D36449B00F86BB8 /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				A653E9A22D4E20A900A29126 /* AddCloth */,
+				A653E9A42D4E20A900A29126 /* AddClothing */,
+				A653E9A82D4E20A900A29126 /* AddProfile */,
+				A653E9AD2D4E20A900A29126 /* Agreement */,
 				07E1CB652D36A63200F86BB8 /* ViewController.swift */,
-				48AC8AF62D48E37000613954 /* AddClothing */,
-				48D9A6962D3BBF0300473CDE /* AddProfile */,
-				48D9A68A2D38FEBA00473CDE /* Agreement */,
 				070258AA2D31074E00065369 /* Login */,
 				070258A42D31071900065369 /* Main */,
 				070258A52D31071D00065369 /* Home */,
 				070258A62D31072000065369 /* Calendar */,
-				070258A72D31072800065369 /* AddCloth */,
 				070258A82D31074100065369 /* Closet */,
 				070258A92D31074500065369 /* Profile */,
 				076FAB362D2E6E0200FF3979 /* Services */,
@@ -393,12 +364,10 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				48AC8AF62D48E37000613954 /* AddClothing */,
-				48D9A68A2D38FEBA00473CDE /* Agreement */,
-				48D9A6962D3BBF0300473CDE /* AddProfile */,
-				48EAA8E92D4C28410095DA0F /* Temperature */,
-				48EAA8F42D4C379D0095DA0F /* Thick */,
-				48EAA9092D4D9C580095DA0F /* Popup */,
+				A653E9A22D4E20A900A29126 /* AddCloth */,
+				A653E9A42D4E20A900A29126 /* AddClothing */,
+				A653E9A82D4E20A900A29126 /* AddProfile */,
+				A653E9AD2D4E20A900A29126 /* Agreement */,
 			);
 			name = Clokey;
 			packageProductDependencies = (
@@ -495,7 +464,6 @@
 				07E1CB682D36B47C00F86BB8 /* MainViewModel.swift in Sources */,
 				076FAB3F2D2E6E0200FF3979 /* AppDelegate.swift in Sources */,
 				07E1CB4B2D3668CE00F86BB8 /* Constants.swift in Sources */,
-				070258B82D31083D00065369 /* AddClothView.swift in Sources */,
 				07E1CB5F2D36A10000F86BB8 /* CustomButton.swift in Sources */,
 				07E1CB602D36A10000F86BB8 /* CustomButtonTextField.swift in Sources */,
 				07E1CB662D36A63200F86BB8 /* ViewController.swift in Sources */,
@@ -503,8 +471,6 @@
 				07E1CB482D3662EC00F86BB8 /* UIImage+Extensions.swift in Sources */,
 				07E1CB442D3662D900F86BB8 /* UIFont+Extensions.swift in Sources */,
 				07E1CB582D3679A800F86BB8 /* CustomTextField.swift in Sources */,
-				48EAA8D62D4B38270095DA0F /* CategorySelectionViewController.swift in Sources */,
-				070258BA2D31084300065369 /* AddClothViewController.swift in Sources */,
 				070258AE2D3107A800065369 /* HomeViewController.swift in Sources */,
 				070258B42D3107C900065369 /* CalendarViewController.swift in Sources */,
 				076FAB5A2D3020D800FF3979 /* LoginViewController.swift in Sources */,

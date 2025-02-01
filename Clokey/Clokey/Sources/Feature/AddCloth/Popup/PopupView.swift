@@ -1,35 +1,29 @@
+//
+//  PopUpView.swift
+//  Clokey
+//
+//  Created by 한태빈 on 1/21/25.
+//
+
 import UIKit
 import SnapKit
 import Then
-
 class PopupView: UIView {
-    
     // MARK: - UI Components
-    
-    private let popupCardView = UIView().then {
-        $0.backgroundColor = UIColor(named: "mainBrown50") // ✅ 배경색 변경
-        $0.layer.cornerRadius = 30
-        $0.clipsToBounds = true
-    }
-    private let dateLabel = UILabel().then {
-        $0.text = "2025.01.18 (SAT)"
-        $0.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        $0.textColor = .black
-        $0.textAlignment = .center
-    }
-    
     let nameLabel = UILabel().then {
-        $0.text = "회색 울 코트"
-        $0.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        $0.text = "회색 레터링 후드티"
+        $0.font = UIFont.ptdMediumFont(ofSize: 16)
         $0.textColor = .black
-        $0.textAlignment = .center
+    }
+    
+    let publicButton = UIButton().then {
+        $0.setImage(UIImage(named: "public_icon"), for: .normal)
+        $0.tintColor = UIColor(named: "mainBrown600")
     }
     
     let imageView = UIImageView().then {
-        $0.image = UIImage(named: "coat")
+        $0.image = UIImage(named: "top")
         $0.contentMode = .scaleAspectFit
-        $0.layer.cornerRadius = 10
-        $0.clipsToBounds = true
     }
     
     private let categoryStackView = UIStackView().then {
@@ -38,215 +32,240 @@ class PopupView: UIView {
         $0.alignment = .center
     }
 
-    private let categoryButton1 = UIButton().then {
+    let categoryButton1 = UIButton().then {
         $0.setTitle("상의", for: .normal)
         $0.setTitleColor(.black, for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        $0.backgroundColor = .clear // ✅ 배경 없애기 (피그마 스타일)
-        $0.layer.borderWidth = 1 // ✅ 테두리 추가
-        $0.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor // ✅ 테두리 색 지정
+        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+        $0.backgroundColor = UIColor.clear
         $0.layer.cornerRadius = 4
-        $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 10) // ✅ 내부 패딩 추가
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
     }
     
-    private let categoryButton2 = UIButton().then {
+    let frontButton = UIButton().then {
+        $0.setImage(UIImage(named: "front_icon"), for: .normal)
+        $0.tintColor = UIColor(named: "mainBrown600")
+    }
+
+    let categoryButton2 = UIButton().then {
         $0.setTitle("후드티", for: .normal)
         $0.setTitleColor(.black, for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        $0.backgroundColor = UIColor(named: "mainBrown200")
+        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+        
+        $0.backgroundColor = UIColor.clear
         $0.layer.cornerRadius = 4
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
     }
-
-    private let categorySeparator = UILabel().then {
-        $0.text = ">"
-        $0.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        $0.textColor = .black
-    }
-
-    private let seasonLabel = UILabel().then {
-        $0.text = "착용 계절"
-        $0.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-        $0.textColor = .black
-    }
-
+    
     private let seasonStackView = UIStackView().then {
         $0.axis = .horizontal
-        $0.spacing = 8 // ✅ 간격을 8로 설정
+        $0.spacing = 6
         $0.alignment = .center
-        $0.distribution = .equalSpacing // ✅ 동일한 간격 유지
+    }
+    
+    private let springButton = UIButton().then {
+        $0.setTitle("봄", for: .normal)
+        $0.setTitleColor(.white, for: .normal)
+        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+        $0.backgroundColor = UIColor(named: "mainBrown600")
+        $0.layer.cornerRadius = 5
     }
 
-    private let wearCountLabel = UILabel().then {
-        $0.text = "착용 횟수"
-        $0.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+    private let summerButton = UIButton().then {
+        $0.setTitle("여름", for: .normal)
+        $0.setTitleColor(.black, for: .normal)
+        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+        $0.backgroundColor = UIColor.clear
+        $0.layer.cornerRadius = 5
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+    }
+
+    private let fallButton = UIButton().then {
+        $0.setTitle("가을", for: .normal)
+        $0.setTitleColor(.white, for: .normal)
+        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+        $0.backgroundColor = UIColor(named: "mainBrown600")
+        $0.layer.cornerRadius = 5
+    }
+
+    private let winterButton = UIButton().then {
+        $0.setTitle("겨울", for: .normal)
+        $0.setTitleColor(.white, for: .normal)
+        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+        $0.backgroundColor = UIColor(named: "mainBrown600")
+        $0.layer.cornerRadius = 5
+    }
+
+    
+    let descriptionLabel = UILabel().then {
+        let fullText = """
+        착용 횟수
+        
+        브랜드 : 나이키
+        
+        url : 바로가기
+        """
+        
+        let attributedString = NSMutableAttributedString(string: fullText)
+        
+        // "url : 바로가기" 부분에 밑줄 추가
+        if let range = fullText.range(of: "바로가기") {
+            let nsRange = NSRange(range, in: fullText)
+            attributedString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: nsRange)
+        }
+        
+        $0.attributedText = attributedString
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
+        $0.numberOfLines = 0
         $0.textColor = .black
     }
 
-    private let wearCountButton = UIButton().then {
+    let wearCountButton = UIButton().then {
         $0.setTitle("N회", for: .normal)
         $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        $0.backgroundColor = UIColor(named: "mainBrown800")
+        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+        
+        $0.backgroundColor = UIColor(named: "mainBrown600")
         $0.layer.cornerRadius = 5
     }
-
-    private let visibilityLabel = UILabel().then {
-        $0.text = "공개 범위"
-        $0.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-        $0.textColor = .black
+    
+    
+    /* 이건 나한테 필요한거
+    let optionButton = UIButton().then {
+        $0.setImage(UIImage(named: "dot3_icon"), for: .normal)
+        $0.tintColor = UIColor(named: "mainBrown800")
     }
-
-    private let visibilityButton = UIButton().then {
-        $0.setTitle("공개", for: .normal)
-        $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        $0.backgroundColor = UIColor(named: "mainBrown800")
-        $0.layer.cornerRadius = 5
+    let leftArrowButton = UIButton().then {
+        $0.setImage(UIImage(named: "left_circle_icon"), for: .normal)
+        $0.tintColor = UIColor(named: "mainBrown800")
     }
-
-    let brandLabel = UILabel().then {
-        let text = "브랜드 : 나이키"
-        let attributedString = NSMutableAttributedString(string: text)
-        attributedString.addAttribute(.foregroundColor, value: UIColor.blue, range: (text as NSString).range(of: "나이키"))
-        $0.attributedText = attributedString
-        $0.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+    let rightArrowButton = UIButton().then {
+        $0.setImage(UIImage(named: "left_circle_icon"), for: .normal)
+        $0.tintColor = UIColor(named: "mainBrown800")
     }
-
-    private let urlLabel = UILabel().then {
-        $0.text = "URL :"
-        $0.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        $0.textColor = .black
-    }
-   
-
+     */
+    // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
         setupConstraints()
     }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    // MARK: - Setup UI
     private func setupUI() {
-        backgroundColor = .clear
-        addSubview(popupCardView)
-
-        popupCardView.addSubview(dateLabel)
-        popupCardView.addSubview(nameLabel)
-        popupCardView.addSubview(imageView)
-        popupCardView.addSubview(categoryStackView)
-        popupCardView.addSubview(seasonLabel)
-        popupCardView.addSubview(seasonStackView)
-        popupCardView.addSubview(wearCountLabel)
-        popupCardView.addSubview(wearCountButton)
-        popupCardView.addSubview(visibilityLabel)
-        popupCardView.addSubview(visibilityButton)
-        popupCardView.addSubview(brandLabel)
-        popupCardView.addSubview(urlLabel)
-
+        backgroundColor = .mainBrown50
+        layer.cornerRadius = 10
+        addSubview(nameLabel)
+        addSubview(publicButton)
+        //addSubview(optionButton)
+        addSubview(imageView)
+        addSubview(categoryStackView)
         categoryStackView.addArrangedSubview(categoryButton1)
-        categoryStackView.addArrangedSubview(categorySeparator)
+        categoryStackView.addArrangedSubview(frontButton)
         categoryStackView.addArrangedSubview(categoryButton2)
-
-        ["봄", "여름", "가을", "겨울"].forEach {
-            let button = UIButton()
-            button.setTitle($0, for: .normal)
-            button.setTitleColor(.white, for: .normal)
-            button.titleLabel?.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-            button.backgroundColor = UIColor(named: "mainBrown800")
-            button.layer.cornerRadius = 5
-            seasonStackView.addArrangedSubview(button)
-        }
+        addSubview(seasonStackView)
+        seasonStackView.addArrangedSubview(springButton)
+        seasonStackView.addArrangedSubview(summerButton)
+        seasonStackView.addArrangedSubview(fallButton)
+        seasonStackView.addArrangedSubview(winterButton)
+        addSubview(wearCountButton)
+        addSubview(descriptionLabel)
+        //addSubview(leftArrowButton)
+        //addSubview(rightArrowButton)
     }
-
+    // MARK: - Setup Constraints
     private func setupConstraints() {
-        popupCardView.snp.makeConstraints {
-            $0.width.equalTo(290)
-            $0.height.equalTo(508)
-            $0.center.equalToSuperview()
+        nameLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(64)
+            make.centerX.equalToSuperview()
         }
+        publicButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
+            make.size.equalTo(30)
+        }
+        /*
+        optionButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(75)
+            make.trailing.equalToSuperview().offset(-23)
+            make.size.equalTo(24)
+        }
+         */
+        imageView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(101)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(140)
+            make.height.equalTo(167)
+        }
+        
+        categoryStackView.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp.bottom).offset(14)
+            make.centerX.equalToSuperview()
+        }
+        
+        frontButton.snp.makeConstraints { make in
+            make.size.equalTo(16)
+        }
+        
+        categoryButton1.snp.makeConstraints { make in
+            make.width.equalTo(43)
+            make.height.equalTo(22)
+        }
+        
+        
+        categoryButton2.snp.makeConstraints { make in
+            make.width.equalTo(54)
+            make.height.equalTo(22)
+        }
+        
+        seasonStackView.snp.makeConstraints { make in
+            make.top.equalTo(categoryStackView.snp.bottom).offset(10)
+            make.centerX.equalToSuperview()
+        }
+        
+        springButton.snp.makeConstraints { make in
+            make.width.equalTo(31)
+            make.height.equalTo(18)
+            
+        }
+        
+        
+        
+        
+        [summerButton, fallButton, winterButton].forEach { button in
+            button.snp.makeConstraints { make in
+                make.width.equalTo(41)
+                make.height.equalTo(18)
+            }
+        } //스택 내 버튼 한번에 처리
 
-        dateLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(34)
-            $0.centerX.equalToSuperview()
+        wearCountButton.snp.makeConstraints { make in
+            make.top.equalTo(seasonStackView.snp.bottom).offset(14)
+            make.leading.equalToSuperview().offset(159)
+            make.height.equalTo(18)
+            make.width.equalTo(39)
         }
-
-        nameLabel.snp.makeConstraints {
-            $0.top.equalTo(dateLabel.snp.bottom).offset(6)
-            $0.centerX.equalToSuperview()
+        
+        descriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(seasonStackView.snp.bottom).offset(14)
+            make.leading.equalToSuperview().offset(92)
         }
-
-        imageView.snp.makeConstraints {
-            $0.top.equalTo(nameLabel.snp.bottom).offset(10)
-            $0.centerX.equalToSuperview()
-            $0.width.equalTo(180)
-            $0.height.equalTo(220)
+        /*
+        leftArrowButton.snp.makeConstraints { make in
+            make.top.equalTo(dateLabel.snp.bottom).offset(104)
+            make.leading.equalToSuperview().offset(16)
+            make.size.equalTo(18)//이거 18로 할ㄱ지 24로 할지
         }
-
-        categoryStackView.snp.makeConstraints {
-            $0.top.equalTo(imageView.snp.bottom).offset(14)
-            $0.centerX.equalToSuperview()
+        rightArrowButton.snp.makeConstraints { make in
+            make.centerY.equalTo(imageView)
+            make.trailing.equalToSuperview().offset(-16)
+            make.size.equalTo(18)
         }
-
-        seasonLabel.snp.makeConstraints {
-            $0.top.equalTo(categoryStackView.snp.bottom).offset(11.79)
-            $0.leading.equalToSuperview().offset(20)
-        }
-
-        seasonStackView.snp.makeConstraints {
-            $0.top.equalTo(seasonLabel.snp.bottom).offset(5)
-            $0.leading.trailing.equalToSuperview().inset(20)
-        }
-
-        wearCountLabel.snp.remakeConstraints {
-            $0.top.equalTo(seasonStackView.snp.bottom).offset(16)
-            $0.leading.equalToSuperview().offset(20) // ✅ 모든 요소 동일한 leading 적용
-        }
-
-        wearCountButton.snp.remakeConstraints {
-            $0.centerY.equalTo(wearCountLabel) // ✅ 같은 높이 맞추기
-            $0.leading.equalTo(wearCountLabel.snp.trailing).offset(8) // ✅ 버튼과 간격 맞추기
-            $0.width.equalTo(50)
-            $0.height.equalTo(30)
-        }
-
-        visibilityLabel.snp.remakeConstraints {
-            $0.top.equalTo(wearCountButton.snp.bottom).offset(16)
-            $0.leading.equalToSuperview().offset(20) // ✅ 동일한 leading 적용
-        }
-
-        visibilityButton.snp.remakeConstraints {
-            $0.centerY.equalTo(visibilityLabel)
-            $0.leading.equalTo(visibilityLabel.snp.trailing).offset(8)
-            $0.width.equalTo(50)
-            $0.height.equalTo(30)
-        }
-        // "브랜드 : 나이키" 위치 설정
-        brandLabel.snp.makeConstraints {
-            $0.top.equalTo(visibilityButton.snp.bottom).offset(10)
-            $0.leading.equalToSuperview().offset(20)
-        }
-
-        // "URL :" 위치 설정
-        urlLabel.snp.makeConstraints {
-            $0.top.equalTo(brandLabel.snp.bottom).offset(5)
-            $0.leading.equalToSuperview().offset(20)
-        }
-
-        // popupCardView 높이 증가
-        popupCardView.snp.remakeConstraints {
-            $0.width.equalTo(290)
-            $0.height.equalTo(570) // 기존 508에서 증가
-            $0.center.equalToSuperview()
-        }
-
-        // 2️⃣ popupCardView 높이 늘리기 (마지막 요소까지 잘 보이도록)
-        popupCardView.snp.remakeConstraints {
-            $0.width.equalTo(290)
-            $0.height.equalTo(570) // 기존 508에서 증가
-            $0.center.equalToSuperview()
-        }
+         */
     }
 }
+

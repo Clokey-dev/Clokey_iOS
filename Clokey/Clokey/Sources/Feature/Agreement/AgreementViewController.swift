@@ -47,6 +47,10 @@ class AgreementViewController: UIViewController {
         return agreements.filter { $0.isRequired }.allSatisfy { $0.isChecked } // 필수 항목만 체크되었는지 확인
     }
     
+    let backButton = UIButton().then {
+        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        $0.tintColor = .black
+    }
     
     // MARK: - UI Components
     private let titleLabel: UILabel = {
@@ -80,7 +84,7 @@ class AgreementViewController: UIViewController {
     
     private let agreeButton: UIButton = {
         let button = UIButton()
-        button.setTitle("다음", for: .normal) // 버튼 텍스트 설정
+        button.setTitle("가입 완료", for: .normal) // 버튼 텍스트 설정
         button.backgroundColor = .mainBrown400 // 비활성화 상태 배경색
         button.layer.cornerRadius = 8 // 둥근 모서리
         button.setTitleColor(.white, for: .normal) // 텍스트 색상 설정
@@ -108,20 +112,26 @@ class AgreementViewController: UIViewController {
         view.backgroundColor = .white
         
         // UI 요소 추가
+        view.addSubview(backButton)
         view.addSubview(titleLabel)
         view.addSubview(allAgreeButton)
         view.addSubview(headerDivider)
         view.addSubview(tableView)
         view.addSubview(agreeButton)
         
+        backButton.snp.makeConstraints {
+//            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.top.equalToSuperview().offset(60)
+            $0.leading.equalToSuperview().offset(20)
+        }
         // 피그마 기준 레이아웃 적용
         titleLabel.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(24) // 피그마에서 제공한 상단 간격
+            $0.top.equalTo(backButton.snp.bottom).offset(31) // 피그마에서 제공한 상단 간격
             $0.leading.trailing.equalToSuperview().inset(20) // 좌우 여백
         }
         
         allAgreeButton.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(326) // 피그마 기준 타이틀 아래 간격
+            $0.top.equalTo(titleLabel.snp.bottom).offset(318) // 피그마 기준 타이틀 아래 간격
             $0.leading.trailing.equalToSuperview().inset(20) // 좌우 여백
             $0.height.equalTo(44) // 버튼 높이
         }
@@ -135,10 +145,11 @@ class AgreementViewController: UIViewController {
         tableView.snp.makeConstraints {
             $0.top.equalTo(headerDivider.snp.bottom).offset(9) // 구분선 아래 간격
             $0.leading.trailing.equalToSuperview().inset(20) // 좌우 여백
-            $0.bottom.equalTo(agreeButton.snp.top).offset(53) // 가입 완료 버튼 위 간격
+//            $0.bottom.equalTo(agreeButton.snp.top).offset(53) // 가입 완료 버튼 위 간격
         }
         
         agreeButton.snp.makeConstraints {
+            $0.top.equalTo(tableView.snp.bottom).offset(50)
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-24) // 하단 간격
             $0.leading.trailing.equalToSuperview().inset(20) // 좌우 여백
             $0.height.equalTo(50) // 버튼 높이
