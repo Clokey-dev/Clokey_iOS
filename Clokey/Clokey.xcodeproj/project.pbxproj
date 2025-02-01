@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		070258A32D30FEC700065369 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258A22D30FEC700065369 /* MainView.swift */; };
 		070258B22D3107C200065369 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258B12D3107C200065369 /* CalendarView.swift */; };
 		070258B42D3107C900065369 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258B32D3107C900065369 /* CalendarViewController.swift */; };
 		070258B82D31083D00065369 /* AddClothView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258B72D31083D00065369 /* AddClothView.swift */; };
@@ -26,7 +25,6 @@
 		076FAB4A2D2E748B00FF3979 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB492D2E748B00FF3979 /* LoginView.swift */; };
 		076FAB4E2D2EBB3A00FF3979 /* KakaoAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB4D2D2EBB3A00FF3979 /* KakaoAuthService.swift */; };
 		076FAB5A2D3020D800FF3979 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB572D3020D800FF3979 /* LoginViewController.swift */; };
-		076FAB5B2D3020D800FF3979 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB582D3020D800FF3979 /* MainViewController.swift */; };
 		07E1CADF2D3646C600F86BB8 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 07E1CADE2D3646C600F86BB8 /* CombineMoya */; };
 		07E1CAE12D3646C600F86BB8 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 07E1CAE02D3646C600F86BB8 /* Moya */; };
 		07E1CAE32D3646C600F86BB8 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 07E1CAE22D3646C600F86BB8 /* ReactiveMoya */; };
@@ -49,18 +47,17 @@
 		07E1CB5F2D36A10000F86BB8 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E1CB5D2D36A10000F86BB8 /* CustomButton.swift */; };
 		07E1CB602D36A10000F86BB8 /* CustomButtonTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E1CB5E2D36A10000F86BB8 /* CustomButtonTextField.swift */; };
 		07E1CB662D36A63200F86BB8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E1CB652D36A63200F86BB8 /* ViewController.swift */; };
-		07E1CB682D36B47C00F86BB8 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E1CB672D36B47C00F86BB8 /* MainViewModel.swift */; };
 		07E1CB912D3814AA00F86BB8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07E1CB902D3814AA00F86BB8 /* LaunchScreen.storyboard */; };
+		A62A429E2D4D2ADE00672D3F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429A2D4D2ADE00672D3F /* MainView.swift */; };
+		A62A429F2D4D2ADE00672D3F /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429C2D4D2ADE00672D3F /* HeaderView.swift */; };
+		A62A42A02D4D2ADE00672D3F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429B2D4D2ADE00672D3F /* MainViewController.swift */; };
+		A62A42A12D4D2ADE00672D3F /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429D2D4D2ADE00672D3F /* TabBarView.swift */; };
 		A6548E532D3F47DE00F79B66 /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */; };
 		A6548E562D3F485B00F79B66 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = A6548E552D3F485B00F79B66 /* Kingfisher */; };
-		A6D636A82D477E5A004D1463 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D636A52D477E5A004D1463 /* ProfileView.swift */; };
-		A6D636A92D477E5A004D1463 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D636A62D477E5A004D1463 /* ProfileViewController.swift */; };
-		A6D636AA2D477E5A004D1463 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D636A72D477E5A004D1463 /* ProfileModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		070258A12D30DD0E00065369 /* Clokey.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Clokey.entitlements; sourceTree = "<group>"; };
-		070258A22D30FEC700065369 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		070258B12D3107C200065369 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		070258B32D3107C900065369 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		070258B72D31083D00065369 /* AddClothView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothView.swift; sourceTree = "<group>"; };
@@ -75,7 +72,6 @@
 		076FAB492D2E748B00FF3979 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		076FAB4D2D2EBB3A00FF3979 /* KakaoAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthService.swift; sourceTree = "<group>"; };
 		076FAB572D3020D800FF3979 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		076FAB582D3020D800FF3979 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		07E1CB302D364BDA00F86BB8 /* Pretendard-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Black.otf"; sourceTree = "<group>"; };
 		07E1CB312D364BDA00F86BB8 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		07E1CB322D364BDA00F86BB8 /* Pretendard-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraBold.otf"; sourceTree = "<group>"; };
@@ -94,17 +90,28 @@
 		07E1CB5D2D36A10000F86BB8 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		07E1CB5E2D36A10000F86BB8 /* CustomButtonTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonTextField.swift; sourceTree = "<group>"; };
 		07E1CB652D36A63200F86BB8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		07E1CB672D36B47C00F86BB8 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		07E1CB8F2D3814AA00F86BB8 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		07F093102D2418380075659F /* Clokey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clokey.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A62A429A2D4D2ADE00672D3F /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		A62A429B2D4D2ADE00672D3F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		A62A429C2D4D2ADE00672D3F /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		A62A429D2D4D2ADE00672D3F /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
-		A6D636A52D477E5A004D1463 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
-		A6D636A62D477E5A004D1463 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		A6D636A72D477E5A004D1463 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		A62A42DD2D4D30F700672D3F /* Cells */ = {
+
+		A62A428F2D4D2A8D00672D3F /* Your */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Your;
+			sourceTree = "<group>";
+		};
+		A62A42932D4D2A8D00672D3F /* My */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = My;
+			sourceTree = "<group>";
+		};
+		A64C54312D3F97B3000CCB62 /* Cells */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Cells;
 			sourceTree = "<group>";
@@ -151,9 +158,10 @@
 		070258A42D31071900065369 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				070258A22D30FEC700065369 /* MainView.swift */,
-				076FAB582D3020D800FF3979 /* MainViewController.swift */,
-				07E1CB672D36B47C00F86BB8 /* MainViewModel.swift */,
+				A62A429A2D4D2ADE00672D3F /* MainView.swift */,
+				A62A429B2D4D2ADE00672D3F /* MainViewController.swift */,
+				A62A429C2D4D2ADE00672D3F /* HeaderView.swift */,
+				A62A429D2D4D2ADE00672D3F /* TabBarView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -188,9 +196,8 @@
 		070258A92D31074500065369 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				A6D636A52D477E5A004D1463 /* ProfileView.swift */,
-				A6D636A62D477E5A004D1463 /* ProfileViewController.swift */,
-				A6D636A72D477E5A004D1463 /* ProfileModel.swift */,
+				A62A428F2D4D2A8D00672D3F /* Your */,
+				A62A42932D4D2A8D00672D3F /* My */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -376,10 +383,12 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				A62A42DD2D4D30F700672D3F /* Cells */,
-				A62A42E92D4D30F700672D3F /* ViewControllers */,
-				A62A42F52D4D30F700672D3F /* Views */,
-				A62A42FD2D4D30F700672D3F /* Models */,
+				A62A428F2D4D2A8D00672D3F /* Your */,
+				A62A42932D4D2A8D00672D3F /* My */,
+				A64C54312D3F97B3000CCB62 /* Cells */,
+				A64C54402D3F97BB000CCB62 /* ViewControllers */,
+				A64C54522D3F97C6000CCB62 /* Views */,
+				A64C54612D3F97CF000CCB62 /* Models */,
 			);
 			name = Clokey;
 			packageProductDependencies = (
@@ -469,16 +478,15 @@
 				070258BE2D31085900065369 /* ClosetView.swift in Sources */,
 				070258B22D3107C200065369 /* CalendarView.swift in Sources */,
 				076FAB4E2D2EBB3A00FF3979 /* KakaoAuthService.swift in Sources */,
-				070258A32D30FEC700065369 /* MainView.swift in Sources */,
 				070258C02D31086A00065369 /* ClosetViewController.swift in Sources */,
 				A6548E532D3F47DE00F79B66 /* WeatherAPI.swift in Sources */,
-				07E1CB682D36B47C00F86BB8 /* MainViewModel.swift in Sources */,
+				A62A429E2D4D2ADE00672D3F /* MainView.swift in Sources */,
+				A62A429F2D4D2ADE00672D3F /* HeaderView.swift in Sources */,
+				A62A42A02D4D2ADE00672D3F /* MainViewController.swift in Sources */,
+				A62A42A12D4D2ADE00672D3F /* TabBarView.swift in Sources */,
 				076FAB3F2D2E6E0200FF3979 /* AppDelegate.swift in Sources */,
 				07E1CB4B2D3668CE00F86BB8 /* Constants.swift in Sources */,
 				070258B82D31083D00065369 /* AddClothView.swift in Sources */,
-				A6D636A82D477E5A004D1463 /* ProfileView.swift in Sources */,
-				A6D636A92D477E5A004D1463 /* ProfileViewController.swift in Sources */,
-				A6D636AA2D477E5A004D1463 /* ProfileModel.swift in Sources */,
 				07E1CB5F2D36A10000F86BB8 /* CustomButton.swift in Sources */,
 				07E1CB602D36A10000F86BB8 /* CustomButtonTextField.swift in Sources */,
 				07E1CB662D36A63200F86BB8 /* ViewController.swift in Sources */,
@@ -489,7 +497,6 @@
 				070258BA2D31084300065369 /* AddClothViewController.swift in Sources */,
 				070258B42D3107C900065369 /* CalendarViewController.swift in Sources */,
 				076FAB5A2D3020D800FF3979 /* LoginViewController.swift in Sources */,
-				076FAB5B2D3020D800FF3979 /* MainViewController.swift in Sources */,
 				07E1CB4F2D36721900F86BB8 /* CustomNavigationBar.swift in Sources */,
 				076FAB402D2E6E0200FF3979 /* SceneDelegate.swift in Sources */,
 				076FAB4A2D2E748B00FF3979 /* LoginView.swift in Sources */,
