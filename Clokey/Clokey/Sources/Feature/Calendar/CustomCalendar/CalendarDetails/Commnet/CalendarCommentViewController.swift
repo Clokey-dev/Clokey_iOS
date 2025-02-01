@@ -86,21 +86,35 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         }
     }
     
+    // 댓글 쓰기 버튼 눌렀을 때
     @objc private func didTapSend() {
-        if let text = commentView.commentTextField.text, !text.isEmpty {
-            let newComment = Comment(
-                id: comments.count + 1,
-                memberId: 999,
-                imageUrl: "https://example.com/images/default.jpg",
-                content: text,
-                parentCommentId: selectedCommentId  // 선택된 댓글 ID 사용
-            )
+        guard let text = commentView.commentTextField.text, !text.isEmpty else { return }
+        
+        let requestDTO = HistoryCommentWriteRequestDTO(
+            content: text,
+            commentId: nil
+        )
+        
+        historyService.historyCommentWrite(
+            historyId: historyId,
+            data: requestDTO
+        ) { [weak self] result in
+            guard let self = self else { return }
             
-            comments.append(newComment)
-            organizeComments()  // 댓글 재정렬
-            commentView.commentTableView.reloadData()
-            commentView.commentTextField.text = ""
-            selectedCommentId = nil  // 선택 초기화
+            switch result {
+            case .success(_):
+                // 성공시 댓글창 비우고 새로고침
+                DispatchQueue.main.async {
+                    self.commentView.commentTextField.text = ""
+                    self.currentPage = 1 // 페이지 초기화
+                    self.comments = [] // 댓글 초기화
+                    self.fetchComments() // 댓글 새로 불러오기
+                }
+                
+            case .failure(let error):
+                print("댓글 작성 실패: \(error)")
+                // 에러 처리
+            }
         }
     }
     
@@ -217,5 +231,31 @@ extension CalendarCommentViewController: UITableViewDataSource, UITableViewDeleg
 
     private func isLastReply(comment: Comment) -> Bool {
         return !comments.contains { $0.parentCommentId == comment.id }
+    }
+    
+    // swipe 기능 추가
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true // 모든 셀 swipe 가능
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let commentToDelete = comments[indexPath.row]
+            
+            historyService.historyCommentDelete(commentId: commentToDelete.id) { [weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                case .success:
+                    DispatchQueue.main.async {
+                        self.comments.remove(at: indexPath.row)
+                        tableView.deleteRows(at: [indexPath], with: .fade)
+                    }
+                case .failure(let error):
+                    print("댓글 삭제 실패: \(error)")
+                    // 에러 처리
+                }
+            }
+        }
     }
 }
