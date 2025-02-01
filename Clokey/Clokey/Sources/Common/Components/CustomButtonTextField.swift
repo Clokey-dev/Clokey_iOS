@@ -34,7 +34,7 @@ class CustomButtonTextField: UIView {
         let textField = UITextField(frame: .zero)
         textField.borderStyle = .none
         textField.font = UIFont.ptdMediumFont(ofSize: 20)
-        textField.textColor = UIColor.mainBrown600
+        textField.textColor = UIColor.black
 
         // placeholder 스타일 설정
         let placeholderText = " "
@@ -81,43 +81,52 @@ class CustomButtonTextField: UIView {
         // 레이아웃 구성
         addSubview(titleLabel)
         addSubview(requiredIndicator)
+        
+        // 텍스트 필드
+        textField.placeholder = placeholder
         addSubview(textField)
+        
         addSubview(actionButton)
         addSubview(bottomLine)
         
         // SnapKit으로 레이아웃 설정
-        titleLabel.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview()
+        titleLabel.snp.makeConstraints {
+            $0.top.leading.equalToSuperview()
         }
         
-        requiredIndicator.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel.snp.trailing).offset(2)
-            make.centerY.equalTo(titleLabel)
+        requiredIndicator.snp.makeConstraints {
+            $0.leading.equalTo(titleLabel.snp.trailing).offset(2)
+            $0.centerY.equalTo(titleLabel)
         }
         
-        textField.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(4)
-            make.leading.equalToSuperview()
-            make.trailing.equalTo(actionButton.snp.leading).offset(-8)
-            make.height.equalTo(40)
+        textField.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(4)
+            $0.leading.equalToSuperview()
+            $0.trailing.equalTo(actionButton.snp.leading).offset(-8)
+            $0.height.equalTo(40)
         }
         
-        actionButton.snp.makeConstraints { make in
-            make.centerY.equalTo(textField)
-            make.trailing.equalToSuperview()
-            make.width.equalTo(76)
-            make.height.equalTo(28)
+        actionButton.snp.makeConstraints {             $0.centerY.equalTo(textField)
+            $0.trailing.equalToSuperview()
+            $0.width.equalTo(76)
+            $0.height.equalTo(28)
         }
         
-        bottomLine.snp.makeConstraints { make in
-            make.top.equalTo(textField.snp.bottom).offset(4)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(1)
+        bottomLine.snp.makeConstraints {
+            $0.top.equalTo(textField.snp.bottom).offset(4)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(1)
         }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - 버튼
+    // 커스텀 버튼
+    var customButton: UIButton {
+        return actionButton
     }
     
     // 버튼 활성화/비활성화
@@ -129,12 +138,47 @@ class CustomButtonTextField: UIView {
     }
     
     // 버튼 텍스트 설정
-    func setButtonText(_ text: String) {
+    func setButtonText(_ text: String, fontSize: CGFloat? = nil, color: UIColor? = nil) {
         actionButton.setTitle(text, for: .normal)
+        if let fontSize = fontSize {
+            actionButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: fontSize)
+        }
+        if let color = color {
+            actionButton.setTitleColor(color, for: .normal)
+        }
     }
     
+    // 버튼 텍스트 크기 설정
+    func setButtonFontSize(_ size: CGFloat) {
+        actionButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: size)
+    }
+    
+    // 버튼 텍스트 크기
+    func setTextFieldFontSize(_ size: CGFloat) {
+        textField.font = UIFont.ptdMediumFont(ofSize: size)
+    }
+    
+    // 버튼 액션
+    func addTarget(_ target: Any?, action: Selector, for event: UIControl.Event) {
+        textField.addTarget(target, action: action, for: event)
+    }
+        
+    // MARK: - 텍스트 필드
     // 플레이스홀더 변경 메서드
     func setPlaceholder(_ placeholder: String) {
         textField.placeholder = placeholder
     }
+    
+    // 텍스트 필드의 텍스트
+    var text: String? {
+        get { return textField.text }
+        set { textField.text = newValue }
+    }
+    
+    // 텍스트 델리게이트
+    var delegate: UITextFieldDelegate? {
+        get { return textField.delegate }
+        set { textField.delegate = newValue}
+    }
+
 }
