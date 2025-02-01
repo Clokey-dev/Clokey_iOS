@@ -10,6 +10,7 @@ import Moya
 
 public enum MembersEndpoint {
     case kakaoLogin(data: KakaoLoginRequestDTO)
+    case ReissueToken(data: ReissueTokenRequestDTO)
     case agreeToTerms(userId: Int, data: TermsAgreementRequestDTO)
     case updateProfile(data: ProfileUpdateRequestDTO)
     case checkIdAvailability(id: String)
@@ -32,6 +33,8 @@ extension MembersEndpoint: TargetType {
         switch self {
         case .kakaoLogin:
             return "/login"
+        case .ReissueToken:
+            return "/reissue-token"
         case .agreeToTerms(let userId, _):
             return "/users/\(userId)/terms"
         case .updateProfile:
@@ -50,7 +53,7 @@ extension MembersEndpoint: TargetType {
     // HTTP 메서드
     public var method: Moya.Method {
         switch self {
-        case .kakaoLogin, .agreeToTerms, .followUser:
+        case .kakaoLogin, .ReissueToken, .agreeToTerms, .followUser:
             return .post
         case .updateProfile:
             return .patch
@@ -65,6 +68,8 @@ extension MembersEndpoint: TargetType {
     public var task: Moya.Task {
         switch self {
         case .kakaoLogin(let data):
+            return .requestJSONEncodable(data)
+        case .ReissueToken(let data):
             return .requestJSONEncodable(data)
         case .agreeToTerms(_, let data):
             return .requestJSONEncodable(data)
