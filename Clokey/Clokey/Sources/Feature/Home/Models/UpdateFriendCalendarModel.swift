@@ -18,21 +18,21 @@ extension UpdateFriendCalendarModel {
     static func dummy() -> [UpdateFriendCalendarModel] {
         return [
             UpdateFriendCalendarModel(
-                imageUrl: URL(string: "https://img.danawa.com/prod_img/500000/436/224/img/17224436_1.jpg?_v=20220610092752")!, name: "히츄핑"),
+                imageUrl: URL(string: "https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg")!, name: "히츄핑"),
             UpdateFriendCalendarModel(
-                imageUrl: URL(string: "https://img.danawa.com/prod_img/500000/436/224/img/17224436_1.jpg?_v=20220610092752")!, name: "히츄핑"),
+                imageUrl: URL(string: "https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg")!, name: "히츄핑"),
             UpdateFriendCalendarModel(
-                imageUrl: URL(string: "https://img.danawa.com/prod_img/500000/436/224/img/17224436_1.jpg?_v=20220610092752")!, name: "히츄핑"),
+                imageUrl: URL(string: "https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg")!, name: "히츄핑"),
             UpdateFriendCalendarModel(
-                imageUrl: URL(string: "https://img.danawa.com/prod_img/500000/436/224/img/17224436_1.jpg?_v=20220610092752")!, name: "히츄핑"),
+                imageUrl: URL(string: "https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg")!, name: "히츄핑"),
             UpdateFriendCalendarModel(
-                imageUrl: URL(string: "https://img.danawa.com/prod_img/500000/436/224/img/17224436_1.jpg?_v=20220610092752")!, name: "히츄핑"),
+                imageUrl: URL(string: "https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg")!, name: "히츄핑"),
             UpdateFriendCalendarModel(
-                imageUrl: URL(string: "https://img.danawa.com/prod_img/500000/436/224/img/17224436_1.jpg?_v=20220610092752")!, name: "히츄핑"),
+                imageUrl: URL(string: "https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg")!, name: "히츄핑"),
             UpdateFriendCalendarModel(
-                imageUrl: URL(string: "https://img.danawa.com/prod_img/500000/436/224/img/17224436_1.jpg?_v=20220610092752")!, name: "히츄핑"),
+                imageUrl: URL(string: "https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg")!, name: "히츄핑"),
             UpdateFriendCalendarModel(
-                imageUrl: URL(string: "https://img.danawa.com/prod_img/500000/436/224/img/17224436_1.jpg?_v=20220610092752")!, name: "히츄핑")
+                imageUrl: URL(string: "https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg")!, name: "히츄핑")
         ]
     }
 }
