@@ -9,29 +9,17 @@ import UIKit
 import SnapKit
 import Then
 
+// MainView, Header,TabBar 이벤트 처리 델리게이트도 수행
 final class MainViewController: UIViewController {
     
     // MARK: - Properties
-    private let viewModel: MainViewModel
     private let mainView = MainView()
     
-    // 각 탭의 뷰컨트롤러
     private lazy var homeVC = HomeViewController()
     private lazy var calendarVC = CalendarViewController()
     private lazy var addClothVC = AddClothViewController()
     private lazy var closetVC = ClosetViewController()
     private lazy var profileVC = ProfileViewController()
-        
-    
-    // MARK: - Init
-    init(viewModel: MainViewModel) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     // MARK: - Lifecycle
     override func loadView() {
@@ -40,25 +28,28 @@ final class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTabBar()
-        showViewController(homeVC) // 초기 화면으로 홈 표시
+        setupDelegates()
+        showViewController(homeVC)
     }
     
     // MARK: - Setup
-    private func setupTabBar() {
-        mainView.tabBar.delegate = self
+    // HeaderView와 TabBarView의 이벤트 처리 델리게이트 설정
+    private func setupDelegates() {
+        mainView.headerView.delegate = self
+        mainView.tabBarView.delegate = self
     }
     
     // MARK: - Methods
+    // 다른 뷰 컨트롤러로 화면 전환
     private func showViewController(_ viewController: UIViewController) {
-        // 현재 표시된 뷰컨트롤러 해제
         children.forEach {
+            // 제거
             $0.willMove(toParent: nil)
             $0.view.removeFromSuperview()
             $0.removeFromParent()
         }
         
-        // 새로운 뷰컨트롤러 추가
+        // 생성
         addChild(viewController)
         mainView.contentView.addSubview(viewController.view)
         viewController.view.snp.makeConstraints {
@@ -68,21 +59,37 @@ final class MainViewController: UIViewController {
     }
 }
 
-// MARK: - UITabBarDelegate
-// 탭바의 동작을 처리
-extension MainViewController: UITabBarDelegate {
+// MARK: - HeaderViewDelegate
+// 헤더뷰에 있던 버튼 이벤트 처리
+extension MainViewController: HeaderViewDelegate {
+    func didTapSearchButton() {
+        // 검색 버튼 탭 처리
+    }
+    
+    func didTapNotificationButton() {
+        // 알림 버튼 탭 처리
+    }
+}
+
+// MARK: - TabBarViewDelegate
+extension MainViewController: TabBarViewDelegate {
     func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         switch item.tag {
         case 0:
             showViewController(homeVC)
+            mainView.setHeaderViewHidden(false)
         case 1:
             showViewController(calendarVC)
+            mainView.setHeaderViewHidden(false)
         case 2:
             showViewController(addClothVC)
+            mainView.setHeaderViewHidden(false)
         case 3:
             showViewController(closetVC)
+            mainView.setHeaderViewHidden(false)
         case 4:
             showViewController(profileVC)
+            mainView.setHeaderViewHidden(true)
         default:
             break
         }
