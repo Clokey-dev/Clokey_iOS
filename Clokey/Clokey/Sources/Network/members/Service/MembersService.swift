@@ -16,7 +16,8 @@ public final class MembersService: NetworkManager {
     
     public init(provider: MoyaProvider<MembersEndpoint>? = nil) {
         let plugins: [PluginType] = [
-            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
+            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)),
+            AccessTokenPlugin()
         ]
         self.provider = provider ?? MoyaProvider<MembersEndpoint>(plugins: plugins)
     }

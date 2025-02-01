@@ -30,6 +30,8 @@
 		07649EF02D4DE58900B6B2B2 /* Domain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649EB32D4DE58900B6B2B2 /* Domain.swift */; };
 		07649EF12D4DE58900B6B2B2 /* MembersInfoResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649ECE2D4DE58900B6B2B2 /* MembersInfoResponseDTO.swift */; };
 		07649EF22D4DE58900B6B2B2 /* HistoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649EC12D4DE58900B6B2B2 /* HistoryService.swift */; };
+		07649FF82D4DE9AC00B6B2B2 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649FF72D4DE9AC00B6B2B2 /* KeychainHelper.swift */; };
+		07649FFA2D4DEA9000B6B2B2 /* AccessTokenPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649FF92D4DEA9000B6B2B2 /* AccessTokenPlugin.swift */; };
 		076FAB1D2D2E5DD800FF3979 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 076FAB1C2D2E5DD800FF3979 /* Then */; };
 		076FAB202D2E5DE700FF3979 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 076FAB1F2D2E5DE700FF3979 /* SnapKit */; };
 		076FAB262D2E60A500FF3979 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 076FAB252D2E60A500FF3979 /* KakaoSDK */; };
@@ -127,6 +129,8 @@
 		07649ECE2D4DE58900B6B2B2 /* MembersInfoResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembersInfoResponseDTO.swift; sourceTree = "<group>"; };
 		07649ECF2D4DE58900B6B2B2 /* MembersLoginResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembersLoginResponseDTO.swift; sourceTree = "<group>"; };
 		07649ED12D4DE58900B6B2B2 /* MembersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembersService.swift; sourceTree = "<group>"; };
+		07649FF72D4DE9AC00B6B2B2 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
+		07649FF92D4DEA9000B6B2B2 /* AccessTokenPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenPlugin.swift; sourceTree = "<group>"; };
 		076FAB2F2D2E6E0200FF3979 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		076FAB302D2E6E0200FF3979 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		076FAB322D2E6E0200FF3979 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -461,6 +465,7 @@
 			isa = PBXGroup;
 			children = (
 				07649EAD2D4DE58900B6B2B2 /* CookiePlugin.swift */,
+				07649FF92D4DEA9000B6B2B2 /* AccessTokenPlugin.swift */,
 			);
 			path = Plugins;
 			sourceTree = "<group>";
@@ -802,6 +807,7 @@
 			children = (
 				A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */,
 				076FAB4D2D2EBB3A00FF3979 /* KakaoAuthService.swift */,
+				07649FF72D4DE9AC00B6B2B2 /* KeychainHelper.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1164,6 +1170,7 @@
 				076FAB3F2D2E6E0200FF3979 /* AppDelegate.swift in Sources */,
 				07E1CB4B2D3668CE00F86BB8 /* Constants.swift in Sources */,
 				070258B82D31083D00065369 /* AddClothView.swift in Sources */,
+				07649FFA2D4DEA9000B6B2B2 /* AccessTokenPlugin.swift in Sources */,
 				07E1CB5F2D36A10000F86BB8 /* CustomButton.swift in Sources */,
 				07E1CB602D36A10000F86BB8 /* CustomButtonTextField.swift in Sources */,
 				07649EE32D4DE58900B6B2B2 /* CookiePlugin.swift in Sources */,
@@ -1189,6 +1196,7 @@
 				07E1CB582D3679A800F86BB8 /* CustomTextField.swift in Sources */,
 				070258BA2D31084300065369 /* AddClothViewController.swift in Sources */,
 				076FAB5A2D3020D800FF3979 /* LoginViewController.swift in Sources */,
+				07649FF82D4DE9AC00B6B2B2 /* KeychainHelper.swift in Sources */,
 				07E1CB4F2D36721900F86BB8 /* CustomNavigationBar.swift in Sources */,
 				076FAB402D2E6E0200FF3979 /* SceneDelegate.swift in Sources */,
 				076FAB4A2D2E748B00FF3979 /* LoginView.swift in Sources */,

@@ -146,6 +146,11 @@ final class LoginViewController: UIViewController {
         memberService.kaKaoLogin(data: requestDTO) { result in
             switch result {
             case .success(let response):
+                
+                // AccessToken & RefreshToken을 Keychain에 저장
+                KeychainHelper.shared.save(response.accessToken, forKey: "accessToken")
+                KeychainHelper.shared.save(response.refreshToken, forKey: "refreshToken")
+                
                 print("로그인 성공: \(response)")
                 self.handleSuccessfulLogin()
             case .failure(let error):
