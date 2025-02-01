@@ -13,6 +13,9 @@
 		070258BA2D31084300065369 /* AddClothViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258B92D31084300065369 /* AddClothViewController.swift */; };
 		070258BE2D31085900065369 /* ClosetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258BD2D31085900065369 /* ClosetView.swift */; };
 		070258C02D31086A00065369 /* ClosetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258BF2D31086A00065369 /* ClosetViewController.swift */; };
+		07649C292D4DDD5D00B6B2B2 /* UpdateFriendCalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649C252D4DDD5D00B6B2B2 /* UpdateFriendCalendarCollectionViewCell.swift */; };
+		07649C2A2D4DDD5D00B6B2B2 /* WeatherClothesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649C272D4DDD5D00B6B2B2 /* WeatherClothesCollectionViewCell.swift */; };
+		07649C2B2D4DDD5D00B6B2B2 /* UpdateFriendClothesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649C262D4DDD5D00B6B2B2 /* UpdateFriendClothesCollectionViewCell.swift */; };
 		076FAB1D2D2E5DD800FF3979 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 076FAB1C2D2E5DD800FF3979 /* Then */; };
 		076FAB202D2E5DE700FF3979 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 076FAB1F2D2E5DE700FF3979 /* SnapKit */; };
 		076FAB262D2E60A500FF3979 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 076FAB252D2E60A500FF3979 /* KakaoSDK */; };
@@ -64,6 +67,9 @@
 		070258B92D31084300065369 /* AddClothViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothViewController.swift; sourceTree = "<group>"; };
 		070258BD2D31085900065369 /* ClosetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetView.swift; sourceTree = "<group>"; };
 		070258BF2D31086A00065369 /* ClosetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetViewController.swift; sourceTree = "<group>"; };
+		07649C252D4DDD5D00B6B2B2 /* UpdateFriendCalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFriendCalendarCollectionViewCell.swift; sourceTree = "<group>"; };
+		07649C262D4DDD5D00B6B2B2 /* UpdateFriendClothesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFriendClothesCollectionViewCell.swift; sourceTree = "<group>"; };
+		07649C272D4DDD5D00B6B2B2 /* WeatherClothesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherClothesCollectionViewCell.swift; sourceTree = "<group>"; };
 		076FAB2F2D2E6E0200FF3979 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		076FAB302D2E6E0200FF3979 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		076FAB322D2E6E0200FF3979 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -99,8 +105,49 @@
 		A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		07649C0D2D4DDBAF00B6B2B2 /* Exceptions for "ViewControllers" folder in "Clokey" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				HomeViewController.swift,
+				News/Main/ImageViewController.swift,
+				News/Main/NewsViewController.swift,
+				News/More/UpdateFriendCalendarViewController.swift,
+				News/More/UpdateFriendClothesViewController.swift,
+				Pick/PickNothingViewController.swift,
+				Pick/PickViewController.swift,
+			);
+			target = 07F0930F2D2418380075659F /* Clokey */;
+		};
+		07649C0F2D4DDBE100B6B2B2 /* Exceptions for "Models" folder in "Clokey" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				NewsImageModel.swift,
+				OpenWeatherMap.swift,
+				PickImageModel.swift,
+				RecommandNewsSlideModel.swift,
+				TabType.swift,
+				UpdateFriendCalendarModel.swift,
+				UpdateFriendClothesModel.swift,
+			);
+			target = 07F0930F2D2418380075659F /* Clokey */;
+		};
+		07649C232D4DDC3F00B6B2B2 /* Exceptions for "Views" folder in "Clokey" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				HomeView.swift,
+				NewsViews/Main/ImageView.swift,
+				NewsViews/Main/NewsView.swift,
+				NewsViews/More/UpdateFriendCalendarView.swift,
+				NewsViews/More/UpdateFriendClothesView.swift,
+				PickViews/PickNothingView.swift,
+				PickViews/PickView.swift,
+			);
+			target = 07F0930F2D2418380075659F /* Clokey */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
 		A62A428F2D4D2A8D00672D3F /* Your */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Your;
@@ -111,24 +158,33 @@
 			path = My;
 			sourceTree = "<group>";
 		};
-		A64C54312D3F97B3000CCB62 /* Cells */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Cells;
-			sourceTree = "<group>";
-		};
 		A62A42E92D4D30F700672D3F /* ViewControllers */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				07649C0D2D4DDBAF00B6B2B2 /* Exceptions for "ViewControllers" folder in "Clokey" target */,
+			);
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		A62A42F52D4D30F700672D3F /* Views */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				07649C232D4DDC3F00B6B2B2 /* Exceptions for "Views" folder in "Clokey" target */,
+			);
 			path = Views;
 			sourceTree = "<group>";
 		};
 		A62A42FD2D4D30F700672D3F /* Models */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				07649C0F2D4DDBE100B6B2B2 /* Exceptions for "Models" folder in "Clokey" target */,
+			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		A64C54312D3F97B3000CCB62 /* Cells */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -209,6 +265,24 @@
 				076FAB572D3020D800FF3979 /* LoginViewController.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		07649BE22D4DDAE600B6B2B2 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				A64C54312D3F97B3000CCB62 /* Cells */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		07649C282D4DDD5D00B6B2B2 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				07649C252D4DDD5D00B6B2B2 /* UpdateFriendCalendarCollectionViewCell.swift */,
+				07649C262D4DDD5D00B6B2B2 /* UpdateFriendClothesCollectionViewCell.swift */,
+				07649C272D4DDD5D00B6B2B2 /* WeatherClothesCollectionViewCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		076FAB312D2E6E0200FF3979 /* Application */ = {
@@ -345,6 +419,7 @@
 			children = (
 				076FAB3E2D2E6E0200FF3979 /* Clokey */,
 				07F093112D2418380075659F /* Products */,
+				07649BE22D4DDAE600B6B2B2 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -359,10 +434,10 @@
 		A62A42FE2D4D30F700672D3F /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				A62A42DD2D4D30F700672D3F /* Cells */,
 				A62A42E92D4D30F700672D3F /* ViewControllers */,
 				A62A42F52D4D30F700672D3F /* Views */,
 				A62A42FD2D4D30F700672D3F /* Models */,
+				07649C282D4DDD5D00B6B2B2 /* Cells */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -386,9 +461,6 @@
 				A62A428F2D4D2A8D00672D3F /* Your */,
 				A62A42932D4D2A8D00672D3F /* My */,
 				A64C54312D3F97B3000CCB62 /* Cells */,
-				A64C54402D3F97BB000CCB62 /* ViewControllers */,
-				A64C54522D3F97C6000CCB62 /* Views */,
-				A64C54612D3F97CF000CCB62 /* Models */,
 			);
 			name = Clokey;
 			packageProductDependencies = (
@@ -484,6 +556,9 @@
 				A62A429F2D4D2ADE00672D3F /* HeaderView.swift in Sources */,
 				A62A42A02D4D2ADE00672D3F /* MainViewController.swift in Sources */,
 				A62A42A12D4D2ADE00672D3F /* TabBarView.swift in Sources */,
+				07649C292D4DDD5D00B6B2B2 /* UpdateFriendCalendarCollectionViewCell.swift in Sources */,
+				07649C2A2D4DDD5D00B6B2B2 /* WeatherClothesCollectionViewCell.swift in Sources */,
+				07649C2B2D4DDD5D00B6B2B2 /* UpdateFriendClothesCollectionViewCell.swift in Sources */,
 				076FAB3F2D2E6E0200FF3979 /* AppDelegate.swift in Sources */,
 				07E1CB4B2D3668CE00F86BB8 /* Constants.swift in Sources */,
 				070258B82D31083D00065369 /* AddClothView.swift in Sources */,
