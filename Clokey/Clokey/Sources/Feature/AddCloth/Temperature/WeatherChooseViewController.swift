@@ -108,6 +108,7 @@ class WeatherChooseViewController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor.mainBrown800
         button.layer.cornerRadius = 10
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -195,8 +196,9 @@ class WeatherChooseViewController: UIViewController {
         
         questionLabel.snp.makeConstraints {
             $0.top.equalTo(customNavBar.snp.bottom).offset(20)
-            $0.leading.trailing.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
+            $0.leading.equalToSuperview().offset(20) //
+            $0.trailing.equalToSuperview().offset(-20) //
+        
             
             
         
@@ -204,9 +206,8 @@ class WeatherChooseViewController: UIViewController {
         
         descriptionLabel.snp.makeConstraints {
             $0.top.equalTo(questionLabel.snp.bottom).offset(10)
-            $0.leading.trailing.equalToSuperview().offset(22)
-            $0.trailing.equalToSuperview().offset(-20)
-            
+            $0.leading.equalToSuperview().offset(22)
+            $0.trailing.equalToSuperview().offset(-20) 
         }
         
         buttonStack.snp.makeConstraints {
@@ -226,10 +227,12 @@ class WeatherChooseViewController: UIViewController {
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
+        // ✅ 다음 버튼 크기를 353 x 54로 설정
         nextButton.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(50)
+                $0.leading.trailing.equalToSuperview().inset(20) // ✅ 좌우 마진 유지
+                $0.height.equalTo(54) // 중앙 정렬
+            
         }
         thermometerIcon.snp.makeConstraints {
             $0.top.equalToSuperview().offset(309)
@@ -344,6 +347,7 @@ class WeatherChooseViewController: UIViewController {
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+       
         
         
         let totalWidth = slider.frame.width

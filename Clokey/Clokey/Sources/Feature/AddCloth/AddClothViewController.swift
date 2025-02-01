@@ -2,7 +2,7 @@ import UIKit
 import SnapKit
 
 
-class AddClothViewController: UIViewController {
+class AddClothViewController: UIViewController, UITextFieldDelegate {
     
     
     
@@ -56,17 +56,17 @@ class AddClothViewController: UIViewController {
     private let SmallTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "옷의 이름을 입력해주세요!"
-        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.font = UIFont.boldSystemFont(ofSize: 24)
         label.textAlignment = .left
         label.textColor = .black
         return label
     }()
 
-    /// 🔹 설명 문구 ("옷 이름을 설정하고 입력 버튼을 누르면 카테고리 자동 분류가 이루어집니다.")
+    /// 🔹 설명 문구 ("옷 이름을 설정하고 입력 버튼을 누르면/n카테고리 자동 분류가 이루어집니다.")
     private let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "옷 이름을 설정하고 입력 버튼을 누르면 카테고리 자동 분류가 이루어집니다."
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.text = "옷 이름을 설정하고 입력 버튼을 누르시면\n카테고리 자동 분류가 이루어집니다."
+        label.font = UIFont.systemFont(ofSize: 16)
         label.textAlignment = .left
         label.textColor = .darkGray
         label.numberOfLines = 2
@@ -140,20 +140,23 @@ class AddClothViewController: UIViewController {
     private let nextButton: UIButton = {
         let button = UIButton()
         button.setTitle("다음", for: .normal)
-        button.backgroundColor = UIColor.mainBrown50
+        button.backgroundColor = UIColor(named: "mainBrown400") // ✅ 초기 색상 (비활성화)
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 8
-        button.isEnabled = true // ✅ 여기서 직접 설정
+        button.isEnabled = false // ✅ 초기에는 비활성화
         button.addTarget(self, action: #selector(didTapNextButton), for: .touchUpInside)
         return button
     }()
 
+    
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLayout()
         view.backgroundColor = .white
         navigationController?.navigationBar.isHidden = true
+        inputField.delegate = self
+        nextButton.frame.size = CGSize(width: 353, height: 54)
         
     }
     
@@ -235,6 +238,8 @@ class AddClothViewController: UIViewController {
         nextButton.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
             $0.leading.trailing.equalToSuperview().inset(20)
+            
+                $0.height.equalTo(54)
         }
 
         categoryContainer.addSubview(categoryTagsContainer)
@@ -266,6 +271,7 @@ class AddClothViewController: UIViewController {
             self.present(weatherVC, animated: true, completion: nil)
         }
     }
+    
     // MARK: - Action Handlers
     @objc private func handleInput() {
         guard let text = inputField.text, !text.isEmpty else {
@@ -275,19 +281,22 @@ class AddClothViewController: UIViewController {
 
         categoryTagsContainer.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
-        let category1 = makeCategoryTag(title: "상의")
-        let separator = makeSeparator()
-        let category2 = makeCategoryTag(title: "후드티")
+            let category1 = makeCategoryTag(title: "상의")
+            let separator = makeSeparator()
+            let category2 = makeCategoryTag(title: "후드티")
 
-        categoryTagsContainer.addArrangedSubview(category1)
-        categoryTagsContainer.addArrangedSubview(separator)
-        categoryTagsContainer.addArrangedSubview(category2)
+            categoryTagsContainer.addArrangedSubview(category1)
+            categoryTagsContainer.addArrangedSubview(separator)
+            categoryTagsContainer.addArrangedSubview(category2)
 
-        categoryContainer.isHidden = false
-        nextButton.isEnabled = true
-        view.layoutIfNeeded()
-    }
+            categoryContainer.isHidden = false
 
+            // ✅ 입력 버튼이 눌렸을 때만 nextButton 활성화 & 색상 변경
+            nextButton.isEnabled = true
+            nextButton.backgroundColor = UIColor(named: "mainBrown800")
+
+            view.layoutIfNeeded()
+        }
     @objc private func handleReclassify() {
         let categoryVC = CategorySelectionViewController()
         navigationController?.pushViewController(categoryVC, animated: true)
@@ -303,8 +312,8 @@ class AddClothViewController: UIViewController {
             inputButton.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor // ✅ 테두리 색도 변경
         } else {
             inputButton.backgroundColor = .clear // ✅ 텍스트 없으면 투명
-            inputButton.layer.borderColor = UIColor.black.cgColor// ✅ 기본 테두리 색 유지
-            inputButton.setTitleColor(UIColor.black, for: .normal)// ✅ 기본 글 색 유지
+            inputButton.layer.borderColor = UIColor.black.cgColor // ✅ 기본 테두리 색 유지
+            inputButton.setTitleColor(UIColor.black, for: .normal) // ✅ 기본 글 색 유지
         }
     }
     
@@ -329,5 +338,14 @@ class AddClothViewController: UIViewController {
         label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         return label
     }
+func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder() // 키보드 내리기
+        return true
+    }
 
-
+extension AddClothViewController {
+    func inputContainerShouldReturn(_textField: UITextField) -> Bool {
+        inputContainer.resignFirstResponder()
+        return true
+    }
+}

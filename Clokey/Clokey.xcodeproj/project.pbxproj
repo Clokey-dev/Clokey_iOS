@@ -133,6 +133,11 @@
 			path = Thick;
 			sourceTree = "<group>";
 		};
+		48EAA9092D4D9C580095DA0F /* Popup */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Popup;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +193,7 @@
 		070258A72D31072800065369 /* AddCloth */ = {
 			isa = PBXGroup;
 			children = (
+				48EAA9092D4D9C580095DA0F /* Popup */,
 				48EAA8F42D4C379D0095DA0F /* Thick */,
 				48EAA8E92D4C28410095DA0F /* Temperature */,
 				070258B72D31083D00065369 /* AddClothView.swift */,
@@ -392,6 +398,7 @@
 				48D9A6962D3BBF0300473CDE /* AddProfile */,
 				48EAA8E92D4C28410095DA0F /* Temperature */,
 				48EAA8F42D4C379D0095DA0F /* Thick */,
+				48EAA9092D4D9C580095DA0F /* Popup */,
 			);
 			name = Clokey;
 			packageProductDependencies = (

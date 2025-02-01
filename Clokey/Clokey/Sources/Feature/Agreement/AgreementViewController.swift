@@ -100,6 +100,7 @@ class AgreementViewController: UIViewController {
         setupUI() // UI 설정
         tableView.delegate = self // 테이블뷰 델리게이트 연결
         tableView.dataSource = self // 테이블뷰 데이터소스 연결
+        
     }
     
     // UI 구성

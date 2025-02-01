@@ -16,8 +16,8 @@ class ThickSlider: UISlider {
     
     private let circleSize: CGFloat = 12
     private let thumbSize: CGFloat = 20
-    private let selectedColor = UIColor.brown  // mainbrown800
-    private let borderColor = UIColor.brown.cgColor  // 원 테두리 색상
+    private let selectedColor = UIColor.mainBrown800 // mainbrown800
+    private let borderColor = UIColor.black.cgColor  // 원 테두리 색상
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -43,6 +43,8 @@ class ThickSlider: UISlider {
         maximumTrackTintColor = .clear
         
         // Thumb를 완전한 brown으로 설정
+        let thumbColor = UIColor(named: "mainbrown800") ?? UIColor.brown
+            
         setThumbImage(createThumbImage(size: thumbSize, color: selectedColor), for: .normal)
         
         createTrackLayer()  // 커스텀 트랙 추가
@@ -83,7 +85,8 @@ class ThickSlider: UISlider {
         }
         
         trackLayer.path = path.cgPath
-        trackLayer.strokeColor = selectedColor.cgColor
+        
+        trackLayer.strokeColor = UIColor.black.cgColor
         trackLayer.lineWidth = 2
         trackLayer.fillColor = UIColor.clear.cgColor
     }
@@ -157,19 +160,22 @@ class ThickSlider: UISlider {
    
 
     private func highlightSelectedCircle() {
-        let selectedIndex = Int(value.rounded())
+        let selectedIndex = Int(value.rounded()) // 🎯 현재 선택된 인덱스
         
         for (index, circle) in circles.enumerated() {
-            if index == selectedIndex {
-                UIView.animate(withDuration: 0.2) {
-                    circle.backgroundColor = self.selectedColor  // 선택된 원은 brown
-                }
-            } else {
-                UIView.animate(withDuration: 0.2) {
-                    circle.backgroundColor = .white  // 원을 뚫린 것처럼 보이도록 흰색 유지
+            UIView.animate(withDuration: 0.2) {
+                if index == selectedIndex {
+                    circle.backgroundColor = self.selectedColor // ✅ 선택된 원 색상 변경 (브라운)
+                    circle.transform = CGAffineTransform(scaleX: 1.5, y: 1.5) // ✅ 크기 키우기 (1.5배)
+                    circle.layer.borderColor = UIColor.mainBrown800.cgColor // ✅ 테두리 검은색 유지
+                } else {
+                    circle.backgroundColor = .white // ✅ 나머지는 흰색 유지
+                    circle.transform = CGAffineTransform.identity // ✅ 원래 크기로 복귀
+                    circle.layer.borderColor = UIColor.black.cgColor // ✅ 테두리 검은색 유지
                 }
             }
         }
+    
     }
     
     private func createThumbImage(size: CGFloat, color: UIColor) -> UIImage? {
@@ -187,6 +193,7 @@ class ThickSlider: UISlider {
         updateCircles()
         updateTrackLayer()
         highlightSelectedCircle()
+        self.superview?.bringSubviewToFront(self)
         
         // 🎯 정수 값에서만 thumb가 정렬되도록 강제 업데이트
         if self.isTracking == false { // 터치 중이 아닐 때만 적용
