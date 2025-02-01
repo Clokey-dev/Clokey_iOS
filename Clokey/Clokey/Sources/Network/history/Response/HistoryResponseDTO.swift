@@ -26,3 +26,24 @@ public struct HistoryDTO: Codable {
 //    public let nickname: String
 ////    public let clokeyId: long
 //}
+
+// 날짜 세부 페이지 
+public struct HistoryDetailResponseDTO: Codable {
+    public let memberId: Int64
+    public let memberImageUrl: String
+    public let nickName: String
+    public let clokeyId: Int64
+    public let content: String
+    public let images: [String]
+    public let hashtags: [String]
+    public let availability: Bool
+    public let likeCount: Int
+    public let isLiked: Bool
+    public let date: String
+    public let clothes: [ClothDTO]
+}
+
+public struct ClothDTO: Codable {
+    public let clothId: Int
+    public let clothImageUrl: String
+}

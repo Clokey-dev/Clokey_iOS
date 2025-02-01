@@ -59,7 +59,7 @@ extension ClothesEndpoint: TargetType {
         }
     }
     
-    public var task: Task {
+    public var task: Moya.Task {
         switch self {
         case .inquiryClothesDetail(let cloth_id):
             return .requestPlain

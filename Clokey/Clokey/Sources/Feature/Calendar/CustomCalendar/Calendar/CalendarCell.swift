@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 class CalendarCell: UICollectionViewCell {
     
@@ -14,6 +15,12 @@ class CalendarCell: UICollectionViewCell {
     private let dayLabel = UILabel().then {
         $0.textAlignment = .center
         $0.font = .ptdBoldFont(ofSize: 12)
+    }
+    
+    private let imageView = UIImageView().then { // 추가: 이미지 표시
+        $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
+        $0.layer.cornerRadius = 10
     }
     
     // 오늘 날짜 표시
@@ -37,9 +44,10 @@ class CalendarCell: UICollectionViewCell {
     private func setupUI() {
         contentView.addSubview(todayView) // 원형 뷰를 먼저 추가
         contentView.addSubview(dayLabel) // 레이블을 셀에 추가
-//        contentView.layer.borderWidth = 0.5 // 셀 테두리 두께
-//        contentView.layer.borderColor = UIColor.white.cgColor // 셀 테두리 색상
-
+        //        contentView.layer.borderWidth = 0.5 // 셀 테두리 두께
+        //        contentView.layer.borderColor = UIColor.white.cgColor // 셀 테두리 색상
+        contentView.addSubview(imageView)
+        
         // 오늘 표시
         todayView.snp.makeConstraints {
             $0.center.equalTo(dayLabel)
@@ -51,10 +59,14 @@ class CalendarCell: UICollectionViewCell {
             $0.centerX.equalToSuperview()
             $0.leading.trailing.equalToSuperview()
         }
+        
+        imageView.snp.makeConstraints {
+            $0.edges.equalToSuperview().inset(4)
+        }
     }
     
     // 셀 구성 메서드
-    func configure(day: Int, isSelected: Bool, isCurrentMonth: Bool, isToday: Bool) {
+    func configure(day: Int, isSelected: Bool, isCurrentMonth: Bool, isToday: Bool, imageUrl: String?) {
         dayLabel.text = isCurrentMonth ? "\(day)" : ""
 
         if isToday {
@@ -66,9 +78,16 @@ class CalendarCell: UICollectionViewCell {
                 contentView.backgroundColor = .systemBlue.withAlphaComponent(0.3)
                 dayLabel.textColor = .black
             } else {
-                contentView.backgroundColor = .gray
+                contentView.backgroundColor = .clear
                 dayLabel.textColor = .black
             }
+        }
+        
+        // Kingfisher를 이용해 이미지 로딩 (비동기)
+        if let imageUrl = imageUrl, let url = URL(string: imageUrl) {
+            imageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"))
+        } else {
+            imageView.image = nil
         }
     }
 }

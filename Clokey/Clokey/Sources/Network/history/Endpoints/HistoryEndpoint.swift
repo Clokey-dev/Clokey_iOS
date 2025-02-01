@@ -10,6 +10,7 @@ import Moya
 
 public enum HistoryEndpoint {
     case historyMonth(clokeyId: String?, month: String)
+    case historyDetail(historyId: Int)
     // 추가적인 API는 여기 케이스로 정의
 }
 
@@ -25,7 +26,9 @@ extension HistoryEndpoint: TargetType {
     public var path: String {
         switch self {
         case .historyMonth:
-                    return "/monthly"
+            return "/histories/monthly"
+        case .historyDetail(let historyId):
+            return "/histories/\(historyId)"
         }
     }
     
@@ -36,7 +39,7 @@ extension HistoryEndpoint: TargetType {
 //            return .post
 //        case
 //            return .patch
-        case .historyMonth:
+        case .historyMonth, .historyDetail:
             return .get
 //        case
 //            return .delete
@@ -52,6 +55,8 @@ extension HistoryEndpoint: TargetType {
                 parameters["clokeyId"] = clokeyId
             }
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
+        case .historyDetail:
+            return .requestPlain // ✅ Path Parameter만 사용 (Body 필요 없음)
         }
     }
 

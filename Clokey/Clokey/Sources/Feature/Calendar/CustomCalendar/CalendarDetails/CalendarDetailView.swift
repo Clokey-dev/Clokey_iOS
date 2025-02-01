@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 import Then
+import Kingfisher
 
 class CalendarDetailView: UIView {
     
@@ -340,7 +341,38 @@ class ImageCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(with imageName: String) {
-        imageView.image = UIImage(named: imageName)
+    func configure(with imageUrl: String) {
+        imageView.kf.setImage(with: URL(string: imageUrl), placeholder: UIImage(named: "placeholder"))
+    }
+}
+
+
+extension CalendarDetailView {
+    func configure(with data: HistoryDetailResponseDTO) {
+        // 프로필 이미지 설정 (Kingfisher 사용)
+        profileImage.kf.setImage(with: URL(string: data.memberImageUrl), placeholder: UIImage(named: "profile_placeholder"))
+        
+        // 닉네임 설정
+        nameLabel.text = data.nickName
+        
+        // 이미지 슬라이드 설정
+        configureImages(data.images)
+        
+        // 좋아요 버튼 상태 설정
+        let heartImage = data.isLiked ? "heart.fill" : "heart"
+        likeButton.setImage(UIImage(systemName: heartImage), for: .normal)
+        likeButton.tintColor = data.isLiked ? .red : .black
+        
+        // 좋아요 수 설정
+        likeLabel.text = "\(data.likeCount)"
+        
+        // 컨텐츠 (글) 설정
+        contentLabel.text = data.content
+        
+        // 해시태그 설정
+        configureHashtags(data.hashtags)
+        
+        // 날짜 설정
+        dateLabel.text = data.date // (날짜 포맷 변환 필요하면 추가)
     }
 }

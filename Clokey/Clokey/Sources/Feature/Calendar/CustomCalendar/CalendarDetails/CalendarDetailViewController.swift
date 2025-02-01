@@ -9,16 +9,22 @@ import Foundation
 import UIKit
 
 class CalendarDetailViewController: UIViewController {
-    
+
     private let calendarDetailView = CalendarDetailView()
+    private var detailData: HistoryDetailResponseDTO?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupUI()
-        setupData()
+        if let detailData = detailData {
+            calendarDetailView.configure(with: detailData) // UI 업데이트
+        }
     }
-    
+
+    func setDetailData(_ data: HistoryDetailResponseDTO) {
+        self.detailData = data
+    }
+
     private func setupUI() {
         view.backgroundColor = .white
         view.addSubview(calendarDetailView)
@@ -26,15 +32,5 @@ class CalendarDetailViewController: UIViewController {
         calendarDetailView.snp.makeConstraints {
             $0.edges.equalTo(view.safeAreaLayoutGuide)
         }
-    }
-    
-    private func setupData() {
-        // 예제 이미지 데이터 설정
-        let sampleImages = ["test_cloth", "test_cloth", "test_cloth"]
-        calendarDetailView.configureImages(sampleImages)
-        
-        // 예제 해시태그 데이터 설정
-        let sampleHashtags = ["#연말룩", "#파티룩", "#원피스", "#2025년도 화이팅"]
-        calendarDetailView.configureHashtags(sampleHashtags)
     }
 }

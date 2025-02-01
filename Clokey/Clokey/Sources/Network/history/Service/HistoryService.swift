@@ -38,5 +38,16 @@ public final class HistoryService: NetworkManager {
         )
     }
 
+    // 개별 기록 조회 GET API
+    public func historyDetail(
+        historyId: Int,
+        completion: @escaping (Result<HistoryDetailResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .historyDetail(historyId: historyId),
+            decodingType: HistoryDetailResponseDTO.self,
+            completion: completion
+        )
+    }
 
 }
