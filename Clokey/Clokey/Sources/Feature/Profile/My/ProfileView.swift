@@ -13,43 +13,49 @@ import Then
 final class ProfileView: UIView {
     /// 세로 스크롤을 지원하는 ScrollView
     let scrollView: UIScrollView = UIScrollView().then {
-        $0.showsVerticalScrollIndicator = false 
+        $0.showsVerticalScrollIndicator = false
     }
     
     /// ScrollView 내부 콘텐츠를 담는 ContentView
     let contentView: UIView = UIView().then {
         $0.backgroundColor = .white // 배경색 흰색
     }
-    // MARK: - UI Components
-//    let backButton = UIButton().then {
-//        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-//        $0.tintColor = .black
-//    }
-//    
-//    let usernameLabel = UILabel().then {
-//        $0.text = "cake123(아이디란)"
-//        $0.font = UIFont.ptdMediumFont(ofSize: 18)
-//        $0.textAlignment = .center
-//    }
+    
+    let usernameLabel = UILabel().then {
+        $0.text = "cake123"
+        $0.font = UIFont.ptdSemiBoldFont(ofSize: 20)
+        $0.textAlignment = .center
+        $0.textColor = .black
+    }
+    
+    let editButton = UIButton().then {
+        $0.setImage(UIImage(named: "write_icon"), for: .normal)
+        $0.tintColor = .black
+    }
+    
+    let settingButton = UIButton().then {
+        $0.setImage(UIImage(named: "setting_icon"), for: .normal)
+        $0.tintColor = .black
+    }
     
     let backgroundImageView = UIImageView().then {
         $0.image = UIImage(named: "profile_background")
-        $0.backgroundColor = .systemGray6
+        $0.backgroundColor = UIColor(red: 255/255, green: 248/255, blue: 235/255, alpha: 1.0)
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
     }
     
     let profileContainer: UIView = UIView().then {
-        $0.backgroundColor = .systemBlue
+        $0.backgroundColor = .white
         $0.layer.cornerRadius = 50 // 원형으로 만들기 위해 반지름을 절반으로 설정
         $0.layer.masksToBounds = true // 자식 콘텐츠가 코너를 넘지 않도록 설정
     }
     
     let profileImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
-        $0.layer.cornerRadius = 10
+        $0.layer.cornerRadius = 50
         $0.layer.masksToBounds = true
-        $0.image = UIImage(named: "profile_icon")
+        $0.image = UIImage(named: "profile_test")
     }
     
     let nicknameLabel: UILabel = {
@@ -61,11 +67,52 @@ final class ProfileView: UIView {
         return label
     }()
     
-    let statsLabel = UILabel().then {
-        $0.text = "게시글 000  팔로워 000  팔로잉 000"
+    let profileDetailContainer: UIView = UIView().then {
+        $0.backgroundColor = .clear
+    }
+    
+    let writeLabel = UILabel().then {
+        $0.text = "게시글"
         $0.font = UIFont.ptdRegularFont(ofSize: 12)
         $0.textColor = .black
         $0.textAlignment = .center
+    }
+    
+    let writeCountLabel = UILabel().then {
+        $0.text = "000"
+        $0.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.textColor = .black
+        $0.textAlignment = .center
+    }
+    
+    let followerLabel = UILabel().then {
+        $0.text = "팔로워"
+        $0.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.textColor = .black
+        $0.textAlignment = .center
+    }
+    
+    let followerCountButton = UIButton().then {
+        $0.setTitle("000", for: .normal)
+        $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.setTitleColor(.black, for: .normal)
+        $0.titleLabel?.textAlignment = .center
+        //        $0.addTarget(self, action: #selector(followingCountTapped), for: .touchUpInside)
+    }
+    
+    let followingLabel = UILabel().then {
+        $0.text = "팔로잉"
+        $0.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.textColor = .black
+        $0.textAlignment = .center
+    }
+    
+    let followingCountButton = UIButton().then {
+        $0.setTitle("000", for: .normal)
+        $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.setTitleColor(.black, for: .normal)
+        $0.titleLabel?.textAlignment = .center
+        //        $0.addTarget(self, action: #selector(followingCountTapped), for: .touchUpInside)
     }
     
     let descriptionLabel = UILabel().then {
@@ -76,16 +123,9 @@ final class ProfileView: UIView {
         $0.numberOfLines = 2
     }
     
-    let followButton = UIButton().then {
-        $0.setTitle("팔로우", for: .normal)
-        $0.setTitleColor(.white, for: .normal)
-        $0.backgroundColor = .mainBrown800
-        $0.layer.cornerRadius = 10
-    }
-    
     let clothesLabel = UILabel().then {
         $0.text = "옷장"
-        $0.font = UIFont.boldSystemFont(ofSize: 18)
+        $0.font = UIFont.ptdRegularFont(ofSize: 20)
         $0.textAlignment = .left
     }
     
@@ -119,7 +159,7 @@ final class ProfileView: UIView {
     let bottomButtonLabel: UILabel = UILabel().then {
         $0.text = "옷장 구경하기" // 버튼 텍스트
         $0.textColor = .black // 텍스트 색상
-        $0.font = UIFont.ptdMediumFont(ofSize: 12) // 폰트 크기
+        $0.font = UIFont.systemFont(ofSize: 12) // 폰트 크기
     }
     
     /// 버튼 옆의 화살표 아이콘
@@ -131,9 +171,11 @@ final class ProfileView: UIView {
     
     let recordLabel = UILabel().then {
         $0.text = "기록"
-        $0.font = UIFont.boldSystemFont(ofSize: 18)
+        $0.font = UIFont.ptdRegularFont(ofSize: 20)
         $0.textAlignment = .left
     }
+    
+    let calendarView = CalendarView()
     
     let recordContainerView: UIView = UIView().then {
         $0.backgroundColor = .gray
@@ -157,15 +199,21 @@ final class ProfileView: UIView {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
         
-//        contentView.addSubview(backButton)
-//        contentView.addSubview(usernameLabel)
         contentView.addSubview(backgroundImageView)
+        contentView.addSubview(usernameLabel)
+        contentView.addSubview(editButton)
+        contentView.addSubview(settingButton)
         contentView.addSubview(profileContainer)
         profileContainer.addSubview(profileImageView)
         contentView.addSubview(nicknameLabel)
-        contentView.addSubview(statsLabel)
+        contentView.addSubview(profileDetailContainer)
+        profileDetailContainer.addSubview(writeLabel)
+        profileDetailContainer.addSubview(writeCountLabel)
+        profileDetailContainer.addSubview(followerLabel)
+        profileDetailContainer.addSubview(followerCountButton)
+        profileDetailContainer.addSubview(followingLabel)
+        profileDetailContainer.addSubview(followingCountButton)
         contentView.addSubview(descriptionLabel)
-        contentView.addSubview(followButton)
         contentView.addSubview(clothesLabel)
         contentView.addSubview(clothesImageContainerView)
         clothesImageContainerView.addSubview(clothesImageView1)
@@ -175,6 +223,8 @@ final class ProfileView: UIView {
         contentView.addSubview(bottomArrowIcon)
         contentView.addSubview(recordLabel)
         contentView.addSubview(recordContainerView)
+        
+        recordContainerView.addSubview(calendarView)
     }
     
     
@@ -189,21 +239,29 @@ final class ProfileView: UIView {
             make.width.equalToSuperview() // 가로 크기는 화면 크기와 동일
         }
         
-//        backButton.snp.makeConstraints { make in
-//            make.top.equalToSuperview().offset(60)
-//            make.leading.equalToSuperview().offset(20)
-//            make.size.equalTo(24)
-//        }
-//        
-//        usernameLabel.snp.makeConstraints { make in
-//            make.centerY.equalTo(backButton)
-//            make.centerX.equalToSuperview()
-//        }
-        
         backgroundImageView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.centerX.equalToSuperview()
             make.height.width.equalTo(393)
+        }
+        
+        usernameLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(72)
+            make.leading.equalToSuperview().offset(20)
+        }
+        
+        editButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(72)
+            make.trailing.equalToSuperview().inset(67)
+            make.width.equalTo(19)
+            make.height.equalTo(20)
+        }
+        
+        settingButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(72)
+            make.trailing.equalToSuperview().inset(20)
+            make.width.equalTo(24)
+            make.height.equalTo(24)
         }
         
         profileContainer.snp.makeConstraints { make in
@@ -221,27 +279,53 @@ final class ProfileView: UIView {
         nicknameLabel.snp.makeConstraints { make in
             make.top.equalTo(profileImageView.snp.bottom).offset(13)
             make.centerX.equalToSuperview()
+            make.height.equalTo(24)
         }
         
-        statsLabel.snp.makeConstraints { make in
+        profileDetailContainer.snp.makeConstraints { make in
             make.top.equalTo(nicknameLabel.snp.bottom).offset(4)
             make.centerX.equalToSuperview()
+            make.height.equalTo(24)
+        }
+        
+        writeLabel.snp.makeConstraints { make in
+            make.top.leading.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
+        
+        writeCountLabel.snp.makeConstraints { make in
+            make.leading.equalTo(writeLabel.snp.trailing).offset(8)
+            make.centerY.equalTo(writeLabel)
+        }
+        
+        followerLabel.snp.makeConstraints { make in
+            make.leading.equalTo(writeCountLabel.snp.trailing).offset(20)
+            make.centerY.equalTo(writeCountLabel)
+        }
+        
+        followerCountButton.snp.makeConstraints { make in
+            make.leading.equalTo(followerLabel.snp.trailing).offset(8)
+            make.centerY.equalTo(followerLabel)
+        }
+        
+        followingLabel.snp.makeConstraints { make in
+            make.leading.equalTo(followerCountButton.snp.trailing).offset(20)
+            make.centerY.equalTo(followerCountButton)
+        }
+        
+        followingCountButton.snp.makeConstraints { make in
+            make.leading.equalTo(followingLabel.snp.trailing).offset(8)
+            make.centerY.equalTo(followingLabel)
+            make.trailing.equalToSuperview()
         }
         
         descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(statsLabel.snp.bottom).offset(4)
+            make.top.equalTo(profileDetailContainer.snp.bottom).offset(4)
             make.centerX.equalToSuperview()
-        }
-        
-        followButton.snp.makeConstraints { make in
-            make.top.equalTo(descriptionLabel.snp.bottom).offset(13)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(76)
-            make.height.equalTo(30)
         }
         
         clothesLabel.snp.makeConstraints { make in
-            make.top.equalTo(followButton.snp.bottom).offset(36)
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(36)
             make.leading.equalToSuperview().offset(20)
         }
         
@@ -294,6 +378,10 @@ final class ProfileView: UIView {
             make.trailing.equalToSuperview().inset(20)
             make.height.equalTo(520)
             make.bottom.equalToSuperview().offset(-40) // 스크롤 콘텐츠의 마지막 부분
+        }
+        
+        calendarView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(10) // 내부 패딩 적용
         }
     }
 }
