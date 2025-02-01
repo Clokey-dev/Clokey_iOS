@@ -26,7 +26,12 @@ class CalendarDetailViewController: UIViewController {
         
         calendarDetailView.likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         calendarDetailView.commentButton.addTarget(self, action: #selector(didTapCommentButton), for: .touchUpInside)
-
+        calendarDetailView.plusButton.addTarget(self, action: #selector(didTapPlusButton), for: .touchUpInside)
+        
+        // likeLabel에 탭 제스처 추가
+        let likeTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapLikeLabel))
+        calendarDetailView.likeLabel.isUserInteractionEnabled = true
+        calendarDetailView.likeLabel.addGestureRecognizer(likeTapGesture)
     }
 
     func setDetailData(_ data: HistoryDetailResponseDTO) {
@@ -56,6 +61,28 @@ class CalendarDetailViewController: UIViewController {
         let commentVC = CalendarCommentViewController()
         commentVC.modalPresentationStyle = .overFullScreen 
         present(commentVC, animated: false)
+    }
+    
+    // 편집뷰
+    @objc private func didTapPlusButton() {
+        let actionSheet = CustomActionSheetViewController()
+        actionSheet.modalPresentationStyle = .overFullScreen
+        present(actionSheet, animated: false)
+    }
+    
+    // 좋아요 뷰
+    @objc private func didTapLikeLabel() {
+        // TODO: 나중에 바로 연결해서 줘도 좋을 듯
+        // let likeListVC = LikeListViewController(historyId: yourHistoryId)
+        let likeListVC = LikeListViewController()
+        likeListVC.modalPresentationStyle = .pageSheet
+        
+        if let sheet = likeListVC.sheetPresentationController {
+            sheet.detents = [.medium(), .large()]
+            sheet.preferredCornerRadius = 20
+        }
+        
+        present(likeListVC, animated: true)
     }
     
     // MARK: - Method
