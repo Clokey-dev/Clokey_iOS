@@ -163,6 +163,8 @@ class AddProfileViewController: UIViewController, UITextFieldDelegate, UIImagePi
         idTextField.addBottomBorder(color: .black, height: 1.0)
         nicknameTextField.addBottomBorder(color: .black, height: 1.0)
         self.title = "프로필 설정" //  상단 타이틀 추가
+        nicknameTextField.delegate = self
+        idTextField.delegate = self
         
     }
     // MARK: - UI Setup
@@ -461,7 +463,12 @@ class AddProfileViewController: UIViewController, UITextFieldDelegate, UIImagePi
     }
     
 }
-
+extension AddProfileViewController {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder() // 키보드 닫기
+        return true
+    }
+}
 
 extension UITextField {
     func addBottomBorder(color: UIColor, height: CGFloat) {
