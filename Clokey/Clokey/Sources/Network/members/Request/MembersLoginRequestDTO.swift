@@ -15,6 +15,11 @@ public struct KakaoLoginRequestDTO: Codable {
     public let accessToken: String
 }
 
+// 토큰 재발급
+public struct ReissueTokenRequestDTO: Codable {
+    public let refreshToken: String
+}
+
 // 약관동의
 public struct TermsAgreementRequestDTO: Codable {
     public let terms: [Term]

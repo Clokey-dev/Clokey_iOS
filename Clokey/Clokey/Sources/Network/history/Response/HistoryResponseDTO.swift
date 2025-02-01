@@ -8,17 +8,17 @@
 import Foundation
 
 //// 월별 기록 조회
-//public struct HistoryMonthResponseDTO: Codable {
-//    public let memberId: Long
-//    public let histories: [HistoryDTO]
-//}
-//
-//public struct HistoryDTO: Codable {
-//    public let historyId: Int
-//    public let date: String
-//    public let imageUrl: String
-//}
-//
+public struct HistoryMonthResponseDTO: Codable {
+    public let memberId: Int64
+    public let histories: [HistoryDTO]
+}
+
+public struct HistoryDTO: Codable {
+    public let historyId: Int
+    public let date: String
+    public let imageUrl: String
+}
+
 //// 일별 기록 조회
 //public struct HistoryDayResponseDTO: Codable {
 //    public let memberId: Int

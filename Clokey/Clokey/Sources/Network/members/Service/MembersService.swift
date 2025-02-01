@@ -36,6 +36,17 @@ public final class MembersService: NetworkManager {
         )
     }
     
+    // 토큰 재발급 POST API
+    public func reissueToken(
+        data: ReissueTokenRequestDTO,
+        completion: @escaping (Result<KakaoLoginResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .ReissueToken(data: data),
+            decodingType: KakaoLoginResponseDTO.self,
+            completion: completion)
+    }
+    
     /// 약관 동의 POST API
     public func agreeToTerms(
         userId: Int,
