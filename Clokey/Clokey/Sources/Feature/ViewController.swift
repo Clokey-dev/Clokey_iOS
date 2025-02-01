@@ -11,6 +11,11 @@ import SnapKit
 class ViewController: UIViewController {
 
     let navBarManager = NavigationBarManager()
+    
+    private let searchField: CustomSearchField = {
+        let field = CustomSearchField()
+        return field
+    }()
 
     // 닉네임 필드 추가
     let nicknameField = CustomTextField(title: "닉네임", placeholder: "2글자 이상", isRequired: true)
@@ -49,12 +54,19 @@ class ViewController: UIViewController {
             title: "커스텀 네비게이션 바",
             font: .systemFont(ofSize: 18, weight: .semibold), textColor: .black
         )
+        
+        view.addSubview(searchField)
+        searchField.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(100)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+        }
 
         // 닉네임 필드 추가
         view.addSubview(nicknameField)
         nicknameField.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.top.equalToSuperview().offset(100)
+            $0.top.equalTo(searchField.snp.bottom).offset(50)
             $0.height.greaterThanOrEqualTo(60) // 적절한 높이 설정
         }
         
@@ -68,18 +80,18 @@ class ViewController: UIViewController {
         
         // 아이디 + 버튼
         view.addSubview(idField)
-        idField.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.top.equalTo(IDField.snp.bottom).offset(40)
-            make.height.equalTo(60)
+        idField.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.top.equalTo(IDField.snp.bottom).offset(40)
+            $0.height.equalTo(60)
         }
         
         // " " + 버튼
         view.addSubview(idField2)
-        idField2.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.top.equalTo(idField.snp.bottom).offset(40)
-            make.height.equalTo(60)
+        idField2.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.top.equalTo(idField.snp.bottom).offset(40)
+            $0.height.equalTo(60)
         }
         
         // " " + 버튼 + 활성화
@@ -88,18 +100,18 @@ class ViewController: UIViewController {
 
         // 비활성화 버튼
         view.addSubview(firstButton)
-        firstButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(idField2.snp.bottom).offset(40)
-            make.leading.trailing.equalToSuperview().inset(20)
+        firstButton.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(idField2.snp.bottom).offset(40)
+            $0.leading.trailing.equalToSuperview().inset(20)
         }
         
         // 활성화 버튼
         view.addSubview(secondButton)
-        secondButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(firstButton.snp.bottom).offset(40)
-            make.leading.trailing.equalToSuperview().inset(20)
+        secondButton.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(firstButton.snp.bottom).offset(40)
+            $0.leading.trailing.equalToSuperview().inset(20)
         }
         
         // 버튼 텍스트 변경
