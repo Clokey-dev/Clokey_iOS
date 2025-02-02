@@ -13,24 +13,28 @@ class AgreementViewController: UIViewController {
     // 약관 데이터 모델 (약관 제목, 필수 여부, 체크 상태 포함)
     private var agreements: [Agreement] = [
             Agreement(
+                termId: 1,
                 title: "서비스 이용약관",
                 isRequired: true,
                 isChecked: false,
                 content: "서비스 이용약관의 상세 내용입니다..." // ✅ 추가
             ),
             Agreement(
+                termId : 2,
                 title: "개인정보 수집/이용 동의",
                 isRequired: true,
                 isChecked: false,
                 content: "개인정보 처리 방침 상세 내용..." // ✅ 추가
             ),
             Agreement(
+                termId: 3,
                 title: "위치기반 서비스 이용약관 동의",
                 isRequired: true,
                 isChecked: false,
                 content: "위치기반 서비스 약관 내용..." // ✅ 추가
             ),
             Agreement(
+                termId: 4,
                 title: "마케팅 정보수신 동의",
                 isRequired: false,
                 isChecked: false,
@@ -44,7 +48,8 @@ class AgreementViewController: UIViewController {
     
     // 필수 약관 체크 여부 확인
     private var areAllRequiredChecked: Bool {
-        return agreements.filter { $0.isRequired }.allSatisfy { $0.isChecked } // 필수 항목만 체크되었는지 확인
+        let requiredAgreements = agreements.filter { $0.isRequired } // 필수 항목만 필터링
+        return requiredAgreements.allSatisfy { $0.isChecked } // 필수 항목이 모두 체크되었는지 확인
     }
     
     let backButton = UIButton().then {
@@ -104,6 +109,7 @@ class AgreementViewController: UIViewController {
         setupUI() // UI 설정
         tableView.delegate = self // 테이블뷰 델리게이트 연결
         tableView.dataSource = self // 테이블뷰 데이터소스 연결
+     
         
     }
     
@@ -170,13 +176,60 @@ class AgreementViewController: UIViewController {
         tableView.reloadData() // 테이블뷰 데이터 새로고침
         updateAllAgreeButtonState() // 전체 동의 버튼 상태 업데이트
         updateAgreeButtonState() // 가입 완료 버튼 상태 업데이트
+        
+        // ✅ 모든 동의 상태를 서버에 전달
+            sendTermsToServer()
     }
+    
+    
+    
+    private func sendTermsToServer() {
+        let userId = 12345 // 사용자 ID (예시)
+        let requestData = prepareAgreementData() // 약관 데이터 준비
+
+        let membersService = MembersService()
+        membersService.agreeToTerms(userId: userId, data: requestData) { [weak self] result in
+            guard let self = self else { return }
+
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    // ✅ 서버 응답 데이터를 기반으로 약관 동의 처리
+                    let failedTerms = response.terms.filter { !$0.agreed } // 동의되지 않은 약관 필터링
+                    
+                    if failedTerms.isEmpty {
+                        print("✅ 약관 동의 데이터가 성공적으로 서버에 전송되었습니다!")
+                    } else {
+                        print("❌ 동의 실패 항목이 있습니다: \(failedTerms.map { $0.termId })")
+                    }
+                case .failure(let error):
+                    print("❌ 네트워크 오류: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
+    private func prepareAgreementData() -> TermsAgreementRequestDTO {
+        let terms = agreements.map { agreement in
+            TermsAgreementRequestDTO.Term(
+                termId: agreement.termId,
+                agreed: agreement.isChecked
+            )
+        }
+
+        return TermsAgreementRequestDTO(terms: terms)
+    }
+    
+    
+    
     
     // 가입 완료 버튼 클릭 이벤트
     @objc private func didTapAgreeButton() {
         guard areAllRequiredChecked else { return } // 필수 약관이 체크되지 않았다면 리턴
 
         print("✅ 약관 동의 완료. 프로필 설정 화면으로 이동")
+        sendTermsToAPI() // ✅ 가입 완료 버튼을 눌렀을 때만 실행
+        sendTermsToServer()
 
         let addProfileVC = AddProfileViewController()
         addProfileVC.modalPresentationStyle = .fullScreen
@@ -190,6 +243,7 @@ class AgreementViewController: UIViewController {
     
     // 가입 완료 버튼 상태 업데이트
     private func updateAgreeButtonState() {
+        let allRequiredCheckd = agreements.filter{ $0.isRequired }.allSatisfy { $0.isChecked }
         agreeButton.isEnabled = areAllRequiredChecked // 필수 항목이 체크되었는지에 따라 활성화 여부 설정
         agreeButton.backgroundColor = areAllRequiredChecked ? .mainBrown800 : .mainBrown400 // 버튼 색상 변경
     }
@@ -223,8 +277,13 @@ extension AgreementViewController: UITableViewDelegate, UITableViewDataSource {
         
         // 체크박스 액션 (기존 코드 유지)
         cell.onCheckBoxTapped = { [weak self] in
-            self?.agreements[indexPath.row].isChecked.toggle()
-            self?.tableView.reloadRows(at: [indexPath], with: .none)
+            guard let self = self else { return }
+            
+            self.agreements[indexPath.row].isChecked.toggle() // ✅ 상태 변경
+            self.tableView.reloadRows(at: [indexPath], with: .none)
+
+            // ✅ 필수 약관 체크 여부 다시 계산
+            self.updateAgreeButtonState()
         }
         
         // ✅ 화살표 액션 수정: agreement 전체 전달
@@ -234,6 +293,81 @@ extension AgreementViewController: UITableViewDelegate, UITableViewDataSource {
         
         return cell
     }
+    func prepareRequestData() -> String {
+        let sortedAgreements = agreements.sorted { $0.termId < $1.termId }
         
+        var jsonString = "{ \"terms\": ["
+        
+        for (index, agreement) in sortedAgreements.enumerated() {
+            jsonString += """
+            { "termId": \(agreement.termId), "agreed": \(agreement.isChecked) }
+            """
+            if index < sortedAgreements.count - 1 {
+                jsonString += ","
+            }
+        }
+        
+        jsonString += "] }"
+        
+        print("📡 준비된 JSON 문자열:\n\(jsonString)") // ✅ JSON 확인
+        return jsonString
+    }
+    
+    func testPrepareRequestData() {
+        let requestData = prepareRequestData()
+
+        if let jsonData = try? JSONSerialization.data(withJSONObject: requestData, options: .prettyPrinted),
+           let jsonString = String(data: jsonData, encoding: .utf8) {
+            print("📡 실제 전송될 JSON:\n\(jsonString)") // ✅ JSON 출력
+        } else {
+            print("🚨 JSON 변환 실패!")
+        }
+    }
+    func sendTermsToAPI() {
+        print("📡 sendTermsToAPI() 호출됨!") // ✅ 실행 확인
+        
+        let jsonString = prepareRequestData() // ✅ 이제 Optional이 아니므로 guard let 제거
+        
+        guard let jsonData = jsonString.data(using: .utf8) else {
+            print("🚨 JSON 변환 실패!")
+            return
+        }
+        
+        guard let url = URL(string: "https://your-api-endpoint.com/terms") else {
+            print("🚨 URL 생성 실패!")
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+
+        print("📡 API 요청을 위한 데이터:", String(data: jsonData, encoding: .utf8) ?? "🚨 JSON 변환 실패!") // ✅ 최종 확인
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("🚨 API 요청 실패:", error.localizedDescription)
+                return
+            }
+
+            guard let data = data else {
+                print("🚨 응답 데이터 없음")
+                return
+            }
+
+            do {
+                let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                print("📩 서버 응답 데이터:", jsonResponse ?? "No Data") // ✅ 서버 응답 확인
+            } catch {
+                print("🚨 JSON 파싱 오류:", error.localizedDescription)
+            }
+        }
+
+        task.resume()
+    }
+        
+   
+    
     
 }

@@ -14,6 +14,8 @@ class AddProfileViewController: UIViewController, UITextFieldDelegate, UIImagePi
     private let addProfileView = AddProfileView()
     
     private let imagePickerController = UIImagePickerController()
+    private var selectedProfileImageURL: String?
+    private var selectedBackgroundImageURL: String?
     
     // MARK: - Lifecycle
     
@@ -25,6 +27,9 @@ class AddProfileViewController: UIViewController, UITextFieldDelegate, UIImagePi
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = addProfileView
+        addProfileView.addImageButton2.addTarget(self, action: #selector(showProfileImageOptions), for: .touchUpInside)
+        addProfileView.addImageButton1.addTarget(self, action: #selector(showBackgroundImageOptions), for: .touchUpInside)
+        
         
         setupNavigation()
         addActions()
@@ -35,15 +40,58 @@ class AddProfileViewController: UIViewController, UITextFieldDelegate, UIImagePi
         self.title = "프로필 설정" //  상단 타이틀 추가
         addProfileView.nicknameTextField.delegate = self
         addProfileView.idTextField.delegate = self
+        addProfileView.bioTextField.addTarget(self, action: #selector(limitBioLength), for: .editingChanged)
+        
+        DispatchQueue.main.async {
+            self.addProfileView.contentView.bringSubviewToFront(self.addProfileView.addImageButton2)
+        }
+        
+        // 🔹 화면 탭하면 키보드 내리기
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
         
     }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true) // 🔥 현재 화면에서 키보드 내리기
+    }
+    
     // MARK: - UI Setup
     override func viewDidLayoutSubviews() {
+        
         super.viewDidLayoutSubviews()
-
-        // ✅ 레이아웃이 완료된 후 border 추가 (NaN 방지)
+        addProfileView.scrollView.contentSize = CGSize(width: view.frame.width, height: addProfileView.contentView.frame.height)
+        
+        
+        // ✅ 닉네임, 아이디, 한줄소개 필드 각각 적용
         addProfileView.nicknameTextField.addBottomBorder(color: .black, height: 1.0)
         addProfileView.idTextField.addBottomBorder(color: .black, height: 1.0)
+        addProfileView.bioTextField.addBottomBorder(color: .black, height: 1.0)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if addProfileView.superview == nil {
+            print("⚠️ AddProfileView가 superview에 추가되지 않음! 강제 추가함.")
+            view.addSubview(addProfileView)
+            addProfileView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+        } else {
+            print("✅ AddProfileView가 정상적으로 추가됨.")
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
     }
     
     //뒤로가기 버튼
@@ -56,15 +104,34 @@ class AddProfileViewController: UIViewController, UITextFieldDelegate, UIImagePi
         addProfileView.publicButton.addTarget(self, action: #selector(selectPublicAccount), for: .touchUpInside)
         addProfileView.privateButton.addTarget(self, action: #selector(selectPrivateAccount), for: .touchUpInside)
         addProfileView.completeButton.addTarget(self, action: #selector(didTapCompleteButton), for: .touchUpInside)
-        addProfileView.addImageButton2.addTarget(self, action: #selector(selectImage), for: .touchUpInside)
         
+        addProfileView.addImageButton2.addTarget(self, action: #selector(showProfileImageOptions), for: .touchUpInside)
         addProfileView.nicknameTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         addProfileView.idTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        addProfileView.nicknameTextField.addTarget(self, action: #selector(validateNickname), for: .editingChanged)
+        
+        
+        
     }
     @objc private func didTapBackButton() {
         self.dismiss(animated: true, completion: nil)
     }
-
+    
+    //스크롤할때 키보드 사라지기 방지
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardHeight = keyboardFrame.cgRectValue.height
+            addProfileView.scrollView.contentInset.bottom = keyboardHeight + 20
+            addProfileView.scrollView.scrollIndicatorInsets.bottom = keyboardHeight + 20
+        }
+    }
+    
+    
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        addProfileView.scrollView.contentInset.bottom = 0
+        addProfileView.scrollView.scrollIndicatorInsets.bottom = 0
+    }
+    
     // 텍스트 필드 변경 시 호출되는 메서드
     @objc private func textFieldDidChange() {
         addProfileView.idCheckButton.setTitleColor(.black, for: .normal) // 버튼 색 원래대로
@@ -73,14 +140,73 @@ class AddProfileViewController: UIViewController, UITextFieldDelegate, UIImagePi
         validateForm()
     }
     
+    @objc private func validateNickname() {
+        guard let text = addProfileView.nicknameTextField.text, !text.isEmpty else {
+            addProfileView.nicknameStatusLabel.text = ""
+            addProfileView.nicknameStatusLabel.isHidden = true // 입력 없으면 숨김
+            return
+        }
+        
+        if text.count > 6 {
+            addProfileView.nicknameStatusLabel.text = "6글자 이내로 입력해주세요."
+            addProfileView.nicknameStatusLabel.textColor = .pointOrange800
+            addProfileView.nicknameStatusLabel.isHidden = false // 🚀 오류 메시지 보이게 설정
+        } else {
+            addProfileView.nicknameStatusLabel.text = "사용 가능한 닉네임입니다."
+            addProfileView.nicknameStatusLabel.textColor = .pointOrange800
+            addProfileView.nicknameStatusLabel.isHidden = false // 🚀 유효한 경우에도 표시
+        }
+        
+        validateForm() // 🚀 폼 유효성 검사 실행
+    }
+    
+    // 아이디 중복 확인
+    //    @objc private func checkIdAvailability() {
+    //        guard let id = addProfileView.idTextField.text, !id.isEmpty else {
+    //            self.addProfileView.idStatusLabel.text = "아이디를 입력해주세요."
+    //            self.addProfileView.idStatusLabel.textColor = .red
+    //            return
+    //        }
+    //
+    //        let membersService = MembersService() // MembersService 객체 생성
+    //
+    //        // ✅ MembersService의 checkIdAvailability 호출
+    //        membersService.checkIdAvailability(id: id) { [weak self] result in
+    //            guard let self = self else { return }
+    //
+    //            DispatchQueue.main.async {
+    //                switch result {
+    //                case .success(let isAvailable):
+    //                    if isAvailable {
+    //                        self.addProfileView.idStatusLabel.text = "사용 가능한 아이디입니다."
+    //                        self.addProfileView.idStatusLabel.textColor = .pointOrange800
+    //                        self.isIdChecked = true // ✅ 중복 확인 완료
+    //                    } else {
+    //                        self.addProfileView.idStatusLabel.text = "이미 사용 중인 아이디입니다."
+    //                        self.addProfileView.idStatusLabel.textColor = .red
+    //                        self.isIdChecked = false // ❌ 중복된 아이디
+    //                    }
+    //                case .failure(let error):
+    //                    self.addProfileView.idStatusLabel.text = "아이디 확인 실패: \(error.localizedDescription)"
+    //                    self.addProfileView.idStatusLabel.textColor = .red
+    //                    self.isIdChecked = false // 중복 확인 실패로 간주
+    //                }
+    //
+    //                // 버튼 상태 변경 및 폼 유효성 검증
+    //                self.addProfileView.idCheckButton.setTitleColor(.gray, for: .normal)
+    //                self.validateForm()
+    //            }
+    //        }
+    //    }
+    
     // 아이디 중복 확인
     @objc private func checkIdAvailability() {
         guard let id = addProfileView.idTextField.text, !id.isEmpty else { return }
-
+        
         // ✅ 네트워크 요청 실행
         checkDuplicateIdFromServer(id: id) { [weak self] isDuplicated, message in
             guard let self = self else { return }
-
+            
             DispatchQueue.main.async {
                 if isDuplicated {
                     self.addProfileView.idStatusLabel.text = message // 서버 응답 메시지 표시
@@ -91,31 +217,96 @@ class AddProfileViewController: UIViewController, UITextFieldDelegate, UIImagePi
                     self.addProfileView.idStatusLabel.textColor = .pointOrange800
                     self.isIdChecked = true // ✅ 중복 확인 완료
                 }
-
+                
                 self.addProfileView.idCheckButton.setTitleColor(.gray, for: .normal) // ✅ 버튼 색 변경
                 self.validateForm()
             }
         }
     }
-
-             
+    
+    
+    @objc private func showProfileImageOptions() {
+        print("📌 showProfileImageOptions 실행됨!") // ✅ 실행 확인용 로그
+        
+        let alertController = UIAlertController(title: "프로필 사진", message: "선택하세요.", preferredStyle: .actionSheet)
+        
+        alertController.addAction(UIAlertAction(title: "기본 프로필", style: .default, handler: { [weak self] _ in
+            print("📌 기본 프로필 선택됨") // ✅ 선택 확인
+            self?.addProfileView.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "사진 선택", style: .default, handler: { [weak self] _ in
+            print("📌 사진 선택 눌림") // ✅ 선택 확인
+            self?.selectProfileImage()
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "취소", style: .cancel))
+        
+        present(alertController, animated: true) {
+            print("📌 UIAlertController 화면에 표시됨") // ✅ 표시 확인
+        }
+    }
+    // ✅ 배경 이미지 선택 옵션 (기본 이미지 or 사진 선택)
+    @objc private func showBackgroundImageOptions() {
+        let alertController = UIAlertController(title: "배경 사진", message: "선택하세요.", preferredStyle: .actionSheet)
+        
+        alertController.addAction(UIAlertAction(title: "기본 배경", style: .default, handler: { [weak self] _ in
+            self?.addProfileView.backgroundImageView.image = UIImage(named: "default_background") // 기본 배경 이미지 적용
+            self?.selectedBackgroundImageURL = nil // 기본 배경 선택 시 업로드 없음
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "사진 선택", style: .default, handler: { [weak self] _ in
+            self?.selectBackgroundImage() // 갤러리에서 선택
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "취소", style: .cancel))
+        
+        present(alertController, animated: true)
+    }
+    
+    @objc private func selectProfileImage() {
+        let picker = UIImagePickerController()
+        picker.sourceType = .photoLibrary
+        picker.delegate = self
+        picker.allowsEditing = true
+        picker.view.tag = 1
+        present(picker, animated: true)
+    }
+    
+    @objc private func selectBackgroundImage() {
+        let picker = UIImagePickerController()
+        picker.sourceType = .photoLibrary
+        picker.delegate = self
+        picker.allowsEditing = true
+        picker.view.tag = 2 // ✅ 배경 이미지 구분용
+        present(picker, animated: true)
+    }
+    // ✅ 한줄 소개 입력을 20자로 제한하는 함수
+    @objc private func limitBioLength() {
+        if let text = addProfileView.bioTextField.text, text.count > 20 {
+            let index = text.index(text.startIndex, offsetBy: 20)
+            addProfileView.bioTextField.text = String(text[..<index]) // 20자까지만 남김
+        }
+    }
+    
+    
     //공개
-   
+    
     @objc private func selectPublicAccount() {
         isPublicAccount = true // ✅ 선택됨
-        addProfileView.publicButton.backgroundColor = UIColor.brown
+        addProfileView.publicButton.backgroundColor = UIColor.mainBrown800
         addProfileView.publicButton.setTitleColor(.white, for: .normal)
         addProfileView.privateButton.backgroundColor = .clear
-        addProfileView.privateButton.setTitleColor(UIColor.brown, for: .normal)
+        addProfileView.privateButton.setTitleColor(UIColor.mainBrown800, for: .normal)
         validateForm() // ✅ 유효성 검사
     }
-//비공개
+    //비공개
     @objc private func selectPrivateAccount() {
         isPublicAccount = false // ✅ 선택됨
-        addProfileView.privateButton.backgroundColor = UIColor.brown
+        addProfileView.privateButton.backgroundColor = UIColor.mainBrown800
         addProfileView.privateButton.setTitleColor(.white, for: .normal)
         addProfileView.publicButton.backgroundColor = .clear
-        addProfileView.publicButton.setTitleColor(UIColor.brown, for: .normal)
+        addProfileView.publicButton.setTitleColor(UIColor.mainBrown800, for: .normal)
         validateForm() // ✅ 유효성 검사
     }
     private func checkDuplicateIdFromServer(id: String, completion: @escaping (Bool, String) -> Void) {
@@ -125,34 +316,34 @@ class AddProfileViewController: UIViewController, UITextFieldDelegate, UIImagePi
             completion(false, "잘못된 요청입니다.")
             return
         }
-
+        
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("❌ 네트워크 오류: \(error.localizedDescription)")
                 completion(false, "네트워크 오류 발생")
                 return
             }
-
+            
             guard let data = data else {
                 print("❌ 데이터 없음")
                 completion(false, "서버에서 데이터를 받지 못했습니다.")
                 return
             }
-
+            
             do {
                 if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                     print("✅ 서버 응답: \(json)") // 🔥 서버 응답 확인
-
+                    
                     let isSuccess = json["isSuccess"] as? Bool ?? false
                     let message = json["message"] as? String ?? "아이디 중복 확인 실패"
-
+                    
                     if message.lowercased() == "nan" || message.contains("NaN") {
                         print("❌ 서버에서 NaN 값이 포함된 응답이 왔습니다!")
                     }
-
+                    
                     completion(!isSuccess, message)
                     return
                 }
@@ -174,57 +365,136 @@ class AddProfileViewController: UIViewController, UITextFieldDelegate, UIImagePi
         let isAccountSelected = isPublicAccount != nil // ✅ 공개/비공개 중 하나 선택 필수
         
         addProfileView.completeButton.isEnabled = isNicknameValid && isIdValid && isProfileImageSet && isAccountSelected
-        addProfileView.completeButton.backgroundColor = addProfileView.completeButton.isEnabled ? UIColor.brown : UIColor.lightGray
+        addProfileView.completeButton.backgroundColor = addProfileView.completeButton.isEnabled ? UIColor.mainBrown800 : UIColor.lightGray
     }
-    // 가입 완료 버튼 클릭
     @objc private func didTapCompleteButton() {
-        print("✅ 프로필 설정 완료. 홈 화면으로 이동")
-
-        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
-            sceneDelegate.switchToMain() // ✅ SceneDelegate에서 홈 화면으로 이동
-        } else {
-            print("🚨 SceneDelegate를 찾을 수 없음")
+        guard let nickname = addProfileView.nicknameTextField.text, !nickname.isEmpty,
+              let id = addProfileView.idTextField.text, !id.isEmpty,
+              let isPublic = isPublicAccount else {
+            print("🚨 필수 정보가 입력되지 않음")
+            return
+        }
+        
+        let visibility = isPublic ? "PUBLIC" : "PRIVATE"
+        let bioText = addProfileView.bioTextField.text ?? ""
+        
+        // ✅ 서버 없이 JSON 데이터 확인 (선택한 사진의 URL 반영됨)
+        let profileData: [String: Any] = [
+            "nickname": nickname,
+            "clokeyId": id,
+            "profileImageUrl": selectedProfileImageURL ?? "https://example.com/profile/default.jpg",
+            "bio": bioText,
+            "profileBackImageUrl": selectedBackgroundImageURL ?? "https://example.com/profile/default-background.jpg",
+            "visibility": visibility
+        ]
+        
+        // ✅ JSON 출력
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: profileData, options: .prettyPrinted)
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                print("📡 준비된 API 요청 데이터:\n\(jsonString)")
+            }
+        } catch {
+            print("🚨 JSON 변환 오류:", error.localizedDescription)
+        }
+        
+        
+        // ✅ JSON 출력 후 홈 화면으로 이동 (기능 유지)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+                sceneDelegate.switchToMain()
+            } else {
+                print("🚨 SceneDelegate를 찾을 수 없음")
+            }
         }
     }
+    
+    
+    //    @objc private func didTapCompleteButton() {
+    //        guard let nickname = addProfileView.nicknameTextField.text, !nickname.isEmpty,
+    //              let id = addProfileView.idTextField.text, !id.isEmpty,
+    //              let isPublic = isPublicAccount else {
+    //            print("🚨 필수 정보가 입력되지 않음")
+    //            return
+    //        }
+    //
+    //        let visibility = isPublic ? "PUBLIC" : "PRIVATE"
+    //        let bioText = addProfileView.bioTextField.text ?? ""
+    //
+    //        // `ProfileUpdateRequestDTO` 객체 생성
+    //            let profileUpdateData = ProfileUpdateRequestDTO(
+    //                nickname: nickname,
+    //                clokeyId: id,
+    //                profileImageUrl: selectedProfileImageURL ?? "https://example.com/default-profile.jpg",
+    //                bio: bioText,
+    //                profileBackImageUrl: selectedBackgroundImageURL ?? "https://example.com/default-background.jpg"
+    //            )
+    //
+    //        let membersService = MembersService()
+    //
+    //            // 서버로 프로필 업데이트 요청
+    //        membersService.updateProfile(data: profileUpdateData) { [weak self] result in
+    //                guard let self = self else { return }
+    //
+    //                DispatchQueue.main.async {
+    //                    switch result {
+    //                    case .success(let response):
+    //                        print("✅ 프로필 업데이트 성공: \(response)")
+    //
+    //                        // 홈 화면으로 이동
+    //                        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+    //                            sceneDelegate.switchToMain()
+    //                        } else {
+    //                            print("🚨 SceneDelegate를 찾을 수 없음")
+    //                        }
+    //
+    //                    case .failure(let error):
+    //                        print("🚨 프로필 업데이트 실패: \(error.localizedDescription)")
+    //                    }
+    //                }
+    //            }
+    //
+    //    }
+    // ✅ JSON 출력 후 홈 화면으로 이동 (기능 유지)
+    
     // 이미지 선택
     @objc private func selectImage() {
+        print("📌 selectImage() 호출됨") // ✅ 호출 확인
+        
         let alertController = UIAlertController(title: "사진 선택", message: "프로필 사진을 선택하세요.", preferredStyle: .actionSheet)
         
+        print("📌 UIAlertController 생성됨") // ✅ 생성 확인
+        
         alertController.addAction(UIAlertAction(title: "기본 프로필", style: .default, handler: { [weak self] _ in
+            print("📌 기본 프로필 선택됨") // ✅ 선택 확인
             self?.addProfileView.profileImageView.image = UIImage(systemName: "person.crop.circle.fill")
+            self?.selectedProfileImageURL = nil
         }))
         
         alertController.addAction(UIAlertAction(title: "사진 선택", style: .default, handler: { [weak self] _ in
-            let picker = UIImagePickerController()
-            picker.sourceType = .photoLibrary
-            picker.delegate = self
-            picker.allowsEditing = true
-            self?.present(picker, animated: true, completion: nil)
+            print("📌 사진 선택 눌림") // ✅ 선택 확인
+            self?.selectProfileImage()
         }))
         
-        alertController.addAction(UIAlertAction(title: "카메라 촬영", style: .default, handler: { [weak self] _ in
-            let picker = UIImagePickerController()
-            picker.sourceType = .camera
-            picker.delegate = self
-            picker.allowsEditing = true
-            self?.present(picker, animated: true, completion: nil)
-        }))
+        alertController.addAction(UIAlertAction(title: "취소", style: .cancel))
         
-        alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
-        
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: {
+            print("📌 UIAlertController 화면에 표시됨") // ✅ 표시 확인
+        })
     }
-    
     // UIImagePickerControllerDelegate 메서드
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let editedImage = info[.editedImage] as? UIImage {
-            addProfileView.profileImageView.image = editedImage // 편집된 이미지 사용
-        } else if let originalImage = info[.originalImage] as? UIImage {
-            addProfileView.profileImageView.image = originalImage // 원본 이미지 사용
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        if let selectedImage = info[.editedImage] as? UIImage ?? info[.originalImage] as? UIImage {
+            if picker.view.tag == 1 { // ✅ 프로필 사진 선택
+                addProfileView.profileImageView.image = selectedImage
+                selectedProfileImageURL = "local://profileImage-\(UUID().uuidString)" // ✅ UUID로 고유한 URL 생성
+            } else if picker.view.tag == 2 { // ✅ 배경 사진 선택
+                addProfileView.backgroundImageView.image = selectedImage
+                selectedBackgroundImageURL = "local://backgroundImage-\(UUID().uuidString)" // ✅ UUID로 고유한 URL 생성
+            }
         }
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
-    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
@@ -239,16 +509,28 @@ extension AddProfileViewController {
 
 extension UITextField {
     func addBottomBorder(color: UIColor, height: CGFloat) {
-        self.layoutIfNeeded() // ✅ 레이아웃을 먼저 업데이트
-        
-        guard self.frame.size.width > 0 else {
-            print("❌ addBottomBorder() 호출 시 width가 0입니다. 나중에 다시 시도하세요.")
-            return
+        DispatchQueue.main.async { // ✅ UI 업데이트를 비동기적으로 실행
+            self.layoutIfNeeded()
+            
+            // ✅ 기존 보더 제거 (중복 방지)
+            self.layer.sublayers?.filter { $0.name == "bottomBorder" }.forEach { $0.removeFromSuperlayer() }
+            
+            // ✅ 텍스트 필드 크기가 0이면 보더 추가 안 함
+            guard self.bounds.width > 0 else {
+                print("⚠️ addBottomBorder: \(self.placeholder ?? "TextField") width is 0. Skipping border.")
+                return
+            }
+            
+            let border = CALayer()
+            border.name = "bottomBorder"
+            border.backgroundColor = color.cgColor
+            
+            // ✅ yOffset 수정 (bounds.height 활용)
+            let yOffset = self.bounds.height - height
+            
+            border.frame = CGRect(x: 0, y: yOffset, width: self.bounds.width, height: height)
+            self.layer.addSublayer(border)
         }
-
-        let border = CALayer()
-        border.backgroundColor = color.cgColor
-        border.frame = CGRect(x: 0, y: self.frame.size.height - height, width: self.frame.size.width, height: height)
-        self.layer.addSublayer(border)
     }
+    
 }

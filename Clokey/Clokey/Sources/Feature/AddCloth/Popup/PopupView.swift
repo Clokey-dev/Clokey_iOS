@@ -10,7 +10,7 @@ import SnapKit
 import Then
 class PopupView: UIView {
     // MARK: - UI Components
-    let nameLabel = UILabel().then {
+    var nameLabel = UILabel().then {
         $0.text = "회색 레터링 후드티"
         $0.font = UIFont.ptdMediumFont(ofSize: 16)
         $0.textColor = .black
@@ -21,7 +21,7 @@ class PopupView: UIView {
         $0.tintColor = UIColor(named: "mainBrown600")
     }
     
-    let imageView = UIImageView().then {
+    var imageView = UIImageView().then {
         $0.image = UIImage(named: "top")
         $0.contentMode = .scaleAspectFit
     }
@@ -43,7 +43,7 @@ class PopupView: UIView {
     }
     
     let frontButton = UIButton().then {
-        $0.setImage(UIImage(named: "front_icon"), for: .normal)
+        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
         $0.tintColor = UIColor(named: "mainBrown600")
     }
 
@@ -58,13 +58,13 @@ class PopupView: UIView {
         $0.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
     }
     
-    private let seasonStackView = UIStackView().then {
+     let seasonStackView = UIStackView().then {
         $0.axis = .horizontal
         $0.spacing = 6
         $0.alignment = .center
     }
     
-    private let springButton = UIButton().then {
+     let springButton = UIButton().then {
         $0.setTitle("봄", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
@@ -72,7 +72,7 @@ class PopupView: UIView {
         $0.layer.cornerRadius = 5
     }
 
-    private let summerButton = UIButton().then {
+     let summerButton = UIButton().then {
         $0.setTitle("여름", for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
@@ -82,15 +82,16 @@ class PopupView: UIView {
         $0.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
     }
 
-    private let fallButton = UIButton().then {
+     let fallButton = UIButton().then {
         $0.setTitle("가을", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
         $0.backgroundColor = UIColor(named: "mainBrown600")
         $0.layer.cornerRadius = 5
+        $0.layer.borderWidth = 1
     }
 
-    private let winterButton = UIButton().then {
+     let winterButton = UIButton().then {
         $0.setTitle("겨울", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
@@ -123,13 +124,24 @@ class PopupView: UIView {
     }
 
     let wearCountButton = UIButton().then {
-        $0.setTitle("N회", for: .normal)
+        $0.setTitle("0회", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
         
         $0.backgroundColor = UIColor(named: "mainBrown600")
         $0.layer.cornerRadius = 5
     }
+    
+//    let privateButton = UIButton().then {
+//        $0.setTitle("공개", for: .normal)
+//        $0.setTitleColor(.white, for: .normal)
+//        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+//        
+//        $0.backgroundColor = UIColor(named: "mainBrown600")
+//        $0.layer.cornerRadius = 5
+//    }
+    
+
     
     
     /* 이건 나한테 필요한거
@@ -173,6 +185,7 @@ class PopupView: UIView {
         seasonStackView.addArrangedSubview(fallButton)
         seasonStackView.addArrangedSubview(winterButton)
         addSubview(wearCountButton)
+//        addSubview(privateButton)
         addSubview(descriptionLabel)
         //addSubview(leftArrowButton)
         //addSubview(rightArrowButton)
@@ -249,6 +262,15 @@ class PopupView: UIView {
             make.height.equalTo(18)
             make.width.equalTo(39)
         }
+        
+//        privateButton.snp.makeConstraints { make in
+//            make.top.equalTo(seasonStackView.snp.bottom).offset(35)
+//            make.leading.equalToSuperview().offset(159)
+//            make.height.equalTo(18)
+//            make.width.equalTo(39)
+//        }
+        
+        
         
         descriptionLabel.snp.makeConstraints { make in
             make.top.equalTo(seasonStackView.snp.bottom).offset(14)

@@ -102,22 +102,22 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		A653E9A22D4E20A900A29126 /* AddCloth */ = {
+		A65DA5A02D4F619E00537C8C /* AddCloth */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = AddCloth;
 			sourceTree = "<group>";
 		};
-		A653E9A42D4E20A900A29126 /* AddClothing */ = {
+		A65DA5A22D4F619E00537C8C /* AddClothing */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = AddClothing;
 			sourceTree = "<group>";
 		};
-		A653E9A82D4E20A900A29126 /* AddProfile */ = {
+		A65DA5A82D4F619E00537C8C /* AddProfile */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = AddProfile;
 			sourceTree = "<group>";
 		};
-		A653E9AD2D4E20A900A29126 /* Agreement */ = {
+		A65DA5AD2D4F619E00537C8C /* Agreement */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Agreement;
 			sourceTree = "<group>";
@@ -278,11 +278,11 @@
 		07E1CADC2D36449B00F86BB8 /* Feature */ = {
 			isa = PBXGroup;
 			children = (
-				A653E9A22D4E20A900A29126 /* AddCloth */,
-				A653E9A42D4E20A900A29126 /* AddClothing */,
-				A653E9A82D4E20A900A29126 /* AddProfile */,
-				A653E9AD2D4E20A900A29126 /* Agreement */,
 				07E1CB652D36A63200F86BB8 /* ViewController.swift */,
+				A65DA5A02D4F619E00537C8C /* AddCloth */,
+				A65DA5A22D4F619E00537C8C /* AddClothing */,
+				A65DA5A82D4F619E00537C8C /* AddProfile */,
+				A65DA5AD2D4F619E00537C8C /* Agreement */,
 				070258AA2D31074E00065369 /* Login */,
 				070258A42D31071900065369 /* Main */,
 				070258A52D31071D00065369 /* Home */,
@@ -364,10 +364,10 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				A653E9A22D4E20A900A29126 /* AddCloth */,
-				A653E9A42D4E20A900A29126 /* AddClothing */,
-				A653E9A82D4E20A900A29126 /* AddProfile */,
-				A653E9AD2D4E20A900A29126 /* Agreement */,
+				A65DA5A02D4F619E00537C8C /* AddCloth */,
+				A65DA5A22D4F619E00537C8C /* AddClothing */,
+				A65DA5A82D4F619E00537C8C /* AddProfile */,
+				A65DA5AD2D4F619E00537C8C /* Agreement */,
 			);
 			name = Clokey;
 			packageProductDependencies = (
