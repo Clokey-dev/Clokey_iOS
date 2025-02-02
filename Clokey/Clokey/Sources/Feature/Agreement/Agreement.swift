@@ -7,6 +7,7 @@
 import UIKit
 
 struct Agreement {
+    let termId: Int
     let title: String
     let isRequired: Bool
     var isChecked: Bool

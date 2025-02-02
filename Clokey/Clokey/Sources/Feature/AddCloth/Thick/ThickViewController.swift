@@ -22,8 +22,11 @@ class ThickViewController: UIViewController {
     /// 🔹 뒤로가기 버튼
     private let backButton: UIButton = {
         let button = UIButton(type: .system)
-        let image = UIImage(systemName: "chevron.left")?.withRenderingMode(.alwaysOriginal)
+        let image = UIImage(systemName: "chevron.left")?
+            .withTintColor(.black, renderingMode: .alwaysOriginal) // 🔥 아이콘 색상 변경 (검은색)
+        
         button.setImage(image, for: .normal)
+        button.contentMode = .scaleAspectFit // 🔥 아이콘 비율 유지
         button.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         return button
     }()
@@ -348,9 +351,36 @@ class ThickViewController: UIViewController {
         nextButton.isEnabled = true
     }
     
+    /***/
+    var clothName: String? // 전달받을 옷 이름
+    var selectedSeasons: Set<String> = []
+    var minTemp: Int?
+    var maxTemp: Int?
+    /***/
     
+//    @objc private func didTapNextButton() {
+//        let popupVC = PopupViewController()
+//        /***/
+//        popupVC.clothName = clothName // 값 전달
+//        popupVC.selectedSeasons = selectedSeasons
+//        popupVC.minTemp = minTemp
+//        popupVC.maxTemp = maxTemp
+//        popupVC.thickCount = Int(thickSlider.value)
+//        popupVC.isPublicSelected = isPublicSelected
+//        /***/
+//        popupVC.modalPresentationStyle = .fullScreen // ✅ 전체 화면 모달
+//        navigationController?.pushViewController(popupVC, animated: true)    }
     @objc private func didTapNextButton() {
-        let popupVC = PopupViewController()
-        popupVC.modalPresentationStyle = .fullScreen // ✅ 전체 화면 모달
-        navigationController?.pushViewController(popupVC, animated: true)    }
+        let lastAddVC = LastAddViewController()
+        /***/
+        lastAddVC.clothName = clothName // 값 전달
+        lastAddVC.selectedSeasons = selectedSeasons
+        lastAddVC.minTemp = minTemp
+        lastAddVC.maxTemp = maxTemp
+        lastAddVC.thickCount = Int(thickSlider.value)
+        lastAddVC.isPublicSelected = isPublicSelected
+        /***/
+        lastAddVC.modalPresentationStyle = .fullScreen // ✅ 전체 화면 모달
+        navigationController?.pushViewController(lastAddVC, animated: true)
+    }
 }

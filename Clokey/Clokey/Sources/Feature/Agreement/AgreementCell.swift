@@ -75,7 +75,7 @@ class AgreementCell: UITableViewCell {
         }
 
         checkBox.addTarget(self, action: #selector(didTapCheckBox), for: .touchUpInside) // 체크박스 클릭 시 호출
-        arrowButton.addTarget(self, action: #selector(didTapArrowButton), for: .touchUpInside) // 화살표 클릭시 호출 
+        arrowButton.addTarget(self, action: #selector(didTapArrowButton), for: .touchUpInside) // 화살표 클릭시 호출
     }
 
     func configure(with agreement: Agreement, isFirst: Bool) {

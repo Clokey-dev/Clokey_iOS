@@ -158,6 +158,13 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
         inputField.delegate = self
         nextButton.frame.size = CGSize(width: 353, height: 54)
         
+        // 🔹 화면 탭하면 키보드 내리기
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true) // 🔥 현재 화면에서 키보드 내리기
     }
     
     private func setupLayout() {
@@ -262,8 +269,20 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
         }
     }
     @objc private func didTapNextButton() {
-        let weatherVC = WeatherChooseViewController()
+//        let weatherVC = WeatherChooseViewController()
+        
+        /***/
+        // 입력 필드 값 가져오기
+            guard let clothName = inputField.text, !clothName.isEmpty else {
+                print("❌ 텍스트 필드가 비어 있습니다.")
+                return
+            }
 
+            // WeatherClothesViewController로 이동
+            let weatherVC = WeatherChooseViewController()
+            weatherVC.clothName = clothName // 값 전달
+        /***/
+        
         if let navController = self.navigationController {
             navController.pushViewController(weatherVC, animated: true)
         } else {
@@ -271,6 +290,8 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
             self.present(weatherVC, animated: true, completion: nil)
         }
     }
+    
+    
     
     // MARK: - Action Handlers
     @objc private func handleInput() {

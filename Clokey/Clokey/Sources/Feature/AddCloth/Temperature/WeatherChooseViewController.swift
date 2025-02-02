@@ -302,6 +302,7 @@ class WeatherChooseViewController: UIViewController {
     }
     
     
+    
     // MARK: - 슬라이더 값 업데이트
     private func updateSliderRange() {
         guard !selectedSeasons.isEmpty else {
@@ -335,9 +336,19 @@ class WeatherChooseViewController: UIViewController {
         }
         
     }
+    
+    var clothName: String? // 전달받을 옷 이름
+    
+    
     // MARK: - 다음 버튼 액션
     @objc private func didTapNextButton() {
         let nextVC = ThickViewController() // 👉 다음으로 이동할 VC (파일명에 맞게 수정)
+        /***/
+        nextVC.clothName = clothName // 값 전달
+        nextVC.selectedSeasons = selectedSeasons
+        nextVC.minTemp = Int(slider.lower)
+        nextVC.maxTemp = Int(slider.upper)
+        /***/
         navigationController?.pushViewController(nextVC, animated: true) // ✅ 네비게이션 Push 방식으로 이동
     }
     
