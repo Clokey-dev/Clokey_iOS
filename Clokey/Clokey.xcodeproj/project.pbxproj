@@ -296,6 +296,11 @@
 			path = Clothes;
 			sourceTree = "<group>";
 		};
+		A65DA4872D4F5F9200537C8C /* home */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = home;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -566,45 +571,6 @@
 			path = history;
 			sourceTree = "<group>";
 		};
-		07649EC42D4DE58900B6B2B2 /* Endpoints */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Endpoints;
-			sourceTree = "<group>";
-		};
-		07649EC52D4DE58900B6B2B2 /* Request */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Request;
-			sourceTree = "<group>";
-		};
-		07649EC62D4DE58900B6B2B2 /* Response */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Response;
-			sourceTree = "<group>";
-		};
-		07649EC72D4DE58900B6B2B2 /* Service */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Service;
-			sourceTree = "<group>";
-		};
-		07649EC82D4DE58900B6B2B2 /* home */ = {
-			isa = PBXGroup;
-			children = (
-				07649EC42D4DE58900B6B2B2 /* Endpoints */,
-				07649EC52D4DE58900B6B2B2 /* Request */,
-				07649EC62D4DE58900B6B2B2 /* Response */,
-				07649EC72D4DE58900B6B2B2 /* Service */,
-			);
-			path = home;
-			sourceTree = "<group>";
-		};
 		07649ECA2D4DE58900B6B2B2 /* Endpoints */ = {
 			isa = PBXGroup;
 			children = (
@@ -840,12 +806,12 @@
 		076FAB5C2D3020E100FF3979 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				A65DA4872D4F5F9200537C8C /* home */,
 				A653EAA82D4E249100A29126 /* Clothes */,
 				07649EA52D4DE58900B6B2B2 /* categories */,
 				07649EB52D4DE58900B6B2B2 /* Common */,
 				07649EBA2D4DE58900B6B2B2 /* folder */,
 				07649EC32D4DE58900B6B2B2 /* history */,
-				07649EC82D4DE58900B6B2B2 /* home */,
 				07649ED32D4DE58900B6B2B2 /* members */,
 				07649ED82D4DE58900B6B2B2 /* notification */,
 				07649EDD2D4DE58900B6B2B2 /* recommend */,
@@ -1050,6 +1016,7 @@
 				A62A42932D4D2A8D00672D3F /* My */,
 				A64C54312D3F97B3000CCB62 /* Cells */,
 				A653EAA82D4E249100A29126 /* Clothes */,
+				A65DA4872D4F5F9200537C8C /* home */,
 			);
 			name = Clokey;
 			packageProductDependencies = (
