@@ -464,9 +464,9 @@
 				07E1CB5E2D36A10000F86BB8 /* CustomButtonTextField.swift */,
 				07E1CB4E2D36721900F86BB8 /* CustomNavigationBar.swift */,
 				07E1CB572D3679A800F86BB8 /* CustomTextField.swift */,
+				07ECCB592D4E351E00AFF486 /* CustomSortDropdownView.swift */,
 				07ECCB572D4E351E00AFF486 /* CustomCollectionViewCell.swift */,
 				07ECCB582D4E351E00AFF486 /* CustomSearchField.swift */,
-				07ECCB592D4E351E00AFF486 /* CustomSortDropdownView.swift */,
 				07ECCB5A2D4E351E00AFF486 /* CustomTotalSegmentView.swift */,
 				07ECCB5B2D4E351E00AFF486 /* CustomCategoryModel.swift */,
 			);

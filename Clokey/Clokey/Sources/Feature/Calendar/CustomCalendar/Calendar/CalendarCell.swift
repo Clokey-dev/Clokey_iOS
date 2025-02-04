@@ -29,17 +29,30 @@ class CalendarCell: UICollectionViewCell {
         setupUI()
     }
     
+    // 각 셀의 이미지
+    private let backgroundImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
+        $0.isHidden = true
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // UI 설정 메서드
     private func setupUI() {
+        contentView.addSubview(backgroundImageView)
         contentView.addSubview(todayView) // 원형 뷰를 먼저 추가
         contentView.addSubview(dayLabel) // 레이블을 셀에 추가
 //        contentView.layer.borderWidth = 0.5 // 셀 테두리 두께
 //        contentView.layer.borderColor = UIColor.white.cgColor // 셀 테두리 색상
 
+        // 셀 이미지
+        backgroundImageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
         // 오늘 표시
         todayView.snp.makeConstraints {
             $0.center.equalTo(dayLabel)
@@ -54,21 +67,33 @@ class CalendarCell: UICollectionViewCell {
     }
     
     // 셀 구성 메서드
-    func configure(day: Int, isSelected: Bool, isCurrentMonth: Bool, isToday: Bool) {
+    func configure(day: Int, isSelected: Bool, isCurrentMonth: Bool, isToday: Bool, image: UIImage?) {
         dayLabel.text = isCurrentMonth ? "\(day)" : ""
-
+        
         if isToday {
             todayView.isHidden = false
             dayLabel.textColor = .white
         } else {
             todayView.isHidden = true
+            
             if isSelected {
                 contentView.backgroundColor = .systemBlue.withAlphaComponent(0.3)
                 dayLabel.textColor = .black
             } else {
-                contentView.backgroundColor = .gray
+                contentView.backgroundColor = .white
                 dayLabel.textColor = .black
             }
         }
+
+        // 이미지가 있으면 표시, 없으면 숨김
+        if let image = image {
+            todayView.isHidden = true
+            dayLabel.textColor = .clear
+            backgroundImageView.image = image
+            backgroundImageView.isHidden = false
+        } else {
+            backgroundImageView.isHidden = true
+        }
     }
+
 }

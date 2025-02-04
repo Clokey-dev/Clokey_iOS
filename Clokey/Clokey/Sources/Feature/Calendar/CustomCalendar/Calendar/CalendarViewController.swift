@@ -150,6 +150,6 @@ extension CalendarViewController: CalendarViewDelegate {
         modalVC.modalTransitionStyle = .crossDissolve
         modalVC.setDate(date) // 모달 날짜 선택 날짜로 설정
         present(modalVC, animated: false)
-        print("Selected date: \(date)")
+//        print("Selected date: \(date)")
     }
 }
