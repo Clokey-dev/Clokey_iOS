@@ -63,18 +63,24 @@ final class MainView: UIView {
         
         // 헤더뷰 제약조건
         if isHidden {
+            headerView.snp.updateConstraints {
+                $0.height.equalTo(0) // headerView 높이 0
+            }
             contentView.snp.remakeConstraints {
-//                $0.top.equalTo(safeAreaLayoutGuide)
                 $0.top.equalToSuperview()
                 $0.leading.trailing.equalToSuperview()
                 $0.bottom.equalTo(tabBarView.snp.top)
             }
         } else {
+            headerView.snp.updateConstraints {
+                $0.height.equalTo(50) // headerView 높이 0
+            }
             contentView.snp.remakeConstraints {
                 $0.top.equalTo(headerView.snp.bottom)
                 $0.leading.trailing.equalToSuperview()
                 $0.bottom.equalTo(tabBarView.snp.top)
             }
         }
+        
     }
 }
