@@ -35,7 +35,7 @@ extension HomeEndPoint: TargetType {
         }
     }
     
-    public var task: Task {
+    public var task: Moya.Task {
         switch self {
         case .getOneYearAgoHistories: // 새로 추가된 Task
                     return .requestPlain

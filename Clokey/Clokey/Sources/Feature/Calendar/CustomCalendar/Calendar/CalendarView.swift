@@ -90,7 +90,8 @@ class CalendarView: UIView {
             
             // spacing을 고려한 셀 너비 계산
             let cellWidth = (UIScreen.main.bounds.width - 40 - (2 * 6)) / 7
-            layout.itemSize = CGSize(width: cellWidth, height: 70)
+            let cellHeight = cellWidth * (4.0 / 3.0)
+            layout.itemSize = CGSize(width: cellWidth, height: cellHeight)
             
             layout.sectionInset = UIEdgeInsets(top: 6, left: 20, bottom: 6, right: 20)
         }
@@ -146,14 +147,16 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate {
         formatter.dateFormat = "yyyy-MM-dd"
         let dateString = formatter.string(from: date)
         
-        let imageUrl = imageMap[dateString] // 날짜에 해당하는 이미지 URL 가져오기
+        let imageUrl = imageMap[dateString]
+
+        cell.imageView.image = nil
 
         cell.configure(
             day: CalendarHelper.day(from: date),
             isSelected: false,
             isCurrentMonth: isCurrentMonth,
             isToday: isToday,
-            imageUrl: imageUrl // ✅ 이미지 URL 전달
+            imageUrl: imageUrl
         )
         return cell
     }
