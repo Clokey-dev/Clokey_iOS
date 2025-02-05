@@ -6,7 +6,7 @@ class CustomTotalSegmentView: UIView {
     
     // MARK: - Subviews
     let menuButton = UIButton().then {
-        $0.setImage(UIImage(named: "line3_icon"), for: .normal)
+        $0.setImage(UIImage(named: "side_bar"), for: .normal)
         $0.tintColor = .black
         $0.imageView?.contentMode = .scaleAspectFit
     }

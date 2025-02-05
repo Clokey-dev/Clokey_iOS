@@ -22,6 +22,9 @@ class CustomGalleryViewController: UIViewController {
     // weak var로 선언하여 순환 참조 방지
     weak var delegate: CustomGalleryViewControllerDelegate?
     
+    // 로딩 인디케이터
+    private let loadingIndicator = UIActivityIndicatorView(style: .large)
+    
     // PHFetchResult는 사진 라이브러리의 데이터를 배열처럼 관리하는 객체 + 실시간 업데이트 지원
     private var images: PHFetchResult<PHAsset>?
     private let imageManager = PHImageManager.default() // PHAsset으로 부터 이미지 요청 및 처리
@@ -157,42 +160,84 @@ class CustomGalleryViewController: UIViewController {
         didTapCompleteButton()
     }
     
+    // 이미지 추가 버튼 + 대기 인디케이터
     @objc private func didTapCompleteButton() {
-       
-        // 비동기 작업을 묶을 그룹
-        let group = DispatchGroup()
-        // 사용자가 선택한 사진
-        var selectedImages: [UIImage] = []
-       
+        let group = DispatchGroup() // 비동기 작업 처리 그룹
+        var selectedImages: [UIImage] = [] // 불러오기 성공한 이미지 배열
+
+        // 로딩 인디케이터 표시
+        showLoadingIndicator()
+        view.isUserInteractionEnabled = false
+
+        // 선택된 PHAsset을 이미지(UIImage)로 변환하는 비동기 요청
         for asset in selectedAssets {
-            group.enter() // 그룹에 추가
-            let options = PHImageRequestOptions() // 이미지를 요청
+            group.enter() // 비동기 작업 시작
+            let options = PHImageRequestOptions()
             options.deliveryMode = .highQualityFormat // 고품질 이미지 요청
-            options.isSynchronous = false // 비동기로 이미지를 요청 -> 그래야 블로킹 되지 않음
-           
+            options.isSynchronous = false // 비동기적으로 이미지 로드
+            options.isNetworkAccessAllowed = true // 클라우드(iCloud)에 저장된 이미지 다운로드 허용
+
             imageManager.requestImage(
                 for: asset,
-                targetSize: PHImageManagerMaximumSize, // 원본 크기 이미지 요청
+                targetSize: PHImageManagerMaximumSize, // 원본 크기의 이미지 요청
                 contentMode: .aspectFit,
-                options: options // 위에서 설정한 옵션
-            ) { image, _ in
+                options: options
+            ) { image, info in
                 if let image = image {
-                    selectedImages.append(image)
+                    selectedImages.append(image) // 이미지가 정상적으로 로드되면 배열에 추가
+                } else {
+                    print("이미지 로드 실패: \(asset)") // 디버깅을 위해 실패한 경우 로그 출력
                 }
-                group.leave()
+                group.leave() // 해당 이미지 로드 작업 완료
             }
-       }
-       
-       group.notify(queue: .main) { [weak self] in // 작업 후 UI업데이트가 안전하게 메인 스레드에서 실행
-           guard let self = self else { return }
-           // 변환된 이미지를 델리게이트 메서드를 통해 외부로 전달
-           self.delegate?.galleryViewController(self, didSelect: selectedImages)
-           self.dismiss(animated: true)
-       }
-   }
-    
-    @objc private func didTapBackButton() {
+        }
+
+        // 모든 비동기 작업이 끝나면 실행되는 코드
+        group.notify(queue: .main) { [weak self] in
+            guard let self = self else { return }
+            self.hideLoadingIndicator() // 로딩 인디케이터 숨기기
+            self.view.isUserInteractionEnabled = true // 터치 다시 활성화
+
+            if selectedImages.isEmpty {
+                self.showErrorAlert() // 모든 이미지 로드 실패 시 경고창 표시
+                return
+            }
+            
+            // 로드된 이미지들을 PhotoEditViewController로 전달
+            self.delegate?.galleryViewController(self, didSelect: selectedImages)
+            self.dismiss(animated: true) // 현재 뷰 닫기
+        }
+    }
+
+    // 이미지 로드 실패 시 사용자에게 알림 표시
+    private func showErrorAlert() {
+        let alert = UIAlertController(
+            title: "이미지 로드 실패",
+            message: "일부 이미지를 불러오는 데 실패했습니다. 다시 시도해주세요.",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "확인", style: .default))
+        present(alert, animated: true)
+    }
+
+    private func showLoadingIndicator() {
+        loadingIndicator.color = .pointOrange800 // 로딩 인디케이터 색상 설정
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false // Auto Layout 활성화
+        view.addSubview(loadingIndicator) // 뷰에 추가
         
+        // 로딩 인디케이터를 화면 중앙에 배치
+        NSLayoutConstraint.activate([
+            loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+        
+        loadingIndicator.startAnimating() // 로딩 애니메이션
+    }
+
+    // 로딩 인디케이터 제거 메서드
+    private func hideLoadingIndicator() {
+        loadingIndicator.stopAnimating()
+        loadingIndicator.removeFromSuperview()
     }
 }
 
