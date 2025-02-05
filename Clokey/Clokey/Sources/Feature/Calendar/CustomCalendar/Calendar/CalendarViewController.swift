@@ -77,7 +77,7 @@ class CalendarViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchHistoryData() // 화면이 나타날 때마다 데이터 요청
+        fetchHistoryData()
     }
     
     // MARK: - Setup
@@ -141,6 +141,7 @@ class CalendarViewController: UIViewController {
         if let newMonth = Calendar.current.date(byAdding: .month, value: value, to: currentMonth) {
             currentMonth = newMonth
             updateCalendar()
+            fetchHistoryData()
         }
     }
     
@@ -195,6 +196,11 @@ extension CalendarViewController: CalendarViewDelegate {
     }
 
     func calendarView(_ calendarView: CalendarView, didSelectDate date: Date) {
+        // 이걸 써야 뷰 업데이트가 됨.
+        // Modal이 dismiss되면
+        // 1. Calendar → Modal 강한 참조 끊김
+        // 2. Modal → Calendar 약한 참조는 이미 weak
+        // 3. 둘 다 메모리에서 정상적으로 해제됨
         let modalVC = UploadModalViewController()
         modalVC.sourceViewController = self
         modalVC.modalPresentationStyle = .overFullScreen
