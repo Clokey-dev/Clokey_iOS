@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 import Then
+import Kingfisher
 
 final class ProfileView: UIView {
     /// 세로 스크롤을 지원하는 ScrollView
@@ -383,5 +384,33 @@ final class ProfileView: UIView {
         calendarView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(10) // 내부 패딩 적용
         }
+    }
+}
+
+extension ProfileView {
+    func configure(with data: MembersInfoResponseDTO) {
+        // 클로키 ID 설정
+        usernameLabel.text = data.clokeyId
+        
+        // 프로필 이미지 설정
+        profileImageView.kf.setImage(with: URL(string: data.profileImageUrl), placeholder: UIImage(named: "profile_placeholder"))
+        
+        // 닉네임 설정
+        nicknameLabel.text = data.nickname
+        
+        // 게시글 개수 설정
+        writeCountLabel.text = "\(data.recordCount)"
+        
+        // 팔로워 수 설정
+        followerCountButton.setTitle("\(data.followerCount)", for: .normal)
+        
+        // 팔로잉 수 설정
+        followingCountButton.setTitle("\(data.followingCount)", for: .normal)
+        
+        // 한줄 소개 (bio) 설정
+        descriptionLabel.text = data.bio
+        
+        // 배경화면 이미지 설정 (Kingfisher 사용)
+        backgroundImageView.kf.setImage(with: URL(string: data.profileBackImageUrl), placeholder: UIImage(named: "profile_background"))
     }
 }
