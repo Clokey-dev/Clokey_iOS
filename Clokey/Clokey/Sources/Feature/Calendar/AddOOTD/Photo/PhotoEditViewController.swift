@@ -115,14 +115,16 @@ class PhotoEditViewController: UIViewController {
         // 썸네일 컬렉션 뷰
         thumbnailCollectionView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(16)
-            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
             $0.height.equalTo(80)
         }
         
         // 선택 메인 이미지
         mainImageView.snp.makeConstraints {
             $0.top.equalTo(thumbnailCollectionView.snp.bottom).offset(16)
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
             $0.bottom.equalTo(completeButton.snp.top).offset(-16)
         }
         
@@ -137,7 +139,7 @@ class PhotoEditViewController: UIViewController {
         completeButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
-            $0.height.equalTo(50)
+            $0.height.equalTo(54)
         }
     }
     
