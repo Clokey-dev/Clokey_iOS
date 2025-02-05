@@ -17,6 +17,12 @@ class CalendarViewController: UIViewController {
     private var dates: [Date] = []
     private let disposeBag = DisposeBag()
     
+    // API 월 달력 이미지 받아오기
+    private var imageMap: [String: String] = [:]
+    private let historyService = HistoryService()
+    // 각 날짜 historyId 저장
+    private var historyIdMap: [String: Int] = [:]
+    
     // MARK: - UI Components
     
     private let userNameLabel = UILabel().then {
@@ -67,6 +73,11 @@ class CalendarViewController: UIViewController {
         updateCalendar()
         
         calendarView.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchHistoryData()
     }
     
     // MARK: - Setup
@@ -123,33 +134,95 @@ class CalendarViewController: UIViewController {
         dateFormatter.dateFormat = "yyyy년 MM월"
         monthLabel.text = dateFormatter.string(from: currentMonth)
         
-        calendarView.update(dates: dates, currentMonth: currentMonth)
+        calendarView.update(dates: dates, currentMonth: currentMonth, imageMap: imageMap, historyIdMap: historyIdMap)
     }
     
     private func changeMonth(by value: Int) {
         if let newMonth = Calendar.current.date(byAdding: .month, value: value, to: currentMonth) {
             currentMonth = newMonth
             updateCalendar()
+            fetchHistoryData()
+        }
+    }
+    
+    // MARK: - API
+    private func fetchHistoryData() {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM"
+        let monthString = formatter.string(from: currentMonth)
+        
+        historyService.historyMonth(clokeyId: nil, month: monthString) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let response):
+                self.imageMap = response.histories.reduce(into: [:]) { dict, history in
+                    dict[history.date] = history.imageUrl
+                }
+                self.historyIdMap = response.histories.reduce(into: [:]) { dict, history in
+                    dict[history.date] = history.historyId  // historyId 저장
+                }
+                self.updateCalendar()
+            case .failure(let error):
+                print("캘린더 데이터 로드 실패: \(error.localizedDescription)")
+            }
         }
     }
 }
 
 // MARK: - CalendarViewDelegate
+//extension CalendarViewController: CalendarViewDelegate {
+//    func calendarView(_ calendarView: CalendarView, didSelectDate date: Date) {
+//        // 모달 전체 화면
+//        let modalVC = UploadModalViewController()
+//        modalVC.sourceViewController = self
+//        // 이걸 써야 뷰 업데이트가 됨.
+//        // Modal이 dismiss되면
+//        // 1. Calendar → Modal 강한 참조 끊김
+//        // 2. Modal → Calendar 약한 참조는 이미 weak
+//        // 3. 둘 다 메모리에서 정상적으로 해제됨
+//        
+//        modalVC.modalPresentationStyle = .overFullScreen
+//        modalVC.modalTransitionStyle = .crossDissolve
+//        modalVC.setDate(date) // 모달 날짜 선택 날짜로 설정
+//        present(modalVC, animated: false)
+//        print("Selected date: \(date)")
+//    }
+//}
+
 extension CalendarViewController: CalendarViewDelegate {
+    func calendarView(_ calendarView: CalendarView, didSelectHistoryId historyId: Int) {
+        fetchHistoryDetail(historyId: historyId)
+    }
+
     func calendarView(_ calendarView: CalendarView, didSelectDate date: Date) {
-        // 모달 전체 화면
-        let modalVC = UploadModalViewController()
-        modalVC.sourceViewController = self
         // 이걸 써야 뷰 업데이트가 됨.
         // Modal이 dismiss되면
         // 1. Calendar → Modal 강한 참조 끊김
         // 2. Modal → Calendar 약한 참조는 이미 weak
         // 3. 둘 다 메모리에서 정상적으로 해제됨
-        
+        let modalVC = UploadModalViewController()
+        modalVC.sourceViewController = self
         modalVC.modalPresentationStyle = .overFullScreen
         modalVC.modalTransitionStyle = .crossDissolve
-        modalVC.setDate(date) // 모달 날짜 선택 날짜로 설정
+        modalVC.setDate(date)
         present(modalVC, animated: false)
-        print("Selected date: \(date)")
+    }
+
+    private func fetchHistoryDetail(historyId: Int) {
+        historyService.historyDetail(historyId: historyId) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let response):
+                print("히스토리 상세 조회 성공: \(response)")
+                let detailVC = CalendarDetailViewController()
+                detailVC.setDetailData(response) //  상세 데이터 전달
+                self.navigationController?.pushViewController(detailVC, animated: true)
+
+            case .failure(let error):
+                print("히스토리 상세 조회 실패: \(error.localizedDescription)")
+            }
+        }
     }
 }

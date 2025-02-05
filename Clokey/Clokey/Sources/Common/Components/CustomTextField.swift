@@ -29,7 +29,7 @@ class CustomTextField: UIView {
     }()
     
     // 텍스트 필드
-    private let textField: UITextField = {
+    let textField: UITextField = {
         let textField = UITextField(frame: .zero)
         textField.borderStyle = .none
         textField.font = UIFont.ptdMediumFont(ofSize: 20)
@@ -110,5 +110,10 @@ class CustomTextField: UIView {
     // 플레이스홀더 변경 메서드
     func setPlaceholder(_ placeholder: String) {
         textField.placeholder = placeholder
+    }
+    
+    // 글꼴 커스텀
+    func setTextFieldFontSize(_ size: CGFloat) {
+        textField.font = UIFont.ptdMediumFont(ofSize: size)
     }
 }

@@ -153,7 +153,7 @@ class PhotoTagView: UIView {
         }
         
         imageCollectionView.snp.makeConstraints {
-            $0.top.equalTo(selectImageStack.snp.bottom)
+            $0.top.equalTo(selectImageStack.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(160)
         }
@@ -192,6 +192,10 @@ class PhotoTagView: UIView {
         tagCollectionView.snp.updateConstraints {
             $0.height.equalTo(hasTags ? 180 : 0)
         }
+        
+        UIView.animate(withDuration: 0.3) {
+           self.layoutIfNeeded() // 레이아웃 변경을 애니메이션과 함께 반영
+       }
     }
 
 }

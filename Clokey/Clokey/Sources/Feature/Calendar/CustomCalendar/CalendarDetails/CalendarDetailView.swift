@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 import Then
+import Kingfisher
 
 class CalendarDetailView: UIView {
     
@@ -46,7 +47,7 @@ class CalendarDetailView: UIView {
         $0.alignment = .center
     }
     
-    private let plusButton = UIButton().then {
+    let plusButton = UIButton().then {
         $0.setImage(UIImage(systemName: "ellipsis"), for: .normal)
         $0.tintColor = .black
     }
@@ -62,7 +63,7 @@ class CalendarDetailView: UIView {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
 
-        collectionView.register(ImageCell.self, forCellWithReuseIdentifier: ImageCell.identifier)
+        collectionView.register(CalendarImageCell.self, forCellWithReuseIdentifier: CalendarImageCell.identifier)
         return collectionView
     }()
     
@@ -85,17 +86,17 @@ class CalendarDetailView: UIView {
         $0.backgroundColor = .clear
     }
     
-    private let likeButton = UIButton().then {
+    let likeButton = UIButton().then {
         $0.setImage(UIImage(systemName: "heart"), for: .normal)
     }
 
-    private let likeLabel = UILabel().then {
+    let likeLabel = UILabel().then {
         $0.text = "250"
         $0.font = .systemFont(ofSize: 16)
         $0.textColor = .black
     }
     
-    private let commentButton = UIButton().then {
+    let commentButton = UIButton().then {
         $0.setImage(UIImage(systemName: "message"), for: .normal)
     }
     
@@ -302,7 +303,7 @@ extension CalendarDetailView: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.identifier, for: indexPath) as! ImageCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarImageCell.identifier, for: indexPath) as! CalendarImageCell
         cell.configure(with: images[indexPath.item])
         return cell
     }
@@ -317,30 +318,44 @@ extension CalendarDetailView: UICollectionViewDataSource, UICollectionViewDelega
     }
 }
 
-// MARK: - ImageCell (UICollectionViewCell)
-class ImageCell: UICollectionViewCell {
-    static let identifier = "ImageCell"
-    
-    private let imageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFill
-        $0.clipsToBounds = true
-        $0.layer.cornerRadius = 10
-    }
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        contentView.addSubview(imageView)
+// 회원 조회 API 업데이트
+extension CalendarDetailView {
+    func configure(with data: HistoryDetailResponseDTO) {
+        // 프로필 이미지 설정
+        profileImage.kf.setImage(with: URL(string: data.memberImageUrl), placeholder: UIImage(named: "profile_placeholder"))
         
-        imageView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
+        // 닉네임 설정
+        nameLabel.text = data.nickName
+        
+        // 이미지 슬라이드 설정
+        configureImages(data.images)
+        
+        // 좋아요 버튼 상태 설정
+        let heartImage = data.isLiked ? "heart.fill" : "heart"
+        likeButton.setImage(UIImage(systemName: heartImage), for: .normal)
+        likeButton.tintColor = data.isLiked ? .red : .black
+        
+        // 좋아요 수 설정
+        likeLabel.text = "\(data.likeCount)"
+        
+        // 컨텐츠 설정
+        contentLabel.text = data.content
+        
+        // 해시태그 설정
+        configureHashtags(data.hashtags)
+        
+        // 날짜 설정
+        dateLabel.text = data.date 
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+}
 
-    func configure(with imageName: String) {
-        imageView.image = UIImage(named: imageName)
+// 좋아요 처리
+extension CalendarDetailView {
+    func updateLikeState(isLiked: Bool, likeCount: Int64) {
+        let heartImage = isLiked ? "heart.fill" : "heart"
+        likeButton.setImage(UIImage(systemName: heartImage), for: .normal)
+        likeButton.tintColor = isLiked ? .red : .black
+        
+        likeLabel.text = "\(likeCount)"
     }
 }
