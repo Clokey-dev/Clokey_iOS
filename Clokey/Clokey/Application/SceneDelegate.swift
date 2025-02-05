@@ -33,22 +33,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
        
 //        let loginViewController = CalendarDetailViewController()
 //        window?.rootViewController = loginViewController
-       
+               
         // 임시 자동 로그인 코드
 //         앱 실행 시, 바로 메인화면을 원하면 위 코드 대신 이 코드를 사용
-        let isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
-        
-        if isLoggedIn {
-            // 로그인 상태라면 메인 화면으로 이동
-            let mainViewController = MainViewController()
-            let navigationController = UINavigationController(rootViewController: mainViewController)
-            window?.rootViewController = navigationController
-        } else {
-            // 비로그인 상태라면 로그인 화면 표시
-            let loginViewController = LoginViewController(coordinator: self)
-            let navigationController = UINavigationController(rootViewController: loginViewController)
-            window?.rootViewController = navigationController
-        }
+//        let isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
+//        
+//        if isLoggedIn {
+//            // 로그인 상태라면 메인 화면으로 이동
+//            let mainViewController = MainViewController()
+//            let navigationController = UINavigationController(rootViewController: mainViewController)
+//            window?.rootViewController = navigationController
+//        } else {
+//            // 비로그인 상태라면 로그인 화면 표시
+//            let loginViewController = LoginViewController(coordinator: self)
+//            let navigationController = UINavigationController(rootViewController: loginViewController)
+//            window?.rootViewController = navigationController
+//        }
         
         window?.makeKeyAndVisible()
         

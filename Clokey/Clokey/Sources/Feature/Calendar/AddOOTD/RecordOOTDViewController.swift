@@ -281,6 +281,13 @@ extension RecordOOTDViewController: ContentInputViewDelegate {
             print("Current hashtags:", hashtags)
         }
     }
+    
+    // 키보드 애니메이션 처리
+    func contentInputView(_ view: ContentInputView, shouldMoveWithKeyboard offset: CGFloat) {
+            UIView.animate(withDuration: 0.3) {
+            self.mainView.scrollView.contentOffset = CGPoint(x: 0, y: -offset)
+        }
+    }
 }
 
 // MARK: - UICollectionViewDelegate

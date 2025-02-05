@@ -11,8 +11,10 @@ import SnapKit
 // MARK: - Protocol
 // 날짜 선택 이벤트를 뷰컨트롤러에 전달하기 위한 프로토콜
 protocol CalendarViewDelegate: AnyObject {
+    func calendarView(_ calendarView: CalendarView, didSelectHistoryId historyId: Int)
     func calendarView(_ calendarView: CalendarView, didSelectDate date: Date)
 }
+
 
 class CalendarView: UIView {
     
@@ -22,6 +24,9 @@ class CalendarView: UIView {
     private var dates: [Date] = [] // 표시할 날짜 배열
     private var currentMonth: Date = Date() // 현재 표시 중인 달
     
+    private var imageMap: [String: String] = [:]
+    private var historyIdMap: [String: Int] = [:]
+        
     // 요일 레이블을 담는 스택뷰
     private let weekdayStack = UIStackView().then {
         $0.axis = .horizontal
@@ -85,7 +90,8 @@ class CalendarView: UIView {
             
             // spacing을 고려한 셀 너비 계산
             let cellWidth = (UIScreen.main.bounds.width - 40 - (2 * 6)) / 7
-            layout.itemSize = CGSize(width: cellWidth, height: 70)
+            let cellHeight = cellWidth * (4.0 / 3.0)
+            layout.itemSize = CGSize(width: cellWidth, height: cellHeight)
             
             layout.sectionInset = UIEdgeInsets(top: 6, left: 20, bottom: 6, right: 20)
         }
@@ -111,11 +117,15 @@ class CalendarView: UIView {
     // MARK: - Public Methods
     
     // 날짜 배열과 현재 월 업데이트
-    func update(dates: [Date], currentMonth: Date) {
+    func update(dates: [Date], currentMonth: Date, imageMap: [String: String], historyIdMap: [String: Int]) {
         self.dates = dates
         self.currentMonth = currentMonth
+        self.imageMap = imageMap
+        self.historyIdMap = historyIdMap
         collectionView.reloadData()
     }
+
+
 }
 
 // MARK: - CollectionView DataSource/Delegate
@@ -133,17 +143,40 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate {
         
         let isToday = Calendar.current.isDateInToday(date)
         
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let dateString = formatter.string(from: date)
+        
+        let imageUrl = imageMap[dateString]
+
+        cell.imageView.image = nil
+
         cell.configure(
             day: CalendarHelper.day(from: date),
             isSelected: false,
             isCurrentMonth: isCurrentMonth,
-            isToday: isToday
+            isToday: isToday,
+            imageUrl: imageUrl
         )
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedDate = dates[indexPath.item]
-        delegate?.calendarView(self, didSelectDate: selectedDate)
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let dateString = formatter.string(from: selectedDate)
+
+        if let historyId = historyIdMap[dateString] {
+            print("historyId가 \(historyId)인 세부 페이지")
+            // historyId가 존재하면 상세 API 요청
+            delegate?.calendarView(self, didSelectHistoryId: historyId)
+        } else {
+            print("아쉽게도 historyId가 없어요..")
+            // historyId가 없으면 모달 띄우기
+            delegate?.calendarView(self, didSelectDate: selectedDate)
+        }
     }
 }
+
