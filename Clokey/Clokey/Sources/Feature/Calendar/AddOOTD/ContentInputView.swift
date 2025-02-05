@@ -10,10 +10,12 @@ import UIKit
 import SnapKit
 import Then
 
+
 // 해시태그 추가/삭제
 protocol ContentInputViewDelegate: AnyObject {
     func contentInputView(_ view: ContentInputView, didAddHashtag hashtag: String)
     func contentInputView(_ view: ContentInputView, didRemoveHashtag: String)
+    func contentInputView(_ view: ContentInputView, shouldMoveWithKeyboard offset: CGFloat)
 }
 
 class ContentInputView: UIView, UITextFieldDelegate {
@@ -37,11 +39,8 @@ class ContentInputView: UIView, UITextFieldDelegate {
     }
     
     // 해시태그 입력 텍스트 필드
-    let HashtagTextField: CustomButtonTextField = {
-        let textField = CustomButtonTextField(title: "", placeholder: "#해시태그", isRequired: false)
-        textField.setButtonText("입력")
-        textField.setButtonEnabled(true)
-        textField.setButtonFontSize(16)
+    let HashtagTextField: CustomTextField = {
+        let textField = CustomTextField(title: "", placeholder: "#해시태그", isRequired: false)
         textField.setTextFieldFontSize(16)
         return textField
     }()
@@ -72,6 +71,22 @@ class ContentInputView: UIView, UITextFieldDelegate {
     private let publicButton = ToggleButton(title: "공개")
     private let privateButton = ToggleButton(title: "비공개")
     
+    private let publicInfoLabel = UILabel().then {
+        let text = "* 비공개 계정은 기록을 공개해도 다른 사용자에게 노출되지 않습니다.\n이후 계정을 공개로 전환할 시, 해당 기록은 전체 공개 상태가 됩니다!"
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 4
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            .paragraphStyle: paragraphStyle,
+            .font: UIFont.ptdRegularFont(ofSize: 12),
+            .foregroundColor: UIColor.gray
+        ]
+        
+        $0.attributedText = NSAttributedString(string: text, attributes: attributes)
+        $0.numberOfLines = 0
+    }
+    
     
     // MARK: - Init
     
@@ -79,14 +94,14 @@ class ContentInputView: UIView, UITextFieldDelegate {
         super.init(frame: frame)
         setupUI()
         textAddBox.delegate = self
-        HashtagTextField.delegate = self
         
-        HashtagTextField.customButton.addTarget(self, action: #selector(didTapActionButton), for: .touchUpInside)
+        setupKeyboardNotifications()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupUI()
+        setupKeyboardNotifications()
     }
     
     // MARK: - Setup
@@ -96,13 +111,15 @@ class ContentInputView: UIView, UITextFieldDelegate {
         
         addSubview(textAddBox)
         addSubview(HashtagTextField)
-                
+        HashtagTextField.textField.delegate = self
+        
         addSubview(scrollView)
         scrollView.addSubview(stackView)
         
         addSubview(publicLabel)
         addSubview(publicButton)
         addSubview(privateButton)
+        addSubview(publicInfoLabel)
 
         
         setupConstraints()
@@ -162,6 +179,13 @@ class ContentInputView: UIView, UITextFieldDelegate {
             $0.width.equalTo(67)
             $0.height.equalTo(30)
         }
+        
+        // 공개 범위 설명
+        publicInfoLabel.snp.makeConstraints {
+            $0.top.equalTo(publicButton.snp.bottom).offset(15)
+            $0.leading.equalToSuperview().offset(20)
+            $0.bottom.equalToSuperview()
+        }
     }
     
     // 해시태그 텍스트 추가 메서드
@@ -171,16 +195,9 @@ class ContentInputView: UIView, UITextFieldDelegate {
         
         // 해시태그 리스트에 추가
         hashtags.append(hashtag)
-
-        // 스크롤 뷰의 콘텐츠 크기 재계산
-        let contentWidth = stackView.arrangedSubviews.reduce(0) { partialWidth, view in
-            partialWidth + view.frame.width + stackView.spacing
-        }
-
-        scrollView.contentSize = CGSize(width: contentWidth, height: scrollView.frame.height)
-
-        UIView.animate(withDuration: 0.3) {
-            self.layoutIfNeeded()
+        
+        DispatchQueue.main.async {
+            self.updateScrollViewContentSize()
         }
     }
 
@@ -215,69 +232,102 @@ class ContentInputView: UIView, UITextFieldDelegate {
     
     // 해시태그 스크롤 뷰에 따라 heigt 값 유동적
     private func updateScrollViewContentSize() {
-        let contentWidth = stackView.arrangedSubviews.reduce(0) { partialWidth, view in
-            partialWidth + view.frame.width + stackView.spacing
-        }
-        scrollView.contentSize = CGSize(width: contentWidth, height: scrollView.frame.height)
+        stackView.layoutIfNeeded()
 
-        // 스택뷰가 비어있는지 확인하고 높이 조정
+        var totalWidth: CGFloat = 0
+        for (index, view) in stackView.arrangedSubviews.enumerated() {
+            totalWidth += view.frame.width
+            if index < stackView.arrangedSubviews.count - 1 {
+                totalWidth += stackView.spacing
+            }
+        }
+
+        scrollView.contentSize = CGSize(width: max(totalWidth, scrollView.frame.width), height: scrollView.frame.height)
+
         DispatchQueue.main.async {
             self.scrollView.snp.updateConstraints {
                 $0.height.equalTo(self.stackView.arrangedSubviews.isEmpty ? 0 : 35).priority(.high)
             }
-            
-            UIView.animate(withDuration: 0.3) {
-                self.layoutIfNeeded()
+
+            // 필요할 때만 layoutIfNeeded 호출
+            if !self.stackView.arrangedSubviews.isEmpty {
+                UIView.animate(withDuration: 0.3) {
+                    self.layoutIfNeeded()
+                }
             }
         }
     }
+
     
     // 해시태그 텍스트 생성뷰
     private func createTagView(with text: String) -> UIView {
         let containerView = UIView()
         containerView.backgroundColor = .mainBrown50
-        containerView.layer.cornerRadius = 15
+        containerView.layer.cornerRadius = 10
         
         let label = UILabel()
         label.text = text
         label.textColor = .pointOrange800
         label.font = .ptdRegularFont(ofSize: 14)
         label.sizeToFit()
-        
+
         let deleteButton = UIButton()
-        let configuration = UIImage.SymbolConfiguration(pointSize: 6, weight: .medium)
+        let configuration = UIImage.SymbolConfiguration(pointSize: 8, weight: .medium)
         deleteButton.setImage(UIImage(systemName: "xmark", withConfiguration: configuration), for: .normal)
         deleteButton.tintColor = .black
-       
-        // 삭제 버튼에 태그 텍스트를 저장
         deleteButton.accessibilityLabel = text
         deleteButton.addTarget(self, action: #selector(deleteButtonTapped(_:)), for: .touchUpInside)
-       
+
+        // 스택뷰에 라벨과 x버튼
         let innerStackView = UIStackView(arrangedSubviews: [label, deleteButton])
         innerStackView.axis = .horizontal
-        innerStackView.spacing = 8
-        innerStackView.alignment = .center
-        
+        innerStackView.spacing = 4
+        innerStackView.alignment = .top
+
         containerView.addSubview(innerStackView)
-        
+
         // 내부 스택뷰의 제약조건 설정
         innerStackView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview().inset(12)
-            $0.height.equalTo(20)
-            $0.leading.trailing.equalToSuperview().inset(10)
+            $0.top.bottom.equalToSuperview().inset(8)
+            $0.leading.equalToSuperview().inset(12)
+            $0.trailing.equalToSuperview().inset(8)
+        }
+
+        // deleteButton top
+        deleteButton.snp.makeConstraints {
+            $0.width.height.equalTo(12)
         }
 
         return containerView
     }
-    
+
+    // 액션 셋업
     private func setupActions() {
         publicButton.addTarget(self, action: #selector(toggleButtons(_:)), for: .touchUpInside)
         privateButton.addTarget(self, action: #selector(toggleButtons(_:)), for: .touchUpInside)
         
-        publicButton.isSelected = false
+        publicButton.isSelected = true
         privateButton.isSelected = false
+
+    }
     
-        HashtagTextField.addTarget(self, action: #selector(hashtagTextFieldDidChange), for: .editingChanged)
+    // 키보드 자동조정
+    private func setupKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    // 해시태그 텍스트필드 엔터 처리
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if string == "\n" {
+            if let text = textField.text, !text.isEmpty {
+                let hashtag = text.hasPrefix("#") ? text : "#\(text)"
+                addHashtag(hashtag)
+                delegate?.contentInputView(self, didAddHashtag: hashtag)
+                textField.text = ""
+            }
+        }
+        return true
     }
     
     // MARK: - Actions
@@ -290,29 +340,63 @@ class ContentInputView: UIView, UITextFieldDelegate {
         privateButton.isSelected = (sender == privateButton)
     }
     
-    // 해시태그 입력 버튼
-    @objc private func didTapActionButton() {
-        guard let text = HashtagTextField.text, !text.isEmpty else { return }
-        
-        // #이 없으면 추가
-        let hashtag = text.hasPrefix("#") ? text : "#\(text)"
-        addHashtag(hashtag)
-        delegate?.contentInputView(self, didAddHashtag: hashtag)
-        
-        // 텍스트 필드 초기화
-        HashtagTextField.text = ""
-        HashtagTextField.customButton.isEnabled = false
-    }
-    
-    // 해시태그 텍스트 필드에서 입력 활성화/비활성화
-    @objc private func hashtagTextFieldDidChange(_ textField: UITextField) {
-        HashtagTextField.customButton.isEnabled = !(textField.text?.isEmpty ?? true)
-    }
-    
     // 키보드 설정
-    @objc func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let text = textField.text, !text.isEmpty {
+            let hashtag = text.hasPrefix("#") ? text : "#\(text)"
+            addHashtag(hashtag)
+            delegate?.contentInputView(self, didAddHashtag: hashtag)
+            textField.text = ""
+        }
+        return false
+    }
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+
+        let keyboardHeight = keyboardFrame.cgRectValue.height
+        let keyboardY = UIScreen.main.bounds.height - keyboardHeight
+
+        // 현재 활성화된 필드 찾기
+        guard let activeField = getActiveTextInput() else { return }
+
+        // 활성화된 필드의 전체 화면 기준 위치
+        let fieldFrame = activeField.convert(activeField.bounds, to: nil)
+        let fieldBottom = fieldFrame.origin.y + fieldFrame.size.height
+
+        // 겹치는 부분 계산
+        let overlap = fieldBottom - keyboardY + 10 // 여유공간
+        let offset = overlap > 0 ? -overlap : 0
+
+        // 키보드 애니메이션 적용
+        UIView.animate(withDuration: 0.3, animations: {
+            if let scrollView = self.superview as? UIScrollView {
+                scrollView.contentOffset = CGPoint(x: 0, y: scrollView.contentOffset.y - offset)
+            } else {
+                self.superview?.transform = CGAffineTransform(translationX: 0, y: offset)
+            }
+        })
+    }
+
+    // 현재 포커스된 UITextView 또는 UITextField 찾기
+    private func getActiveTextInput() -> UIView? {
+        if textAddBox.isFirstResponder {
+            return textAddBox
+        } else if HashtagTextField.textField.isFirstResponder {
+            return HashtagTextField
+        }
+        return nil
+    }
+
+    // 키보드 가려지면서 뷰 원상복귀
+    @objc func keyboardWillHide(_ notification: Notification) {
+        UIView.animate(withDuration: 0.3, animations: {
+            if let scrollView = self.superview as? UIScrollView {
+                scrollView.setContentOffset(.zero, animated: true)
+            } else {
+                self.superview?.transform = .identity
+            }
+        })
     }
     
     // 해시테그 삭제
