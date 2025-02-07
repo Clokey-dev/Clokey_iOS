@@ -110,18 +110,21 @@ final class LoginViewController: UIViewController {
     }
     
     // 애플 로그인 결과 처리
-    private func handleAppleLoginResult(with credential: ASAuthorizationAppleIDCredential) {
-        // 애플 토큰
-        // TODO: 서버로 identityToken을 전송하여 사용자 인증 로직 처리 필요
-        
-//        guard let identityToken = credential.identityToken,
-//              let tokenString = String(data: identityToken, encoding: .utf8) else { return }
-//        print(identityToken)
-//        print(tokenString)
-    
-        
-        handleSuccessfulLogin()
-    }
+        private func handleAppleLoginResult(with credential: ASAuthorizationAppleIDCredential) {
+            guard let authorizationCode = credential.authorizationCode,
+                  let codeString = String(data: authorizationCode, encoding: .utf8) else {
+                errorMessage = "Failed to get authorization code"
+                return
+            }
+            
+            // 이메일 확인
+            if let email = credential.email {
+                print("Email: \(email)")
+            }
+            
+            print("Authorization Code: \(codeString)")
+            handleSuccessfulLogin()
+        }
 
     // MARK: - Helpers
     

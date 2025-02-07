@@ -25,7 +25,7 @@ class CalendarDetailView: UIView {
     // 프로필 정보 헤더 스택
     private let profileHeaderStackView = UIStackView().then {
         $0.axis = .horizontal
-        $0.spacing = 8
+        $0.spacing = 10
         $0.distribution = .equalSpacing
         $0.alignment = .center
 //        $0.backgroundColor = .gray
@@ -47,6 +47,18 @@ class CalendarDetailView: UIView {
         $0.alignment = .center
     }
     
+    private let rightStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.spacing = 8
+        $0.alignment = .center
+    }
+
+    
+    let lockCheckImageView = UIImageView().then {
+        $0.image = UIImage(named: "lock_on")
+        $0.contentMode = .scaleAspectFit
+    }
+    
     let plusButton = UIButton().then {
         $0.setImage(UIImage(systemName: "ellipsis"), for: .normal)
         $0.tintColor = .black
@@ -61,7 +73,7 @@ class CalendarDetailView: UIView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.isPagingEnabled = true
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .clear
+        collectionView.backgroundColor = .gray
 
         collectionView.register(CalendarImageCell.self, forCellWithReuseIdentifier: CalendarImageCell.identifier)
         return collectionView
@@ -77,7 +89,7 @@ class CalendarDetailView: UIView {
     // 하단
     private let footerStack = UIStackView().then {
         $0.axis = .vertical
-        $0.spacing = 8
+        $0.spacing = 20
 //        $0.backgroundColor = .gray
     }
     
@@ -108,6 +120,7 @@ class CalendarDetailView: UIView {
     // 해시태그 라벨
     private let hashtagsLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 14)
+        $0.text = "#연말룩 #파티룩 #원피스 #2025년도 화이팅"
         $0.textColor = .orange
     }
     
@@ -139,18 +152,18 @@ class CalendarDetailView: UIView {
         ImageCollectionView.delegate = self
         
         // 네비게이션 뒤로가기
-//        navBarManager.addBackButton(
-//            to: navigationItem,
-//            target: self,
-//            action: #selector(didTapBackButton)
-//        )
+        navBarManager.addBackButton(
+            to: navigationItem,
+            target: self,
+            action: #selector(didTapBackButton)
+        )
 
         // 네비게이션 타이틀
-//        navBarManager.setTitle(
-//            to: navigationItem,
-//            title: "",
-//            font: .systemFont(ofSize: 18, weight: .semibold), textColor: .black
-//        )
+        navBarManager.setTitle(
+            to: navigationItem,
+            title: "",
+            font: .systemFont(ofSize: 18, weight: .semibold), textColor: .black
+        )
         
         addSubview(profileHeaderStackView)
         
@@ -158,9 +171,13 @@ class CalendarDetailView: UIView {
         leftStackView.addArrangedSubview(profileImage)
         leftStackView.addArrangedSubview(nameLabel)
         
-        // 프로필 헤더 스택뷰에 왼쪽 스택뷰와 더보기 버튼 추가
+        // 오른쪽 스택뷰에 lock과 plus 버튼 추가
+        rightStackView.addArrangedSubview(lockCheckImageView)
+        rightStackView.addArrangedSubview(plusButton)
+        
+        // 프로필 헤더 스택뷰 구성 수정
         profileHeaderStackView.addArrangedSubview(leftStackView)
-        profileHeaderStackView.addArrangedSubview(plusButton)
+        profileHeaderStackView.addArrangedSubview(rightStackView)
         
         addSubview(ImageCollectionView)
         addSubview(pageControl)
@@ -192,7 +209,7 @@ class CalendarDetailView: UIView {
         
         profileHeaderStackView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(16)
-            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(40)
         }
 
@@ -205,7 +222,11 @@ class CalendarDetailView: UIView {
         }
         
         nameLabel.snp.makeConstraints {
-            $0.leading.equalTo(profileImage.snp.trailing).offset(10)
+            $0.leading.equalTo(profileImage.snp.trailing).offset(8)
+        }
+        
+        lockCheckImageView.snp.makeConstraints {
+            $0.width.height.equalTo(20)
         }
         
         plusButton.snp.makeConstraints {
@@ -217,7 +238,6 @@ class CalendarDetailView: UIView {
             $0.top.equalTo(profileHeaderStackView.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(500)
-            $0.width.equalTo(375)
         }
         
         // 이미지 페이지 컨트롤
@@ -228,7 +248,7 @@ class CalendarDetailView: UIView {
         
         // 하단 영역 (좋아요, 댓글, 내용, 해시태그, 날짜)
         footerStack.snp.makeConstraints {
-            $0.top.equalTo(pageControl.snp.bottom).offset(8)
+            $0.top.equalTo(ImageCollectionView.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview().inset(20)
         }
 
@@ -255,23 +275,12 @@ class CalendarDetailView: UIView {
             $0.centerY.equalToSuperview()
             $0.width.height.equalTo(24)
         }
-
-        // 콘텐츠 라벨
-        contentLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview()
-            $0.top.equalTo(heartNLikeContentView.snp.bottom).offset(8)
-        }
-
-        // 해시태그 라벨
+        
         hashtagsLabel.snp.makeConstraints {
-            $0.top.equalTo(contentLabel.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview()
         }
-
-        // 날짜 라벨
-        dateLabel.snp.makeConstraints {
-            $0.top.equalTo(hashtagsLabel.snp.bottom).offset(10)
-            $0.bottom.equalToSuperview()
-        }
+        
+        footerStack.spacing = 20
     }
 
     // MARK: - Method
@@ -286,13 +295,7 @@ class CalendarDetailView: UIView {
     func configureHashtags(_ hashtags: [String]) {
         hashtagsLabel.text = hashtags.joined(separator: " ")
     }
-    
-    // MARK: - Action
-//    @objc private func didTapBackButton() {
-//        print("뒤로 버튼 클릭")
-//        // NavigationController pop 동작
-//        navigationController?.popViewController(animated: true)
-//    }
+
 }
 
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
@@ -322,24 +325,24 @@ extension CalendarDetailView: UICollectionViewDataSource, UICollectionViewDelega
 extension CalendarDetailView {
     func configure(with data: HistoryDetailResponseDTO) {
         // 프로필 이미지 설정
-        profileImage.kf.setImage(with: URL(string: data.memberImageUrl), placeholder: UIImage(named: "profile_placeholder"))
+        profileImage.kf.setImage(with: URL(string: data.memberImageUrl), placeholder: UIImage(named: "profile_test"))
         
         // 닉네임 설정
         nameLabel.text = data.nickName
         
         // 이미지 슬라이드 설정
-        configureImages(data.images)
+        configureImages(data.imageUrl)
         
         // 좋아요 버튼 상태 설정
-        let heartImage = data.isLiked ? "heart.fill" : "heart"
+        let heartImage = data.liked ? "heart.fill" : "heart"
         likeButton.setImage(UIImage(systemName: heartImage), for: .normal)
-        likeButton.tintColor = data.isLiked ? .red : .black
+        likeButton.tintColor = data.liked ? .red : .black
         
         // 좋아요 수 설정
         likeLabel.text = "\(data.likeCount)"
         
         // 컨텐츠 설정
-        contentLabel.text = data.content
+        contentLabel.text = data.contents
         
         // 해시태그 설정
         configureHashtags(data.hashtags)

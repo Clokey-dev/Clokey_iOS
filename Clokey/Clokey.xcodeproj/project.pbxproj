@@ -823,8 +823,8 @@
 		07E1CADC2D36449B00F86BB8 /* Feature */ = {
 			isa = PBXGroup;
 			children = (
-				07E1CB652D36A63200F86BB8 /* ViewController.swift */,
 				070258AA2D31074E00065369 /* Login */,
+				07E1CB652D36A63200F86BB8 /* ViewController.swift */,
 				070258A42D31071900065369 /* Main */,
 				A62A42FE2D4D30F700672D3F /* Home */,
 				070258A62D31072000065369 /* Calendar */,

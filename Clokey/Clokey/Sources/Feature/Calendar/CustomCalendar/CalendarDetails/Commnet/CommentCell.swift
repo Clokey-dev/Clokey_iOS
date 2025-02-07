@@ -38,12 +38,15 @@ class CommentCell: UITableViewCell {
         $0.numberOfLines = 0
     }
 
-    private let replyButton = UIButton().then {
-        $0.setTitle("답글 달기", for: .normal)
-        $0.setTitleColor(.gray, for: .normal)
-        $0.titleLabel?.font = .systemFont(ofSize: 12)
-        $0.addTarget(self, action: #selector(didTapReply), for: .touchUpInside)
-    }
+    private lazy var replyButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("답글 달기", for: .normal)
+        button.setTitleColor(.gray, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 12)
+        button.addTarget(self, action: #selector(didTapReply), for: .touchUpInside)
+        return button
+    }()
+
 
     let contentStackView = UIStackView().then {
         $0.axis = .vertical

@@ -10,3 +10,7 @@ public struct ApiResponse<T: Decodable>: Decodable {
 }
 
 public struct EmptyResponse: Decodable {}
+
+public struct ErrorResponse: Codable {
+    public let message: String
+}

@@ -18,8 +18,7 @@ class CustomActionSheetViewController: UIViewController {
     let historyId: Int = 1
     private let historyService = HistoryService()
     
-    
-    
+    // 컨테이너 뷰
     private let containerView = UIView().then {
         $0.backgroundColor = .white
         $0.layer.cornerRadius = 20
@@ -27,23 +26,46 @@ class CustomActionSheetViewController: UIViewController {
         $0.clipsToBounds = true
     }
     
-    private let shareButton = {
+    private let editButton = {
         var configuration = UIButton.Configuration.plain()
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0)
-        configuration.title = "편집하기"
-        configuration.baseForegroundColor = .black
-        
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0)
+        configuration.image = UIImage(named: "edit_icon")?.resized(to: CGSize(width: 36, height: 36))
+        configuration.imagePadding = 8
+
+        // 폰트 & 텍스트 크기 조절
+        let titleFont = UIFont.ptdMediumFont(ofSize: 18)
+        let attributedString = NSAttributedString(
+            string: "편집하기",
+            attributes: [
+                .font: titleFont,
+                .foregroundColor: UIColor.black
+            ]
+        )
+        configuration.attributedTitle = AttributedString(attributedString)
+
         let button = UIButton(configuration: configuration)
         button.contentHorizontalAlignment = .leading
         return button
     }()
+
     
     private let saveButton = {
         var configuration = UIButton.Configuration.plain()
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 0)
-        configuration.title = "삭제하기"
-        configuration.baseForegroundColor = .black
-        
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0)
+        configuration.image = UIImage(named: "delete_icon")?.resized(to: CGSize(width: 36, height: 36))
+        configuration.imagePadding = 8
+
+        // 폰트 & 텍스트 크기 조절
+        let titleFont = UIFont.ptdMediumFont(ofSize: 18)
+        let attributedString = NSAttributedString(
+            string: "삭제하기",
+            attributes: [
+                .font: titleFont,
+                .foregroundColor: UIColor.black
+            ]
+        )
+        configuration.attributedTitle = AttributedString(attributedString)
+
         let button = UIButton(configuration: configuration)
         button.contentHorizontalAlignment = .leading
         return button
@@ -72,7 +94,7 @@ class CustomActionSheetViewController: UIViewController {
         view.addSubview(dimmedView)
         view.addSubview(containerView)
         
-        containerView.addSubview(shareButton)
+        containerView.addSubview(editButton)
         containerView.addSubview(saveButton)
         
         dimmedView.snp.makeConstraints {
@@ -84,27 +106,27 @@ class CustomActionSheetViewController: UIViewController {
             $0.height.equalTo(140)
         }
         
-        shareButton.snp.makeConstraints {
+        editButton.snp.makeConstraints {
             $0.top.equalToSuperview().offset(20)
             $0.left.right.equalToSuperview()
             $0.height.equalTo(44)
         }
         
         saveButton.snp.makeConstraints {
-            $0.top.equalTo(shareButton.snp.bottom)
+            $0.top.equalTo(editButton.snp.bottom)
             $0.left.right.equalToSuperview()
             $0.height.equalTo(44)
         }
         
         // 처음에는 시트를 화면 밖에 위치시킴
-        containerView.transform = CGAffineTransform(translationX: 0, y: 140)
+        containerView.transform = CGAffineTransform(translationX: 0, y: 180)
     }
     
     private func setupActions() {
         let dimmedTap = UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped))
         dimmedView.addGestureRecognizer(dimmedTap)
         
-        shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
+        editButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     }
     
@@ -148,5 +170,15 @@ class CustomActionSheetViewController: UIViewController {
                 print("기록 삭제 에러: \(error.localizedDescription)")
             }
         }
+    }
+}
+
+extension UIImage {
+    func resized(to size: CGSize) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+        self.draw(in: CGRect(origin: .zero, size: size))
+        let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return resizedImage
     }
 }
