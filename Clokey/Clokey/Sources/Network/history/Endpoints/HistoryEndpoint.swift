@@ -50,7 +50,7 @@ extension HistoryEndpoint: TargetType {
         case .historyDelete(let historyId):
             return "/histories/\(historyId)"
         case .historyLikeList(let historyId):
-            return "/histories/\(historyId)/like"
+            return "/histories/\(historyId)/likes"
         }
     }
     

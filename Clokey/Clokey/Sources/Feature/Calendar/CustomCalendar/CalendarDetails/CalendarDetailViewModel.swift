@@ -21,11 +21,12 @@ struct CalendarDetailViewModel {
     var likeCount: String
     var commentCount: String
     let date: String
-    let clothes: [ClothViewModel]
+    let cloths: [ClothDTO]
     
-    struct ClothViewModel {
-        let id: Int
+    struct ClothDTO {
+        let clothId: Int
         let imageUrl: String
+        let name: String
     }
 
     init(data: HistoryDetailResponseDTO) {
@@ -42,7 +43,7 @@ struct CalendarDetailViewModel {
         self.likeCount = "\(data.likeCount)"
         self.commentCount = "\(data.commentCount)"
         self.date = data.date
-        self.clothes = data.cloths.map { ClothViewModel(id: $0.clothId, imageUrl: $0.clothImageUrl) }
+        self.cloths = data.cloths.map { ClothDTO(clothId: $0.clothId, imageUrl: $0.clothImageUrl, name: $0.clothName) }
     }
     
     // 좋아요 상태 업데이트를 위한 mutating 메서드

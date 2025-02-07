@@ -10,16 +10,16 @@ import UIKit
 
 class CalendarDetailViewController: UIViewController {
 
+    // MARK: - Properties
     private let calendarDetailView = CalendarDetailView()
     private var viewModel: CalendarDetailViewModel?
 
     private var detailData: HistoryDetailResponseDTO?
     private let historyService = HistoryService()
     let navBarManager = NavigationBarManager()
-
-    // 임시 historyId - 서버에게 추가로 요청해야함.
-//    private let historyId = 1
     
+    // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -27,8 +27,10 @@ class CalendarDetailViewController: UIViewController {
         updateView()
         
         calendarDetailView.likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
-//        calendarDetailView.commentContainerView.addTarget(self, action: #selector(didTapCommentButton), for: .touchUpInside)
+
         calendarDetailView.plusButton.addTarget(self, action: #selector(didTapPlusButton), for: .touchUpInside)
+        
+        calendarDetailView.clothesIconButton.addTarget(self, action: #selector(didTapClothesIconButton), for: .touchUpInside)
         
         // 댓글창
         let commentTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapCommentButton))
@@ -40,6 +42,8 @@ class CalendarDetailViewController: UIViewController {
         calendarDetailView.likeLabel.addGestureRecognizer(likeTapGesture)
     }
 
+    // MARK: - Setup
+    
     func setDetailData(_ data: HistoryDetailResponseDTO) {
         self.viewModel = CalendarDetailViewModel(data: data)
         if isViewLoaded {
@@ -64,13 +68,6 @@ class CalendarDetailViewController: UIViewController {
             target: self,
             action: #selector(didTapBackButton)
         )
-        
-//        navBarManager.setTitle(
-//            to: navigationItem,
-//            title: "상세보기", // ✅ 원하는 타이틀 설정
-//            font: .systemFont(ofSize: 18, weight: .semibold),
-//            textColor: .black
-//        )
     }
     
     private func updateView() {
@@ -81,6 +78,15 @@ class CalendarDetailViewController: UIViewController {
 
     
     // MARK: - Action
+    
+    // 태그 버튼
+    @objc private func didTapClothesIconButton() {
+        guard let viewModel = viewModel else { return }
+        let clothDTOs = viewModel.cloths.map { ClothDTO(clothId: $0.clothId, clothImageUrl: $0.imageUrl, clothName: $0.name) }
+        let tagView = RecordTagClothViewController(cloths: clothDTOs)
+        tagView.modalPresentationStyle = .overFullScreen
+        present(tagView, animated: false)
+    }
     
     // 좋아요 버튼
     @objc private func didTapLikeButton() {
@@ -102,16 +108,21 @@ class CalendarDetailViewController: UIViewController {
     
     // 편집뷰
     @objc private func didTapPlusButton() {
-        let actionSheet = CustomActionSheetViewController()
+        guard let viewModel = viewModel else { return }
+        let historyId = Int(viewModel.historyId)
+        
+        let actionSheet = CustomActionSheetViewController(historyId: historyId)
+        actionSheet.delegate = self // delegate 설정
         actionSheet.modalPresentationStyle = .overFullScreen
         present(actionSheet, animated: false)
     }
     
     // 좋아요 누른 사람 뷰
     @objc private func didTapLikeLabel() {
-        // TODO: 나중에 바로 연결해서 줘도 좋을 듯
-        // let likeListVC = LikeListViewController(historyId: yourHistoryId)
-        let likeListVC = LikeListViewController()
+        guard let viewModel = viewModel else { return }
+        let historyId = Int(viewModel.historyId)
+        
+        let likeListVC = LikeListViewController(historyId: historyId)
         likeListVC.modalPresentationStyle = .pageSheet
         
         if let sheet = likeListVC.sheetPresentationController {
@@ -138,7 +149,7 @@ class CalendarDetailViewController: UIViewController {
         
         print("isCurrentlyLiked 상태 : \(isCurrentlyLiked)")
         
-        // 임시 UI 업데이트 (옵티미스틱 업데이트)
+        // 옵티미스틱 업데이트
         let newLikeCount = (Int(viewModel.likeCount) ?? 0) + (isCurrentlyLiked ? -1 : 1)
         calendarDetailView.likeButton.setImage(UIImage(named: isCurrentlyLiked ? "heart_empty" : "heart_fill"), for: .normal)
         calendarDetailView.likeLabel.text = "\(newLikeCount)"
@@ -171,6 +182,29 @@ class CalendarDetailViewController: UIViewController {
                 
             case .failure(let error):
                 print("좋아요 변경 실패: \(error.localizedDescription)")
+            }
+        }
+    }
+}
+
+extension CalendarDetailViewController: CustomActionSheetDelegate {
+    func didDeleteHistory() {
+        print("didDeleteHistory called")
+        print("navigationController: \(String(describing: navigationController))")
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else {
+                print("self is nil")
+                return
+            }
+            
+            if let nav = self.navigationController {
+                print("Attempting to pop view controller")
+                nav.popViewController(animated: true)
+            } else {
+                print("navigationController is nil")
+                // navigationController가 nil인 경우 dismiss를 시도
+                self.dismiss(animated: true)
             }
         }
     }

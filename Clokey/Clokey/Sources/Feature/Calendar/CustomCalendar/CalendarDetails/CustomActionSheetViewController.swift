@@ -9,14 +9,30 @@ import UIKit
 import SnapKit
 import Then
 
+
+protocol CustomActionSheetDelegate: AnyObject {
+    // 글 삭제 후 현재 화면을 닫기 위한 delegte
+    func didDeleteHistory()
+}
+
 class CustomActionSheetViewController: UIViewController {
     
     // MARK: - Properties
-    
-//    private let historyId: Int
-    // 임시 historyId
-    let historyId: Int = 1
+
+    weak var delegate: CustomActionSheetDelegate?
+    private let historyId: Int
     private let historyService = HistoryService()
+    
+    // MARK: - Init
+    
+    init(historyId: Int) {
+        self.historyId = historyId
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // 컨테이너 뷰
     private let containerView = UIView().then {
@@ -49,7 +65,7 @@ class CustomActionSheetViewController: UIViewController {
     }()
 
     
-    private let saveButton = {
+    private let deleteButton = {
         var configuration = UIButton.Configuration.plain()
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0)
         configuration.image = UIImage(named: "delete_icon")?.resized(to: CGSize(width: 36, height: 36))
@@ -95,7 +111,7 @@ class CustomActionSheetViewController: UIViewController {
         view.addSubview(containerView)
         
         containerView.addSubview(editButton)
-        containerView.addSubview(saveButton)
+        containerView.addSubview(deleteButton)
         
         dimmedView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -112,7 +128,7 @@ class CustomActionSheetViewController: UIViewController {
             $0.height.equalTo(44)
         }
         
-        saveButton.snp.makeConstraints {
+        deleteButton.snp.makeConstraints {
             $0.top.equalTo(editButton.snp.bottom)
             $0.left.right.equalToSuperview()
             $0.height.equalTo(44)
@@ -127,7 +143,7 @@ class CustomActionSheetViewController: UIViewController {
         dimmedView.addGestureRecognizer(dimmedTap)
         
         editButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
-        saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
     }
     
     // MARK: - Animation
@@ -157,15 +173,17 @@ class CustomActionSheetViewController: UIViewController {
         hideSheet()
     }
     
-    @objc private func saveButtonTapped() {
+    @objc private func deleteButtonTapped() {
         historyService.historyDelete(historyId: historyId) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
-            case .success(let response):
-                print("기록 삭제 성공")
-                // TODO: 삭제 성공 후 월 달력 뷰로..
-                self.hideSheet()
+            case .success:  
+                DispatchQueue.main.async {
+                    self.hideSheet { [weak self] in
+                        self?.delegate?.didDeleteHistory()
+                    }
+                }
             case .failure(let error):
                 print("기록 삭제 에러: \(error.localizedDescription)")
             }

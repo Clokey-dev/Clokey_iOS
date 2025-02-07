@@ -17,7 +17,6 @@ class CalendarImageCell: UICollectionViewCell {
     private let imageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-        $0.layer.cornerRadius = 10
         $0.backgroundColor = .lightGray
     }
 

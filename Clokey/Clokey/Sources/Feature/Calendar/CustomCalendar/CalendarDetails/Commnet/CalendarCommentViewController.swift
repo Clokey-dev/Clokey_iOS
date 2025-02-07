@@ -31,7 +31,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     private let historyService = HistoryService()
 //    private let historyId: Int
     // 예시
-    let historyId = 1
+    let historyId = 16
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +42,6 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // 뷰가 나타날 때 배경을 빠르게 표시 (0.1초)
         UIView.animate(withDuration: 0.1) {
             self.backgroundView.alpha = 1
         }
@@ -239,7 +238,6 @@ extension CalendarCommentViewController: UITableViewDataSource, UITableViewDeleg
         return !comments.contains { $0.parentCommentId == comment.id }
     }
     
-    // swipe 기능 추가
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true // 모든 셀 swipe 가능
     }

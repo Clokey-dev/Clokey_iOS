@@ -40,6 +40,7 @@ public struct HistoryDetailResponseDTO: Codable {
 public struct ClothDTO: Codable {
     public let clothId: Int
     public let clothImageUrl: String
+    public let clothName: String
 }
 
 // 좋아요
@@ -81,7 +82,7 @@ public struct HistoryCommentWriteResponseDTO: Codable {
 
 // 좋아요한 사람
 public struct HistoryLikeListResponseDTO: Codable {
-    public let likes: [LikeDTO]
+    public let likedUsers: [LikeDTO]
     
     public struct LikeDTO: Codable {
         public let memberId: Int64
