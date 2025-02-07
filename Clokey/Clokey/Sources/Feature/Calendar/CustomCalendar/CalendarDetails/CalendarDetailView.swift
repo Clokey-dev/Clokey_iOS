@@ -85,6 +85,15 @@ class CalendarDetailView: UIView {
         return collectionView
     }()
     
+    // 태그한 옷 보기
+    let clothesIconButton = UIButton().then {
+        $0.setImage(UIImage(named: "tag_icon"), for: .normal)
+        $0.layer.shadowColor = UIColor.black.cgColor
+        $0.layer.shadowOffset = CGSize(width: 0, height: 2)
+        $0.layer.shadowRadius = 4
+        $0.layer.shadowOpacity = 0.2
+    }
+
     // 페이지 컨트롤
     private let pageControl = UIPageControl().then {
         $0.currentPage = 0
@@ -183,6 +192,7 @@ class CalendarDetailView: UIView {
         profileHeaderStackView.addArrangedSubview(rightStackView)
         
         addSubview(ImageCollectionView)
+        addSubview(clothesIconButton)
         addSubview(pageControl)
         addSubview(footerStack)
         
@@ -250,6 +260,13 @@ class CalendarDetailView: UIView {
             $0.height.equalTo(500)
         }
         
+        // 태그한 옷 보기
+        clothesIconButton.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(15)
+            $0.bottom.equalTo(ImageCollectionView.snp.bottom).offset(-13)
+            $0.width.height.equalTo(30)
+        }
+        
         // 이미지 페이지 컨트롤
         pageControl.snp.makeConstraints {
             $0.top.equalTo(ImageCollectionView.snp.bottom).offset(-30)
@@ -313,7 +330,8 @@ class CalendarDetailView: UIView {
         self.images = images
         ImageCollectionView.reloadData() // 이미지 변경 후 리로드
         pageControl.numberOfPages = images.count // 페이지 컨트롤 업데이트
-        pageControl.pageIndicatorTintColor = .pointOrange800
+        pageControl.pageIndicatorTintColor = .pointOrange200
+        pageControl.currentPageIndicatorTintColor = .pointOrange800
     }
     
     // 리스트 문자열 변환
