@@ -11,7 +11,7 @@ import Foundation
 // 좋아요
 public struct HistoryLikeRequestDTO: Codable {
     public let historyId: String
-    public let isLiked: Bool
+    public let liked: Bool
 }
 
 // 댓글 작성

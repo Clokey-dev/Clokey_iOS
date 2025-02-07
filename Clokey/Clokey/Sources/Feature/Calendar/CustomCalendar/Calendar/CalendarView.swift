@@ -146,18 +146,18 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate {
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let dateString = dateFormatter.string(from: date)
 
-        let imageMapping: [String: UIImage] = [
-            "2025-02-05": UIImage(named: "sample_image")!, // 2월 5일
-            "2025-02-12": UIImage(named: "sample_image")!, // 2월 12일
-            "2025-02-04": UIImage(named: "sample_image")!,
-            "2025-02-09": UIImage(named: "sample_image")!,
-            "2025-02-23": UIImage(named: "sample_image")!,
-            "2025-02-22": UIImage(named: "sample_image")!,
-            "2025-02-28": UIImage(named: "sample_image")!
-            
-        ]
-        
-        let image = imageMapping[dateString]
+//        let imageMapping: [String: UIImage] = [
+//            "2025-02-05": UIImage(named: "sample_image")!, // 2월 5일
+//            "2025-02-12": UIImage(named: "sample_image")!, // 2월 12일
+//            "2025-02-04": UIImage(named: "sample_image")!,
+//            "2025-02-09": UIImage(named: "sample_image")!,
+//            "2025-02-23": UIImage(named: "sample_image")!,
+//            "2025-02-22": UIImage(named: "sample_image")!,
+//            "2025-02-28": UIImage(named: "sample_image")!
+//            
+//        ]
+//        
+//        let image = imageMapping[dateString]
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"

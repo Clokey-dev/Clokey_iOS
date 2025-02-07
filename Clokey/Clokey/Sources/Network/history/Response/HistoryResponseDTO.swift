@@ -31,6 +31,7 @@ public struct HistoryDetailResponseDTO: Codable {
     public let hashtags: [String]
     public let visibility: Bool
     public let likeCount: Int
+    public let commentCount: Int
     public let liked: Bool
     public let date: String
     public let cloths: [ClothDTO]
@@ -43,8 +44,8 @@ public struct ClothDTO: Codable {
 
 // 좋아요
 public struct HistoryLikeResponseDTO: Codable {
-    public let historyId: String
-    public let isLiked: Bool
+    public let historyId: Int64
+    public let liked: Bool
     public let likeCount: Int64
 }
 
