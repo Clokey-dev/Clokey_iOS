@@ -40,6 +40,14 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         fetchComments()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // 뷰가 나타날 때 배경을 빠르게 표시 (0.1초)
+        UIView.animate(withDuration: 0.1) {
+            self.backgroundView.alpha = 1
+        }
+    }
+    
     private func setupUI() {
         view.backgroundColor = .clear
         view.addSubview(backgroundView)
@@ -48,15 +56,13 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         backgroundView.snp.makeConstraints { $0.edges.equalToSuperview() }
         
         commentView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
-            $0.height.equalTo(view.frame.height * 0.8)
+            $0.edges.equalToSuperview()
         }
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissView))
         backgroundView.addGestureRecognizer(tapGesture)
         
-        UIView.animate(withDuration: 0.3) { self.backgroundView.alpha = 1 }
+        UIView.animate(withDuration: 0.1) { self.backgroundView.alpha = 1 }
         
         commentView.commentTableView.dataSource = self
         commentView.commentTableView.delegate = self
@@ -78,12 +84,8 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         comments = organizedComments
     }
     
-    @objc private func dismissView() {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.backgroundView.alpha = 0
-        }) { _ in
-            self.dismiss(animated: false)
-        }
+    @objc func dismissView() {
+        self.dismiss(animated: true)
     }
     
     // 댓글 쓰기 버튼 눌렀을 때
@@ -216,13 +218,17 @@ extension CalendarCommentViewController: UITableViewDataSource, UITableViewDeleg
         
         // 대댓글 들여쓰기 처리
         if isReply {
-            cell.mainStackView.snp.remakeConstraints { make in
-                make.top.bottom.trailing.equalToSuperview().inset(12)
-                make.leading.equalToSuperview().inset(40)
+            cell.mainStackView.snp.remakeConstraints {
+                $0.top.equalToSuperview()
+                $0.trailing.equalToSuperview().inset(12)
+                $0.bottom.equalToSuperview().inset(20)
+                $0.leading.equalToSuperview().inset(40)
             }
         } else {
-            cell.mainStackView.snp.remakeConstraints { make in
-                make.edges.equalToSuperview().inset(12)
+            cell.mainStackView.snp.remakeConstraints {
+                $0.leading.equalToSuperview()
+                $0.trailing.equalToSuperview().inset(12)
+                $0.top.bottom.equalToSuperview().inset(8)
             }
         }
         

@@ -23,7 +23,7 @@ class CommentCell: UITableViewCell {
     private let profileImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-        $0.layer.cornerRadius = 15
+        $0.layer.cornerRadius = 17.5
         $0.backgroundColor = .lightGray
     }
 
@@ -78,11 +78,12 @@ class CommentCell: UITableViewCell {
         mainStackView.addArrangedSubview(contentStackView)
 
         mainStackView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(12)
-        }
+           $0.top.bottom.equalToSuperview()
+           $0.leading.trailing.equalToSuperview()
+       }
 
         profileImageView.snp.makeConstraints {
-            $0.width.height.equalTo(30)
+            $0.width.height.equalTo(35)
         }
     }
 

@@ -11,22 +11,28 @@ import UIKit
 class CalendarDetailViewController: UIViewController {
 
     private let calendarDetailView = CalendarDetailView()
+    private var viewModel: CalendarDetailViewModel?
+
     private var detailData: HistoryDetailResponseDTO?
     private let historyService = HistoryService()
-    
+    let navBarManager = NavigationBarManager()
+
     // 임시 historyId - 서버에게 추가로 요청해야함.
-    private let historyId = 1
+//    private let historyId = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        if let detailData = detailData {
-            calendarDetailView.configure(with: detailData) // UI 업데이트
-        }
+        setupNavigationBar()
+        updateView()
         
         calendarDetailView.likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
-        calendarDetailView.commentButton.addTarget(self, action: #selector(didTapCommentButton), for: .touchUpInside)
+//        calendarDetailView.commentContainerView.addTarget(self, action: #selector(didTapCommentButton), for: .touchUpInside)
         calendarDetailView.plusButton.addTarget(self, action: #selector(didTapPlusButton), for: .touchUpInside)
+        
+        // 댓글창
+        let commentTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapCommentButton))
+        calendarDetailView.commentContainerView.addGestureRecognizer(commentTapGesture)
         
         // likeLabel에 탭 제스처 추가
         let likeTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapLikeLabel))
@@ -35,8 +41,10 @@ class CalendarDetailViewController: UIViewController {
     }
 
     func setDetailData(_ data: HistoryDetailResponseDTO) {
-        print("서버에서 받은 데이터: \(data)")
-        self.detailData = data
+        self.viewModel = CalendarDetailViewModel(data: data)
+        if isViewLoaded {
+            updateView()
+        }
     }
 
     private func setupUI() {
@@ -48,30 +56,48 @@ class CalendarDetailViewController: UIViewController {
         }
     }
     
+    private func setupNavigationBar() {
+        navigationController?.navigationBar.isHidden = false
+        
+        navBarManager.addBackButton(
+            to: navigationItem,
+            target: self,
+            action: #selector(didTapBackButton)
+        )
+        
+//        navBarManager.setTitle(
+//            to: navigationItem,
+//            title: "상세보기", // ✅ 원하는 타이틀 설정
+//            font: .systemFont(ofSize: 18, weight: .semibold),
+//            textColor: .black
+//        )
+    }
+    
+    private func updateView() {
+        if let viewModel = viewModel {
+            calendarDetailView.configure(with: viewModel)
+        }
+    }
+
+    
     // MARK: - Action
     
     // 좋아요 버튼
     @objc private func didTapLikeButton() {
-//        guard let detailData = detailData else { return }
-        let isLiked = calendarDetailView.likeButton.tintColor == .red // 현재 상태 확인
-
-        if isLiked {
-            calendarDetailView.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
-            calendarDetailView.likeButton.tintColor = .black
-            calendarDetailView.likeLabel.text = "\(Int(calendarDetailView.likeLabel.text ?? "0")! - 1)" // 좋아요 수 감소
-        } else {
-            calendarDetailView.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-            calendarDetailView.likeButton.tintColor = .red
-            calendarDetailView.likeLabel.text = "\(Int(calendarDetailView.likeLabel.text ?? "0")! + 1)" // 좋아요 수 증가
-        }
-//        fetchToggleLike(historyId: historyId, isLiked: !detailData!.isLiked)
+        toggleLikeState()
     }
     
     // 댓글뷰
     @objc private func didTapCommentButton() {
         let commentVC = CalendarCommentViewController()
-        commentVC.modalPresentationStyle = .overFullScreen 
-        present(commentVC, animated: false)
+        commentVC.modalPresentationStyle = .pageSheet
+        
+        if let sheet = commentVC.sheetPresentationController {
+            sheet.detents = [.medium(), .large()]
+            sheet.preferredCornerRadius = 20
+        }
+        
+        present(commentVC, animated: true)
     }
     
     // 편집뷰
@@ -81,7 +107,7 @@ class CalendarDetailViewController: UIViewController {
         present(actionSheet, animated: false)
     }
     
-    // 좋아요 뷰
+    // 좋아요 누른 사람 뷰
     @objc private func didTapLikeLabel() {
         // TODO: 나중에 바로 연결해서 줘도 좋을 듯
         // let likeListVC = LikeListViewController(historyId: yourHistoryId)
@@ -96,11 +122,34 @@ class CalendarDetailViewController: UIViewController {
         present(likeListVC, animated: true)
     }
     
+    // 뒤로가기
+    @objc private func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
+    }
+    
     // MARK: - Method
     
+    // 좋아요
+    private func toggleLikeState() {
+        guard let viewModel = viewModel else { return }
+        
+        // 현재 좋아요 상태 확인
+        let isCurrentlyLiked = calendarDetailView.likeButton.currentImage == UIImage(named: "heart_fill")
+        
+        print("isCurrentlyLiked 상태 : \(isCurrentlyLiked)")
+        
+        // 임시 UI 업데이트 (옵티미스틱 업데이트)
+        let newLikeCount = (Int(viewModel.likeCount) ?? 0) + (isCurrentlyLiked ? -1 : 1)
+        calendarDetailView.likeButton.setImage(UIImage(named: isCurrentlyLiked ? "heart_empty" : "heart_fill"), for: .normal)
+        calendarDetailView.likeLabel.text = "\(newLikeCount)"
+
+        // API 호출 - viewModel에서 historyId 가져옴
+        fetchToggleLike(historyId: Int(viewModel.historyId), liked: isCurrentlyLiked)
+    }
+    
     // 좋아요 토글 API
-    private func fetchToggleLike(historyId: Int, isLiked: Bool) {
-        let request = HistoryLikeRequestDTO(historyId: "\(historyId)", isLiked: isLiked)
+    private func fetchToggleLike(historyId: Int, liked: Bool) {
+        let request = HistoryLikeRequestDTO(historyId: "\(historyId)", liked: liked)
         
         historyService.historyLike(data: request) { [weak self] result in
             guard let self = self else { return }
@@ -109,9 +158,15 @@ class CalendarDetailViewController: UIViewController {
             case .success(let response):
                 print("좋아요 변경 성공: \(response)")
                 
-                // 새로운 값으로 UI 업데이트
-                DispatchQueue.main.async {
-                    self.calendarDetailView.updateLikeState(isLiked: response.isLiked, likeCount: response.likeCount)
+                // ViewModel 업데이트
+                if var updatedViewModel = self.viewModel {
+                    // ViewModel의 좋아요 상태 업데이트
+                    updatedViewModel.updateLikeState(liked: response.liked, likeCount: response.likeCount)
+                    self.viewModel = updatedViewModel
+                    
+                    DispatchQueue.main.async {
+                        self.calendarDetailView.updateLikeState(with: updatedViewModel)
+                    }
                 }
                 
             case .failure(let error):

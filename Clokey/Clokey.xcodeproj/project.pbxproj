@@ -44,6 +44,7 @@
 		076FAB4A2D2E748B00FF3979 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB492D2E748B00FF3979 /* LoginView.swift */; };
 		076FAB4E2D2EBB3A00FF3979 /* KakaoAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB4D2D2EBB3A00FF3979 /* KakaoAuthService.swift */; };
 		076FAB5A2D3020D800FF3979 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB572D3020D800FF3979 /* LoginViewController.swift */; };
+		07CF63E52D55DE6900CCF9F4 /* CalendarDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF63E42D55DE6900CCF9F4 /* CalendarDetailViewModel.swift */; };
 		07E1CADF2D3646C600F86BB8 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 07E1CADE2D3646C600F86BB8 /* CombineMoya */; };
 		07E1CAE12D3646C600F86BB8 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 07E1CAE02D3646C600F86BB8 /* Moya */; };
 		07E1CAE32D3646C600F86BB8 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 07E1CAE22D3646C600F86BB8 /* ReactiveMoya */; };
@@ -148,6 +149,7 @@
 		076FAB492D2E748B00FF3979 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		076FAB4D2D2EBB3A00FF3979 /* KakaoAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthService.swift; sourceTree = "<group>"; };
 		076FAB572D3020D800FF3979 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		07CF63E42D55DE6900CCF9F4 /* CalendarDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDetailViewModel.swift; sourceTree = "<group>"; };
 		07E1CB302D364BDA00F86BB8 /* Pretendard-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Black.otf"; sourceTree = "<group>"; };
 		07E1CB312D364BDA00F86BB8 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		07E1CB322D364BDA00F86BB8 /* Pretendard-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraBold.otf"; sourceTree = "<group>"; };
@@ -820,6 +822,13 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
+		07CF63E62D55F0B200CCF9F4 /* tagClothList */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = tagClothList;
+			sourceTree = "<group>";
+		};
 		07E1CADC2D36449B00F86BB8 /* Feature */ = {
 			isa = PBXGroup;
 			children = (
@@ -914,10 +923,12 @@
 		07ECCB352D4E34DF00AFF486 /* CalendarDetails */ = {
 			isa = PBXGroup;
 			children = (
+				07CF63E62D55F0B200CCF9F4 /* tagClothList */,
 				07ECCEB12D4EAF0A00AFF486 /* LikeUser */,
 				07ECCEAA2D4E835C00AFF486 /* Commnet */,
 				07ECCB332D4E34DF00AFF486 /* CalendarDetailView.swift */,
 				07ECCB342D4E34DF00AFF486 /* CalendarDetailViewController.swift */,
+				07CF63E42D55DE6900CCF9F4 /* CalendarDetailViewModel.swift */,
 				07ECCEA22D4E79C000AFF486 /* CalendarImageCell.swift */,
 				07ECCEAD2D4EAA2400AFF486 /* CustomActionSheetViewController.swift */,
 			);
@@ -1112,6 +1123,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				070258BE2D31085900065369 /* ClosetView.swift in Sources */,
+				07CF63E52D55DE6900CCF9F4 /* CalendarDetailViewModel.swift in Sources */,
 				076FAB4E2D2EBB3A00FF3979 /* KakaoAuthService.swift in Sources */,
 				070258C02D31086A00065369 /* ClosetViewController.swift in Sources */,
 				A6548E532D3F47DE00F79B66 /* WeatherAPI.swift in Sources */,

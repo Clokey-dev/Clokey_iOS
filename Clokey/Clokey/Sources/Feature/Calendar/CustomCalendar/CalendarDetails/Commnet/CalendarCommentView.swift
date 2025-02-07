@@ -34,18 +34,19 @@ class CalendarCommentView: UIView {
     
     let commentTextField = UITextField().then {
         $0.placeholder = "댓글 달기"
-        $0.borderStyle = .roundedRect
+        $0.layer.cornerRadius = 15
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.pointOrange800.cgColor
+        $0.clipsToBounds = true
+        
+        // 왼쪽 패딩 추가
+        let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 0))
+        $0.leftView = leftPaddingView
+        $0.leftViewMode = .always
     }
-//    let commentTextField: UITextView = {
-//        let textField = UIView
-//        textField.autocorrectionType = .no
-//        return textField
-//        
-//    }()
-    
     
     private let sendButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "paperplane.fill"), for: .normal)
+        $0.setImage(UIImage(named: "comment_enter"), for: .normal)
         $0.tintColor = .orange
     }
     
@@ -93,37 +94,38 @@ class CalendarCommentView: UIView {
     
     private func setupConstraints() {
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(16)
+            $0.top.equalToSuperview().offset(20)
             $0.centerX.equalToSuperview()
         }
         
         closeButton.snp.makeConstraints {
             $0.centerY.equalTo(titleLabel)
-            $0.trailing.equalToSuperview().inset(16)
+            $0.trailing.equalToSuperview().inset(20)
         }
         
         commentTableView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(8)
-            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(6)
+            $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalTo(inputContainerView.snp.top)
         }
         
         inputContainerView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
-            $0.height.equalTo(50)
+            $0.height.equalTo(40)
         }
         
         commentTextField.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(16)
+            $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalTo(sendButton.snp.leading).offset(-8)
-            $0.height.equalTo(44)
+            $0.height.equalTo(38)
             $0.centerY.equalToSuperview()
         }
 
         
         sendButton.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(16)
+            $0.trailing.equalToSuperview().inset(20)
+            $0.width.height.equalTo(38)
             $0.centerY.equalToSuperview()
         }
     }
@@ -165,9 +167,10 @@ class CalendarCommentView: UIView {
     }
     
     @objc private func didTapClose() {
-        self.removeFromSuperview()
+        if let viewController = self.findViewController() as? CalendarCommentViewController {
+            viewController.dismissView()
+        }
     }
-    
     @objc private func didTapSend() {
         if let text = commentTextField.text, !text.isEmpty {
             let newComment = Comment(
@@ -253,5 +256,17 @@ extension CalendarCommentView: UITableViewDataSource, UITableViewDelegate {
     private func isLastReply(comment: Comment) -> Bool {
         // 부모 댓글(일반 댓글)인 경우에만 답글 달기 버튼 표시
         return comment.parentCommentId == nil
+    }
+}
+
+extension UIView {
+    func findViewController() -> UIViewController? {
+        if let nextResponder = self.next as? UIViewController {
+            return nextResponder
+        } else if let nextResponder = self.next as? UIView {
+            return nextResponder.findViewController()
+        } else {
+            return nil
+        }
     }
 }

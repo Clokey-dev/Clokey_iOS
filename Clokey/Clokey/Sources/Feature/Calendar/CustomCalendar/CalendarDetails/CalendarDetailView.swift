@@ -22,6 +22,12 @@ class CalendarDetailView: UIView {
     private var images: [String] = []
     
     // MARK: - UI Components
+    
+    // 네비게이션 바와 구분선
+    private let topBorderView = UIView().then {
+        $0.backgroundColor = .textGray200
+    }
+    
     // 프로필 정보 헤더 스택
     private let profileHeaderStackView = UIStackView().then {
         $0.axis = .horizontal
@@ -99,17 +105,27 @@ class CalendarDetailView: UIView {
     }
     
     let likeButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "heart"), for: .normal)
+        $0.setImage(UIImage(named: "heart_empty"), for: .normal)
     }
 
     let likeLabel = UILabel().then {
         $0.text = "250"
         $0.font = .systemFont(ofSize: 16)
-        $0.textColor = .black
     }
     
+    // 댓글 컨텐츠
+    let commentContainerView = UIView().then {
+        $0.backgroundColor = .clear
+        $0.isUserInteractionEnabled = true // 터치 가능하도록
+    }
+
     let commentButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "message"), for: .normal)
+        $0.setImage(UIImage(named: "comment_icon"), for: .normal)
+    }
+    
+    let commentLabel = UILabel().then {
+        $0.text = "250"
+        $0.font = .systemFont(ofSize: 16)
     }
     
     // content라벨
@@ -151,21 +167,8 @@ class CalendarDetailView: UIView {
         ImageCollectionView.dataSource = self
         ImageCollectionView.delegate = self
         
-        // 네비게이션 뒤로가기
-        navBarManager.addBackButton(
-            to: navigationItem,
-            target: self,
-            action: #selector(didTapBackButton)
-        )
-
-        // 네비게이션 타이틀
-        navBarManager.setTitle(
-            to: navigationItem,
-            title: "",
-            font: .systemFont(ofSize: 18, weight: .semibold), textColor: .black
-        )
-        
         addSubview(profileHeaderStackView)
+        addSubview(topBorderView)
         
         // 왼쪽 스택뷰에 프로필 이미지와 이름 추가
         leftStackView.addArrangedSubview(profileImage)
@@ -192,29 +195,31 @@ class CalendarDetailView: UIView {
         // 하트&좋아요 수정
         heartNLikeContentView.addSubview(likeButton)
         heartNLikeContentView.addSubview(likeLabel)
-        heartNLikeContentView.addSubview(commentButton)
-        
-        likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
-        likeButton.tintColor = .black
-
-        commentButton.setImage(UIImage(systemName: "message"), for: .normal)
-        commentButton.tintColor = .black
-
-        
+        heartNLikeContentView.addSubview(commentContainerView)
+        commentContainerView.addSubview(commentButton)
+        commentContainerView.addSubview(commentLabel)
+ 
         setupConstraints()
     }
     
     private func setupConstraints() {
-        // 프로필 헤더 (닉네임 + 더보기 버튼)
-        
+        // 프로필 헤더 (이미지/닉네임 + 잠굼/더보기 버튼)
         profileHeaderStackView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(16)
+            $0.top.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(40)
+            $0.height.equalTo(48)
+        }
+        
+        // 구분선
+        topBorderView.snp.makeConstraints {
+            $0.top.equalTo(profileHeaderStackView.snp.top)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(1)
         }
 
+        // 이미지/닉네임 스택
         leftStackView.snp.makeConstraints {
-            $0.height.equalTo(40)
+            $0.height.equalTo(48)
         }
         
         profileImage.snp.makeConstraints {
@@ -223,6 +228,11 @@ class CalendarDetailView: UIView {
         
         nameLabel.snp.makeConstraints {
             $0.leading.equalTo(profileImage.snp.trailing).offset(8)
+        }
+        
+        // 잠굼/더보기 스택
+        rightStackView.snp.makeConstraints {
+            $0.height.equalTo(48)
         }
         
         lockCheckImageView.snp.makeConstraints {
@@ -235,7 +245,7 @@ class CalendarDetailView: UIView {
 
         // 이미지 컬렉션 뷰 (슬라이드 가능)
         ImageCollectionView.snp.makeConstraints {
-            $0.top.equalTo(profileHeaderStackView.snp.bottom).offset(8)
+            $0.top.equalTo(profileHeaderStackView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(500)
         }
@@ -268,12 +278,26 @@ class CalendarDetailView: UIView {
             $0.leading.equalTo(likeButton.snp.trailing).offset(8)
             $0.centerY.equalToSuperview()
             $0.height.equalTo(24)
+            $0.width.equalTo(15)
+        }
+        
+        commentContainerView.snp.makeConstraints {
+            $0.leading.equalTo(likeLabel.snp.trailing).offset(16)
+            $0.centerY.equalToSuperview()
+            $0.height.equalTo(30)
         }
 
         commentButton.snp.makeConstraints {
-            $0.leading.equalTo(likeLabel.snp.trailing).offset(16)
+            $0.leading.equalToSuperview()
             $0.centerY.equalToSuperview()
             $0.width.height.equalTo(24)
+        }
+
+        commentLabel.snp.makeConstraints {
+            $0.leading.equalTo(commentButton.snp.trailing).offset(8)
+            $0.centerY.equalToSuperview()
+            $0.height.equalTo(24)
+            $0.trailing.equalToSuperview() 
         }
         
         hashtagsLabel.snp.makeConstraints {
@@ -289,6 +313,7 @@ class CalendarDetailView: UIView {
         self.images = images
         ImageCollectionView.reloadData() // 이미지 변경 후 리로드
         pageControl.numberOfPages = images.count // 페이지 컨트롤 업데이트
+        pageControl.pageIndicatorTintColor = .pointOrange800
     }
     
     // 리스트 문자열 변환
@@ -323,42 +348,65 @@ extension CalendarDetailView: UICollectionViewDataSource, UICollectionViewDelega
 
 // 회원 조회 API 업데이트
 extension CalendarDetailView {
-    func configure(with data: HistoryDetailResponseDTO) {
+    func configure(with viewModel: CalendarDetailViewModel) {
         // 프로필 이미지 설정
-        profileImage.kf.setImage(with: URL(string: data.memberImageUrl), placeholder: UIImage(named: "profile_test"))
+        profileImage.kf.setImage(with: viewModel.profileImageURL, placeholder: UIImage(named: "profile_test"))
         
         // 닉네임 설정
-        nameLabel.text = data.nickName
+        nameLabel.text = viewModel.name
         
         // 이미지 슬라이드 설정
-        configureImages(data.imageUrl)
+        configureImages(viewModel.images)
         
         // 좋아요 버튼 상태 설정
-        let heartImage = data.liked ? "heart.fill" : "heart"
-        likeButton.setImage(UIImage(systemName: heartImage), for: .normal)
-        likeButton.tintColor = data.liked ? .red : .black
+        let heartImage = viewModel.liked ? "heart_fill" : "heart_empty"
+        likeButton.setImage(UIImage(named: heartImage), for: .normal)
         
         // 좋아요 수 설정
-        likeLabel.text = "\(data.likeCount)"
+        likeLabel.text = viewModel.likeCount
+            
+        // 댓글 수 설정
+        commentLabel.text = viewModel.commentCount
         
         // 컨텐츠 설정
-        contentLabel.text = data.contents
+        contentLabel.text = viewModel.content
         
         // 해시태그 설정
-        configureHashtags(data.hashtags)
+        hashtagsLabel.text = viewModel.hashtags
         
         // 날짜 설정
-        dateLabel.text = data.date 
+        if let date = convertStringToDate(viewModel.date) {
+            dateLabel.text = convertDateToFormattedString(date)
+        } else {
+            dateLabel.text = viewModel.date
+        }
+        
+        // 공개/비공개
+        let lockImage = viewModel.visibility ? "lock_on" : "lock_off"
+        lockCheckImageView.image = UIImage(named: lockImage)
     }
 }
 
 // 좋아요 처리
 extension CalendarDetailView {
-    func updateLikeState(isLiked: Bool, likeCount: Int64) {
-        let heartImage = isLiked ? "heart.fill" : "heart"
-        likeButton.setImage(UIImage(systemName: heartImage), for: .normal)
-        likeButton.tintColor = isLiked ? .red : .black
-        
-        likeLabel.text = "\(likeCount)"
+    func updateLikeState(with viewModel: CalendarDetailViewModel) {
+        let heartImage = viewModel.liked ? "heart_fill" : "heart_empty"
+        likeButton.setImage(UIImage(named: heartImage), for: .normal)
+        likeLabel.text = viewModel.likeCount
     }
+}
+
+// 문자열을 Date로 변환
+private func convertStringToDate(_ dateString: String) -> Date? {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    return dateFormatter.date(from: dateString)
+}
+
+// Date를 원하는 형식의 문자열로 변환
+private func convertDateToFormattedString(_ date: Date) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd (E)"
+    dateFormatter.locale = Locale(identifier: "en_US") // 영어 요일 표시
+    return dateFormatter.string(from: date).uppercased() // 대문자로 변환
 }
