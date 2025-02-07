@@ -23,16 +23,17 @@ public struct HistoryDTO: Codable {
 public struct HistoryDetailResponseDTO: Codable {
     public let memberId: Int64
     public let memberImageUrl: String
+    public let historyId: Int64
     public let nickName: String
-    public let clokeyId: Int64
-    public let content: String
-    public let images: [String]
+    public let clokeyId: String
+    public let contents: String
+    public let imageUrl: [String]
     public let hashtags: [String]
-    public let availability: Bool
+    public let visibility: Bool
     public let likeCount: Int
-    public let isLiked: Bool
+    public let liked: Bool
     public let date: String
-    public let clothes: [ClothDTO]
+    public let cloths: [ClothDTO]
 }
 
 public struct ClothDTO: Codable {
@@ -88,5 +89,3 @@ public struct HistoryLikeListResponseDTO: Codable {
         public let followStatus: Bool
     }
 }
-
-

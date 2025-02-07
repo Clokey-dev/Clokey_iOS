@@ -35,6 +35,7 @@ class CalendarDetailViewController: UIViewController {
     }
 
     func setDetailData(_ data: HistoryDetailResponseDTO) {
+        print("서버에서 받은 데이터: \(data)")
         self.detailData = data
     }
 
@@ -52,8 +53,18 @@ class CalendarDetailViewController: UIViewController {
     // 좋아요 버튼
     @objc private func didTapLikeButton() {
 //        guard let detailData = detailData else { return }
-        
-        fetchToggleLike(historyId: historyId, isLiked: !detailData!.isLiked)
+        let isLiked = calendarDetailView.likeButton.tintColor == .red // 현재 상태 확인
+
+        if isLiked {
+            calendarDetailView.likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            calendarDetailView.likeButton.tintColor = .black
+            calendarDetailView.likeLabel.text = "\(Int(calendarDetailView.likeLabel.text ?? "0")! - 1)" // 좋아요 수 감소
+        } else {
+            calendarDetailView.likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            calendarDetailView.likeButton.tintColor = .red
+            calendarDetailView.likeLabel.text = "\(Int(calendarDetailView.likeLabel.text ?? "0")! + 1)" // 좋아요 수 증가
+        }
+//        fetchToggleLike(historyId: historyId, isLiked: !detailData!.isLiked)
     }
     
     // 댓글뷰

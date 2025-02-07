@@ -36,6 +36,13 @@ class CalendarCommentView: UIView {
         $0.placeholder = "댓글 달기"
         $0.borderStyle = .roundedRect
     }
+//    let commentTextField: UITextView = {
+//        let textField = UIView
+//        textField.autocorrectionType = .no
+//        return textField
+//        
+//    }()
+    
     
     private let sendButton = UIButton().then {
         $0.setImage(UIImage(systemName: "paperplane.fill"), for: .normal)
@@ -177,7 +184,6 @@ class CalendarCommentView: UIView {
             commentTextField.text = ""
         }
     }
-
     
     // 키보드 올릴 때
     @objc private func keyboardWillShow(_ notification: Notification) {
@@ -195,7 +201,7 @@ class CalendarCommentView: UIView {
             UIView.animate(withDuration: 0.3) { self.layoutIfNeeded() }
         }
     }
-
+    
     // 키보드 내릴때 댓글창 원래대로
     @objc private func keyboardWillHide(_ notification: Notification) {
         inputContainerView.snp.remakeConstraints {
@@ -210,7 +216,6 @@ class CalendarCommentView: UIView {
     @objc private func dismissKeyboard() {
         self.endEditing(true)
     }
-
 
 }
 

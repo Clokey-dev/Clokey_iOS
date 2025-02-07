@@ -161,7 +161,7 @@ extension CalendarView: UICollectionViewDataSource, UICollectionViewDelegate {
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        let dateString = formatter.string(from: date)
+//        let dateString = formatter.string(from: date)
         
         let imageUrl = imageMap[dateString]
 

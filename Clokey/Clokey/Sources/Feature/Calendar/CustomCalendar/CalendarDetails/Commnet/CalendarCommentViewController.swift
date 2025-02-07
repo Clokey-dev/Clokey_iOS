@@ -39,7 +39,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         organizeComments()
         fetchComments()
     }
-
+    
     private func setupUI() {
         view.backgroundColor = .clear
         view.addSubview(backgroundView)
