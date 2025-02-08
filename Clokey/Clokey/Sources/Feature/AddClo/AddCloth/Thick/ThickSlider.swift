@@ -17,7 +17,7 @@ class ThickSlider: UISlider {
     private let circleSize: CGFloat = 12
     private let thumbSize: CGFloat = 20
     private let selectedColor = UIColor.mainBrown800 // mainbrown800
-    private let borderColor = UIColor.black.cgColor  // 원 테두리 색상
+    private let borderColor = UIColor.mainBrown400.cgColor  // 원 테두리 색상
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -43,7 +43,7 @@ class ThickSlider: UISlider {
         maximumTrackTintColor = .clear
         
         // Thumb를 완전한 brown으로 설정
-        let thumbColor = UIColor(named: "mainbrown800") ?? UIColor.brown
+        let thumbColor = UIColor(named: "mainbrown800") ?? UIColor.mainBrown400
             
         setThumbImage(createThumbImage(size: thumbSize, color: selectedColor), for: .normal)
         
@@ -86,25 +86,59 @@ class ThickSlider: UISlider {
         
         trackLayer.path = path.cgPath
         
-        trackLayer.strokeColor = UIColor.black.cgColor
+        trackLayer.strokeColor = UIColor.mainBrown400.cgColor
         trackLayer.lineWidth = 2
         trackLayer.fillColor = UIColor.clear.cgColor
     }
     
     // MARK: - 🎯 원(circle) 추가 (트랙 위로 선이 지나가지 않게)
+//    private func createCircles() {
+//        for _ in 0..<stepCount {
+//            let circle = UIView()
+//            circle.layer.cornerRadius = circleSize / 2
+//            circle.layer.borderWidth = 2
+//            circle.layer.borderColor = borderColor
+//            circle.backgroundColor = .white  // 트랙이 지나가지 않도록 배경을 흰색으로 설정
+//            addSubview(circle)
+//            circles.append(circle)
+//
+//        }
+//    }
+    
+    // 🎯 각 점(원) 생성 및 제스처 추가
     private func createCircles() {
-        for _ in 0..<stepCount {
+        for index in 0..<stepCount {
             let circle = UIView()
             circle.layer.cornerRadius = circleSize / 2
             circle.layer.borderWidth = 2
             circle.layer.borderColor = borderColor
-            circle.backgroundColor = .white  // 트랙이 지나가지 않도록 배경을 흰색으로 설정
+            circle.backgroundColor = .white  // 기본 흰색
             addSubview(circle)
             circles.append(circle)
+            
+            // 🔥 각 점(원)에 제스처 추가
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(circleTapped(_:)))
+            circle.addGestureRecognizer(tapGesture)
+            circle.tag = index  // ✅ 각 점에 고유 태그 설정
         }
     }
+
+    // 🎯 점(원)을 눌렀을 때 동작
+    @objc private func circleTapped(_ sender: UITapGestureRecognizer) {
+        guard let selectedCircle = sender.view else { return } // 눌린 점 확인
+        let selectedIndex = selectedCircle.tag  // 태그에서 인덱스 가져오기
+        
+        // ✅ 슬라이더 값 업데이트
+        let stepValue = Float(selectedIndex)
+        setValue(stepValue, animated: true)
+        
+        // ✅ UI 업데이트
+        highlightSelectedCircle()
+        layoutIfNeeded()
+    }
+    
     @objc private func sliderValueChanged() {
-       
+        
         highlightSelectedCircle()
     }
 
@@ -171,7 +205,7 @@ class ThickSlider: UISlider {
                 } else {
                     circle.backgroundColor = .white // ✅ 나머지는 흰색 유지
                     circle.transform = CGAffineTransform.identity // ✅ 원래 크기로 복귀
-                    circle.layer.borderColor = UIColor.black.cgColor // ✅ 테두리 검은색 유지
+                    circle.layer.borderColor = UIColor.mainBrown400.cgColor // ✅ 테두리 검은색 유지
                 }
             }
         }

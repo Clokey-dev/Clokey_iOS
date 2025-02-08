@@ -230,10 +230,11 @@ class WeatherChooseViewController: UIViewController {
         // ✅ 다음 버튼 크기를 353 x 54로 설정
         nextButton.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
-                $0.leading.trailing.equalToSuperview().inset(20) // ✅ 좌우 마진 유지
-                $0.height.equalTo(54) // 중앙 정렬
+            $0.leading.trailing.equalToSuperview().inset(20) // ✅ 좌우 마진 유지
+            $0.height.equalTo(54) // 중앙 정렬
             
         }
+        
         thermometerIcon.snp.makeConstraints {
             $0.top.equalToSuperview().offset(309)
             $0.bottom.equalToSuperview().offset(-383)

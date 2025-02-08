@@ -4,11 +4,6 @@ import Then
 
 class LastAddView: UIView {
 
-    // MARK: - UI Components
-    let headerView = UIView().then {
-        $0.backgroundColor = .white
-    }
-
     let backButton = UIButton().then {
         $0.setImage(UIImage(named: "back_icon"), for: .normal)
         $0.tintColor = UIColor(named: "mainBrown800")
@@ -97,9 +92,9 @@ class LastAddView: UIView {
     // MARK: - Setup UI
     private func setupUI() {
         backgroundColor = .white
-        addSubview(headerView)
-        headerView.addSubview(backButton)
-        headerView.addSubview(titleLabel)
+        
+        addSubview(backButton)
+        addSubview(titleLabel)
         addSubview(addClothLabel)
         
         addSubview(imageView)
@@ -117,25 +112,19 @@ class LastAddView: UIView {
     
     // MARK: - Setup Constraints
     private func setupConstraints() {
-        headerView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(55)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(54)
+        
+        backButton.snp.makeConstraints {
+            $0.top.leading.equalTo(safeAreaLayoutGuide).inset(20)
+            $0.size.equalTo(CGSize(width: 10, height: 20))
         }
-
-        backButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(27)
-            make.centerY.equalToSuperview()
-            make.width.equalTo(10)
-            make.height.equalTo(20)
-        }
-
-        titleLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+        
+        titleLabel.snp.makeConstraints {
+            $0.centerY.equalTo(backButton)
+            $0.centerX.equalToSuperview()
         }
         addClothLabel.snp.makeConstraints { make in
-            make.top.equalTo(headerView.snp.bottom).offset(16)
-            make.centerX.equalToSuperview()
+            make.top.equalTo(backButton.snp.bottom).offset(33)
+            make.leading.equalToSuperview().offset(20)
             make.height.equalTo(45)
             make.width.equalTo(346)
         }
@@ -190,11 +179,11 @@ class LastAddView: UIView {
             make.height.equalTo(1)
         }
         
-        endButton.snp.makeConstraints { make in
-            make.top.equalTo(urlUnderline.snp.bottom).offset(152)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(353)
-            make.height.equalTo(54)
+        endButton.snp.makeConstraints {
+            $0.bottom.equalTo(safeAreaLayoutGuide).offset(-20)
+            $0.leading.trailing.equalToSuperview().inset(20) // ✅ 좌우 마진 유지
+            $0.height.equalTo(54) // 중앙 정렬
+            
         }
     }
     

@@ -23,7 +23,7 @@ class ThickViewController: UIViewController {
     private let backButton: UIButton = {
         let button = UIButton(type: .system)
         let image = UIImage(systemName: "chevron.left")?
-            .withTintColor(.black, renderingMode: .alwaysOriginal) // 🔥 아이콘 색상 변경 (검은색)
+            .withTintColor(.mainBrown800, renderingMode: .alwaysOriginal) // 🔥 아이콘 색상 변경 (검은색)
         
         button.setImage(image, for: .normal)
         button.contentMode = .scaleAspectFit // 🔥 아이콘 비율 유지
@@ -35,7 +35,7 @@ class ThickViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "옷 추가"
-        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.font = UIFont.ptdBoldFont(ofSize: 20)
         label.textAlignment = .center
         return label
     }()
@@ -44,7 +44,7 @@ class ThickViewController: UIViewController {
     private let thicknessTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "두께감을 설정해주세요."
-        label.font = UIFont.boldSystemFont(ofSize: 22)
+        label.font = UIFont.ptdBoldFont(ofSize: 24)
         label.textAlignment = .left
         label.textColor = .black
         return label
@@ -64,7 +64,7 @@ class ThickViewController: UIViewController {
         button.addTarget(self, action: #selector(didTapInfoButton), for: .touchUpInside)
         return button
     }()
-
+    
     /// 🔹 질문 아이콘 (별도로 추가)
     private let questionIcon: UIImageView = {
         let imageView = UIImageView()
@@ -90,16 +90,17 @@ class ThickViewController: UIViewController {
     /// ✅ 두께감 기준 설명 뷰 (초기에 숨김)
     private let thicknessInfoView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(named: "mainBrown50") // ✅ 배경색 적용
-        view.layer.cornerRadius = 8
+        view.backgroundColor = UIColor(red: 255/255, green: 248/255, blue: 235/255, alpha: 1)
+        view.layer.cornerRadius = 10
         view.isHidden = true
         return view
     }()
-
+    
     /// ✅ 두께감 설명 라벨
     private let thicknessInfoLabel: UILabel = {
         let label = UILabel()
-        label.text = """
+        
+        let text = """
         0: 나시, 반팔, 반바지
         1: 린넨 셔츠, 면 슬랙스
         2: 기본 맨투맨, 얇은 니트
@@ -107,11 +108,23 @@ class ThickViewController: UIViewController {
         4: 울 코트, 양털 후리스
         5: 두꺼운 오리털 패딩, 롱패딩
         """
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = .black
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 8 // ✅ 줄 간격 (위아래 공간 조절)
+        
+        let attributedString = NSMutableAttributedString(string: text, attributes: [
+            .font: UIFont.ptdRegularFont(ofSize: 14),
+            .foregroundColor: UIColor.black,
+            .paragraphStyle: paragraphStyle
+        ])
+        
+        label.attributedText = attributedString
         label.numberOfLines = 0
         label.textAlignment = .left
         label.backgroundColor = .clear // ✅ 배경색을 없애서 부모 뷰 색상 유지
+        
+        label.layer.cornerRadius = 10
+        label.layer.masksToBounds = true
         return label
     }()
     /// 🔹 두께감 슬라이더 (ThickSlider 사용)
@@ -124,9 +137,20 @@ class ThickViewController: UIViewController {
     /// 🔹 공개 여부 라벨
     private let visibilityLabel: UILabel = {
         let label = UILabel()
-        label.text = "옷 공개여부 *"
-        label.font = UIFont.boldSystemFont(ofSize: 18)
+        
+        let fullText = "옷 공개여부 *"
+        let attributedString = NSMutableAttributedString(string: fullText)
+        
+        // 🔹 `*` 부분만 빨간색 적용
+        if let range = fullText.range(of: "*") {
+            let nsRange = NSRange(range, in: fullText)
+            attributedString.addAttribute(.foregroundColor, value: UIColor.red, range: nsRange)
+        }
+        
+        label.attributedText = attributedString
+        label.font = UIFont.boldSystemFont(ofSize: 20)
         label.textAlignment = .left
+        
         return label
     }()
     
@@ -135,10 +159,11 @@ class ThickViewController: UIViewController {
     private let publicButton: UIButton = {
         let button = UIButton()
         button.setTitle("공개", for: .normal)
-        button.setTitleColor(.brown, for: .normal)
+        button.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 16)
+        button.setTitleColor(.mainBrown800, for: .normal)
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.black.cgColor
-        button.layer.cornerRadius = 8
+        button.layer.borderColor = UIColor.mainBrown800.cgColor
+        button.layer.cornerRadius = 10
         button.backgroundColor = .clear
         button.addTarget(self, action: #selector(didTapVisibilityButton(_:)), for: .touchUpInside)
         return button
@@ -148,10 +173,11 @@ class ThickViewController: UIViewController {
     private let privateButton: UIButton = {
         let button = UIButton()
         button.setTitle("비공개", for: .normal)
-        button.setTitleColor(.brown, for: .normal)
+        button.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 16)
+        button.setTitleColor(.mainBrown800, for: .normal)
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.black.cgColor
-        button.layer.cornerRadius = 8
+        button.layer.borderColor = UIColor.mainBrown800.cgColor
+        button.layer.cornerRadius = 10
         button.backgroundColor = .clear
         button.addTarget(self, action: #selector(didTapVisibilityButton(_:)), for: .touchUpInside)
         return button
@@ -178,7 +204,7 @@ class ThickViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-       
+        
     }
     
     // MARK: - UI Setup
@@ -203,22 +229,20 @@ class ThickViewController: UIViewController {
         // ✅ StackView에 아이콘과 버튼 추가
         infoStackView.addArrangedSubview(questionIcon)
         infoStackView.addArrangedSubview(thicknessInfoButton)
-
+        
         // ✅ StackView를 뷰에 추가
         view.addSubview(infoStackView)
-
+        
         // ✅ StackView 오토레이아웃 설정
-    
+        
         infoStackView.snp.makeConstraints {
-                $0.top.equalTo(thickSlider.snp.bottom).offset(24)
-                $0.leading.equalToSuperview().offset(20)
-                $0.trailing.lessThanOrEqualToSuperview().offset(-20) // ✅ 너무 넓어지지 않도록 설정
-            }
-        // ✅ 버튼이 자동으로 줄어들지 않도록 설정
-        thicknessInfoButton.snp.makeConstraints {
-            $0.width.greaterThanOrEqualTo(180) // ✅ 최소 180px 너비 설정 (고정 아님)
+            //                $0.top.equalTo(thickSlider.snp.bottom).offset(24)
+            $0.top.equalTo(thicknessTitleLabel.snp.bottom).offset(110)
+            $0.leading.equalToSuperview().offset(40)
+            $0.trailing.lessThanOrEqualToSuperview().offset(-20) // ✅ 너무 넓어지지 않도록 설정
         }
-
+        
+        
         // ✅ questionIcon의 너비를 고정하지 않고 자연스럽게 조정되도록 설정!
         questionIcon.snp.makeConstraints {
             $0.height.equalTo(24)
@@ -226,15 +250,12 @@ class ThickViewController: UIViewController {
         }
         // 설명 뷰 레이아웃 (초기값)
         // 설명 뷰 레이아웃 (초기값)
-        thicknessInfoView.snp.makeConstraints {
-            $0.top.equalTo(thicknessInfoButton.snp.bottom).offset(0) // 기본 0
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(0) // ✅ 처음엔 높이 0
-        }
+        
         // 설명 라벨 배치
         thicknessInfoLabel.snp.makeConstraints {
-            $0.top.equalTo(thicknessInfoView.snp.top).offset(10)
-            $0.bottom.equalTo(thicknessInfoView.snp.bottom).offset(-10).priority(750) // ✅ 우선순위 낮추기
+            $0.top.equalTo(thicknessInfoView.snp.top)
+            $0.bottom.equalTo(thicknessInfoView.snp.bottom)
+            $0.leading.equalTo(thicknessInfoView.snp.leading).offset(10)
         }
         
         // 네비게이션 바 레이아웃
@@ -245,7 +266,7 @@ class ThickViewController: UIViewController {
         }
         
         backButton.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(16)
+            $0.leading.equalToSuperview().offset(20)
             $0.centerY.equalTo(customNavBar)
             $0.width.height.equalTo(24)
         }
@@ -262,49 +283,50 @@ class ThickViewController: UIViewController {
         }
         thicknessInfoButton.snp.makeConstraints {
             $0.top.equalTo(thickSlider.snp.bottom).offset(24) // 🔥 슬라이더 아래로 이동
-            $0.leading.equalToSuperview().offset(20)
-           
+            $0.leading.equalToSuperview().offset(40)
+            $0.width.greaterThanOrEqualTo(180) // ✅ 최소 180px 너비 설정 (고정 아님)
+            
         }
-
+        
+        thicknessInfoView.snp.makeConstraints {
+            $0.top.equalTo(thicknessInfoButton.snp.bottom).offset(8) // 기본 0
+            $0.leading.trailing.equalToSuperview().inset(40)
+            $0.height.equalTo(0) // ✅ 처음엔 높이 0
+            $0.width.equalTo(311)
+        }
+        
         
         // ThickSlider 배치
         // ThickSlider 배치 (타이틀 아래)
         thickSlider.snp.makeConstraints {
             $0.top.equalTo(thicknessTitleLabel.snp.bottom).offset(20)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.leading.trailing.equalToSuperview().inset(40)
         }
-
+        
         
         // 공개 여부 라벨
         visibilityLabel.snp.makeConstraints {
-            $0.top.equalTo(thicknessInfoView.snp.bottom).offset(30) // 🔥 설명 뷰가 나오면 자동으로 내려가게 설정
+            $0.top.equalTo(thicknessInfoView.snp.bottom).offset(24) // 🔥 설명 뷰가 나오면 자동으로 내려가게 설정
             $0.leading.equalToSuperview().offset(20)
         }
         
         publicButton.snp.makeConstraints {
             $0.top.equalTo(visibilityLabel.snp.bottom).offset(15)
             $0.leading.equalToSuperview().offset(20)
-            $0.width.equalTo(80)
-            $0.height.equalTo(40)
+            $0.width.equalTo(76)
+            $0.height.equalTo(30)
         }
         
-        publicButton.snp.makeConstraints {
-            $0.top.equalTo(visibilityLabel.snp.bottom).offset(15)
-            $0.leading.equalToSuperview().offset(20)
-            $0.width.equalTo(80)
-            $0.height.equalTo(40)
-        }
-
         privateButton.snp.makeConstraints {
             $0.top.equalTo(visibilityLabel.snp.bottom).offset(15)
             $0.leading.equalTo(publicButton.snp.trailing).offset(10)
-            $0.width.equalTo(80)
-            $0.height.equalTo(40)
+            $0.width.equalTo(76)
+            $0.height.equalTo(30)
         }
         nextButton.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(50)
+            $0.height.equalTo(54)
         }
         thicknessInfoButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         thicknessInfoButton.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -319,10 +341,10 @@ class ThickViewController: UIViewController {
     @objc private func didTapInfoButton() {
         let isHidden = thicknessInfoView.isHidden
         thicknessInfoView.isHidden = false // ✅ 먼저 숨김 해제 (필수)
-
+        
         UIView.animate(withDuration: 0.3, animations: {
             self.thicknessInfoView.snp.updateConstraints {
-                $0.height.equalTo(isHidden ? 150 : 0) // ✅ 토글 방식으로 높이 변경
+                $0.height.equalTo(isHidden ? 180 : 0) // ✅ 토글 방식으로 높이 변경
             }
             self.view.layoutIfNeeded() // ✅ 애니메이션 적용
         }) { _ in
@@ -358,18 +380,18 @@ class ThickViewController: UIViewController {
     var maxTemp: Int?
     /***/
     
-//    @objc private func didTapNextButton() {
-//        let popupVC = PopupViewController()
-//        /***/
-//        popupVC.clothName = clothName // 값 전달
-//        popupVC.selectedSeasons = selectedSeasons
-//        popupVC.minTemp = minTemp
-//        popupVC.maxTemp = maxTemp
-//        popupVC.thickCount = Int(thickSlider.value)
-//        popupVC.isPublicSelected = isPublicSelected
-//        /***/
-//        popupVC.modalPresentationStyle = .fullScreen // ✅ 전체 화면 모달
-//        navigationController?.pushViewController(popupVC, animated: true)    }
+    //    @objc private func didTapNextButton() {
+    //        let popupVC = PopupViewController()
+    //        /***/
+    //        popupVC.clothName = clothName // 값 전달
+    //        popupVC.selectedSeasons = selectedSeasons
+    //        popupVC.minTemp = minTemp
+    //        popupVC.maxTemp = maxTemp
+    //        popupVC.thickCount = Int(thickSlider.value)
+    //        popupVC.isPublicSelected = isPublicSelected
+    //        /***/
+    //        popupVC.modalPresentationStyle = .fullScreen // ✅ 전체 화면 모달
+    //        navigationController?.pushViewController(popupVC, animated: true)    }
     @objc private func didTapNextButton() {
         let lastAddVC = LastAddViewController()
         /***/
@@ -384,3 +406,5 @@ class ThickViewController: UIViewController {
         navigationController?.pushViewController(lastAddVC, animated: true)
     }
 }
+
+

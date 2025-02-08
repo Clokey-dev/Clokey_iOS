@@ -221,25 +221,25 @@ class PopupViewController: UIViewController {
         successVC.modalPresentationStyle = .fullScreen // ✅ 전체 화면 모달
         navigationController?.pushViewController(successVC, animated: true)
         
-        let addClothesRequestDTO = AddClothesRequestDTO(
-            categoryId: 1,
-            name: clothName!,
-            season: Array(season),
-            tempUpperBound: maxTemp!,
-            tempLowerBound: minTemp!,
-            thicknessLevel: thicknessLevel!,
-            visibility: visibility!,
-            clothUrl: imageUrl!,
-            brand: brand!
-        )
-        let clothesService = ClothesService()
-        clothesService.addClothes(data: addClothesRequestDTO) { result in
-            switch result {
-            case .success(let response):
-                print("옷 추가 성공: \(response)")
-            case .failure(let error):
-                print("옷 추가 실패: \(error.localizedDescription)")
-            }
-        }
+//        let addClothesRequestDTO = AddClothesRequestDTO(
+//            categoryId: 1,
+//            name: clothName!,
+//            season: Array(season),
+//            tempUpperBound: maxTemp!,
+//            tempLowerBound: minTemp!,
+//            thicknessLevel: thicknessLevel!,
+//            visibility: visibility!,
+//            clothUrl: imageUrl!,
+//            brand: brand!
+//        )
+//        let clothesService = ClothesService()
+//        clothesService.addClothes(data: addClothesRequestDTO) { result in
+//            switch result {
+//            case .success(let response):
+//                print("옷 추가 성공: \(response)")
+//            case .failure(let error):
+//                print("옷 추가 실패: \(error.localizedDescription)")
+//            }
+//        }
     }
 }
