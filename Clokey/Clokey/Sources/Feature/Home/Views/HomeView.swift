@@ -51,6 +51,7 @@ final class HomeView: UIView {
     /// `HomeView`의 기본 초기화 메서드
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         setupUI() // UI 설정
     }
     
@@ -114,6 +115,7 @@ final class HomeView: UIView {
             make.top.equalTo(separatorLine.snp.bottom) // 구분선 아래
             make.leading.trailing.bottom.equalToSuperview() // 화면의 좌우 및 아래쪽 끝까지 확장
         }
+        
     }
 }
 
