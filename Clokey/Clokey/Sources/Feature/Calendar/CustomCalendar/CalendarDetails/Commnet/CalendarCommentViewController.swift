@@ -9,8 +9,16 @@ import Foundation
 import SnapKit
 import Then
 import UIKit
+import Kingfisher
+
+protocol CalendarCommentDelegate: AnyObject {
+    func didUpdateComment(count: Int)  // 댓글 수 업데이트
+    func didDeleteComment()  // 댓글 삭제됨
+}
 
 class CalendarCommentViewController: UIViewController, CommentCellDelegate {
+    
+    weak var delegate: CalendarCommentDelegate?
     
     private let backgroundView = UIView().then {
         $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -19,7 +27,10 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     
     private let commentView = CalendarCommentView()
     private var comments: [Comment] = Comment.sampleComments
-    private var selectedCommentId: Int? = nil // 대댓글 대상 ID
+    private var selectedCommentId: Int64? = nil // 대댓글 대상 ID
+    
+    // 선택한 댓글
+    private var selectedIndexPath: IndexPath? = nil
     
     // API
     // 페이지네이션 관련 변수들
@@ -29,10 +40,21 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     
     // 서비스 및 히스토리 ID
     private let historyService = HistoryService()
-//    private let historyId: Int
-    // 예시
-    let historyId = 16
+    private let historyId: Int
     
+    // MARK: - Init
+    
+    init(historyId: Int) {
+        self.historyId = historyId
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -58,6 +80,9 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
             $0.edges.equalToSuperview()
         }
         
+        commentView.viewController = self
+        commentView.comments = comments
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissView))
         backgroundView.addGestureRecognizer(tapGesture)
         
@@ -66,6 +91,12 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         commentView.commentTableView.dataSource = self
         commentView.commentTableView.delegate = self
     }
+    
+    // 댓글 새로고침
+    private func updateComments(_ newComments: [Comment]) {
+       comments = newComments
+       commentView.comments = comments
+   }
     
     // 댓글 정렬 메서드 추가
     private func organizeComments() {
@@ -88,12 +119,12 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     }
     
     // 댓글 쓰기 버튼 눌렀을 때
-    @objc private func didTapSend() {
+    @objc func didTapSend() {
         guard let text = commentView.commentTextField.text, !text.isEmpty else { return }
-        
+
         let requestDTO = HistoryCommentWriteRequestDTO(
             content: text,
-            commentId: nil
+            commentId: selectedCommentId
         )
         
         historyService.historyCommentWrite(
@@ -101,28 +132,60 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
             data: requestDTO
         ) { [weak self] result in
             guard let self = self else { return }
-            
+           
             switch result {
             case .success(_):
-                // 성공시 댓글창 비우고 새로고침
                 DispatchQueue.main.async {
+                    // 이전에 선택된 셀의 선택 상태 해제
+                    if let oldIndexPath = self.selectedIndexPath {
+                       let oldCell = self.commentView.commentTableView.cellForRow(at:   oldIndexPath) as? CommentCell
+                        oldCell?.setSelected(false)
+                    }
+                    
+                    self.selectedIndexPath = nil
+                    self.commentView.commentTextField.placeholder = "댓글 달기"
                     self.commentView.commentTextField.text = ""
-                    self.currentPage = 1 // 페이지 초기화
-                    self.comments = [] // 댓글 초기화
-                    self.fetchComments() // 댓글 새로 불러오기
+                    self.selectedCommentId = nil
+                   
+                    // 댓글 목록 새로고침
+                    self.currentPage = 1
+                    self.comments = []
+                    self.isLastPage = false
+                    self.fetchComments()
                 }
                 
             case .failure(let error):
                 print("댓글 작성 실패: \(error)")
-                // 에러 처리
             }
         }
     }
+   
     
     // MARK: - CommentCellDelegate 구현
-    func didTapReplyButton(commentId: Int) {
+    func didTapReplyButton(commentId: Int64) {
+        // 이전에 선택된 셀의 선택 상태 해제
+        if let oldIndexPath = selectedIndexPath {
+            let oldCell = commentView.commentTableView.cellForRow(at: oldIndexPath) as? CommentCell
+            oldCell?.setSelected(false)
+        }
+        
+        // 새로 선택된 셀 찾기 및 선택 상태 설정
+        if let newIndexPath = findIndexPath(for: commentId) {
+            let newCell = commentView.commentTableView.cellForRow(at: newIndexPath) as? CommentCell
+            newCell?.setSelected(true)
+            selectedIndexPath = newIndexPath
+        }
+        
         selectedCommentId = commentId
         commentView.commentTextField.becomeFirstResponder()
+        commentView.commentTextField.placeholder = "답글 작성하기"
+    }
+    
+    private func findIndexPath(for commentId: Int64) -> IndexPath? {
+        if let index = comments.firstIndex(where: { $0.id == commentId }) {
+            return IndexPath(row: index, section: 0)
+        }
+        return nil
     }
     
     // MARK: - API
@@ -138,22 +201,23 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
             
             switch result {
             case .success(let response):
+                self.delegate?.didUpdateComment(count: self.comments.count)
                 // Comment 모델로 변환
                 let newComments = response.comments.map { comment in
                     let mainComment = Comment(
                         id: comment.commentId,
                         memberId: comment.memberId,
-                        imageUrl: comment.ImageUrl,
+                        imageUrl: comment.userImageUrl,
                         content: comment.content,
                         parentCommentId: nil
                     )
                     
                     // 대댓글 변환
-                    let replies = comment.replies.map { reply in
+                    let replies = comment.replyResults.map { reply in
                         Comment(
                             id: reply.commentId,
                             memberId: reply.memberId,
-                            imageUrl: reply.ImageUrl,
+                            imageUrl: reply.userImageUrl,
                             content: reply.content,
                             parentCommentId: comment.commentId
                         )
@@ -162,16 +226,21 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
                     return [mainComment] + replies
                 }.flatMap { $0 }
                 
-                // 첫 페이지면 교체, 아니면 추가
-                if self.currentPage == 1 {
-                    self.comments = newComments
-                } else {
-                    self.comments.append(contentsOf: newComments)
-                }
-                
-                self.isLastPage = response.isLast
-                self.currentPage += 1
-                self.commentView.commentTableView.reloadData()
+                DispatchQueue.main.async {
+                   // 첫 페이지면 교체, 아니면 추가
+                   if self.currentPage == 1 {
+                       self.comments = newComments
+                   } else {
+                       self.comments += newComments
+                   }
+                   
+                   self.organizeComments()  // 댓글 정렬
+                   self.delegate?.didUpdateComment(count: self.comments.count)
+                   self.commentView.comments = self.comments  // View 업데이트
+                   
+                   self.isLastPage = response.isLast
+                   self.currentPage += 1
+               }
                 
             case .failure(let error):
                 print("댓글 조회 실패: \(error)")
@@ -218,9 +287,9 @@ extension CalendarCommentViewController: UITableViewDataSource, UITableViewDeleg
         // 대댓글 들여쓰기 처리
         if isReply {
             cell.mainStackView.snp.remakeConstraints {
-                $0.top.equalToSuperview()
+                $0.top.equalToSuperview().offset(10)
                 $0.trailing.equalToSuperview().inset(12)
-                $0.bottom.equalToSuperview().inset(20)
+                $0.bottom.equalToSuperview().inset(15)
                 $0.leading.equalToSuperview().inset(40)
             }
         } else {
@@ -246,18 +315,39 @@ extension CalendarCommentViewController: UITableViewDataSource, UITableViewDeleg
         if editingStyle == .delete {
             let commentToDelete = comments[indexPath.row]
             
+            // 삭제할 댓글과 관련된 모든 인덱스를 찾기
+            var indexesToDelete = [IndexPath]()
+            indexesToDelete.append(indexPath)
+            
+            // 만약 메인 댓글이라면, 관련된 대댓글들의 인덱스도 찾기
+            if commentToDelete.parentCommentId == nil {
+                for (index, comment) in comments.enumerated() {
+                    if comment.parentCommentId == commentToDelete.id {
+                        indexesToDelete.append(IndexPath(row: index, section: 0))
+                    }
+                }
+            }
+            
+            // 정렬된 인덱스(내림차순)
+            let sortedIndexes = indexesToDelete.sorted(by: { $0.row > $1.row })
+            
             historyService.historyCommentDelete(commentId: commentToDelete.id) { [weak self] result in
                 guard let self = self else { return }
                 
                 switch result {
                 case .success:
+                    self.delegate?.didDeleteComment()
                     DispatchQueue.main.async {
-                        self.comments.remove(at: indexPath.row)
-                        tableView.deleteRows(at: [indexPath], with: .fade)
+                        // 내림차순으로 정렬된 인덱스를 사용하여 배열에서 항목들을 제거
+                        for indexPath in sortedIndexes {
+                            self.comments.remove(at: indexPath.row)
+                        }
+                        // 테이블뷰에서 해당 행들을 삭제
+                        tableView.deleteRows(at: sortedIndexes, with: .fade)
                     }
+                    
                 case .failure(let error):
                     print("댓글 삭제 실패: \(error)")
-                    // 에러 처리
                 }
             }
         }

@@ -53,7 +53,6 @@ public struct HistoryLikeResponseDTO: Codable {
 // 댓글 조회
 public struct HistoryCommentsResponseDTO: Codable {
     public let comments: [CommentDTO]
-    public let listSize: Int
     public let totalPage: Int
     public let totalElements: Int
     public let isFirst: Bool
@@ -63,15 +62,15 @@ public struct HistoryCommentsResponseDTO: Codable {
 public struct CommentDTO: Codable {
     public let commentId: Int
     public let memberId: Int
-    public let ImageUrl: String
+    public let userImageUrl: String
     public let content: String
-    public let replies: [ReplyDTO]
+    public let replyResults: [ReplyDTO]
 }
 
 public struct ReplyDTO: Codable {
     public let commentId: Int
     public let memberId: Int
-    public let ImageUrl: String
+    public let userImageUrl: String
     public let content: String
 }
 
@@ -88,6 +87,7 @@ public struct HistoryLikeListResponseDTO: Codable {
         public let memberId: Int64
         public let clokeyId: String
         public let nickname: String
+        public let imageUrl: String
         public let followStatus: Bool
     }
 }

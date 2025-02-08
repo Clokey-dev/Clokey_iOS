@@ -146,6 +146,8 @@ final class LoginViewController: UIViewController {
         let requestDTO = KakaoLoginRequestDTO(type: "kakao", accessToken: accessToken)
         let memberService = MembersService()
         
+        print("카카오 AccessToken: \(accessToken)")
+        
         memberService.kaKaoLogin(data: requestDTO) { result in
             switch result {
             case .success(let response):

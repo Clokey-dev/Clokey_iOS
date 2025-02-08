@@ -20,7 +20,7 @@ class LikeUserCell: UICollectionViewCell {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 20  
-        $0.backgroundColor = .systemGray5
+//        $0.backgroundColor = .systemGray5
     }
     
     private let userInfoStackView = UIStackView().then {
