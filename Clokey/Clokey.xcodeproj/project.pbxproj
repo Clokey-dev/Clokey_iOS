@@ -102,22 +102,22 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		A65DA5A02D4F619E00537C8C /* AddCloth */ = {
+		A672AF812D573014003EF3FF /* AddCloth */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = AddCloth;
 			sourceTree = "<group>";
 		};
-		A65DA5A22D4F619E00537C8C /* AddClothing */ = {
+		A672AF832D573014003EF3FF /* AddClothing */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = AddClothing;
 			sourceTree = "<group>";
 		};
-		A65DA5A82D4F619E00537C8C /* AddProfile */ = {
+		A672AF892D573014003EF3FF /* AddProfile */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = AddProfile;
 			sourceTree = "<group>";
 		};
-		A65DA5AD2D4F619E00537C8C /* Agreement */ = {
+		A672AF8E2D573014003EF3FF /* Agreement */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Agreement;
 			sourceTree = "<group>";
@@ -278,11 +278,8 @@
 		07E1CADC2D36449B00F86BB8 /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				A672AF8F2D573014003EF3FF /* AddClo */,
 				07E1CB652D36A63200F86BB8 /* ViewController.swift */,
-				A65DA5A02D4F619E00537C8C /* AddCloth */,
-				A65DA5A22D4F619E00537C8C /* AddClothing */,
-				A65DA5A82D4F619E00537C8C /* AddProfile */,
-				A65DA5AD2D4F619E00537C8C /* Agreement */,
 				070258AA2D31074E00065369 /* Login */,
 				070258A42D31071900065369 /* Main */,
 				070258A52D31071D00065369 /* Home */,
@@ -348,6 +345,17 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		A672AF8F2D573014003EF3FF /* AddClo */ = {
+			isa = PBXGroup;
+			children = (
+				A672AF812D573014003EF3FF /* AddCloth */,
+				A672AF832D573014003EF3FF /* AddClothing */,
+				A672AF892D573014003EF3FF /* AddProfile */,
+				A672AF8E2D573014003EF3FF /* Agreement */,
+			);
+			path = AddClo;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -364,10 +372,10 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				A65DA5A02D4F619E00537C8C /* AddCloth */,
-				A65DA5A22D4F619E00537C8C /* AddClothing */,
-				A65DA5A82D4F619E00537C8C /* AddProfile */,
-				A65DA5AD2D4F619E00537C8C /* Agreement */,
+				A672AF812D573014003EF3FF /* AddCloth */,
+				A672AF832D573014003EF3FF /* AddClothing */,
+				A672AF892D573014003EF3FF /* AddProfile */,
+				A672AF8E2D573014003EF3FF /* Agreement */,
 			);
 			name = Clokey;
 			packageProductDependencies = (
