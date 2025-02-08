@@ -125,16 +125,18 @@ class CalendarDetailView: UIView {
     // 댓글 컨텐츠
     let commentContainerView = UIView().then {
         $0.backgroundColor = .clear
-        $0.isUserInteractionEnabled = true // 터치 가능하도록
+        $0.isUserInteractionEnabled = true
     }
 
     let commentButton = UIButton().then {
         $0.setImage(UIImage(named: "comment_icon"), for: .normal)
+        $0.isUserInteractionEnabled = true
     }
     
     let commentLabel = UILabel().then {
         $0.text = "250"
         $0.font = .systemFont(ofSize: 16)
+        $0.isUserInteractionEnabled = true
     }
     
     // content라벨

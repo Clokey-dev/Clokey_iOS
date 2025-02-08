@@ -116,7 +116,7 @@ class LikeListViewController: UIViewController {
                     LikeUserModel(
                         userId: like.clokeyId,
                         nickname: like.nickname,
-                        profileImageUrl: "",
+                        profileImageUrl: like.imageUrl,
                         isFollowing: like.followStatus
                     )
                 }

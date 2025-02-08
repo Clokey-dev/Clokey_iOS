@@ -95,17 +95,9 @@ public final class HistoryService: NetworkManager {
         commentId: Int,
         completion: @escaping (Result<Void, NetworkError>) -> Void
     ) {
-        request(
+        requestStatusCode(
             target: .historyCommentDelete(commentId: commentId),
-            decodingType: EmptyResponse.self,
-            completion: { result in
-                switch result {
-                case .success:
-                    completion(.success(())) // 성공 처리
-                case .failure(let error):
-                    completion(.failure(error)) // 실패 처리
-                }
-            }
+            completion: completion
         )
     }
     

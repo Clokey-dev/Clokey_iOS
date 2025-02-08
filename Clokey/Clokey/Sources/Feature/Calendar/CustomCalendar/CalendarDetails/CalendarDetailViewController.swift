@@ -95,9 +95,11 @@ class CalendarDetailViewController: UIViewController {
     
     // 댓글뷰
     @objc private func didTapCommentButton() {
-        let commentVC = CalendarCommentViewController()
-        commentVC.modalPresentationStyle = .pageSheet
+        guard let viewModel = viewModel else { return }
+        let historyId = Int(viewModel.historyId)
         
+        let commentVC = CalendarCommentViewController(historyId: historyId)
+        commentVC.modalPresentationStyle = .pageSheet
         if let sheet = commentVC.sheetPresentationController {
             sheet.detents = [.medium(), .large()]
             sheet.preferredCornerRadius = 20
@@ -209,3 +211,4 @@ extension CalendarDetailViewController: CustomActionSheetDelegate {
         }
     }
 }
+
