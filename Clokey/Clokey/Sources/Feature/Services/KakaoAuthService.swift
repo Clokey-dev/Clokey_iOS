@@ -7,28 +7,36 @@
 
 import KakaoSDKUser
 import KakaoSDKAuth
+import Foundation
 
 final class KakaoAuthService {
     static let shared = KakaoAuthService()
     private init() {}
-    
-    func handleKakaoLogin(completion: @escaping (Result<Void, Error>) -> Void) {
-        // 카카오톡을 통해 로그인 시도
+
+    func handleKakaoLogin(completion: @escaping (Result<String, Error>) -> Void) {
         if UserApi.isKakaoTalkLoginAvailable() {
-            UserApi.shared.loginWithKakaoTalk { (_, error) in
+            UserApi.shared.loginWithKakaoTalk { (oauthToken, error) in
                 if let error = error {
                     completion(.failure(error))
                     return
                 }
-                completion(.success(()))
+                guard let accessToken = oauthToken?.accessToken else {
+                    completion(.failure(NSError(domain: "KakaoLogin", code: -1, userInfo: [NSLocalizedDescriptionKey: "Access Token 가져오기 실패"])))
+                    return
+                }
+                completion(.success(accessToken))
             }
-        } else { // 카카오 계정 로그인 방식
-            UserApi.shared.loginWithKakaoAccount { (_, error) in
+        } else {
+            UserApi.shared.loginWithKakaoAccount { (oauthToken, error) in
                 if let error = error {
                     completion(.failure(error))
                     return
                 }
-                completion(.success(()))
+                guard let accessToken = oauthToken?.accessToken else {
+                    completion(.failure(NSError(domain: "KakaoLogin", code: -1, userInfo: [NSLocalizedDescriptionKey: "Access Token 가져오기 실패"])))
+                    return
+                }
+                completion(.success(accessToken))
             }
         }
     }
