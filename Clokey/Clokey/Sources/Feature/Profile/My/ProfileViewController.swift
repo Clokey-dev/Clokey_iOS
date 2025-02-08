@@ -26,9 +26,6 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         profileView.scrollView.contentInsetAdjustmentBehavior = .never
-//        if let navBar = navigationController?.navigationBar {
-//                navBar.isTranslucent = false
-//            }
 
         bindData()
         setupActions()
@@ -54,11 +51,39 @@ final class ProfileViewController: UIViewController {
     
     private func setupActions() {
         profileView.settingButton.addTarget(self, action: #selector(didTapSettingButton), for: .touchUpInside)
+        
+        profileView.editButton.addTarget(self, action: #selector(didTapEditButton), for: .touchUpInside)
+        
+        profileView.followerCountButton.addTarget(self, action: #selector(didTapFollowerButton), for: .touchUpInside)
+        
+        profileView.followingCountButton.addTarget(self, action: #selector(didTapFollowingButton), for: .touchUpInside)
     }
 
     @objc private func didTapSettingButton() {
         let settingViewController = SettingViewController()
         settingViewController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
         present(settingViewController, animated: true, completion: nil)
+    }
+    
+    @objc private func didTapEditButton() {
+        let editProfileViewController = EditProfileViewController()
+        editProfileViewController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
+        present(editProfileViewController, animated: true, completion: nil)
+    }
+    
+    @objc private func didTapFollowerButton() {
+        let followListViewController = FollowListViewController()
+//        followListViewController.updateCollectionView(for: .follower)
+        followListViewController.selectedTab = .follower // 팔로워 탭으로 설정
+        followListViewController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
+        present(followListViewController, animated: true, completion: nil)
+    }
+    
+    @objc private func didTapFollowingButton() {
+        let followListViewController = FollowListViewController()
+        followListViewController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
+//        followListViewController.updateCollectionView(for: .following)
+        followListViewController.selectedTab = .following // 팔로잉 탭으로 설정
+        present(followListViewController, animated: true, completion: nil)
     }
 }

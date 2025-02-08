@@ -120,17 +120,27 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		A65F61152D5208110075AA55 /* Settings */ = {
+		A672AF132D572F46003EF3FF /* FollowList */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = FollowList;
+			sourceTree = "<group>";
+		};
+		A672AF172D572F46003EF3FF /* EditProfile */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = EditProfile;
+			sourceTree = "<group>";
+		};
+		A672AF1C2D572F46003EF3FF /* Settings */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Settings;
 			sourceTree = "<group>";
 		};
-		A65F61192D5208110075AA55 /* Your */ = {
+		A672AF202D572F46003EF3FF /* Your */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Your;
 			sourceTree = "<group>";
 		};
-		A65F611D2D5208110075AA55 /* My */ = {
+		A672AF242D572F46003EF3FF /* My */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = My;
 			sourceTree = "<group>";
@@ -211,9 +221,11 @@
 		070258A92D31074500065369 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				A65F61152D5208110075AA55 /* Settings */,
-				A65F61192D5208110075AA55 /* Your */,
-				A65F611D2D5208110075AA55 /* My */,
+				A672AF132D572F46003EF3FF /* FollowList */,
+				A672AF172D572F46003EF3FF /* EditProfile */,
+				A672AF1C2D572F46003EF3FF /* Settings */,
+				A672AF202D572F46003EF3FF /* Your */,
+				A672AF242D572F46003EF3FF /* My */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -392,9 +404,11 @@
 				A64C54402D3F97BB000CCB62 /* ViewControllers */,
 				A64C54522D3F97C6000CCB62 /* Views */,
 				A64C54612D3F97CF000CCB62 /* Models */,
-				A65F61152D5208110075AA55 /* Settings */,
-				A65F61192D5208110075AA55 /* Your */,
-				A65F611D2D5208110075AA55 /* My */,
+				A672AF132D572F46003EF3FF /* FollowList */,
+				A672AF172D572F46003EF3FF /* EditProfile */,
+				A672AF1C2D572F46003EF3FF /* Settings */,
+				A672AF202D572F46003EF3FF /* Your */,
+				A672AF242D572F46003EF3FF /* My */,
 			);
 			name = Clokey;
 			packageProductDependencies = (
