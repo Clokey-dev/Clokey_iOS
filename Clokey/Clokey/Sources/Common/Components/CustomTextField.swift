@@ -29,7 +29,7 @@ class CustomTextField: UIView {
     }()
     
     // 텍스트 필드
-    private let textField: UITextField = {
+    let textField: UITextField = {
         let textField = UITextField(frame: .zero)
         textField.borderStyle = .none
         textField.font = UIFont.ptdMediumFont(ofSize: 20)
@@ -70,25 +70,25 @@ class CustomTextField: UIView {
         addSubview(bottomLine)
         
         // SnapKit으로 레이아웃 설정
-        titleLabel.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview()
+        titleLabel.snp.makeConstraints {
+            $0.top.leading.equalToSuperview()
         }
         
-        requiredIndicator.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel.snp.trailing).offset(2)
-            make.centerY.equalTo(titleLabel)
+        requiredIndicator.snp.makeConstraints {
+            $0.leading.equalTo(titleLabel.snp.trailing).offset(2)
+            $0.centerY.equalTo(titleLabel)
         }
         
-        textField.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(4)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(40)
+        textField.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(4)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(40)
         }
-        
-        bottomLine.snp.makeConstraints { make in
-            make.top.equalTo(textField.snp.bottom).offset(4)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(1)
+    
+        bottomLine.snp.makeConstraints {
+            $0.top.equalTo(textField.snp.bottom).offset(4)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(1)
         }
         
         // 텍스트 필드의 상태 변화 감지
@@ -112,14 +112,10 @@ class CustomTextField: UIView {
     func setPlaceholder(_ placeholder: String) {
         textField.placeholder = placeholder
     }
-    var text: String? {
-            get {
-                return textField.text // 내부 textField의 text를 반환
-            }
-            set {
-                textField.text = newValue // 외부에서 설정 가능하도록 허용
-            }
-        }
+
+    
+    // 글꼴 커스텀
+    func setTextFieldFontSize(_ size: CGFloat) {
+        textField.font = UIFont.ptdMediumFont(ofSize: size)
     }
-
-
+}

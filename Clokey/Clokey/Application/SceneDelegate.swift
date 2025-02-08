@@ -30,14 +30,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // 로그인 화면을 초기 화면으로 설정
         let loginViewController = LoginViewController(coordinator: self)
         window?.rootViewController = loginViewController
-        
+       
+//        let loginViewController = CalendarDetailViewController()
+//        window?.rootViewController = loginViewController
+               
         // 임시 자동 로그인 코드
-        // 앱 실행 시, 바로 메인화면을 원하면 위 코드 대신 이 코드를 사용
+//         앱 실행 시, 바로 메인화면을 원하면 위 코드 대신 이 코드를 사용
 //        let isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
 //        
 //        if isLoggedIn {
 //            // 로그인 상태라면 메인 화면으로 이동
-//            let mainViewController = MainViewController(viewModel: MainViewModel())
+//            let mainViewController = MainViewController()
 //            let navigationController = UINavigationController(rootViewController: mainViewController)
 //            window?.rootViewController = navigationController
 //        } else {
@@ -90,25 +93,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 extension SceneDelegate: Coordinator {
     func switchToMain() {
-        let mainViewModel = MainViewModel()
-        let mainVC = MainViewController(viewModel: mainViewModel)
+        let mainVC = MainViewController()
+        let navigationController = UINavigationController(rootViewController: mainVC)
 
-        // ✅ AgreementViewController를 네비게이션 스택에서 제거하고 새로운 네비게이션 설정
-        let navController = UINavigationController(rootViewController: mainVC)
-
-        // ✅ 기존 뷰컨트롤러들 완전히 삭제
-        window?.rootViewController = nil
-        window?.subviews.forEach { $0.removeFromSuperview() }
-        
-        window?.rootViewController = navController
-        window?.makeKeyAndVisible()
-
-        print("✅ switchToMain() 실행 완료. 새로운 네비게이션 스택: \(navController.viewControllers)")
-    }
-    // 화면 전환 메서드 -> AgreementViewController
-    func navigateToAgreement() {
-        let agreementVC = AgreementViewController()
-        let navigationController = UINavigationController(rootViewController: agreementVC)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
