@@ -16,18 +16,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     
     let locationManager = CLLocationManager()
     
-    // 더미 데이터 예시
-    private let model = PickImageModel(
-        weatherImageURLs: [
-            "https://img.danawa.com/prod_img/500000/436/224/img/17224436_1.jpg?_v=20220610092752",
-            "https://www.ocokorea.com//upload/images/product/111/111888/Product_1670035608378.jpg",
-            "https://item.elandrs.com/r/image/item/2023-10-13/fbb4c2ed-930a-4cb8-97e0-d4f287a1c971.jpg?w=750&h=&q=100"
-        ],
-        recapImageURLs: [
-            "https://cdn.newsculture.press/news/photo/202404/546298_687539_5839.jpg",
-            "https://img.sportsworldi.com/content/image/2023/06/11/20230611511522.jpg"
-        ]
-    )
+    private let model = PickImageModel.dummy()
     
     override func loadView() {
         self.view = pickView
@@ -111,7 +100,6 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
             }
             if let placemark = placemarks?.first {
                 var subAddress = ""
-                //                self.address = ""
                 
                 if let administrativeArea = placemark.administrativeArea {
                     // "서울특별시"를 "서울시"로 변환
@@ -125,7 +113,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     else {
                         subAddress += administrativeArea
                         if let locality = placemark.locality {
-                            subAddress += "\(locality) "
+                            subAddress += " \(locality) "
                         }
                     }
                 }
@@ -214,7 +202,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     
     /// 최고/최저 온도 업데이트
     func updateWeatherHighLowUI(weather: DailyWeather) {
-        pickView.tempDetailsLabel.text = "최고: \(Int(weather.tempmax))° / 최저: \(Int(weather.tempmin))°"
+        pickView.tempDetailsLabel.text = " (최고: \(Int(weather.tempmax))° / 최저: \(Int(weather.tempmin))°)"
     }
     
     func updateYesterdayWeatherUI() {

@@ -82,8 +82,8 @@ final class LoginViewController: UIViewController {
     @objc private func kakaoLoginButtonTapped() {
         authService.handleKakaoLogin { [weak self] result in
             switch result {
-            case .success:
-                self?.handleSuccessfulLogin()
+            case .success(let accessToken):
+                self?.sendKakaoLoginRequest(accessToken: accessToken)
             case .failure(let error):
                 self?.errorMessage = error.localizedDescription
             }
@@ -135,6 +135,66 @@ final class LoginViewController: UIViewController {
     private func navigateToMain() {
         coordinator?.switchToMain()
     }
+    
+    // MARK: - API
+    
+    // Kakao Login
+    private func sendKakaoLoginRequest(accessToken: String) {
+        let requestDTO = KakaoLoginRequestDTO(type: "kakao", accessToken: accessToken)
+        let memberService = MembersService()
+        
+        memberService.kaKaoLogin(data: requestDTO) { result in
+            switch result {
+            case .success(let response):
+                // AccessToken & RefreshToken을 Keychain에 저장
+                KeychainHelper.shared.save(response.accessToken, forKey: "accessToken")
+                KeychainHelper.shared.save(response.refreshToken, forKey: "refreshToken")
+                
+                print("로그인 성공: \(response)")
+                self.handleSuccessfulLogin()
+            
+            case .failure(let error):
+                if case .serverError(let statusCode, _) = error, statusCode == 4001 {
+                    self.reissueToken { reissueResult in
+                        switch reissueResult {
+                        case .success(let newTokens):
+                            // 새로운 액세스 토큰으로 다시 로그인 요청
+                            self.sendKakaoLoginRequest(accessToken: newTokens.accessToken)
+                        case .failure(let reissueError):
+                            print("토큰 재발급 실패: \(reissueError.localizedDescription)")
+                            self.errorMessage = reissueError.localizedDescription
+                        }
+                    }
+                } else {
+                    print("로그인 실패: \(error.localizedDescription)")
+                    self.errorMessage = error.localizedDescription
+                }
+            }
+        }
+    }
+
+    // 재발급
+    private func reissueToken(completion: @escaping (Result<KakaoLoginResponseDTO, Error>) -> Void) {
+        guard let refreshToken = KeychainHelper.shared.get(forKey: "refreshToken") else {
+            completion(.failure(NSError(domain: "TokenReissue", code: -1, userInfo: [NSLocalizedDescriptionKey: "리프레시 토큰 없음"])))
+            return
+        }
+        
+        let reissueRequestDTO = ReissueTokenRequestDTO(refreshToken: refreshToken)
+        let memberService = MembersService()
+        
+        memberService.reissueToken(data: reissueRequestDTO) { result in
+            switch result {
+            case .success(let response):
+                KeychainHelper.shared.save(response.accessToken, forKey: "accessToken")
+                KeychainHelper.shared.save(response.refreshToken, forKey: "refreshToken")
+                completion(.success(response))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
 }
 
 // MARK: - ASAuthorizationControllerDelegate

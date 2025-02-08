@@ -15,8 +15,11 @@ class ImageView: UIView {
     
     // 이미지 뷰 생성
     lazy var imageView: UIImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFit
+        $0.contentMode = .scaleAspectFill
         $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.backgroundColor = .gray
+        $0.layer.cornerRadius = 8.5 // 원하는 반경 설정
+        $0.layer.masksToBounds = true // cornerRadius 적용 보장
     }
 
     let titleLabel: UILabel = UILabel().then {
