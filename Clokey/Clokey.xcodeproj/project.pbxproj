@@ -127,6 +127,8 @@
 		A6548E532D3F47DE00F79B66 /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */; };
 		A6548E562D3F485B00F79B66 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = A6548E552D3F485B00F79B66 /* Kingfisher */; };
 
+		A672AEB72D572A6E003EF3FF /* EmptyStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */; };
+
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -256,7 +258,9 @@
 		A62A429C2D4D2ADE00672D3F /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		A62A429D2D4D2ADE00672D3F /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
+		A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStackView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		07649C0D2D4DDBAF00B6B2B2 /* Exceptions for "ViewControllers" folder in "Clokey" target */ = {
@@ -300,7 +304,16 @@
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+
+		A64C54312D3F97B3000CCB62 /* Cells */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		A64C54402D3F97BB000CCB62 /* ViewControllers */ = {
+
 		A62A428F2D4D2A8D00672D3F /* Your */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Your;
@@ -311,7 +324,15 @@
 			path = My;
 			sourceTree = "<group>";
 		};
-		A62A42E92D4D30F700672D3F /* ViewControllers */ = {
+
+
+		A64C54312D3F97B3000CCB62 /* Cells */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		A672AE902D572A6D003EF3FF /* ViewControllers */ = {
+
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				07649C0D2D4DDBAF00B6B2B2 /* Exceptions for "ViewControllers" folder in "Clokey" target */,
@@ -319,7 +340,7 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
-		A62A42F52D4D30F700672D3F /* Views */ = {
+		A672AE9E2D572A6D003EF3FF /* Views */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				07649C232D4DDC3F00B6B2B2 /* Exceptions for "Views" folder in "Clokey" target */,
@@ -327,7 +348,7 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		A62A42FD2D4D30F700672D3F /* Models */ = {
+		A672AEA62D572A6D003EF3FF /* Models */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				07649C0F2D4DDBE100B6B2B2 /* Exceptions for "Models" folder in "Clokey" target */,
@@ -335,6 +356,31 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+
+		A672AF132D572F46003EF3FF /* FollowList */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = FollowList;
+			sourceTree = "<group>";
+		};
+		A672AF172D572F46003EF3FF /* EditProfile */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = EditProfile;
+			sourceTree = "<group>";
+		};
+		A672AF1C2D572F46003EF3FF /* Settings */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		A672AF202D572F46003EF3FF /* Your */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Your;
+			sourceTree = "<group>";
+		};
+		A672AF242D572F46003EF3FF /* My */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = My;
+
 		A64C54312D3F97B3000CCB62 /* Cells */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Cells;
@@ -412,8 +458,11 @@
 		070258A92D31074500065369 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				A62A428F2D4D2A8D00672D3F /* Your */,
-				A62A42932D4D2A8D00672D3F /* My */,
+				A672AF132D572F46003EF3FF /* FollowList */,
+				A672AF172D572F46003EF3FF /* EditProfile */,
+				A672AF1C2D572F46003EF3FF /* Settings */,
+				A672AF202D572F46003EF3FF /* Your */,
+				A672AF242D572F46003EF3FF /* My */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1019,7 +1068,9 @@
 			children = (
 				076FAB3E2D2E6E0200FF3979 /* Clokey */,
 				07F093112D2418380075659F /* Products */,
+
 				07649BE22D4DDAE600B6B2B2 /* Recovered References */,
+
 			);
 			sourceTree = "<group>";
 		};
@@ -1045,13 +1096,24 @@
 		A62A42FE2D4D30F700672D3F /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				A62A42E92D4D30F700672D3F /* ViewControllers */,
-				A62A42F52D4D30F700672D3F /* Views */,
-				A62A42FD2D4D30F700672D3F /* Models */,
+
+				A672AE902D572A6D003EF3FF /* ViewControllers */,
+				A672AE9E2D572A6D003EF3FF /* Views */,
+				A672AEA62D572A6D003EF3FF /* Models */,
+				A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */,
 				07649C282D4DDD5D00B6B2B2 /* Cells */,
+
 			);
 			path = Home;
 
+			sourceTree = "<group>";
+		};
+		A672AE552D572A48003EF3FF /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				A64C54312D3F97B3000CCB62 /* Cells */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1071,6 +1133,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 
+
 				A672AF812D573014003EF3FF /* AddCloth */,
 				A672AF832D573014003EF3FF /* AddClothing */,
 				A672AF892D573014003EF3FF /* AddProfile */,
@@ -1078,7 +1141,19 @@
 
 				A62A428F2D4D2A8D00672D3F /* Your */,
 				A62A42932D4D2A8D00672D3F /* My */,
+
 				A64C54312D3F97B3000CCB62 /* Cells */,
+
+
+				A64C54402D3F97BB000CCB62 /* ViewControllers */,
+				A64C54522D3F97C6000CCB62 /* Views */,
+				A64C54612D3F97CF000CCB62 /* Models */,
+				A672AF132D572F46003EF3FF /* FollowList */,
+				A672AF172D572F46003EF3FF /* EditProfile */,
+				A672AF1C2D572F46003EF3FF /* Settings */,
+				A672AF202D572F46003EF3FF /* Your */,
+				A672AF242D572F46003EF3FF /* My */,
+
 				A653EAA82D4E249100A29126 /* Clothes */,
 				A65DA4872D4F5F9200537C8C /* home */,
 
@@ -1227,6 +1302,8 @@
 				07E1CB4B2D3668CE00F86BB8 /* Constants.swift in Sources */,
 
 				070258B82D31083D00065369 /* AddClothView.swift in Sources */,
+
+				A672AEB72D572A6E003EF3FF /* EmptyStackView.swift in Sources */,
 				07ECCEB32D4EAF1C00AFF486 /* LikeListViewController.swift in Sources */,
 				07649FFA2D4DEA9000B6B2B2 /* AccessTokenPlugin.swift in Sources */,
 
