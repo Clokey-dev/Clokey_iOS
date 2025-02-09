@@ -21,6 +21,11 @@ class UpdateFriendClothesView: UIView {
         $0.backgroundColor = .white // 배경색 흰색
     }
     
+    let backButton = UIButton().then {
+        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        $0.tintColor = .black
+    }
+    
     let titleLabel: UILabel = UILabel().then {
         let fullText = "친구의 옷장 업데이트 소식"
         let targetText = "옷장"
@@ -80,6 +85,7 @@ class UpdateFriendClothesView: UIView {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
         
+        contentView.addSubview(backButton)
         contentView.addSubview(titleLabel)
         contentView.addSubview(lineView)
 //        contentView.addSubview(container)
@@ -99,9 +105,15 @@ class UpdateFriendClothesView: UIView {
             make.bottom.equalTo(updateFriendClothesCollectionView.snp.bottom).offset(20)
         }
         
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(contentView.safeAreaLayoutGuide).offset(21)
+        backButton.snp.makeConstraints { make in
+            make.top.equalTo(contentView.safeAreaLayoutGuide).offset(20)
             make.leading.equalToSuperview().offset(20)
+            make.size.equalTo(CGSize(width: 10, height: 20))
+        }
+        
+        titleLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(backButton)
+            make.leading.equalTo(backButton.snp.trailing).offset(20)
         }
         
         lineView.snp.makeConstraints { make in
