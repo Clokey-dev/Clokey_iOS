@@ -252,7 +252,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		489963252D5785B600B5E51E /* Search */ = {
+		4899648E2D58ED9B00B5E51E /* Search */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Search;
 			sourceTree = "<group>";
@@ -829,7 +829,7 @@
 			isa = PBXGroup;
 			children = (
 				07E1CB652D36A63200F86BB8 /* ViewController.swift */,
-				489963252D5785B600B5E51E /* Search */,
+				4899648E2D58ED9B00B5E51E /* Search */,
 				070258AA2D31074E00065369 /* Login */,
 				070258A42D31071900065369 /* Main */,
 				A62A42FE2D4D30F700672D3F /* Home */,
@@ -1018,7 +1018,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				489963252D5785B600B5E51E /* Search */,
+				4899648E2D58ED9B00B5E51E /* Search */,
 				A62A428F2D4D2A8D00672D3F /* Your */,
 				A62A42932D4D2A8D00672D3F /* My */,
 				A64C54312D3F97B3000CCB62 /* Cells */,

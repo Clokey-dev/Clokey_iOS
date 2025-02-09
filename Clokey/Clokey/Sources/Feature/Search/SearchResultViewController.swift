@@ -2,6 +2,14 @@
 //  SearchResultViewController.swift
 //  Clokey
 //
+//  Created by 소민준 on 2/9/25.
+//
+
+
+//
+//  SearchResultViewController.swift
+//  Clokey
+//
 //  Created by 소민준 on 2/8/25.
 //
 
