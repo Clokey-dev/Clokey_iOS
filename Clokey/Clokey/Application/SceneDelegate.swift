@@ -100,6 +100,14 @@ extension SceneDelegate: Coordinator {
         window?.makeKeyAndVisible()
     }
     
+    // 화면 전환 메서드 -> AgreementViewController
+//    func navigateToAgreement() {
+//        let agreementVC = AgreementViewController()
+//        let navigationController = UINavigationController(rootViewController: agreementVC)
+//        window?.rootViewController = navigationController
+//        window?.makeKeyAndVisible()
+//    }
+    
     // 화면 전환 메서드 -> LoginViewController
     func switchToLogin() {
         let loginVC = LoginViewController(coordinator: self)

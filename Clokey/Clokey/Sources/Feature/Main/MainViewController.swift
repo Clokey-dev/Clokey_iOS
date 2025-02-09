@@ -42,6 +42,14 @@ final class MainViewController: UIViewController {
     // MARK: - Methods
     // 다른 뷰 컨트롤러로 화면 전환
     private func showViewController(_ viewController: UIViewController) {
+        
+        // `AddClothViewController`는 네비게이션 스택으로 푸시
+        if viewController is AddClothViewController {
+            pushAddClothViewController(viewController)
+            return
+        }
+        //
+        
         children.forEach {
             // 제거
             $0.willMove(toParent: nil)
@@ -57,6 +65,19 @@ final class MainViewController: UIViewController {
         }
         viewController.didMove(toParent: self)
     }
+    
+    /// AddClothViewController로 네비게이션 전환
+    private func pushAddClothViewController(_ viewController: UIViewController) {
+        if let navController = navigationController {
+            navController.pushViewController(viewController, animated: true)
+        } else if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
+                  let rootNav = sceneDelegate.window?.rootViewController as? UINavigationController {
+            rootNav.pushViewController(viewController, animated: true)
+        } else {
+            print("🚨 네비게이션 컨트롤러 없음! SceneDelegate에서 강제 재설정 필요")
+        }
+    }
+    //
 }
 
 // MARK: - HeaderViewDelegate
