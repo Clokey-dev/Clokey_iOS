@@ -42,13 +42,14 @@ final class MainViewController: UIViewController {
    
         
     private func showViewController(_ viewController: UIViewController) {
-         if viewController is AddClothViewController {
+        
+        // `AddClothViewController`는 네비게이션 스택으로 푸시
+        if viewController is AddClothViewController {
             pushAddClothViewController(viewController)
             return
         }
-
-        // ✅ 기존 뷰 제거 후 새 뷰 추가
-
+        //
+        
         children.forEach {
             // 제거
             $0.willMove(toParent: nil)
@@ -65,17 +66,21 @@ final class MainViewController: UIViewController {
         }
         viewController.didMove(toParent: self)
     }
-       
-    
 
-    /// ✅ 네비게이션 스택을 출력하는 함수
-    private func printNavigationStack() {
+    
+    /// AddClothViewController로 네비게이션 전환
+    private func pushAddClothViewController(_ viewController: UIViewController) {
         if let navController = navigationController {
-            print("📌 현재 네비게이션 스택: \(navController.viewControllers)")
+            navController.pushViewController(viewController, animated: true)
+        } else if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
+                  let rootNav = sceneDelegate.window?.rootViewController as? UINavigationController {
+            rootNav.pushViewController(viewController, animated: true)
         } else {
-            print("❌ 네비게이션 컨트롤러가 없음!")
+            print("🚨 네비게이션 컨트롤러 없음! SceneDelegate에서 강제 재설정 필요")
         }
     }
+    //
+
 }
 
 // MARK: - HeaderViewDelegate

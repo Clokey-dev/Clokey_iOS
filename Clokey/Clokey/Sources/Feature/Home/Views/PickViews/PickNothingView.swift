@@ -245,5 +245,22 @@ class PickNothingView: UIView {
             make.width.equalTo(recapImageContainerView.snp.width).multipliedBy(0.5).offset(-5)
         }
     }
-
+    /// Recap 섹션에 이미지와 데이터를 설정하는 메서드
+        func updateRecapImages(with imageUrls: [String]) {
+            if imageUrls.count > 0 {
+                recapImageView1.image = loadImage(from: imageUrls[0])
+            }
+            if imageUrls.count > 1 {
+                recapImageView2.image = loadImage(from: imageUrls[1])
+            }
+        }
+        
+        /// URL에서 이미지를 로드하는 헬퍼 메서드
+        private func loadImage(from urlString: String) -> UIImage? {
+            guard let url = URL(string: urlString),
+                  let data = try? Data(contentsOf: url) else {
+                return nil
+            }
+            return UIImage(data: data)
+        }
 }

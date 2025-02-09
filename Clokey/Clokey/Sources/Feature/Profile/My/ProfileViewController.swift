@@ -31,6 +31,17 @@ final class ProfileViewController: UIViewController {
         fetchUserProfile(clokeyId: "john_doe123") // 사용자 임시 아이디
 
         bindData()
+        setupActions()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     // 회원 조회
@@ -54,5 +65,44 @@ final class ProfileViewController: UIViewController {
         profileView.clothesImageView1.kf.setImage(with: URL(string: model.profileImageURLs[0]))
         profileView.clothesImageView2.kf.setImage(with: URL(string: model.profileImageURLs[1]))
         profileView.clothesImageView3.kf.setImage(with: URL(string: model.profileImageURLs[2]))
+    }
+    
+    
+    private func setupActions() {
+        profileView.settingButton.addTarget(self, action: #selector(didTapSettingButton), for: .touchUpInside)
+        
+        profileView.editButton.addTarget(self, action: #selector(didTapEditButton), for: .touchUpInside)
+        
+        profileView.followerCountButton.addTarget(self, action: #selector(didTapFollowerButton), for: .touchUpInside)
+        
+        profileView.followingCountButton.addTarget(self, action: #selector(didTapFollowingButton), for: .touchUpInside)
+    }
+
+    @objc private func didTapSettingButton() {
+        let settingViewController = SettingViewController()
+        settingViewController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
+        present(settingViewController, animated: true, completion: nil)
+    }
+    
+    @objc private func didTapEditButton() {
+        let editProfileViewController = EditProfileViewController()
+        editProfileViewController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
+        present(editProfileViewController, animated: true, completion: nil)
+    }
+    
+    @objc private func didTapFollowerButton() {
+        let followListViewController = FollowListViewController()
+//        followListViewController.updateCollectionView(for: .follower)
+        followListViewController.selectedTab = .follower // 팔로워 탭으로 설정
+        followListViewController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
+        present(followListViewController, animated: true, completion: nil)
+    }
+    
+    @objc private func didTapFollowingButton() {
+        let followListViewController = FollowListViewController()
+        followListViewController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
+//        followListViewController.updateCollectionView(for: .following)
+        followListViewController.selectedTab = .following // 팔로잉 탭으로 설정
+        present(followListViewController, animated: true, completion: nil)
     }
 }
