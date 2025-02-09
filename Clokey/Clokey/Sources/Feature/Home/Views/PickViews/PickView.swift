@@ -13,12 +13,15 @@ import SnapKit
 
 /// `PickView`는 사용자가 선택한 날씨와 관련된 의류 추천 화면을 구성
 class PickView: UIView {
+    // EmptyStackView 선언
+    private let emptyStackView = EmptyStackView()
+    
     
     /// 세로 스크롤을 지원하는 ScrollView
     let scrollView: UIScrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false // 세로 스크롤바 숨김
     }
-
+    
     /// ScrollView 내부 콘텐츠를 담는 ContentView
     let contentView: UIView = UIView().then {
         $0.backgroundColor = .white // 배경색 흰색
@@ -361,4 +364,39 @@ class PickView: UIView {
             make.width.equalTo(recapImageContainerView.snp.width).multipliedBy(0.5).offset(-5)
         }
     }
+    
+    /// Recap 섹션에 이미지와 데이터를 설정하는 메서드
+        func updateRecapImages(with imageUrls: [String]) {
+            if imageUrls.count > 0 {
+                recapImageView1.image = loadImage(from: imageUrls[0])
+            }
+            if imageUrls.count > 1 {
+                recapImageView2.image = loadImage(from: imageUrls[1])
+            }
+        }
+        
+        /// URL에서 이미지를 로드하는 헬퍼 메서드
+        private func loadImage(from urlString: String) -> UIImage? {
+            guard let url = URL(string: urlString),
+                  let data = try? Data(contentsOf: url) else {
+                return nil
+            }
+            return UIImage(data: data)
+        }
+    
+    /// 데이터 상태에 따라 EmptyStackView 표시/숨김
+        func updateEmptyState(isEmpty: Bool) {
+            if isEmpty {
+                // 데이터가 없으면 EmptyStackView를 추가
+                weatherImageContainerView.addSubview(emptyStackView)
+                emptyStackView.snp.makeConstraints { make in
+                    make.edges.equalToSuperview()
+                }
+            } else {
+                // 데이터가 있으면 EmptyStackView를 제거
+                emptyStackView.removeFromSuperview()
+            }
+        }
 }
+
+
