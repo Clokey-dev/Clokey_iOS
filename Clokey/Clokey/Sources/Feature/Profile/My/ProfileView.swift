@@ -37,6 +37,7 @@ final class ProfileView: UIView {
     let settingButton = UIButton().then {
         $0.setImage(UIImage(named: "setting_icon"), for: .normal)
         $0.tintColor = .black
+//        $0.isUserInteractionEnabled = true
     }
     
     let backgroundImageView = UIImageView().then {
@@ -185,6 +186,9 @@ final class ProfileView: UIView {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        scrollView.subviews.forEach { $0.removeFromSuperview() }
+        contentView.subviews.forEach { $0.removeFromSuperview() }
         setupUI()
         setupConstraints()
     }
@@ -260,6 +264,7 @@ final class ProfileView: UIView {
         
         settingButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(72)
+//            make.top.equalTo(safeAreaLayoutGuide)
             make.trailing.equalToSuperview().inset(20)
             make.width.equalTo(24)
             make.height.equalTo(24)

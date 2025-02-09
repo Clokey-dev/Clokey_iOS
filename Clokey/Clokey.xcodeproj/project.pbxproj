@@ -256,6 +256,14 @@
 
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+
+		A64C54312D3F97B3000CCB62 /* Cells */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		A64C54402D3F97BB000CCB62 /* ViewControllers */ = {
+
 		A62A428F2D4D2A8D00672D3F /* Your */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Your;
@@ -266,6 +274,7 @@
 			path = My;
 			sourceTree = "<group>";
 		};
+
 
 		A64C54312D3F97B3000CCB62 /* Cells */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -297,6 +306,31 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+
+		A672AF132D572F46003EF3FF /* FollowList */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = FollowList;
+			sourceTree = "<group>";
+		};
+		A672AF172D572F46003EF3FF /* EditProfile */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = EditProfile;
+			sourceTree = "<group>";
+		};
+		A672AF1C2D572F46003EF3FF /* Settings */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		A672AF202D572F46003EF3FF /* Your */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Your;
+			sourceTree = "<group>";
+		};
+		A672AF242D572F46003EF3FF /* My */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = My;
+
 		A64C54312D3F97B3000CCB62 /* Cells */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Cells;
@@ -310,6 +344,7 @@
 		A65DA4872D4F5F9200537C8C /* home */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = home;
+
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -382,8 +417,11 @@
 		070258A92D31074500065369 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				A62A428F2D4D2A8D00672D3F /* Your */,
-				A62A42932D4D2A8D00672D3F /* My */,
+				A672AF132D572F46003EF3FF /* FollowList */,
+				A672AF172D572F46003EF3FF /* EditProfile */,
+				A672AF1C2D572F46003EF3FF /* Settings */,
+				A672AF202D572F46003EF3FF /* Your */,
+				A672AF242D572F46003EF3FF /* My */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1036,13 +1074,18 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				A62A428F2D4D2A8D00672D3F /* Your */,
-				A62A42932D4D2A8D00672D3F /* My */,
 				A64C54312D3F97B3000CCB62 /* Cells */,
 
-				A672AE902D572A6D003EF3FF /* ViewControllers */,
-				A672AE9E2D572A6D003EF3FF /* Views */,
-				A672AEA62D572A6D003EF3FF /* Models */,
+
+				A64C54402D3F97BB000CCB62 /* ViewControllers */,
+				A64C54522D3F97C6000CCB62 /* Views */,
+				A64C54612D3F97CF000CCB62 /* Models */,
+				A672AF132D572F46003EF3FF /* FollowList */,
+				A672AF172D572F46003EF3FF /* EditProfile */,
+				A672AF1C2D572F46003EF3FF /* Settings */,
+				A672AF202D572F46003EF3FF /* Your */,
+				A672AF242D572F46003EF3FF /* My */,
+
 				A653EAA82D4E249100A29126 /* Clothes */,
 				A65DA4872D4F5F9200537C8C /* home */,
 
