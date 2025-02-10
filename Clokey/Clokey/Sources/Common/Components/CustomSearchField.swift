@@ -10,6 +10,14 @@ import SnapKit
 
 class CustomSearchField: UIView {
     
+    var text: String? {
+            get { return textField.text }
+            set { textField.text = newValue }
+        }
+    var delegate: UITextFieldDelegate? {
+            get { return textField.delegate }
+            set { textField.delegate = newValue }
+        }
     // 검색 아이콘
     private let searchImageView: UIImageView = {
         let imageView = UIImageView()
@@ -19,7 +27,7 @@ class CustomSearchField: UIView {
     }()
     
     // 텍스트 필드
-    private let textField: UITextField = {
+        let textField: UITextField = {
         let textField = UITextField(frame: .zero)
         textField.borderStyle = .none
         textField.font = UIFont.ptdMediumFont(ofSize: 16)
@@ -89,4 +97,7 @@ class CustomSearchField: UIView {
         ]
         textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: attributes)
     }
+    func addTarget(_ target: Any?, action: Selector, for controlEvents: UIControl.Event) {
+            textField.addTarget(target, action: action, for: controlEvents)
+        }
 }
