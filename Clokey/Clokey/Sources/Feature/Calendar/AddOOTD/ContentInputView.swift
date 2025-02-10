@@ -16,6 +16,8 @@ protocol ContentInputViewDelegate: AnyObject {
     func contentInputView(_ view: ContentInputView, didAddHashtag hashtag: String)
     func contentInputView(_ view: ContentInputView, didRemoveHashtag: String)
     func contentInputView(_ view: ContentInputView, shouldMoveWithKeyboard offset: CGFloat)
+    func contentInputView(_ view: ContentInputView, didUpdateText text: String)
+    func contentInputView(_ view: ContentInputView, didTogglePublic isPublic: Bool)
 }
 
 class ContentInputView: UIView, UITextFieldDelegate {
@@ -68,8 +70,8 @@ class ContentInputView: UIView, UITextFieldDelegate {
         $0.font = .ptdMediumFont(ofSize: 20)
     }
     
-    private let publicButton = ToggleButton(title: "공개")
-    private let privateButton = ToggleButton(title: "비공개")
+    let publicButton = ToggleButton(title: "공개")
+    let privateButton = ToggleButton(title: "비공개")
     
     private let publicInfoLabel = UILabel().then {
         let text = "* 비공개 계정은 기록을 공개해도 다른 사용자에게 노출되지 않습니다.\n이후 계정을 공개로 전환할 시, 해당 기록은 전체 공개 상태가 됩니다!"
@@ -300,6 +302,14 @@ class ContentInputView: UIView, UITextFieldDelegate {
 
         return containerView
     }
+    
+    func getTextContent() -> String {
+        return textAddBox.text
+    }
+
+    func isPublic() -> Bool {
+        return publicButton.isSelected
+    }
 
     // 액션 셋업
     private func setupActions() {
@@ -338,6 +348,9 @@ class ContentInputView: UIView, UITextFieldDelegate {
         
         publicButton.isSelected = (sender == publicButton)
         privateButton.isSelected = (sender == privateButton)
+        
+        // 델리게이트 호출 추가
+        delegate?.contentInputView(self, didTogglePublic: publicButton.isSelected)
     }
     
     // 키보드 설정
@@ -443,6 +456,8 @@ extension ContentInputView: UITextViewDelegate {
             textView.text = "텍스트를 입력하세요"
             textView.textColor = .placeholderText
         }
+        // 델리게이트 호출 추가
+        delegate?.contentInputView(self, didUpdateText: textView.text)
     }
 }
 

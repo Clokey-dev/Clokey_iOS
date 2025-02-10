@@ -91,3 +91,8 @@ public struct HistoryLikeListResponseDTO: Codable {
         public let followStatus: Bool
     }
 }
+
+// 세부 기록 추가
+public struct HistoryCreateResponseDTO: Codable {
+    public let historyId: Int64
+}

@@ -117,5 +117,22 @@ class CalendarCell: UICollectionViewCell {
             imageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"))
         }
     }
+    
+    // 달력 셀 선택시, 터치 이펙트 설정
+    override var isHighlighted: Bool {
+        didSet {
+            if isHighlighted {
+                // 터치 시작할 때
+                UIView.animate(withDuration: 0.1) {
+                    self.contentView.backgroundColor = UIColor.gray.withAlphaComponent(0.3)
+                }
+            } else {
+                // 터치 끝날 때
+                UIView.animate(withDuration: 0.1) {
+                    self.contentView.backgroundColor = .clear
+                }
+            }
+        }
+    }
 
 }

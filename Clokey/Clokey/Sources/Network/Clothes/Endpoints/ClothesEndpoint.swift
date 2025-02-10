@@ -16,7 +16,7 @@ public enum ClothesEndpoint {
     case addClothes(category_id: Int, data: AddClothesRequestDTO) // category_id 추가
     case editClothes(cloth_id: Int, category_id: Int, data: EditClothesRequestDTO)
     case deleteClothes(cloth_id: Int)
-    
+    case getClothes(clokeyId: String, categoryId: CLong, season: String, sort: String, page: Int, size: Int)
 }
 
 extension ClothesEndpoint: TargetType {
@@ -27,6 +27,7 @@ extension ClothesEndpoint: TargetType {
         return url
     }
     
+    // 엔드 포인트 주소
     public var path: String {
         switch self {
         case .inquiryClothesDetail(let cloth_id):
@@ -43,9 +44,12 @@ extension ClothesEndpoint: TargetType {
             return "/clothes/\(cloth_id)/edit"
         case .deleteClothes(let cloth_id):
             return "/clothes/\(cloth_id)"
+        case .getClothes(let clokeyId, _, _, _, _, _):
+            return "/clothes/\(clokeyId)"
         }
     }
     
+    // HTTP 메서드
     public var method: Moya.Method {
         switch self {
         case .addClothes:
@@ -54,11 +58,16 @@ extension ClothesEndpoint: TargetType {
             return .patch
         case .deleteClothes:
             return .delete
-        default:
+        case .getClothes,
+             .inquiryClothesDetail,
+             .checkEditClothes,
+             .checkPopUpClothes,
+             .getCategoryClothes:
             return .get
         }
     }
     
+    // 요청 데이터(내가 서버로 보내야 하는 데이터)
     public var task: Moya.Task {
         switch self {
         case .inquiryClothesDetail(let cloth_id):
@@ -94,6 +103,17 @@ extension ClothesEndpoint: TargetType {
             )
         case .deleteClothes(let cloth_id):
             return .requestPlain
+        case let .getClothes(_, categoryId, season, sort, page, size):
+            return .requestParameters(
+                parameters: [
+                    "categoryId": categoryId,
+                    "season": season,
+                    "sort": sort,
+                    "page": page,
+                    "size": size
+                ],
+                encoding: URLEncoding.queryString
+            )
         }
     }
     

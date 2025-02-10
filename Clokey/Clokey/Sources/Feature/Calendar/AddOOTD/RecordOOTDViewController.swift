@@ -9,18 +9,25 @@ import UIKit
 
 class RecordOOTDViewController: UIViewController {
     
-    // 해시태그 리스트
-    private var hashtags: [String] = []
-    
     // MARK: - Properties
+
+    let historyService = HistoryService()
+    
+    // 기록 작성 리스트 변수들
+    private var hashtags: [String] = []
+    private var selectedImages: [UIImage] = []
+    private var taggedItems: [(id: Int, image: UIImage, title: String)] = []
+    private var contentText: String = ""
+    private var isPublic: Bool = true
+    private var selectedDate: Date?
+        
+    func setDate(_ date: Date) {
+        self.selectedDate = date
+    }
+    
     private let mainView = RecordOOTDView()
     private let navBarManager = NavigationBarManager()
     
-    // 선택한 사진
-    private var selectedImages: [UIImage] = []
-    
-    // 선택한 옷
-    private var taggedItems: [(image: UIImage, title: String)] = []
     
     // MARK: - Lifecycle
     override func loadView() {
@@ -121,12 +128,63 @@ class RecordOOTDViewController: UIViewController {
     @objc override func dismissKeyboard() {
         view.endEditing(true) // 편집 상태 종료
     }
-    
+
     // 기록하기의 확인 버튼
     @objc private func didTapOOTDButton() {
-        // 버튼 상태에 따라 기능 작동/미작동
         if mainView.OOTDButton.isEnabled {
-            navigationController?.popViewController(animated: true)
+            let content = mainView.contentInputView.textAddBox.text ?? ""
+            let clothesIds = taggedItems.map { Int64($0.id) }
+            let visibility = mainView.contentInputView.publicButton.isSelected ? "PUBLIC" : "PRIVATE"
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let dateString = selectedDate.map { dateFormatter.string(from: $0) } ?? "2025-02-08"
+
+            let requestDTO = HistoryCreateRequestDTO(
+                content: content,
+                clothes: clothesIds,
+                hashtags: hashtags,
+                visibility: visibility,
+                date: dateString
+            )
+            
+            // 이미지 압축 및 크기 제한
+            let imageDataArray = selectedImages.compactMap { image in
+                // 이미지 크기 조정 (최대 1024x1024)
+                let maxSize: CGFloat = 1024
+                var newImage = image
+                
+                if image.size.width > maxSize || image.size.height > maxSize {
+                    let ratio = min(maxSize/image.size.width, maxSize/image.size.height)
+                    let newSize = CGSize(
+                        width: image.size.width * ratio,
+                        height: image.size.height * ratio
+                    )
+                    
+                    UIGraphicsBeginImageContext(newSize)
+                    image.draw(in: CGRect(origin: .zero, size: newSize))
+                    newImage = UIGraphicsGetImageFromCurrentImageContext() ?? image
+                    UIGraphicsEndImageContext()
+                }
+                
+                return newImage.jpegData(compressionQuality: 0.5)
+            }
+            
+            let historyService = HistoryService()
+            historyService.historyCreate(data: requestDTO, images: imageDataArray) { [weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                case .success(let response):
+                    print("History created successfully with ID: \(response.historyId)")
+                    DispatchQueue.main.async {
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                    
+                case .failure(let error):
+                    print("Failed to create history: \(error)")
+                }
+            }
         }
     }
 }
@@ -266,8 +324,17 @@ extension RecordOOTDViewController: PhotoEditViewControllerDelegate {
     }
 }
 
-// 해시태그 추가/삭제 이벤트 처리
+// 전송할 리스트 이벤트
 extension RecordOOTDViewController: ContentInputViewDelegate {
+    
+    func contentInputView(_ view: ContentInputView, didUpdateText text: String) {
+        self.contentText = text
+    }
+    
+    func contentInputView(_ view: ContentInputView, didTogglePublic isPublic: Bool) {
+        self.isPublic = isPublic
+    }
+    
     // 해시태그 추가
     func contentInputView(_ view: ContentInputView, didAddHashtag hashtag: String) {
         hashtags.append(hashtag)
@@ -304,7 +371,8 @@ extension RecordOOTDViewController: UICollectionViewDelegate {
 // MARK: - TagClothViewControllerDelegate
 // TagClothViewController에서 선택한 옷 데이터 받기
 extension RecordOOTDViewController: TagClothViewControllerDelegate {
-    func didSelectTags(_ tags: [(image: UIImage, title: String)]) {
+
+    func didSelectTags(_ tags: [(id: Int, image: UIImage, title: String)]) {
         self.taggedItems = tags
         
         // 컬렉션 뷰를 새로고침 해서 UI 업데이트
