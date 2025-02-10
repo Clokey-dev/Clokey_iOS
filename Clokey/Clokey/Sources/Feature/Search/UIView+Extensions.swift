@@ -1,3 +1,5 @@
+
+
 //
 //  UIView+Extensions.swift
 //  Clokey
@@ -7,14 +9,15 @@
 
 import UIKit
 
-class UIView_Extensions: UIView {
-
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+extension UIView {
+    func findViewController() -> UIViewController? {
+        var responder: UIResponder? = self
+        while let nextResponder = responder?.next {
+            if let viewController = nextResponder as? UIViewController {
+                return viewController
+            }
+            responder = nextResponder
+        }
+        return nil
     }
-    */
-
 }

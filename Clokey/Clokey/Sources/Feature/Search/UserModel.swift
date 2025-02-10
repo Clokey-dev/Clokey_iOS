@@ -1,8 +1,15 @@
 //
-//  UserModel.swift
-//  Clokey
+//  LikeUserModel.swift
+//  ClothingAdd
 //
-//  Created by 소민준 on 2/10/25.
+//  Created by 소민준 on 2/8/25.
 //
 
-import Foundation
+
+struct UserModel {
+    let userId: String
+    let nickname: String
+    let profileImageUrl: String
+    
+}
+

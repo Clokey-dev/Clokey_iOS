@@ -1,5 +1,13 @@
 //
 //  ImageCell.swift
+//  Clokey
+//
+//  Created by 소민준 on 2/10/25.
+//
+
+
+//
+//  ImageCell.swift
 //  ClothingAdd
 //
 //  Created by 소민준 on 2/8/25.
@@ -10,7 +18,7 @@ import UIKit
 import SnapKit
 
 class ImageCell: UICollectionViewCell {
-    static let identifier = "imageCell"
+    static let identifier = "ImageCell"
 
     private let imageView: UIImageView = {
         let imageView = UIImageView()
