@@ -115,8 +115,8 @@ final class HomeViewController: UIViewController {
         }
         
         // 새로운 ViewController를 추가
-        let selectedVC = (tab == .pick) ? pickNothingViewController : newsViewController
-//        let selectedVC = (tab == .pick) ? pickViewController : newsViewController
+//        let selectedVC = (tab == .pick) ? pickNothingViewController : newsViewController
+        let selectedVC = (tab == .pick) ? pickViewController : newsViewController
         addChild(selectedVC)
         homeView.containerView.addSubview(selectedVC.view)
         

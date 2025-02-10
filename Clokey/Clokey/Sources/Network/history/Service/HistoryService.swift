@@ -143,6 +143,19 @@ public final class HistoryService: NetworkManager {
             completion: completion
         )
     }
+    
+    // 히스토리 생성 POST API
+    public func historyCreate(
+        data: HistoryCreateRequestDTO,
+        images: [Data],
+        completion: @escaping (Result<HistoryCreateResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .historyCreate(data: data, images: images),
+            decodingType: HistoryCreateResponseDTO.self,
+            completion: completion
+        )
+    }
 }
 
 

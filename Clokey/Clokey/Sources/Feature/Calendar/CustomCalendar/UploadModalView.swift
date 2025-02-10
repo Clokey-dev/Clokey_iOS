@@ -45,7 +45,7 @@ class UploadModalView: UIView {
     }
     
     private let plusImageView = UIImageView().then {
-        $0.image = UIImage(named: "modalPlus")
+        $0.image = UIImage(named: "modal_plus")
         $0.contentMode = .scaleAspectFit
         $0.isUserInteractionEnabled = false
     }
@@ -118,8 +118,8 @@ class UploadModalView: UIView {
         addButton.snp.makeConstraints {
             $0.top.equalTo(contentLabel.snp.bottom).offset(100)
             $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(20) // 좌우 여백 추가
             $0.height.equalTo(45)
-            $0.width.equalTo(245)
         }
         
         addButtonStack.snp.makeConstraints {
