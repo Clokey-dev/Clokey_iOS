@@ -58,6 +58,36 @@ extension UpdateFriendClothesModel {
                     URL(string: "https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg")!,
                     URL(string: "https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg")!
                 ]
+            ),
+            UpdateFriendClothesModel(
+                profileImage: URL(string: "https://www.example.com/profile_icon.jpg")!,
+                name: "닉네임",
+                date: "날짜",
+                clothingImages: [
+                    URL(string: "https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg")!,
+                    URL(string: "https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg")!,
+                    URL(string: "https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg")!
+                ]
+            ),
+            UpdateFriendClothesModel(
+                profileImage: URL(string: "https://www.example.com/profile_icon.jpg")!,
+                name: "닉네임",
+                date: "날짜",
+                clothingImages: [
+                    URL(string: "https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg")!,
+                    URL(string: "https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg")!,
+                    URL(string: "https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg")!
+                ]
+            ),
+            UpdateFriendClothesModel(
+                profileImage: URL(string: "https://www.example.com/profile_icon.jpg")!,
+                name: "닉네임",
+                date: "날짜",
+                clothingImages: [
+                    URL(string: "https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg")!,
+                    URL(string: "https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg")!,
+                    URL(string: "https://www.muji.com/wp-content/uploads/sites/12/2021/02/026.jpg")!
+                ]
             )
         ]
     }

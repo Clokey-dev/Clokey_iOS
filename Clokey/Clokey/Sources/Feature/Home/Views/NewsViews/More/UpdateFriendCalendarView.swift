@@ -22,6 +22,11 @@ class UpdateFriendCalendarView: UIView {
         $0.backgroundColor = .white
     }
     
+    let backButton = UIButton().then {
+        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        $0.tintColor = .black
+    }
+    
     let title: UILabel = UILabel().then {
         let fullText = "친구의 캘린더 업데이트 소식"
         let targetText = "캘린더"
@@ -80,7 +85,7 @@ class UpdateFriendCalendarView: UIView {
         
         addSubview(scrollView)
         scrollView.addSubview(contentView)
-        
+        contentView.addSubview(backButton)
         contentView.addSubview(title)
         contentView.addSubview(subTitle)
         contentView.addSubview(updateFriendCalendarCollectionView)
@@ -99,23 +104,34 @@ class UpdateFriendCalendarView: UIView {
             
         }
         
-        // Layout using SnapKit
-        // 기존 UI 요소 제약 추가
-        title.snp.makeConstraints { make in
-            make.top.equalTo(contentView.safeAreaLayoutGuide).offset(21)
+        backButton.snp.makeConstraints { make in
+            make.top.equalTo(contentView.safeAreaLayoutGuide).offset(20)
             make.leading.equalToSuperview().offset(20)
-            make.width.equalTo(224)
-            make.height.equalTo(24)
+            make.size.equalTo(CGSize(width: 10, height: 20))
         }
+        
+        title.snp.makeConstraints { make in
+            make.centerY.equalTo(backButton)
+            make.leading.equalTo(backButton.snp.trailing).offset(20)
+        }
+        
+//        // Layout using SnapKit
+//        // 기존 UI 요소 제약 추가
+//        title.snp.makeConstraints { make in
+//            make.top.equalTo(contentView.safeAreaLayoutGuide).offset(21)
+//            make.leading.equalToSuperview().offset(20)
+//            make.width.equalTo(224)
+//            make.height.equalTo(24)
+//        }
         subTitle.snp.makeConstraints { make in
-            make.top.equalTo(title.snp.bottom).offset(7)
+            make.top.equalTo(title.snp.bottom).offset(15)
             make.leading.equalToSuperview().offset(20)
             make.width.equalTo(233)
             make.height.equalTo(16)
         }
         
         updateFriendCalendarCollectionView.snp.makeConstraints{ make in
-            make.top.equalTo(subTitle.snp.bottom).offset(12)
+            make.top.equalTo(subTitle.snp.bottom).offset(15)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(1) // 초기 높이 (1로 설정하여 콘텐츠 크기 업데이트 유도)
             
