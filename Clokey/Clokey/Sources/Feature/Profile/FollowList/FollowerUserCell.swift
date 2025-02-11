@@ -19,7 +19,7 @@ class FollowerUserCell: UICollectionViewCell {
     private let profileImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-        $0.layer.cornerRadius = 20  
+        $0.layer.cornerRadius = 20
         $0.backgroundColor = .systemGray5
     }
     
