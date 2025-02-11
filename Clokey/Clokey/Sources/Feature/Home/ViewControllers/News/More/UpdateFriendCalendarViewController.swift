@@ -21,6 +21,34 @@ class UpdateFriendCalendarViewController: UIViewController {
         
         setupDelegate()
         loadData()
+        
+        updateFriendCalendarView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+    }
+    
+//    @objc private func didTapBackButton() {
+//        navigationController?.popViewController(animated: true)
+//    }
+    @objc private func didTapBackButton() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        DispatchQueue.main.async {
+            self.updateFriendCalendarView.updateFriendCalendarCollectionView.reloadData()
+            self.updateCollectionViewHeight()
+        }
+    }
+    
+    private func updateCollectionViewHeight() {
+        updateFriendCalendarView.updateFriendCalendarCollectionView.layoutIfNeeded()
+        let contentHeight = updateFriendCalendarView.updateFriendCalendarCollectionView.contentSize.height
+        print("Content Height: \(contentHeight)") // 디버깅용 출력
+        
+        updateFriendCalendarView.updateFriendCalendarCollectionView.snp.updateConstraints { make in
+            make.height.equalTo(contentHeight)
+        }
     }
     
     private func setupDelegate() {
@@ -28,8 +56,14 @@ class UpdateFriendCalendarViewController: UIViewController {
     }
     
     private func loadData() {
-        // 데이터를 로드하고 컬렉션 뷰를 리로드
         modelData = UpdateFriendCalendarModel.dummy()
+        for item in modelData {
+            guard let url = item.imageUrl as URL? else {
+                print("Invalid URL for item: \(item.name)")
+                continue
+            }
+            print("Loaded data: \(item.name), imageUrl: \(url.absoluteString)")
+        }
         updateFriendCalendarView.updateFriendCalendarCollectionView.reloadData()
     }
 }
@@ -38,7 +72,6 @@ extension UpdateFriendCalendarViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return modelData.count
     }
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: UpdateFriendCalendarCollectionViewCell.identifier,

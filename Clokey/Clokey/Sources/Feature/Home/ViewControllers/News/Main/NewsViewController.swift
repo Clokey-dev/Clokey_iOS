@@ -26,22 +26,8 @@ class NewsViewController: UIViewController {
     private var recommandNewsSlides: [RecommandNewsSlideModel] = []
     private var currentIndex: Int = 0 // 현재 페이지의 인덱스
     
-    // 이미지 url
-    private let model = NewsImageModel(
-        clothesImageURLs: [
-            "https://img.danawa.com/prod_img/500000/436/224/img/17224436_1.jpg?_v=20220610092752",
-            "https://www.ocokorea.com//upload/images/product/111/111888/Product_1670035608378.jpg",
-            "https://item.elandrs.com/r/image/item/2023-10-13/fbb4c2ed-930a-4cb8-97e0-d4f287a1c971.jpg?w=750&h=&q=100"
-        ],
-        calendarImageURLs: [
-            "https://cdn.newsculture.press/news/photo/202404/546298_687539_5839.jpg",
-            "https://img.sportsworldi.com/content/image/2023/06/11/20230611511522.jpg"
-        ],
-        hotImageURLs: [
-            "https://cdn.newsculture.press/news/photo/202404/546298_687539_5839.jpg",
-            "https://img.sportsworldi.com/content/image/2023/06/11/20230611511522.jpg"
-        ]
-    )
+    // 더미 데이터 대신 모델을 가져옵니다.
+    private let model = NewsImageModel.dummy()
     
     // 페이지 컨트롤: 현재 슬라이드 위치를 시각적으로 표시
     private lazy var pageControl: UIPageControl = UIPageControl().then {
@@ -179,7 +165,7 @@ class NewsViewController: UIViewController {
     
     private func presentNewFriendClothesViewController() {
         let updateFriendClothesViewController = UpdateFriendClothesViewController()
-        updateFriendClothesViewController.modalPresentationStyle = .overCurrentContext
+        updateFriendClothesViewController.modalPresentationStyle = .overFullScreen
         updateFriendClothesViewController.modalTransitionStyle = .crossDissolve
         present(updateFriendClothesViewController, animated: true, completion: nil)
     }
@@ -205,10 +191,20 @@ class NewsViewController: UIViewController {
     
     private func presentNewFollowingCalendarViewController() {
         let updateFriendCalendarViewController = UpdateFriendCalendarViewController()
-        updateFriendCalendarViewController.modalPresentationStyle = .overCurrentContext
+        updateFriendCalendarViewController.modalPresentationStyle = .overFullScreen
         updateFriendCalendarViewController.modalTransitionStyle = .crossDissolve
         present(updateFriendCalendarViewController, animated: true, completion: nil)
     }
+    
+//    private func presentNewFollowingCalendarViewController() {
+//        let updateFriendCalendarViewController = UpdateFriendCalendarViewController()
+//        let navigationController = UINavigationController(rootViewController: updateFriendCalendarViewController)
+//        
+//        navigationController.modalPresentationStyle = .overFullScreen
+//        navigationController.modalTransitionStyle = .crossDissolve
+//        
+//        present(navigationController, animated: true, completion: nil)
+//    }
     
 }
 

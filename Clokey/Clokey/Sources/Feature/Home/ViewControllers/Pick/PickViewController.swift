@@ -12,22 +12,16 @@ import Kingfisher
 import MapKit
 
 class PickViewController: UIViewController, CLLocationManagerDelegate {
+    
+    private var backgroundView: UIView?// 배경 어둡게 하기 위해 선언
+    
+    // 팝업 뷰
+    private let popUpView = PickPopUpView()
     private let pickView = PickView()
     
     let locationManager = CLLocationManager()
     
-    // 더미 데이터 예시
-    private let model = PickImageModel(
-        weatherImageURLs: [
-            "https://img.danawa.com/prod_img/500000/436/224/img/17224436_1.jpg?_v=20220610092752",
-            "https://www.ocokorea.com//upload/images/product/111/111888/Product_1670035608378.jpg",
-            "https://item.elandrs.com/r/image/item/2023-10-13/fbb4c2ed-930a-4cb8-97e0-d4f287a1c971.jpg?w=750&h=&q=100"
-        ],
-        recapImageURLs: [
-            "https://cdn.newsculture.press/news/photo/202404/546298_687539_5839.jpg",
-            "https://img.sportsworldi.com/content/image/2023/06/11/20230611511522.jpg"
-        ]
-    )
+    private let model = PickImageModel.dummy()
     
     override func loadView() {
         self.view = pickView
@@ -36,6 +30,9 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         definesPresentationContext = true // 현재 컨텍스트에서 새로운 뷰 표시
+        
+        //        setupUI()
+        setupActions()
         
         updateTimeLabel() // 현재 시간 업데이트
         fetchWeatherData() // 날씨 데이터 가져오기
@@ -51,6 +48,86 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.startUpdatingLocation()
         
         setupLocationIconTap()
+        
+        loadRecapData()
+    }
+    
+    private func setupActions() {
+        popUpView.deleteButton.addTarget(self, action: #selector(dismissPopup), for: .touchUpInside)
+        
+        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(handleImageTap(_:)))
+        pickView.weatherImageView1.isUserInteractionEnabled = true
+        pickView.weatherImageView1.addGestureRecognizer(tapGesture1)
+        
+        let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(handleImageTap(_:)))
+        pickView.weatherImageView2.isUserInteractionEnabled = true
+        pickView.weatherImageView2.addGestureRecognizer(tapGesture2)
+        
+        let tapGesture3 = UITapGestureRecognizer(target: self, action: #selector(handleImageTap(_:)))
+        pickView.weatherImageView3.isUserInteractionEnabled = true
+        pickView.weatherImageView3.addGestureRecognizer(tapGesture3)
+    }
+    
+    // 팝업 닫기 함수
+    @objc private func dismissPopup() {
+        guard let keyWindow = UIApplication.shared.connectedScenes
+            .compactMap({ ($0 as? UIWindowScene)?.windows.first })
+            .first else { return }
+        
+        //  keyWindow에서 PopUpView 찾기
+        if let popUpView = keyWindow.subviews.first(where: { $0 is PickPopUpView }) {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.backgroundView?.alpha = 0 // 배경도 함께 사라지게 함
+                popUpView.alpha = 0
+            }) { _ in
+                self.backgroundView?.removeFromSuperview() // 배경 제거
+                popUpView.removeFromSuperview()
+                self.backgroundView = nil // 참조 해제
+            }
+        }
+    }
+    
+    
+    @objc private func handleImageTap(_ sender: UITapGestureRecognizer) {
+        guard let tappedImageView = sender.view as? UIImageView else { return }
+        showPopup(with: tappedImageView.image)
+    }
+    
+    private func showPopup(with image: UIImage?) {
+        guard let keyWindow = UIApplication.shared.connectedScenes
+            .compactMap({ ($0 as? UIWindowScene)?.windows.first })
+            .first else { return }//keywindow설정 하단 상단 바도 다 포함하는
+        
+        //뒷 배경 어둡게
+        let bgView = UIView()
+        bgView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        bgView.alpha = 0
+        keyWindow.addSubview(bgView)
+        bgView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        backgroundView = bgView
+        
+        let popUpView = PickPopUpView()
+        popUpView.alpha = 0
+        popUpView.setImage(image)
+        keyWindow.addSubview(popUpView)
+        
+        popUpView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.width.equalTo(290)
+            make.height.equalTo(448)
+        }
+        
+        // 팝업 애니메이션 효과
+        UIView.animate(withDuration: 0.3) {
+            bgView.alpha = 1
+            popUpView.alpha = 1
+        }
+        
+        //       //  closeButton 클릭 시 팝업 닫기 기능 추가
+        popUpView.deleteButton.addTarget(self, action: #selector(dismissPopup), for: .touchUpInside)
     }
     
     private func bindData() {
@@ -111,7 +188,6 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
             }
             if let placemark = placemarks?.first {
                 var subAddress = ""
-                //                self.address = ""
                 
                 if let administrativeArea = placemark.administrativeArea {
                     // "서울특별시"를 "서울시"로 변환
@@ -125,7 +201,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     else {
                         subAddress += administrativeArea
                         if let locality = placemark.locality {
-                            subAddress += "\(locality) "
+                            subAddress += " \(locality) "
                         }
                     }
                 }
@@ -214,7 +290,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     
     /// 최고/최저 온도 업데이트
     func updateWeatherHighLowUI(weather: DailyWeather) {
-        pickView.tempDetailsLabel.text = "최고: \(Int(weather.tempmax))° / 최저: \(Int(weather.tempmin))°"
+        pickView.tempDetailsLabel.text = " (최고: \(Int(weather.tempmax))° / 최저: \(Int(weather.tempmin))°)"
     }
     
     func updateYesterdayWeatherUI() {
@@ -248,6 +324,22 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         
         // Navigate without keeping the TabBar
         self.present(closetViewController, animated: true, completion: nil)
+    }
+    
+    // Recap 데이터를 로드하고 PickView에 전달
+    private func loadRecapData() {
+        let homeService = HomeService()
+        
+        homeService.getOneYearAgoHistories { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let historyResult):
+                    self?.pickView.updateRecapImages(with: historyResult.images)
+                case .failure(let error):
+                    print("❌ 데이터 로드 실패: \(error.localizedDescription)")
+                }
+            }
+        }
     }
 }
 
