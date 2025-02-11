@@ -18,6 +18,35 @@
 		0709165E2D58BEE1008DC9EE /* AddClothesRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070916562D58BEE1008DC9EE /* AddClothesRequestDTO.swift */; };
 		0709165F2D58BEE1008DC9EE /* InquiryClothesDetailResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070916582D58BEE1008DC9EE /* InquiryClothesDetailResponseDTO.swift */; };
 		070916602D58BEE1008DC9EE /* ClothesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0709165A2D58BEE1008DC9EE /* ClothesService.swift */; };
+		0744001A2D5B1EFD00E60282 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 074400192D5B1EFD00E60282 /* GoogleService-Info.plist */; };
+		0744FF822D5B1D4500E60282 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0744FF812D5B1D4500E60282 /* FirebaseAnalytics */; };
+		0744FF842D5B1D4500E60282 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 0744FF832D5B1D4500E60282 /* FirebaseAnalyticsWithoutAdIdSupport */; };
+		0744FF862D5B1D4500E60282 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0744FF852D5B1D4500E60282 /* FirebaseAuth */; };
+		0744FF882D5B1D4500E60282 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 0744FF872D5B1D4500E60282 /* FirebaseCore */; };
+		0744FF8A2D5B1D4500E60282 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 0744FF892D5B1D4500E60282 /* FirebaseMessaging */; };
+		0744FFAC2D5B1D6900E60282 /* PickPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FFA12D5B1D6900E60282 /* PickPopUpView.swift */; };
+		0744FFC22D5B1D6900E60282 /* PickPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FFB72D5B1D6900E60282 /* PickPopUpViewController.swift */; };
+		0744FFC62D5B1D8B00E60282 /* PickNothingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FFB92D5B1D6900E60282 /* PickNothingViewController.swift */; };
+		0744FFC72D5B1D8B00E60282 /* UpdateFriendCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FFB32D5B1D6900E60282 /* UpdateFriendCalendarViewController.swift */; };
+		0744FFC82D5B1D8B00E60282 /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FFB12D5B1D6900E60282 /* NewsViewController.swift */; };
+		0744FFC92D5B1D8B00E60282 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FFB02D5B1D6900E60282 /* ImageViewController.swift */; };
+		0744FFCA2D5B1D8B00E60282 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FFBC2D5B1D6900E60282 /* HomeViewController.swift */; };
+		0744FFCB2D5B1D8B00E60282 /* PickViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FFBA2D5B1D6900E60282 /* PickViewController.swift */; };
+		0744FFCC2D5B1D8B00E60282 /* UpdateFriendClothesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FFB42D5B1D6900E60282 /* UpdateFriendClothesViewController.swift */; };
+		0744FFCD2D5B1D9500E60282 /* UpdateFriendCalendarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FF902D5B1D6900E60282 /* UpdateFriendCalendarModel.swift */; };
+		0744FFCE2D5B1D9500E60282 /* UpdateFriendClothesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FF912D5B1D6900E60282 /* UpdateFriendClothesModel.swift */; };
+		0744FFCF2D5B1D9500E60282 /* OpenWeatherMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FF8C2D5B1D6900E60282 /* OpenWeatherMap.swift */; };
+		0744FFD02D5B1D9500E60282 /* RecommandNewsSlideModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FF8E2D5B1D6900E60282 /* RecommandNewsSlideModel.swift */; };
+		0744FFD12D5B1D9500E60282 /* PickImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FF8D2D5B1D6900E60282 /* PickImageModel.swift */; };
+		0744FFD22D5B1D9500E60282 /* NewsImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FF8B2D5B1D6900E60282 /* NewsImageModel.swift */; };
+		0744FFD32D5B1D9500E60282 /* TabType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FF8F2D5B1D6900E60282 /* TabType.swift */; };
+		0744FFD42D5B1D9C00E60282 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FFA62D5B1D6900E60282 /* HomeView.swift */; };
+		0744FFD52D5B1D9C00E60282 /* PickView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FFA42D5B1D6900E60282 /* PickView.swift */; };
+		0744FFD62D5B1D9C00E60282 /* PickNothingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FFA32D5B1D6900E60282 /* PickNothingView.swift */; };
+		0744FFD72D5B1DD500E60282 /* NewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FF9B2D5B1D6900E60282 /* NewsView.swift */; };
+		0744FFD82D5B1DD500E60282 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FF9A2D5B1D6900E60282 /* ImageView.swift */; };
+		0744FFD92D5B1E0700E60282 /* UpdateFriendCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FF9D2D5B1D6900E60282 /* UpdateFriendCalendarView.swift */; };
+		0744FFDA2D5B1E1800E60282 /* UpdateFriendClothesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FF9E2D5B1D6900E60282 /* UpdateFriendClothesView.swift */; };
 		07649C292D4DDD5D00B6B2B2 /* UpdateFriendCalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649C252D4DDD5D00B6B2B2 /* UpdateFriendCalendarCollectionViewCell.swift */; };
 		07649C2A2D4DDD5D00B6B2B2 /* WeatherClothesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649C272D4DDD5D00B6B2B2 /* WeatherClothesCollectionViewCell.swift */; };
 		07649C2B2D4DDD5D00B6B2B2 /* UpdateFriendClothesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649C262D4DDD5D00B6B2B2 /* UpdateFriendClothesCollectionViewCell.swift */; };
@@ -137,6 +166,30 @@
 		070916562D58BEE1008DC9EE /* AddClothesRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothesRequestDTO.swift; sourceTree = "<group>"; };
 		070916582D58BEE1008DC9EE /* InquiryClothesDetailResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryClothesDetailResponseDTO.swift; sourceTree = "<group>"; };
 		0709165A2D58BEE1008DC9EE /* ClothesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesService.swift; sourceTree = "<group>"; };
+		074400192D5B1EFD00E60282 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0744FF8B2D5B1D6900E60282 /* NewsImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsImageModel.swift; sourceTree = "<group>"; };
+		0744FF8C2D5B1D6900E60282 /* OpenWeatherMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherMap.swift; sourceTree = "<group>"; };
+		0744FF8D2D5B1D6900E60282 /* PickImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickImageModel.swift; sourceTree = "<group>"; };
+		0744FF8E2D5B1D6900E60282 /* RecommandNewsSlideModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommandNewsSlideModel.swift; sourceTree = "<group>"; };
+		0744FF8F2D5B1D6900E60282 /* TabType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabType.swift; sourceTree = "<group>"; };
+		0744FF902D5B1D6900E60282 /* UpdateFriendCalendarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFriendCalendarModel.swift; sourceTree = "<group>"; };
+		0744FF912D5B1D6900E60282 /* UpdateFriendClothesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFriendClothesModel.swift; sourceTree = "<group>"; };
+		0744FF9A2D5B1D6900E60282 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
+		0744FF9B2D5B1D6900E60282 /* NewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsView.swift; sourceTree = "<group>"; };
+		0744FF9D2D5B1D6900E60282 /* UpdateFriendCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFriendCalendarView.swift; sourceTree = "<group>"; };
+		0744FF9E2D5B1D6900E60282 /* UpdateFriendClothesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFriendClothesView.swift; sourceTree = "<group>"; };
+		0744FFA12D5B1D6900E60282 /* PickPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickPopUpView.swift; sourceTree = "<group>"; };
+		0744FFA32D5B1D6900E60282 /* PickNothingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickNothingView.swift; sourceTree = "<group>"; };
+		0744FFA42D5B1D6900E60282 /* PickView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickView.swift; sourceTree = "<group>"; };
+		0744FFA62D5B1D6900E60282 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		0744FFB02D5B1D6900E60282 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
+		0744FFB12D5B1D6900E60282 /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
+		0744FFB32D5B1D6900E60282 /* UpdateFriendCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFriendCalendarViewController.swift; sourceTree = "<group>"; };
+		0744FFB42D5B1D6900E60282 /* UpdateFriendClothesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFriendClothesViewController.swift; sourceTree = "<group>"; };
+		0744FFB72D5B1D6900E60282 /* PickPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickPopUpViewController.swift; sourceTree = "<group>"; };
+		0744FFB92D5B1D6900E60282 /* PickNothingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickNothingViewController.swift; sourceTree = "<group>"; };
+		0744FFBA2D5B1D6900E60282 /* PickViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickViewController.swift; sourceTree = "<group>"; };
+		0744FFBC2D5B1D6900E60282 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		07649C252D4DDD5D00B6B2B2 /* UpdateFriendCalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFriendCalendarCollectionViewCell.swift; sourceTree = "<group>"; };
 		07649C262D4DDD5D00B6B2B2 /* UpdateFriendClothesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFriendClothesCollectionViewCell.swift; sourceTree = "<group>"; };
 		07649C272D4DDD5D00B6B2B2 /* WeatherClothesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherClothesCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -229,50 +282,6 @@
 		A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStackView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		07649C0D2D4DDBAF00B6B2B2 /* Exceptions for "ViewControllers" folder in "Clokey" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				HomeViewController.swift,
-				News/Main/ImageViewController.swift,
-				News/Main/NewsViewController.swift,
-				News/More/UpdateFriendCalendarViewController.swift,
-				News/More/UpdateFriendClothesViewController.swift,
-				Pick/PickNothingViewController.swift,
-				Pick/PickViewController.swift,
-			);
-			target = 07F0930F2D2418380075659F /* Clokey */;
-		};
-		07649C0F2D4DDBE100B6B2B2 /* Exceptions for "Models" folder in "Clokey" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				NewsImageModel.swift,
-				OpenWeatherMap.swift,
-				PickImageModel.swift,
-				RecommandNewsSlideModel.swift,
-				TabType.swift,
-				UpdateFriendCalendarModel.swift,
-				UpdateFriendClothesModel.swift,
-			);
-			target = 07F0930F2D2418380075659F /* Clokey */;
-		};
-		07649C232D4DDC3F00B6B2B2 /* Exceptions for "Views" folder in "Clokey" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				HomeView.swift,
-				NewsViews/Main/ImageView.swift,
-				NewsViews/Main/NewsView.swift,
-				NewsViews/More/UpdateFriendCalendarView.swift,
-				NewsViews/More/UpdateFriendClothesView.swift,
-				PickViews/PickNothingView.swift,
-				PickViews/PickView.swift,
-			);
-			target = 07F0930F2D2418380075659F /* Clokey */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A62A428F2D4D2A8D00672D3F /* Your */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -282,37 +291,6 @@
 		A62A42932D4D2A8D00672D3F /* My */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = My;
-			sourceTree = "<group>";
-		};
-
-		A64C54312D3F97B3000CCB62 /* Cells */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Cells;
-			sourceTree = "<group>";
-		};
-		A672AE902D572A6D003EF3FF /* ViewControllers */ = {
-
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				07649C0D2D4DDBAF00B6B2B2 /* Exceptions for "ViewControllers" folder in "Clokey" target */,
-			);
-			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		A672AE9E2D572A6D003EF3FF /* Views */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				07649C232D4DDC3F00B6B2B2 /* Exceptions for "Views" folder in "Clokey" target */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		A672AEA62D572A6D003EF3FF /* Models */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				07649C0F2D4DDBE100B6B2B2 /* Exceptions for "Models" folder in "Clokey" target */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		A64C54312D3F97B3000CCB62 /* Cells */ = {
@@ -333,11 +311,16 @@
 				07E1CAE12D3646C600F86BB8 /* Moya in Frameworks */,
 				076FAB2C2D2E60A500FF3979 /* KakaoSDKUser in Frameworks */,
 				07ECCB542D4E34FD00AFF486 /* CropViewController in Frameworks */,
+				0744FF882D5B1D4500E60282 /* FirebaseCore in Frameworks */,
+				0744FF822D5B1D4500E60282 /* FirebaseAnalytics in Frameworks */,
+				0744FF842D5B1D4500E60282 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				0744FF8A2D5B1D4500E60282 /* FirebaseMessaging in Frameworks */,
 				07E1CADF2D3646C600F86BB8 /* CombineMoya in Frameworks */,
 				07E1CAE32D3646C600F86BB8 /* ReactiveMoya in Frameworks */,
 				076FAB202D2E5DE700FF3979 /* SnapKit in Frameworks */,
 				07ECCB562D4E34FD00AFF486 /* TOCropViewController in Frameworks */,
 				A6548E562D3F485B00F79B66 /* Kingfisher in Frameworks */,
+				0744FF862D5B1D4500E60282 /* FirebaseAuth in Frameworks */,
 				076FAB2A2D2E60A500FF3979 /* KakaoSDKCommon in Frameworks */,
 				07ECCB652D4E35FE00AFF486 /* RxCocoa in Frameworks */,
 				076FAB282D2E60A500FF3979 /* KakaoSDKAuth in Frameworks */,
@@ -488,6 +471,130 @@
 				0709165B2D58BEE1008DC9EE /* Service */,
 			);
 			path = Clothes;
+			sourceTree = "<group>";
+		};
+		0744FF922D5B1D6900E60282 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0744FF8B2D5B1D6900E60282 /* NewsImageModel.swift */,
+				0744FF8C2D5B1D6900E60282 /* OpenWeatherMap.swift */,
+				0744FF8D2D5B1D6900E60282 /* PickImageModel.swift */,
+				0744FF8E2D5B1D6900E60282 /* RecommandNewsSlideModel.swift */,
+				0744FF8F2D5B1D6900E60282 /* TabType.swift */,
+				0744FF902D5B1D6900E60282 /* UpdateFriendCalendarModel.swift */,
+				0744FF912D5B1D6900E60282 /* UpdateFriendClothesModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		0744FF9C2D5B1D6900E60282 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				0744FF9A2D5B1D6900E60282 /* ImageView.swift */,
+				0744FF9B2D5B1D6900E60282 /* NewsView.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		0744FF9F2D5B1D6900E60282 /* More */ = {
+			isa = PBXGroup;
+			children = (
+				0744FF9D2D5B1D6900E60282 /* UpdateFriendCalendarView.swift */,
+				0744FF9E2D5B1D6900E60282 /* UpdateFriendClothesView.swift */,
+			);
+			path = More;
+			sourceTree = "<group>";
+		};
+		0744FFA02D5B1D6900E60282 /* NewsViews */ = {
+			isa = PBXGroup;
+			children = (
+				0744FF9C2D5B1D6900E60282 /* Main */,
+				0744FF9F2D5B1D6900E60282 /* More */,
+			);
+			path = NewsViews;
+			sourceTree = "<group>";
+		};
+		0744FFA22D5B1D6900E60282 /* Popup */ = {
+			isa = PBXGroup;
+			children = (
+				0744FFA12D5B1D6900E60282 /* PickPopUpView.swift */,
+			);
+			path = Popup;
+			sourceTree = "<group>";
+		};
+		0744FFA52D5B1D6900E60282 /* PickViews */ = {
+			isa = PBXGroup;
+			children = (
+				0744FFA22D5B1D6900E60282 /* Popup */,
+				0744FFA32D5B1D6900E60282 /* PickNothingView.swift */,
+				0744FFA42D5B1D6900E60282 /* PickView.swift */,
+			);
+			path = PickViews;
+			sourceTree = "<group>";
+		};
+		0744FFA72D5B1D6900E60282 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0744FFA02D5B1D6900E60282 /* NewsViews */,
+				0744FFA52D5B1D6900E60282 /* PickViews */,
+				0744FFA62D5B1D6900E60282 /* HomeView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0744FFB22D5B1D6900E60282 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				0744FFB02D5B1D6900E60282 /* ImageViewController.swift */,
+				0744FFB12D5B1D6900E60282 /* NewsViewController.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		0744FFB52D5B1D6900E60282 /* More */ = {
+			isa = PBXGroup;
+			children = (
+				0744FFB32D5B1D6900E60282 /* UpdateFriendCalendarViewController.swift */,
+				0744FFB42D5B1D6900E60282 /* UpdateFriendClothesViewController.swift */,
+			);
+			path = More;
+			sourceTree = "<group>";
+		};
+		0744FFB62D5B1D6900E60282 /* News */ = {
+			isa = PBXGroup;
+			children = (
+				0744FFB22D5B1D6900E60282 /* Main */,
+				0744FFB52D5B1D6900E60282 /* More */,
+			);
+			path = News;
+			sourceTree = "<group>";
+		};
+		0744FFB82D5B1D6900E60282 /* Popup */ = {
+			isa = PBXGroup;
+			children = (
+				0744FFB72D5B1D6900E60282 /* PickPopUpViewController.swift */,
+			);
+			path = Popup;
+			sourceTree = "<group>";
+		};
+		0744FFBB2D5B1D6900E60282 /* Pick */ = {
+			isa = PBXGroup;
+			children = (
+				0744FFB82D5B1D6900E60282 /* Popup */,
+				0744FFB92D5B1D6900E60282 /* PickNothingViewController.swift */,
+				0744FFBA2D5B1D6900E60282 /* PickViewController.swift */,
+			);
+			path = Pick;
+			sourceTree = "<group>";
+		};
+		0744FFBD2D5B1D6900E60282 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				0744FFB62D5B1D6900E60282 /* News */,
+				0744FFBB2D5B1D6900E60282 /* Pick */,
+				0744FFBC2D5B1D6900E60282 /* HomeViewController.swift */,
+			);
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		07649BE22D4DDAE600B6B2B2 /* Recovered References */ = {
@@ -890,6 +997,7 @@
 		076FAB3D2D2E6E0200FF3979 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				074400192D5B1EFD00E60282 /* GoogleService-Info.plist */,
 				076FAB3C2D2E6E0200FF3979 /* Info.plist */,
 			);
 			path = "Supporting Files";
@@ -1087,9 +1195,7 @@
 			children = (
 				076FAB3E2D2E6E0200FF3979 /* Clokey */,
 				07F093112D2418380075659F /* Products */,
-
 				07649BE22D4DDAE600B6B2B2 /* Recovered References */,
-
 			);
 			sourceTree = "<group>";
 		};
@@ -1104,23 +1210,13 @@
 		A62A42FE2D4D30F700672D3F /* Home */ = {
 			isa = PBXGroup;
 			children = (
-
-				A672AE902D572A6D003EF3FF /* ViewControllers */,
-				A672AE9E2D572A6D003EF3FF /* Views */,
-				A672AEA62D572A6D003EF3FF /* Models */,
+				0744FFBD2D5B1D6900E60282 /* ViewControllers */,
+				0744FFA72D5B1D6900E60282 /* Views */,
+				0744FF922D5B1D6900E60282 /* Models */,
 				A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */,
 				07649C282D4DDD5D00B6B2B2 /* Cells */,
-
 			);
 			path = Home;
-			sourceTree = "<group>";
-		};
-		A672AE552D572A48003EF3FF /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				A64C54312D3F97B3000CCB62 /* Cells */,
-			);
-			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1142,12 +1238,6 @@
 				A62A428F2D4D2A8D00672D3F /* Your */,
 				A62A42932D4D2A8D00672D3F /* My */,
 				A64C54312D3F97B3000CCB62 /* Cells */,
-				A672AE902D572A6D003EF3FF /* ViewControllers */,
-				A672AE9E2D572A6D003EF3FF /* Views */,
-				A672AEA62D572A6D003EF3FF /* Models */,
-				A653EAA82D4E249100A29126 /* Clothes */,
-				A65DA4872D4F5F9200537C8C /* home */,
-
 			);
 			name = Clokey;
 			packageProductDependencies = (
@@ -1167,6 +1257,11 @@
 				07ECCB622D4E35FE00AFF486 /* RxBlocking */,
 				07ECCB642D4E35FE00AFF486 /* RxCocoa */,
 				07ECCB662D4E35FE00AFF486 /* RxRelay */,
+				0744FF812D5B1D4500E60282 /* FirebaseAnalytics */,
+				0744FF832D5B1D4500E60282 /* FirebaseAnalyticsWithoutAdIdSupport */,
+				0744FF852D5B1D4500E60282 /* FirebaseAuth */,
+				0744FF872D5B1D4500E60282 /* FirebaseCore */,
+				0744FF892D5B1D4500E60282 /* FirebaseMessaging */,
 			);
 			productName = Clokey;
 			productReference = 07F093102D2418380075659F /* Clokey.app */;
@@ -1204,6 +1299,7 @@
 				A6548E542D3F485B00F79B66 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				07ECCB522D4E34FD00AFF486 /* XCRemoteSwiftPackageReference "TOCropViewController" */,
 				07ECCB612D4E35FE00AFF486 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				0744FF802D5B1D4500E60282 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 07F093112D2418380075659F /* Products */;
@@ -1220,6 +1316,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0744001A2D5B1EFD00E60282 /* GoogleService-Info.plist in Resources */,
 				07E1CB392D364BDA00F86BB8 /* Pretendard-Medium.otf in Resources */,
 				07E1CB3A2D364BDA00F86BB8 /* Pretendard-Thin.otf in Resources */,
 				07E1CB3B2D364BDA00F86BB8 /* Pretendard-Black.otf in Resources */,
@@ -1252,6 +1349,7 @@
 				070258C02D31086A00065369 /* ClosetViewController.swift in Sources */,
 				A6548E532D3F47DE00F79B66 /* WeatherAPI.swift in Sources */,
 				07ECCEB02D4EAEF700AFF486 /* LikeUserCell.swift in Sources */,
+				0744FFD92D5B1E0700E60282 /* UpdateFriendCalendarView.swift in Sources */,
 				A62A429E2D4D2ADE00672D3F /* MainView.swift in Sources */,
 				A62A429F2D4D2ADE00672D3F /* HeaderView.swift in Sources */,
 				A62A42A02D4D2ADE00672D3F /* MainViewController.swift in Sources */,
@@ -1284,6 +1382,7 @@
 				07ECCB4C2D4E34DF00AFF486 /* RecordOOTDView.swift in Sources */,
 				07ECCB4D2D4E34DF00AFF486 /* CalendarModel.swift in Sources */,
 				07ECCB4E2D4E34DF00AFF486 /* TagClothViewController.swift in Sources */,
+				0744FFC22D5B1D6900E60282 /* PickPopUpViewController.swift in Sources */,
 				07ECCB4F2D4E34DF00AFF486 /* CalendarViewController.swift in Sources */,
 				07ECCB502D4E34DF00AFF486 /* TagClothModel.swift in Sources */,
 				07ECCB512D4E34DF00AFF486 /* CalendarHelper.swift in Sources */,
@@ -1291,20 +1390,24 @@
 				076FAB3F2D2E6E0200FF3979 /* AppDelegate.swift in Sources */,
 				07E1CB4B2D3668CE00F86BB8 /* Constants.swift in Sources */,
 				070258B82D31083D00065369 /* AddClothView.swift in Sources */,
-
 				A672AEB72D572A6E003EF3FF /* EmptyStackView.swift in Sources */,
 				07ECCEB32D4EAF1C00AFF486 /* LikeListViewController.swift in Sources */,
 				07649FFA2D4DEA9000B6B2B2 /* AccessTokenPlugin.swift in Sources */,
-
 				07E1CB5F2D36A10000F86BB8 /* CustomButton.swift in Sources */,
 				07E1CB602D36A10000F86BB8 /* CustomButtonTextField.swift in Sources */,
 				07649EE32D4DE58900B6B2B2 /* CookiePlugin.swift in Sources */,
 				07649EE42D4DE58900B6B2B2 /* MembersService.swift in Sources */,
+				0744FFD72D5B1DD500E60282 /* NewsView.swift in Sources */,
+				0744FFD82D5B1DD500E60282 /* ImageView.swift in Sources */,
 				07649EE52D4DE58900B6B2B2 /* MembersLoginResponseDTO.swift in Sources */,
+				0744FFAC2D5B1D6900E60282 /* PickPopUpView.swift in Sources */,
 				07649EE62D4DE58900B6B2B2 /* MembersLoginRequestDTO.swift in Sources */,
 				07649EE72D4DE58900B6B2B2 /* MembersEndpoint.swift in Sources */,
 				07649EE82D4DE58900B6B2B2 /* HistoryResponseDTO.swift in Sources */,
 				07649EE92D4DE58900B6B2B2 /* NetworkManager+Extension.swift in Sources */,
+				0744FFD42D5B1D9C00E60282 /* HomeView.swift in Sources */,
+				0744FFD52D5B1D9C00E60282 /* PickView.swift in Sources */,
+				0744FFD62D5B1D9C00E60282 /* PickNothingView.swift in Sources */,
 				070916512D58BEE1008DC9EE /* HomeEndPoint.swift in Sources */,
 				070916522D58BEE1008DC9EE /* OneYearAgoHistoriesResponseDTO.swift in Sources */,
 				070916532D58BEE1008DC9EE /* HomeService.swift in Sources */,
@@ -1318,10 +1421,25 @@
 				07649EF12D4DE58900B6B2B2 /* MembersInfoResponseDTO.swift in Sources */,
 				07649EF22D4DE58900B6B2B2 /* HistoryService.swift in Sources */,
 				07E1CB662D36A63200F86BB8 /* ViewController.swift in Sources */,
+				0744FFDA2D5B1E1800E60282 /* UpdateFriendClothesView.swift in Sources */,
 				07E1CB472D3662EC00F86BB8 /* UIColor+Extension.swift in Sources */,
 				07E1CB482D3662EC00F86BB8 /* UIImage+Extensions.swift in Sources */,
 				07E1CB442D3662D900F86BB8 /* UIFont+Extensions.swift in Sources */,
+				0744FFC62D5B1D8B00E60282 /* PickNothingViewController.swift in Sources */,
+				0744FFC72D5B1D8B00E60282 /* UpdateFriendCalendarViewController.swift in Sources */,
+				0744FFC82D5B1D8B00E60282 /* NewsViewController.swift in Sources */,
+				0744FFC92D5B1D8B00E60282 /* ImageViewController.swift in Sources */,
+				0744FFCA2D5B1D8B00E60282 /* HomeViewController.swift in Sources */,
+				0744FFCB2D5B1D8B00E60282 /* PickViewController.swift in Sources */,
+				0744FFCC2D5B1D8B00E60282 /* UpdateFriendClothesViewController.swift in Sources */,
 				07E1CB582D3679A800F86BB8 /* CustomTextField.swift in Sources */,
+				0744FFCD2D5B1D9500E60282 /* UpdateFriendCalendarModel.swift in Sources */,
+				0744FFCE2D5B1D9500E60282 /* UpdateFriendClothesModel.swift in Sources */,
+				0744FFCF2D5B1D9500E60282 /* OpenWeatherMap.swift in Sources */,
+				0744FFD02D5B1D9500E60282 /* RecommandNewsSlideModel.swift in Sources */,
+				0744FFD12D5B1D9500E60282 /* PickImageModel.swift in Sources */,
+				0744FFD22D5B1D9500E60282 /* NewsImageModel.swift in Sources */,
+				0744FFD32D5B1D9500E60282 /* TabType.swift in Sources */,
 				070258BA2D31084300065369 /* AddClothViewController.swift in Sources */,
 				07ECCEAE2D4EAA2400AFF486 /* CustomActionSheetViewController.swift in Sources */,
 				076FAB5A2D3020D800FF3979 /* LoginViewController.swift in Sources */,
@@ -1355,6 +1473,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BBVZV8T99P;
@@ -1374,6 +1493,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1387,6 +1507,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BBVZV8T99P;
@@ -1406,6 +1527,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1557,6 +1679,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0744FF802D5B1D4500E60282 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.8.1;
+			};
+		};
 		076FAB1B2D2E5DD800FF3979 /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then";
@@ -1616,6 +1746,31 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0744FF812D5B1D4500E60282 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0744FF802D5B1D4500E60282 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		0744FF832D5B1D4500E60282 /* FirebaseAnalyticsWithoutAdIdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0744FF802D5B1D4500E60282 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsWithoutAdIdSupport;
+		};
+		0744FF852D5B1D4500E60282 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0744FF802D5B1D4500E60282 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		0744FF872D5B1D4500E60282 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0744FF802D5B1D4500E60282 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		0744FF892D5B1D4500E60282 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0744FF802D5B1D4500E60282 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
 		076FAB1C2D2E5DD800FF3979 /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 076FAB1B2D2E5DD800FF3979 /* XCRemoteSwiftPackageReference "Then" */;
