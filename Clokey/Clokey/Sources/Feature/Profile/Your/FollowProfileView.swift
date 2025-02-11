@@ -10,6 +10,8 @@ import SnapKit
 import Then
 
 class FollowProfileView: UIView {
+    private let privateStackView1 = PrivateStackView()
+    private let privateStackView2 = PrivateStackView()
 
     /// 세로 스크롤을 지원하는 ScrollView
     let scrollView: UIScrollView = UIScrollView().then {
@@ -55,7 +57,7 @@ class FollowProfileView: UIView {
     
     let nicknameLabel: UILabel = {
         let label = UILabel()
-        label.text = "클루"
+        label.text = "초키(닉네임란)"
         label.font = UIFont.ptdMediumFont(ofSize: 18)
         label.textColor = .black
         label.textAlignment = .center
@@ -63,14 +65,14 @@ class FollowProfileView: UIView {
     }()
     
     let statsLabel = UILabel().then {
-        $0.text = "게시글 008  팔로워 027  팔로잉 032"
+        $0.text = "게시글 000  팔로워 000  팔로잉 000"
         $0.font = UIFont.ptdRegularFont(ofSize: 12)
         $0.textColor = .black
         $0.textAlignment = .center
     }
     
     let descriptionLabel = UILabel().then {
-        $0.text = "나는야공주"
+        $0.text = "한줄소개란입니다아아아아아아아아"
         $0.font = UIFont.ptdRegularFont(ofSize: 14)
         $0.textColor = .black
         $0.textAlignment = .center
@@ -296,6 +298,41 @@ class FollowProfileView: UIView {
             make.trailing.equalToSuperview().inset(20)
             make.height.equalTo(520)
             make.bottom.equalToSuperview().offset(-40) // 스크롤 콘텐츠의 마지막 부분
+        }
+    }
+    
+    /// 데이터 상태에 따라 EmptyStackView 표시/숨김
+    func updateClothesPrivateState(isPrivate: Bool) {
+        if isPrivate {
+            // 데이터가 없으면 EmptyStackView 추가하고 관련 요소 숨김
+            clothesImageContainerView.addSubview(privateStackView1)
+            privateStackView1.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+            
+            bottomButtonLabel.isHidden = true
+            bottomArrowIcon.isHidden = true
+        } else {
+            // 데이터가 있으면 EmptyStackView 제거하고 관련 요소 표시
+            privateStackView1.removeFromSuperview()
+
+            bottomButtonLabel.isHidden = false
+            bottomArrowIcon.isHidden = false
+        }
+    }
+    
+    func updateCalendarPrivateState(isPrivate: Bool) {
+        if isPrivate {
+            // 데이터가 없으면 EmptyStackView 추가하고 관련 요소 숨김
+            recordContainerView.addSubview(privateStackView2)
+            privateStackView2.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+    
+        } else {
+            // 데이터가 있으면 EmptyStackView 제거하고 관련 요소 표시
+            privateStackView2.removeFromSuperview()
+
         }
     }
 }

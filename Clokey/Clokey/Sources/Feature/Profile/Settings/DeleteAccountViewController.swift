@@ -73,7 +73,7 @@ class DeleteAccountViewController: UIViewController {
 //            // 계정 탈퇴 로직 처리
 //            print("계정이 탈퇴되었습니다.")
 //            dismiss(animated: true, completion: nil)
-//        
+//
 //        }
 
 }

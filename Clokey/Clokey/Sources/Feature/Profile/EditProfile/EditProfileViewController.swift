@@ -40,7 +40,7 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
         view.addGestureRecognizer(tapGesture)
     }
     
-    @objc private func dismissKeyboard() {
+    @objc internal override func dismissKeyboard() {
         view.endEditing(true) // 🔥 현재 화면에서 키보드 내리기
     }
     

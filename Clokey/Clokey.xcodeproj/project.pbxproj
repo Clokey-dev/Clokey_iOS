@@ -151,6 +151,24 @@
 		A6548E532D3F47DE00F79B66 /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */; };
 		A6548E562D3F485B00F79B66 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = A6548E552D3F485B00F79B66 /* Kingfisher */; };
 		A672AEB72D572A6E003EF3FF /* EmptyStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */; };
+		A67661892D5B367B006AAB63 /* CustomBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661852D5B367B006AAB63 /* CustomBottomSheetViewController.swift */; };
+		A676618A2D5B367B006AAB63 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661862D5B367B006AAB63 /* EditProfileView.swift */; };
+		A676618B2D5B367B006AAB63 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661872D5B367B006AAB63 /* EditProfileViewController.swift */; };
+		A67661912D5B367B006AAB63 /* FollowerUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676618C2D5B367B006AAB63 /* FollowerUserCell.swift */; };
+		A67661922D5B367B006AAB63 /* FollowerUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676618D2D5B367B006AAB63 /* FollowerUserModel.swift */; };
+		A67661932D5B367B006AAB63 /* FollowingUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676618E2D5B367B006AAB63 /* FollowingUserCell.swift */; };
+		A67661942D5B367B006AAB63 /* FollowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676618F2D5B367B006AAB63 /* FollowListViewController.swift */; };
+		A676619A2D5B367B006AAB63 /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661952D5B367B006AAB63 /* DeleteAccountView.swift */; };
+		A676619B2D5B367B006AAB63 /* DeleteAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661962D5B367B006AAB63 /* DeleteAccountViewController.swift */; };
+		A676619C2D5B367B006AAB63 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661972D5B367B006AAB63 /* SettingView.swift */; };
+		A676619D2D5B367B006AAB63 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661982D5B367B006AAB63 /* SettingViewController.swift */; };
+		A67661A22D5B367B006AAB63 /* FollowProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676619E2D5B367B006AAB63 /* FollowProfileModel.swift */; };
+		A67661A32D5B367B006AAB63 /* FollowProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676619F2D5B367B006AAB63 /* FollowProfileView.swift */; };
+		A67661A42D5B367B006AAB63 /* FollowProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661A02D5B367B006AAB63 /* FollowProfileViewController.swift */; };
+		A67661A92D5B367B006AAB63 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661A52D5B367B006AAB63 /* ProfileModel.swift */; };
+		A67661AA2D5B367B006AAB63 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661A62D5B367B006AAB63 /* ProfileView.swift */; };
+		A67661AB2D5B367B006AAB63 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661A72D5B367B006AAB63 /* ProfileViewController.swift */; };
+		A67661AD2D5B3760006AAB63 /* PrivateStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661AC2D5B3760006AAB63 /* PrivateStackView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -280,6 +298,24 @@
 		A62A429D2D4D2ADE00672D3F /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
 		A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStackView.swift; sourceTree = "<group>"; };
+		A67661852D5B367B006AAB63 /* CustomBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomSheetViewController.swift; sourceTree = "<group>"; };
+		A67661862D5B367B006AAB63 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
+		A67661872D5B367B006AAB63 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		A676618C2D5B367B006AAB63 /* FollowerUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowerUserCell.swift; sourceTree = "<group>"; };
+		A676618D2D5B367B006AAB63 /* FollowerUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowerUserModel.swift; sourceTree = "<group>"; };
+		A676618E2D5B367B006AAB63 /* FollowingUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingUserCell.swift; sourceTree = "<group>"; };
+		A676618F2D5B367B006AAB63 /* FollowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowListViewController.swift; sourceTree = "<group>"; };
+		A67661952D5B367B006AAB63 /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
+		A67661962D5B367B006AAB63 /* DeleteAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountViewController.swift; sourceTree = "<group>"; };
+		A67661972D5B367B006AAB63 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		A67661982D5B367B006AAB63 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		A676619E2D5B367B006AAB63 /* FollowProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowProfileModel.swift; sourceTree = "<group>"; };
+		A676619F2D5B367B006AAB63 /* FollowProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowProfileView.swift; sourceTree = "<group>"; };
+		A67661A02D5B367B006AAB63 /* FollowProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowProfileViewController.swift; sourceTree = "<group>"; };
+		A67661A52D5B367B006AAB63 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
+		A67661A62D5B367B006AAB63 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		A67661A72D5B367B006AAB63 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		A67661AC2D5B3760006AAB63 /* PrivateStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateStackView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -301,31 +337,6 @@
 		A64C54612D3F97CF000CCB62 /* Models */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Models;
-			sourceTree = "<group>";
-		};
-		A672AF132D572F46003EF3FF /* FollowList */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = FollowList;
-			sourceTree = "<group>";
-		};
-		A672AF172D572F46003EF3FF /* EditProfile */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = EditProfile;
-			sourceTree = "<group>";
-		};
-		A672AF1C2D572F46003EF3FF /* Settings */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Settings;
-			sourceTree = "<group>";
-		};
-		A672AF202D572F46003EF3FF /* Your */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Your;
-			sourceTree = "<group>";
-		};
-		A672AF242D572F46003EF3FF /* My */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = My;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -403,11 +414,12 @@
 		070258A92D31074500065369 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				A672AF132D572F46003EF3FF /* FollowList */,
-				A672AF172D572F46003EF3FF /* EditProfile */,
-				A672AF1C2D572F46003EF3FF /* Settings */,
-				A672AF202D572F46003EF3FF /* Your */,
-				A672AF242D572F46003EF3FF /* My */,
+				A67661AC2D5B3760006AAB63 /* PrivateStackView.swift */,
+				A67661902D5B367B006AAB63 /* FollowList */,
+				A67661882D5B367B006AAB63 /* EditProfile */,
+				A67661992D5B367B006AAB63 /* Settings */,
+				A67661A12D5B367B006AAB63 /* Your */,
+				A67661A82D5B367B006AAB63 /* My */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -634,6 +646,9 @@
 			isa = PBXGroup;
 			children = (
 				A64C54312D3F97B3000CCB62 /* Cells */,
+				A64C54402D3F97BB000CCB62 /* ViewControllers */,
+				A64C54522D3F97C6000CCB62 /* Views */,
+				A64C54612D3F97CF000CCB62 /* Models */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1252,6 +1267,58 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		A67661882D5B367B006AAB63 /* EditProfile */ = {
+			isa = PBXGroup;
+			children = (
+				A67661852D5B367B006AAB63 /* CustomBottomSheetViewController.swift */,
+				A67661862D5B367B006AAB63 /* EditProfileView.swift */,
+				A67661872D5B367B006AAB63 /* EditProfileViewController.swift */,
+			);
+			path = EditProfile;
+			sourceTree = "<group>";
+		};
+		A67661902D5B367B006AAB63 /* FollowList */ = {
+			isa = PBXGroup;
+			children = (
+				A676618C2D5B367B006AAB63 /* FollowerUserCell.swift */,
+				A676618D2D5B367B006AAB63 /* FollowerUserModel.swift */,
+				A676618E2D5B367B006AAB63 /* FollowingUserCell.swift */,
+				A676618F2D5B367B006AAB63 /* FollowListViewController.swift */,
+			);
+			path = FollowList;
+			sourceTree = "<group>";
+		};
+		A67661992D5B367B006AAB63 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A67661952D5B367B006AAB63 /* DeleteAccountView.swift */,
+				A67661962D5B367B006AAB63 /* DeleteAccountViewController.swift */,
+				A67661972D5B367B006AAB63 /* SettingView.swift */,
+				A67661982D5B367B006AAB63 /* SettingViewController.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		A67661A12D5B367B006AAB63 /* Your */ = {
+			isa = PBXGroup;
+			children = (
+				A676619E2D5B367B006AAB63 /* FollowProfileModel.swift */,
+				A676619F2D5B367B006AAB63 /* FollowProfileView.swift */,
+				A67661A02D5B367B006AAB63 /* FollowProfileViewController.swift */,
+			);
+			path = Your;
+			sourceTree = "<group>";
+		};
+		A67661A82D5B367B006AAB63 /* My */ = {
+			isa = PBXGroup;
+			children = (
+				A67661A52D5B367B006AAB63 /* ProfileModel.swift */,
+				A67661A62D5B367B006AAB63 /* ProfileView.swift */,
+				A67661A72D5B367B006AAB63 /* ProfileViewController.swift */,
+			);
+			path = My;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1272,12 +1339,6 @@
 				A64C54402D3F97BB000CCB62 /* ViewControllers */,
 				A64C54522D3F97C6000CCB62 /* Views */,
 				A64C54612D3F97CF000CCB62 /* Models */,
-				A672AF132D572F46003EF3FF /* FollowList */,
-				A672AF172D572F46003EF3FF /* EditProfile */,
-				A672AF1C2D572F46003EF3FF /* Settings */,
-				A672AF202D572F46003EF3FF /* Your */,
-				A672AF242D572F46003EF3FF /* My */,
-
 			);
 			name = Clokey;
 			packageProductDependencies = (
@@ -1400,6 +1461,9 @@
 				07ECCB5D2D4E351E00AFF486 /* CustomSearchField.swift in Sources */,
 				07ECCEA72D4E7ECA00AFF486 /* CalendarCommentViewController.swift in Sources */,
 				07ECCB5E2D4E351E00AFF486 /* CustomCategoryModel.swift in Sources */,
+				A67661A22D5B367B006AAB63 /* FollowProfileModel.swift in Sources */,
+				A67661A32D5B367B006AAB63 /* FollowProfileView.swift in Sources */,
+				A67661A42D5B367B006AAB63 /* FollowProfileViewController.swift in Sources */,
 				07ECCB5F2D4E351E00AFF486 /* CustomTotalSegmentView.swift in Sources */,
 				07ECCB602D4E351E00AFF486 /* CustomCollectionViewCell.swift in Sources */,
 				07ECCB3F2D4E34DF00AFF486 /* UploadModalView.swift in Sources */,
@@ -1414,6 +1478,10 @@
 				07ECCB452D4E34DF00AFF486 /* TagClothView.swift in Sources */,
 				07ECCB462D4E34DF00AFF486 /* CustomGalleryViewController.swift in Sources */,
 				07ECCB472D4E34DF00AFF486 /* CalendarCell.swift in Sources */,
+				A67661912D5B367B006AAB63 /* FollowerUserCell.swift in Sources */,
+				A67661922D5B367B006AAB63 /* FollowerUserModel.swift in Sources */,
+				A67661932D5B367B006AAB63 /* FollowingUserCell.swift in Sources */,
+				A67661942D5B367B006AAB63 /* FollowListViewController.swift in Sources */,
 				07ECCB482D4E34DF00AFF486 /* ImageCollectionViewCell.swift in Sources */,
 				07ECCB492D4E34DF00AFF486 /* ContentInputView.swift in Sources */,
 				07ECCB4A2D4E34DF00AFF486 /* PhotoTagView.swift in Sources */,
@@ -1438,6 +1506,9 @@
 				07649EE32D4DE58900B6B2B2 /* CookiePlugin.swift in Sources */,
 				07649EE42D4DE58900B6B2B2 /* MembersService.swift in Sources */,
 				0744FFD72D5B1DD500E60282 /* NewsView.swift in Sources */,
+				A67661892D5B367B006AAB63 /* CustomBottomSheetViewController.swift in Sources */,
+				A676618A2D5B367B006AAB63 /* EditProfileView.swift in Sources */,
+				A676618B2D5B367B006AAB63 /* EditProfileViewController.swift in Sources */,
 				0744FFD82D5B1DD500E60282 /* ImageView.swift in Sources */,
 				07649EE52D4DE58900B6B2B2 /* MembersLoginResponseDTO.swift in Sources */,
 				0744FFAC2D5B1D6900E60282 /* PickPopUpView.swift in Sources */,
@@ -1459,6 +1530,14 @@
 				07649EEF2D4DE58900B6B2B2 /* HistoryEndpoint.swift in Sources */,
 				07649EF02D4DE58900B6B2B2 /* Domain.swift in Sources */,
 				07649EF12D4DE58900B6B2B2 /* MembersInfoResponseDTO.swift in Sources */,
+				A676619A2D5B367B006AAB63 /* DeleteAccountView.swift in Sources */,
+				A67661A92D5B367B006AAB63 /* ProfileModel.swift in Sources */,
+				A67661AA2D5B367B006AAB63 /* ProfileView.swift in Sources */,
+				A67661AD2D5B3760006AAB63 /* PrivateStackView.swift in Sources */,
+				A67661AB2D5B367B006AAB63 /* ProfileViewController.swift in Sources */,
+				A676619B2D5B367B006AAB63 /* DeleteAccountViewController.swift in Sources */,
+				A676619C2D5B367B006AAB63 /* SettingView.swift in Sources */,
+				A676619D2D5B367B006AAB63 /* SettingViewController.swift in Sources */,
 				07649EF22D4DE58900B6B2B2 /* HistoryService.swift in Sources */,
 				07E1CB662D36A63200F86BB8 /* ViewController.swift in Sources */,
 				0744FFDA2D5B1E1800E60282 /* UpdateFriendClothesView.swift in Sources */,
