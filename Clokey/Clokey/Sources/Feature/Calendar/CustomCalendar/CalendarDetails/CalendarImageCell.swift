@@ -17,7 +17,7 @@ class CalendarImageCell: UICollectionViewCell {
     private let imageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-        $0.layer.cornerRadius = 10
+        $0.backgroundColor = .lightGray
     }
 
     override init(frame: CGRect) {
@@ -34,6 +34,12 @@ class CalendarImageCell: UICollectionViewCell {
     }
 
     func configure(with imageUrl: String) {
-        imageView.kf.setImage(with: URL(string: imageUrl), placeholder: UIImage(named: "placeholder"))
+        // 기본 이미지 설정
+        imageView.image = UIImage(named: "detail_main_Img")
+        
+        // URL이 유효한 경우에만 이미지 로드 시도
+        if let url = URL(string: imageUrl) {
+            imageView.kf.setImage(with: url)
+        }
     }
 }

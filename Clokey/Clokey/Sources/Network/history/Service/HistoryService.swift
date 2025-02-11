@@ -95,17 +95,9 @@ public final class HistoryService: NetworkManager {
         commentId: Int,
         completion: @escaping (Result<Void, NetworkError>) -> Void
     ) {
-        request(
+        requestStatusCode(
             target: .historyCommentDelete(commentId: commentId),
-            decodingType: EmptyResponse.self,
-            completion: { result in
-                switch result {
-                case .success:
-                    completion(.success(())) // 성공 처리
-                case .failure(let error):
-                    completion(.failure(error)) // 실패 처리
-                }
-            }
+            completion: completion
         )
     }
     
@@ -129,22 +121,14 @@ public final class HistoryService: NetworkManager {
         )
     }
     
-    // 기록 삭제 DELETE API
+    //  기록 삭제 DELETE API
     public func historyDelete(
         historyId: Int,
         completion: @escaping (Result<Void, NetworkError>) -> Void
     ) {
-        request(
+        requestStatusCode(
             target: .historyDelete(historyId: historyId),
-            decodingType: EmptyResponse.self,
-            completion: { result in
-                switch result {
-                case .success:
-                    completion(.success(())) // 성공 처리
-                case .failure(let error):
-                    completion(.failure(error)) // 실패 처리
-                }
-            }
+            completion: completion
         )
     }
     
@@ -156,6 +140,19 @@ public final class HistoryService: NetworkManager {
         request(
             target: .historyLikeList(historyId: historyId),
             decodingType: HistoryLikeListResponseDTO.self,
+            completion: completion
+        )
+    }
+    
+    // 히스토리 생성 POST API
+    public func historyCreate(
+        data: HistoryCreateRequestDTO,
+        images: [Data],
+        completion: @escaping (Result<HistoryCreateResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .historyCreate(data: data, images: images),
+            decodingType: HistoryCreateResponseDTO.self,
             completion: completion
         )
     }

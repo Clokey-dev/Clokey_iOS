@@ -171,25 +171,6 @@ class CalendarViewController: UIViewController {
 }
 
 // MARK: - CalendarViewDelegate
-//extension CalendarViewController: CalendarViewDelegate {
-//    func calendarView(_ calendarView: CalendarView, didSelectDate date: Date) {
-//        // 모달 전체 화면
-//        let modalVC = UploadModalViewController()
-//        modalVC.sourceViewController = self
-//        // 이걸 써야 뷰 업데이트가 됨.
-//        // Modal이 dismiss되면
-//        // 1. Calendar → Modal 강한 참조 끊김
-//        // 2. Modal → Calendar 약한 참조는 이미 weak
-//        // 3. 둘 다 메모리에서 정상적으로 해제됨
-//        
-//        modalVC.modalPresentationStyle = .overFullScreen
-//        modalVC.modalTransitionStyle = .crossDissolve
-//        modalVC.setDate(date) // 모달 날짜 선택 날짜로 설정
-//        present(modalVC, animated: false)
-//        print("Selected date: \(date)")
-//    }
-//}
-
 extension CalendarViewController: CalendarViewDelegate {
     func calendarView(_ calendarView: CalendarView, didSelectHistoryId historyId: Int) {
         fetchHistoryDetail(historyId: historyId)

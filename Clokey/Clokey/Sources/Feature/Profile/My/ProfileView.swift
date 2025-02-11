@@ -61,7 +61,7 @@ final class ProfileView: UIView {
     
     let nicknameLabel: UILabel = {
         let label = UILabel()
-        label.text = "초키(닉네임란)"
+        label.text = "클루"
         label.font = UIFont.ptdMediumFont(ofSize: 18)
         label.textColor = .black
         label.textAlignment = .center
@@ -80,7 +80,7 @@ final class ProfileView: UIView {
     }
     
     let writeCountLabel = UILabel().then {
-        $0.text = "000"
+        $0.text = "010"
         $0.font = UIFont.ptdRegularFont(ofSize: 12)
         $0.textColor = .black
         $0.textAlignment = .center
@@ -94,7 +94,7 @@ final class ProfileView: UIView {
     }
     
     let followerCountButton = UIButton().then {
-        $0.setTitle("000", for: .normal)
+        $0.setTitle("027", for: .normal)
         $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 12)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.textAlignment = .center
@@ -109,7 +109,7 @@ final class ProfileView: UIView {
     }
     
     let followingCountButton = UIButton().then {
-        $0.setTitle("000", for: .normal)
+        $0.setTitle("043", for: .normal)
         $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 12)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.textAlignment = .center
@@ -117,7 +117,7 @@ final class ProfileView: UIView {
     }
     
     let descriptionLabel = UILabel().then {
-        $0.text = "한줄소개란입니다아아아아아아아아"
+        $0.text = "나는야멋쟁이토마토"
         $0.font = UIFont.ptdRegularFont(ofSize: 14)
         $0.textColor = .black
         $0.textAlignment = .center

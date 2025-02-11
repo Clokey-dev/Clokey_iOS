@@ -11,6 +11,13 @@
 		070258BA2D31084300065369 /* AddClothViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258B92D31084300065369 /* AddClothViewController.swift */; };
 		070258BE2D31085900065369 /* ClosetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258BD2D31085900065369 /* ClosetView.swift */; };
 		070258C02D31086A00065369 /* ClosetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258BF2D31086A00065369 /* ClosetViewController.swift */; };
+		070916512D58BEE1008DC9EE /* HomeEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070916492D58BEE1008DC9EE /* HomeEndPoint.swift */; };
+		070916522D58BEE1008DC9EE /* OneYearAgoHistoriesResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0709164C2D58BEE1008DC9EE /* OneYearAgoHistoriesResponseDTO.swift */; };
+		070916532D58BEE1008DC9EE /* HomeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0709164E2D58BEE1008DC9EE /* HomeService.swift */; };
+		0709165D2D58BEE1008DC9EE /* ClothesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070916542D58BEE1008DC9EE /* ClothesEndpoint.swift */; };
+		0709165E2D58BEE1008DC9EE /* AddClothesRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070916562D58BEE1008DC9EE /* AddClothesRequestDTO.swift */; };
+		0709165F2D58BEE1008DC9EE /* InquiryClothesDetailResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070916582D58BEE1008DC9EE /* InquiryClothesDetailResponseDTO.swift */; };
+		070916602D58BEE1008DC9EE /* ClothesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0709165A2D58BEE1008DC9EE /* ClothesService.swift */; };
 		07649C292D4DDD5D00B6B2B2 /* UpdateFriendCalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649C252D4DDD5D00B6B2B2 /* UpdateFriendCalendarCollectionViewCell.swift */; };
 		07649C2A2D4DDD5D00B6B2B2 /* WeatherClothesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649C272D4DDD5D00B6B2B2 /* WeatherClothesCollectionViewCell.swift */; };
 		07649C2B2D4DDD5D00B6B2B2 /* UpdateFriendClothesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649C262D4DDD5D00B6B2B2 /* UpdateFriendClothesCollectionViewCell.swift */; };
@@ -44,6 +51,8 @@
 		076FAB4A2D2E748B00FF3979 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB492D2E748B00FF3979 /* LoginView.swift */; };
 		076FAB4E2D2EBB3A00FF3979 /* KakaoAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB4D2D2EBB3A00FF3979 /* KakaoAuthService.swift */; };
 		076FAB5A2D3020D800FF3979 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB572D3020D800FF3979 /* LoginViewController.swift */; };
+		07CF63E52D55DE6900CCF9F4 /* CalendarDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF63E42D55DE6900CCF9F4 /* CalendarDetailViewModel.swift */; };
+		07CF63FF2D563CAD00CCF9F4 /* RecordTagClothViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF63FE2D563CAD00CCF9F4 /* RecordTagClothViewController.swift */; };
 		07E1CADF2D3646C600F86BB8 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 07E1CADE2D3646C600F86BB8 /* CombineMoya */; };
 		07E1CAE12D3646C600F86BB8 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 07E1CAE02D3646C600F86BB8 /* Moya */; };
 		07E1CAE32D3646C600F86BB8 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = 07E1CAE22D3646C600F86BB8 /* ReactiveMoya */; };
@@ -121,6 +130,13 @@
 		070258B92D31084300065369 /* AddClothViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothViewController.swift; sourceTree = "<group>"; };
 		070258BD2D31085900065369 /* ClosetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetView.swift; sourceTree = "<group>"; };
 		070258BF2D31086A00065369 /* ClosetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetViewController.swift; sourceTree = "<group>"; };
+		070916492D58BEE1008DC9EE /* HomeEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEndPoint.swift; sourceTree = "<group>"; };
+		0709164C2D58BEE1008DC9EE /* OneYearAgoHistoriesResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneYearAgoHistoriesResponseDTO.swift; sourceTree = "<group>"; };
+		0709164E2D58BEE1008DC9EE /* HomeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeService.swift; sourceTree = "<group>"; };
+		070916542D58BEE1008DC9EE /* ClothesEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesEndpoint.swift; sourceTree = "<group>"; };
+		070916562D58BEE1008DC9EE /* AddClothesRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothesRequestDTO.swift; sourceTree = "<group>"; };
+		070916582D58BEE1008DC9EE /* InquiryClothesDetailResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryClothesDetailResponseDTO.swift; sourceTree = "<group>"; };
+		0709165A2D58BEE1008DC9EE /* ClothesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesService.swift; sourceTree = "<group>"; };
 		07649C252D4DDD5D00B6B2B2 /* UpdateFriendCalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFriendCalendarCollectionViewCell.swift; sourceTree = "<group>"; };
 		07649C262D4DDD5D00B6B2B2 /* UpdateFriendClothesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFriendClothesCollectionViewCell.swift; sourceTree = "<group>"; };
 		07649C272D4DDD5D00B6B2B2 /* WeatherClothesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherClothesCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -149,6 +165,8 @@
 		076FAB492D2E748B00FF3979 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		076FAB4D2D2EBB3A00FF3979 /* KakaoAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthService.swift; sourceTree = "<group>"; };
 		076FAB572D3020D800FF3979 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		07CF63E42D55DE6900CCF9F4 /* CalendarDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDetailViewModel.swift; sourceTree = "<group>"; };
+		07CF63FE2D563CAD00CCF9F4 /* RecordTagClothViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordTagClothViewController.swift; sourceTree = "<group>"; };
 		07E1CB302D364BDA00F86BB8 /* Pretendard-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Black.otf"; sourceTree = "<group>"; };
 		07E1CB312D364BDA00F86BB8 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		07E1CB322D364BDA00F86BB8 /* Pretendard-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraBold.otf"; sourceTree = "<group>"; };
@@ -302,16 +320,6 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		A653EAA82D4E249100A29126 /* Clothes */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Clothes;
-			sourceTree = "<group>";
-		};
-		A65DA4872D4F5F9200537C8C /* home */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = home;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -395,6 +403,91 @@
 				076FAB572D3020D800FF3979 /* LoginViewController.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		0709164A2D58BEE1008DC9EE /* Endpoints */ = {
+			isa = PBXGroup;
+			children = (
+				070916492D58BEE1008DC9EE /* HomeEndPoint.swift */,
+			);
+			path = Endpoints;
+			sourceTree = "<group>";
+		};
+		0709164B2D58BEE1008DC9EE /* Request */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		0709164D2D58BEE1008DC9EE /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				0709164C2D58BEE1008DC9EE /* OneYearAgoHistoriesResponseDTO.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
+		0709164F2D58BEE1008DC9EE /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				0709164E2D58BEE1008DC9EE /* HomeService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		070916502D58BEE1008DC9EE /* home */ = {
+			isa = PBXGroup;
+			children = (
+				0709164A2D58BEE1008DC9EE /* Endpoints */,
+				0709164B2D58BEE1008DC9EE /* Request */,
+				0709164D2D58BEE1008DC9EE /* Response */,
+				0709164F2D58BEE1008DC9EE /* Service */,
+			);
+			path = home;
+			sourceTree = "<group>";
+		};
+		070916552D58BEE1008DC9EE /* Endpoints */ = {
+			isa = PBXGroup;
+			children = (
+				070916542D58BEE1008DC9EE /* ClothesEndpoint.swift */,
+			);
+			path = Endpoints;
+			sourceTree = "<group>";
+		};
+		070916572D58BEE1008DC9EE /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				070916562D58BEE1008DC9EE /* AddClothesRequestDTO.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		070916592D58BEE1008DC9EE /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				070916582D58BEE1008DC9EE /* InquiryClothesDetailResponseDTO.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
+		0709165B2D58BEE1008DC9EE /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				0709165A2D58BEE1008DC9EE /* ClothesService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		0709165C2D58BEE1008DC9EE /* Clothes */ = {
+			isa = PBXGroup;
+			children = (
+				070916552D58BEE1008DC9EE /* Endpoints */,
+				070916572D58BEE1008DC9EE /* Request */,
+				070916592D58BEE1008DC9EE /* Response */,
+				0709165B2D58BEE1008DC9EE /* Service */,
+			);
+			path = Clothes;
 			sourceTree = "<group>";
 		};
 		07649BE22D4DDAE600B6B2B2 /* Recovered References */ = {
@@ -817,8 +910,8 @@
 		076FAB5C2D3020E100FF3979 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				A65DA4872D4F5F9200537C8C /* home */,
-				A653EAA82D4E249100A29126 /* Clothes */,
+				070916502D58BEE1008DC9EE /* home */,
+				0709165C2D58BEE1008DC9EE /* Clothes */,
 				07649EA52D4DE58900B6B2B2 /* categories */,
 				07649EB52D4DE58900B6B2B2 /* Common */,
 				07649EBA2D4DE58900B6B2B2 /* folder */,
@@ -831,11 +924,19 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
+		07CF63E62D55F0B200CCF9F4 /* tagClothList */ = {
+			isa = PBXGroup;
+			children = (
+				07CF63FE2D563CAD00CCF9F4 /* RecordTagClothViewController.swift */,
+			);
+			path = tagClothList;
+			sourceTree = "<group>";
+		};
 		07E1CADC2D36449B00F86BB8 /* Feature */ = {
 			isa = PBXGroup;
 			children = (
-				07E1CB652D36A63200F86BB8 /* ViewController.swift */,
 				070258AA2D31074E00065369 /* Login */,
+				07E1CB652D36A63200F86BB8 /* ViewController.swift */,
 				070258A42D31071900065369 /* Main */,
 				A62A42FE2D4D30F700672D3F /* Home */,
 				070258A62D31072000065369 /* Calendar */,
@@ -880,9 +981,9 @@
 				07E1CB5E2D36A10000F86BB8 /* CustomButtonTextField.swift */,
 				07E1CB4E2D36721900F86BB8 /* CustomNavigationBar.swift */,
 				07E1CB572D3679A800F86BB8 /* CustomTextField.swift */,
+				07ECCB592D4E351E00AFF486 /* CustomSortDropdownView.swift */,
 				07ECCB572D4E351E00AFF486 /* CustomCollectionViewCell.swift */,
 				07ECCB582D4E351E00AFF486 /* CustomSearchField.swift */,
-				07ECCB592D4E351E00AFF486 /* CustomSortDropdownView.swift */,
 				07ECCB5A2D4E351E00AFF486 /* CustomTotalSegmentView.swift */,
 				07ECCB5B2D4E351E00AFF486 /* CustomCategoryModel.swift */,
 			);
@@ -925,10 +1026,12 @@
 		07ECCB352D4E34DF00AFF486 /* CalendarDetails */ = {
 			isa = PBXGroup;
 			children = (
+				07CF63E62D55F0B200CCF9F4 /* tagClothList */,
 				07ECCEB12D4EAF0A00AFF486 /* LikeUser */,
 				07ECCEAA2D4E835C00AFF486 /* Commnet */,
 				07ECCB332D4E34DF00AFF486 /* CalendarDetailView.swift */,
 				07ECCB342D4E34DF00AFF486 /* CalendarDetailViewController.swift */,
+				07CF63E42D55DE6900CCF9F4 /* CalendarDetailViewModel.swift */,
 				07ECCEA22D4E79C000AFF486 /* CalendarImageCell.swift */,
 				07ECCEAD2D4EAA2400AFF486 /* CustomActionSheetViewController.swift */,
 			);
@@ -961,8 +1064,8 @@
 		07ECCEAA2D4E835C00AFF486 /* Commnet */ = {
 			isa = PBXGroup;
 			children = (
-				07ECCEA42D4E7AE400AFF486 /* CalendarCommentView.swift */,
 				07ECCEA62D4E7ECA00AFF486 /* CalendarCommentViewController.swift */,
+				07ECCEA42D4E7AE400AFF486 /* CalendarCommentView.swift */,
 				07ECCEA82D4E834300AFF486 /* CommentCell.swift */,
 				07ECCEAB2D4E857B00AFF486 /* Comment.swift */,
 			);
@@ -1039,7 +1142,6 @@
 				A62A428F2D4D2A8D00672D3F /* Your */,
 				A62A42932D4D2A8D00672D3F /* My */,
 				A64C54312D3F97B3000CCB62 /* Cells */,
-
 				A672AE902D572A6D003EF3FF /* ViewControllers */,
 				A672AE9E2D572A6D003EF3FF /* Views */,
 				A672AEA62D572A6D003EF3FF /* Models */,
@@ -1141,7 +1243,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				070258BE2D31085900065369 /* ClosetView.swift in Sources */,
+				07CF63E52D55DE6900CCF9F4 /* CalendarDetailViewModel.swift in Sources */,
 				076FAB4E2D2EBB3A00FF3979 /* KakaoAuthService.swift in Sources */,
+				0709165D2D58BEE1008DC9EE /* ClothesEndpoint.swift in Sources */,
+				0709165E2D58BEE1008DC9EE /* AddClothesRequestDTO.swift in Sources */,
+				0709165F2D58BEE1008DC9EE /* InquiryClothesDetailResponseDTO.swift in Sources */,
+				070916602D58BEE1008DC9EE /* ClothesService.swift in Sources */,
 				070258C02D31086A00065369 /* ClosetViewController.swift in Sources */,
 				A6548E532D3F47DE00F79B66 /* WeatherAPI.swift in Sources */,
 				07ECCEB02D4EAEF700AFF486 /* LikeUserCell.swift in Sources */,
@@ -1198,6 +1305,9 @@
 				07649EE72D4DE58900B6B2B2 /* MembersEndpoint.swift in Sources */,
 				07649EE82D4DE58900B6B2B2 /* HistoryResponseDTO.swift in Sources */,
 				07649EE92D4DE58900B6B2B2 /* NetworkManager+Extension.swift in Sources */,
+				070916512D58BEE1008DC9EE /* HomeEndPoint.swift in Sources */,
+				070916522D58BEE1008DC9EE /* OneYearAgoHistoriesResponseDTO.swift in Sources */,
+				070916532D58BEE1008DC9EE /* HomeService.swift in Sources */,
 				07649EEA2D4DE58900B6B2B2 /* MembersInfoRequestDTO.swift in Sources */,
 				07649EEB2D4DE58900B6B2B2 /* NetworkError.swift in Sources */,
 				07649EEC2D4DE58900B6B2B2 /* HistoryRequestDTO.swift in Sources */,
@@ -1219,6 +1329,7 @@
 				07649FF82D4DE9AC00B6B2B2 /* KeychainHelper.swift in Sources */,
 				07E1CB4F2D36721900F86BB8 /* CustomNavigationBar.swift in Sources */,
 				076FAB402D2E6E0200FF3979 /* SceneDelegate.swift in Sources */,
+				07CF63FF2D563CAD00CCF9F4 /* RecordTagClothViewController.swift in Sources */,
 				076FAB4A2D2E748B00FF3979 /* LoginView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1250,6 +1361,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱 사용 중 위치 접근 권한이 필요합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "사진을 업로드하거나 저장하기 위해 갤러리 접근이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1260,7 +1372,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.soongsil.cs.20213583.Clokey;
+				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1281,6 +1393,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱 사용 중 위치 접근 권한이 필요합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "사진을 업로드하거나 저장하기 위해 갤러리 접근이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1291,7 +1404,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = edu.soongsil.cs.20213583.Clokey;
+				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
