@@ -36,9 +36,13 @@ final class HomeViewController: UIViewController {
     /// 뷰가 메모리에 로드된 후 호출되며 초기 설정을 수행
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupActions()  // 버튼 액션 설정
         selectTab(.pick) // 초기 탭 설정
+        
     }
+    
+    
     
     // MARK: - Actions
     

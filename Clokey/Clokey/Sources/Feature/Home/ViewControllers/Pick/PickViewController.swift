@@ -12,6 +12,11 @@ import Kingfisher
 import MapKit
 
 class PickViewController: UIViewController, CLLocationManagerDelegate {
+    
+    private var backgroundView: UIView?// 배경 어둡게 하기 위해 선언
+    
+    // 팝업 뷰
+    private let popUpView = PickPopUpView()
     private let pickView = PickView()
     
     let locationManager = CLLocationManager()
@@ -25,6 +30,9 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         definesPresentationContext = true // 현재 컨텍스트에서 새로운 뷰 표시
+        
+        //        setupUI()
+        setupActions()
         
         updateTimeLabel() // 현재 시간 업데이트
         fetchWeatherData() // 날씨 데이터 가져오기
@@ -40,6 +48,86 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.startUpdatingLocation()
         
         setupLocationIconTap()
+        
+        loadRecapData()
+    }
+    
+    private func setupActions() {
+        popUpView.deleteButton.addTarget(self, action: #selector(dismissPopup), for: .touchUpInside)
+        
+        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(handleImageTap(_:)))
+        pickView.weatherImageView1.isUserInteractionEnabled = true
+        pickView.weatherImageView1.addGestureRecognizer(tapGesture1)
+        
+        let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(handleImageTap(_:)))
+        pickView.weatherImageView2.isUserInteractionEnabled = true
+        pickView.weatherImageView2.addGestureRecognizer(tapGesture2)
+        
+        let tapGesture3 = UITapGestureRecognizer(target: self, action: #selector(handleImageTap(_:)))
+        pickView.weatherImageView3.isUserInteractionEnabled = true
+        pickView.weatherImageView3.addGestureRecognizer(tapGesture3)
+    }
+    
+    // 팝업 닫기 함수
+    @objc private func dismissPopup() {
+        guard let keyWindow = UIApplication.shared.connectedScenes
+            .compactMap({ ($0 as? UIWindowScene)?.windows.first })
+            .first else { return }
+        
+        //  keyWindow에서 PopUpView 찾기
+        if let popUpView = keyWindow.subviews.first(where: { $0 is PickPopUpView }) {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.backgroundView?.alpha = 0 // 배경도 함께 사라지게 함
+                popUpView.alpha = 0
+            }) { _ in
+                self.backgroundView?.removeFromSuperview() // 배경 제거
+                popUpView.removeFromSuperview()
+                self.backgroundView = nil // 참조 해제
+            }
+        }
+    }
+    
+    
+    @objc private func handleImageTap(_ sender: UITapGestureRecognizer) {
+        guard let tappedImageView = sender.view as? UIImageView else { return }
+        showPopup(with: tappedImageView.image)
+    }
+    
+    private func showPopup(with image: UIImage?) {
+        guard let keyWindow = UIApplication.shared.connectedScenes
+            .compactMap({ ($0 as? UIWindowScene)?.windows.first })
+            .first else { return }//keywindow설정 하단 상단 바도 다 포함하는
+        
+        //뒷 배경 어둡게
+        let bgView = UIView()
+        bgView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        bgView.alpha = 0
+        keyWindow.addSubview(bgView)
+        bgView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        backgroundView = bgView
+        
+        let popUpView = PickPopUpView()
+        popUpView.alpha = 0
+        popUpView.setImage(image)
+        keyWindow.addSubview(popUpView)
+        
+        popUpView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.width.equalTo(290)
+            make.height.equalTo(448)
+        }
+        
+        // 팝업 애니메이션 효과
+        UIView.animate(withDuration: 0.3) {
+            bgView.alpha = 1
+            popUpView.alpha = 1
+        }
+        
+        //       //  closeButton 클릭 시 팝업 닫기 기능 추가
+        popUpView.deleteButton.addTarget(self, action: #selector(dismissPopup), for: .touchUpInside)
     }
     
     private func bindData() {
@@ -236,6 +324,22 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         
         // Navigate without keeping the TabBar
         self.present(closetViewController, animated: true, completion: nil)
+    }
+    
+    // Recap 데이터를 로드하고 PickView에 전달
+    private func loadRecapData() {
+        let homeService = HomeService()
+        
+        homeService.getOneYearAgoHistories { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let historyResult):
+                    self?.pickView.updateRecapImages(with: historyResult.images)
+                case .failure(let error):
+                    print("❌ 데이터 로드 실패: \(error.localizedDescription)")
+                }
+            }
+        }
     }
 }
 
