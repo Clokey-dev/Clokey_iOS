@@ -31,7 +31,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         super.viewDidLoad()
         definesPresentationContext = true // 현재 컨텍스트에서 새로운 뷰 표시
         
-        //        setupUI()
+     
         setupActions()
         
         updateTimeLabel() // 현재 시간 업데이트
@@ -40,6 +40,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         updateYesterdayWeatherUI()
         setupBottomLabelTap()
         bindData()
+        fetchWeatherRecommendations()
         
         locationManager.delegate = self
         locationManager.distanceFilter = kCLDistanceFilterNone
@@ -132,12 +133,25 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     
     private func bindData() {
         // 데이터를 PickView에 바인딩
-        pickView.weatherImageView1.kf.setImage(with: URL(string: model.weatherImageURLs[0]))
-        pickView.weatherImageView2.kf.setImage(with: URL(string: model.weatherImageURLs[1]))
-        pickView.weatherImageView3.kf.setImage(with: URL(string: model.weatherImageURLs[2]))
         
         pickView.recapImageView1.kf.setImage(with: URL(string: model.recapImageURLs[0]))
         pickView.recapImageView2.kf.setImage(with: URL(string: model.recapImageURLs[1]))
+    }
+    
+    func fetchWeatherRecommendations() {
+        // 모델에서 이미지 URL 가져오기
+//        let recommendedClothes: [String] = model.weatherImageURLs // 이미지가 있음을 나타내기 위해 URL 배열 사용
+        let recommendedClothes: [String] = [] // 예제: 데이터가 없다고 가정
+        
+        // UI 업데이트 (비어 있는지 확인)
+        pickView.updateEmptyState(isEmpty: recommendedClothes.isEmpty)
+        
+        // 이미지 설정
+        if !recommendedClothes.isEmpty {
+            pickView.weatherImageView1.kf.setImage(with: URL(string: recommendedClothes[0]))
+            pickView.weatherImageView2.kf.setImage(with: URL(string: recommendedClothes[1]))
+            pickView.weatherImageView3.kf.setImage(with: URL(string: recommendedClothes[2]))
+        }
     }
     
     // MARK: - 날씨 데이터 요청

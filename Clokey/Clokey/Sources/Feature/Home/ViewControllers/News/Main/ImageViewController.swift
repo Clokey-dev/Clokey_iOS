@@ -22,12 +22,20 @@ class ImageViewController: UIViewController {
     }
     
     // ImageView를 뷰 계층에 추가하고 레이아웃 설정
+//    private func setupImageView() {
+//        view.addSubview(imageView)
+//        imageView.snp.makeConstraints { make in
+////            make.edges.equalToSuperview() // ImageView를 전체 화면에 맞게 배치
+//            make.leading.trailing.equalToSuperview().inset(24)
+//            make.size.equalTo(300)
+//        }
+//    }
     private func setupImageView() {
         view.addSubview(imageView)
         imageView.snp.makeConstraints { make in
-//            make.edges.equalToSuperview() // ImageView를 전체 화면에 맞게 배치
-            make.leading.trailing.equalToSuperview().inset(24)
-            make.size.equalTo(300)
+            make.centerX.equalToSuperview() // 중앙 정렬
+            make.width.equalTo(300) // 너비를 300으로 고정
+            make.height.equalTo(300) // 높이도 300으로 설정
         }
     }
     
