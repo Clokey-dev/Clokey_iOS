@@ -23,6 +23,8 @@ final class HomeViewController: UIViewController {
     /// 'Pick' 탭에 해당하는 화면
     private let pickViewController = PickViewController()
     
+    private let pickNothingViewController = PickNothingViewController()
+    
     /// 'News' 탭에 해당하는 화면
     private let newsViewController = NewsViewController()
     
@@ -34,9 +36,13 @@ final class HomeViewController: UIViewController {
     /// 뷰가 메모리에 로드된 후 호출되며 초기 설정을 수행
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupActions()  // 버튼 액션 설정
         selectTab(.pick) // 초기 탭 설정
+        
     }
+    
+    
     
     // MARK: - Actions
     
@@ -64,7 +70,7 @@ final class HomeViewController: UIViewController {
         case .pick:
             configureTabAppearance(selectedButton: homeView.pickButton, deselectedButton: homeView.newsButton, indicatorColor: .mainBrown800)
         case .news:
-            configureTabAppearance(selectedButton: homeView.newsButton, deselectedButton: homeView.pickButton, indicatorColor: .orange)
+            configureTabAppearance(selectedButton: homeView.newsButton, deselectedButton: homeView.pickButton, indicatorColor: .pointOrange800)
         }
         
         // 레이아웃 업데이트 애니메이션 적용
@@ -85,13 +91,14 @@ final class HomeViewController: UIViewController {
         // IndicatorView의 위치 및 크기 업데이트
         homeView.indicatorView.snp.remakeConstraints { make in
             make.centerX.equalTo(selectedButton.snp.centerX)
-            make.bottom.equalTo(selectedButton.snp.bottom)
+            make.bottom.equalTo(selectedButton.snp.bottom).offset(6)
             make.height.equalTo(5)
-            make.width.equalTo(selectedButton.snp.width).multipliedBy(0.5)
+//            make.width.equalTo(selectedButton.snp.width).multipliedBy(0.5)
+            make.width.equalTo(88)
         }
         // 선택된 버튼과 선택 해제된 버튼의 색상 변경
         selectedButton.setTitleColor(indicatorColor, for: .normal)
-        deselectedButton.setTitleColor(.lightGray, for: .normal)
+        deselectedButton.setTitleColor(UIColor(red: 78/255, green: 52/255, blue: 46/255, alpha: 0.5), for: .normal)
         // IndicatorView의 배경색 업데이트
         homeView.indicatorView.backgroundColor = indicatorColor
     }
@@ -112,6 +119,7 @@ final class HomeViewController: UIViewController {
         }
         
         // 새로운 ViewController를 추가
+//        let selectedVC = (tab == .pick) ? pickNothingViewController : newsViewController
         let selectedVC = (tab == .pick) ? pickViewController : newsViewController
         addChild(selectedVC)
         homeView.containerView.addSubview(selectedVC.view)
