@@ -128,12 +128,12 @@ final class LoginView: UIView {
         
         kakaoLoginButton.snp.makeConstraints {
             $0.height.equalTo(50) // 버튼 높이
-            $0.top.equalToSuperview().offset(100) // 상단 여백
+//            $0.top.equalToSuperview().offset(100) // 상단 여백
         }
 
         appleLoginButton.snp.makeConstraints {
             $0.height.equalTo(50)
-            $0.top.equalTo(kakaoLoginButton.snp.bottom).offset(16) // 카카오 버튼 아래에 배치
+//            $0.top.equalTo(kakaoLoginButton.snp.bottom).offset(12) // 카카오 버튼 아래에 배치
         }
 
     }

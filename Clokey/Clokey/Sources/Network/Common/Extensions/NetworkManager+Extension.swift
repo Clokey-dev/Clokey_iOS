@@ -86,7 +86,7 @@ extension NetworkManager {
     private func handleResponse<T: Decodable>(
         _ response: Response,
         decodingType: T.Type
-    ) -> Result<T, NetworkError> { // ✅ 옵셔널 미지원
+    ) -> Result<T, NetworkError> {
         do {
             // 1. 상태 코드 확인
             guard (200...299).contains(response.statusCode) else {
@@ -102,31 +102,33 @@ extension NetworkManager {
                     errorMessage = "알 수 없는 오류 발생: \(response.statusCode)"
                 }
 
-                // 2. 서버 응답 메시지 처리
                 let errorResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data)
                 let finalMessage = errorResponse?.message ?? errorMessage
                 return .failure(.serverError(statusCode: response.statusCode, message: finalMessage))
             }
 
-            // 3. 응답 디코딩
+            // 2. 응답 디코딩
             let apiResponse = try JSONDecoder().decode(ApiResponse<T>.self, from: response.data)
 
-            // 4. result 처리 (빈 데이터 불허)
+            // 3. result 처리
             guard let result = apiResponse.result else {
                 return .failure(.serverError(statusCode: response.statusCode, message: "결과 데이터가 없습니다."))
             }
 
-            return .success(result) // ✅ 반드시 데이터가 필요함
+            return .success(result)
 
+        } catch let decodingError as DecodingError {
+            print("🚨 디코딩 오류 발생: \(decodingError)")
+            return .failure(.decodingError(underlyingError: decodingError)) // ✅ 상세 오류 포함
         } catch {
-            return .failure(.decodingError) // 디코딩 실패
+            return .failure(.decodingError(underlyingError: error as! DecodingError)) // ✅ 일반 오류도 포함
         }
     }
     
     private func handleResponseOptional<T: Decodable>(
         _ response: Response,
         decodingType: T.Type
-    ) -> Result<T?, NetworkError> { // ✅ 옵셔널 지원
+    ) -> Result<T?, NetworkError> {
         do {
             // 1. 상태 코드 확인
             guard (200...299).contains(response.statusCode) else {
@@ -142,7 +144,6 @@ extension NetworkManager {
                     errorMessage = "알 수 없는 오류가 발생했습니다. 코드: \(response.statusCode)"
                 }
 
-                // 서버 응답 메시지 디코딩
                 let errorResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data)
                 let finalMessage = errorResponse?.message ?? errorMessage
                 return .failure(.serverError(statusCode: response.statusCode, message: finalMessage))
@@ -156,18 +157,20 @@ extension NetworkManager {
             // 3. 응답 디코딩
             let apiResponse = try JSONDecoder().decode(ApiResponse<T>.self, from: response.data)
 
-            // 4. result 처리
             return .success(apiResponse.result) // ✅ result가 옵셔널이라면 nil 반환 가능
 
+        } catch let decodingError as DecodingError {
+            print("🚨 디코딩 오류 발생: \(decodingError)")
+            return .failure(.decodingError(underlyingError: decodingError)) // ✅ 상세 오류 포함
         } catch {
-            return .failure(.decodingError) // 디코딩 에러 처리
+            return .failure(.decodingError(underlyingError: error as! DecodingError)) // ✅ 일반 오류도 포함
         }
     }
     
     private func handleResponseTimeInterval<T: Decodable>(
         _ response: Response,
         decodingType: T.Type
-    ) -> Result<(T, TimeInterval?), NetworkError> { // ✅ 캐시 유효 시간 포함
+    ) -> Result<(T, TimeInterval?), NetworkError> {
         do {
             guard (200...299).contains(response.statusCode) else {
                 let errorMessage: String
@@ -182,7 +185,6 @@ extension NetworkManager {
                     errorMessage = "알 수 없는 오류 발생: \(response.statusCode)"
                 }
 
-                // 2. 서버 응답 메시지 처리
                 let errorResponse = try? JSONDecoder().decode(ErrorResponse.self, from: response.data)
                 let finalMessage = errorResponse?.message ?? errorMessage
                 return .failure(.serverError(statusCode: response.statusCode, message: finalMessage))
@@ -201,8 +203,11 @@ extension NetworkManager {
 
             return .success((result, cacheDuration)) // ✅ 데이터와 캐시 유효 시간 반환
 
+        } catch let decodingError as DecodingError {
+            print("🚨 디코딩 오류 발생: \(decodingError)")
+            return .failure(.decodingError(underlyingError: decodingError)) // ✅ 상세 오류 포함
         } catch {
-            return .failure(.decodingError) // 디코딩 실패
+            return .failure(.decodingError(underlyingError: error as! DecodingError)) // ✅ 일반 오류도 포함
         }
     }
     

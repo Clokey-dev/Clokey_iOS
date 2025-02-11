@@ -16,10 +16,18 @@ class LikeListViewController: UIViewController {
     // MARK: - Properties
     private var users: [LikeUserModel] = []
     
-//    private let historyId: Int
-    let historyId = 1
+    private let historyId: Int
     private let historyService = HistoryService()
     
+    // MARK: - Initializer
+    init(historyId: Int) {
+        self.historyId = historyId
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - UI Components
     private let navigationBar = UIView().then {
@@ -104,11 +112,11 @@ class LikeListViewController: UIViewController {
             switch result {
             case .success(let response):
                 // DTO를 Model로 변환
-                self.users = response.likes.map { like in
+                self.users = response.likedUsers.map { like in
                     LikeUserModel(
                         userId: like.clokeyId,
                         nickname: like.nickname,
-                        profileImageUrl: "", // API 응답에 프로필 이미지 URL이 없는 것 같네요
+                        profileImageUrl: like.imageUrl,
                         isFollowing: like.followStatus
                     )
                 }

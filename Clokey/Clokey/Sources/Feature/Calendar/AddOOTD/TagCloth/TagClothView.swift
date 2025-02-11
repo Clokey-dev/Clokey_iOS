@@ -17,10 +17,11 @@ final class TagClothView: UIView, SortDropdownViewDelegate {
     // 커스텀 세그먼트 뷰
     let customTotalSegmentView = CustomTotalSegmentView(items: ["전체", "상의", "하의", "아우터", "기타"])
     
-    private var dropdownView: CustomSortDropdownView?
+    var dropdownView: CustomSortDropdownView?
+    weak var delegate: AnyObject? 
 
     // 검색 필드
-    private let searchField: CustomSearchField = {
+    let searchField: CustomSearchField = {
         let field = CustomSearchField()
         return field
     }()
@@ -196,5 +197,8 @@ final class TagClothView: UIView, SortDropdownViewDelegate {
     func didSelectSortOption(_ option: String) {
         sortButtonLabel.text = option
         hideDropdown()
+        (delegate as? SortDropdownViewDelegate)?.didSelectSortOption(option)
     }
 }
+
+

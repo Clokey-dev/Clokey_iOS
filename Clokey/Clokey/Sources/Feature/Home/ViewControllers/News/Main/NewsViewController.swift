@@ -165,7 +165,7 @@ class NewsViewController: UIViewController {
     
     private func presentNewFriendClothesViewController() {
         let updateFriendClothesViewController = UpdateFriendClothesViewController()
-        updateFriendClothesViewController.modalPresentationStyle = .overCurrentContext
+        updateFriendClothesViewController.modalPresentationStyle = .overFullScreen
         updateFriendClothesViewController.modalTransitionStyle = .crossDissolve
         present(updateFriendClothesViewController, animated: true, completion: nil)
     }
@@ -191,10 +191,20 @@ class NewsViewController: UIViewController {
     
     private func presentNewFollowingCalendarViewController() {
         let updateFriendCalendarViewController = UpdateFriendCalendarViewController()
-        updateFriendCalendarViewController.modalPresentationStyle = .overCurrentContext
+        updateFriendCalendarViewController.modalPresentationStyle = .overFullScreen
         updateFriendCalendarViewController.modalTransitionStyle = .crossDissolve
         present(updateFriendCalendarViewController, animated: true, completion: nil)
     }
+    
+//    private func presentNewFollowingCalendarViewController() {
+//        let updateFriendCalendarViewController = UpdateFriendCalendarViewController()
+//        let navigationController = UINavigationController(rootViewController: updateFriendCalendarViewController)
+//        
+//        navigationController.modalPresentationStyle = .overFullScreen
+//        navigationController.modalTransitionStyle = .crossDissolve
+//        
+//        present(navigationController, animated: true, completion: nil)
+//    }
     
 }
 

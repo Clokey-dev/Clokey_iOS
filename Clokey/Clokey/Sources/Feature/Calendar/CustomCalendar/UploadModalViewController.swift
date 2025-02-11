@@ -10,6 +10,8 @@ import SnapKit
 
 class UploadModalViewController: UIViewController {
     
+    private var selectedDate: Date?
+    
     private let modalView = UploadModalView()
     // Modal이 Calendar를 약하게 참조.
     weak var sourceViewController: UIViewController?
@@ -32,6 +34,7 @@ class UploadModalViewController: UIViewController {
     }
     
     func setDate(_ date: Date) {
+        self.selectedDate = date
         modalView.setDate(date)
     }
     
@@ -49,8 +52,12 @@ class UploadModalViewController: UIViewController {
     // OOTD 기록페이지로 네비게이션
     @objc private func addButtonTapped() {
         dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
             let recordVC = RecordOOTDViewController()
-            self?.sourceViewController?.navigationController?.pushViewController(recordVC, animated: true)
+            if let date = self.selectedDate {
+                recordVC.setDate(date)
+            }
+            self.sourceViewController?.navigationController?.pushViewController(recordVC, animated: true)
         }
     }
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyC8b7GuMwxQ6VpOM9LMPcQzUlXx89eVRnI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>511520268890</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.clokeyteam.clokey</string>
+	<key>PROJECT_ID</key>
+	<string>clokey-9d03a</string>
+	<key>STORAGE_BUCKET</key>
+	<string>clokey-9d03a.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:511520268890:ios:5bff1cd904019286b4ee63</string>
+</dict>
+</plist>
