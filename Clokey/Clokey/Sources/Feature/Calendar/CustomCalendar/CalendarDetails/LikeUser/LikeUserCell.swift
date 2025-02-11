@@ -20,7 +20,7 @@ class LikeUserCell: UICollectionViewCell {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 20  
-        $0.backgroundColor = .systemGray5
+//        $0.backgroundColor = .systemGray5
     }
     
     private let userInfoStackView = UIStackView().then {
@@ -43,10 +43,22 @@ class LikeUserCell: UICollectionViewCell {
         var configuration = UIButton.Configuration.plain()
         configuration.title = "팔로우"
         configuration.baseForegroundColor = .white
-        configuration.background.backgroundColor = .black
-        configuration.cornerStyle = .medium
+        configuration.background.backgroundColor = .mainBrown800
+        configuration.cornerStyle = .fixed
+        configuration.background.cornerRadius = 10
+        
+        let attributedTitle = NSAttributedString(
+            string: "팔로우",
+            attributes: [
+                .font: UIFont.ptdRegularFont(ofSize: 16)
+            ]
+        )
+        configuration.attributedTitle = AttributedString(attributedTitle)
         
         let button = UIButton(configuration: configuration)
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.mainBrown800.cgColor
+        button.layer.cornerRadius = 10
         return button
     }()
     
@@ -84,7 +96,7 @@ class LikeUserCell: UICollectionViewCell {
         followButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().offset(-16)
             $0.centerY.equalToSuperview()
-            $0.width.equalTo(70)
+            $0.width.equalTo(76)
             $0.height.equalTo(30)
         }
     }
@@ -95,7 +107,7 @@ class LikeUserCell: UICollectionViewCell {
         nicknameLabel.text = user.nickname
         
         if let url = URL(string: user.profileImageUrl) {
-            profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "profile_placeholder"))
+            profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "profile_test"))
         }
         
         updateFollowButton(isFollowing: user.isFollowing)
@@ -105,15 +117,7 @@ class LikeUserCell: UICollectionViewCell {
         var configuration = UIButton.Configuration.plain()
         configuration.title = isFollowing ? "팔로잉" : "팔로우"
         configuration.baseForegroundColor = isFollowing ? .black : .white
-        configuration.background.backgroundColor = isFollowing ? .white : .black
-        configuration.cornerStyle = .medium
-        
-        if isFollowing {
-            followButton.layer.borderWidth = 1
-            followButton.layer.borderColor = UIColor.systemGray4.cgColor
-        } else {
-            followButton.layer.borderWidth = 0
-        }
+        configuration.background.backgroundColor = isFollowing ? .white : .mainBrown800
         
         followButton.configuration = configuration
     }

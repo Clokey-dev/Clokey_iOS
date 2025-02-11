@@ -55,7 +55,7 @@ class FollowProfileView: UIView {
     
     let nicknameLabel: UILabel = {
         let label = UILabel()
-        label.text = "초키(닉네임란)"
+        label.text = "클루"
         label.font = UIFont.ptdMediumFont(ofSize: 18)
         label.textColor = .black
         label.textAlignment = .center
@@ -63,14 +63,14 @@ class FollowProfileView: UIView {
     }()
     
     let statsLabel = UILabel().then {
-        $0.text = "게시글 000  팔로워 000  팔로잉 000"
+        $0.text = "게시글 008  팔로워 027  팔로잉 032"
         $0.font = UIFont.ptdRegularFont(ofSize: 12)
         $0.textColor = .black
         $0.textAlignment = .center
     }
     
     let descriptionLabel = UILabel().then {
-        $0.text = "한줄소개란입니다아아아아아아아아"
+        $0.text = "나는야공주"
         $0.font = UIFont.ptdRegularFont(ofSize: 14)
         $0.textColor = .black
         $0.textAlignment = .center

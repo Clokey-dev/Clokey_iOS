@@ -37,12 +37,20 @@ class CalendarCell: UICollectionViewCell {
         setupUI()
     }
     
+    // 각 셀의 이미지
+    private let backgroundImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
+        $0.isHidden = true
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // UI 설정 메서드
     private func setupUI() {
+        contentView.addSubview(backgroundImageView)
         contentView.addSubview(todayView) // 원형 뷰를 먼저 추가
         contentView.addSubview(dayLabel) // 레이블을 셀에 추가
         //        contentView.layer.borderWidth = 0.5 // 셀 테두리 두께
@@ -82,6 +90,7 @@ class CalendarCell: UICollectionViewCell {
             dayLabel.textColor = .white
         } else {
             todayView.isHidden = true
+            
             if isSelected {
                 contentView.backgroundColor = .systemBlue.withAlphaComponent(0.3)
                 dayLabel.textColor = .black
@@ -108,4 +117,22 @@ class CalendarCell: UICollectionViewCell {
             imageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"))
         }
     }
+    
+    // 달력 셀 선택시, 터치 이펙트 설정
+    override var isHighlighted: Bool {
+        didSet {
+            if isHighlighted {
+                // 터치 시작할 때
+                UIView.animate(withDuration: 0.1) {
+                    self.contentView.backgroundColor = UIColor.gray.withAlphaComponent(0.3)
+                }
+            } else {
+                // 터치 끝날 때
+                UIView.animate(withDuration: 0.1) {
+                    self.contentView.backgroundColor = .clear
+                }
+            }
+        }
+    }
+
 }

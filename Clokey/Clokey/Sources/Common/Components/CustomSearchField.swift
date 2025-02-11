@@ -27,7 +27,7 @@ class CustomSearchField: UIView {
     }()
     
     // 텍스트 필드
-        let textField: UITextField = {
+    let textField: UITextField = {
         let textField = UITextField(frame: .zero)
         textField.borderStyle = .none
         textField.font = UIFont.ptdMediumFont(ofSize: 16)

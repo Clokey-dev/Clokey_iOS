@@ -8,8 +8,23 @@
 import UIKit
 import SnapKit
 import Then
+import Kingfisher
 
-class CalendarCommentView: UIView {
+class CalendarCommentView: UIView, UIGestureRecognizerDelegate {
+    
+    // MARK: - Properties
+     var comments: [Comment] = [] {
+         didSet {
+             commentTableView.reloadData()
+         }
+     }
+     
+     weak var viewController: CalendarCommentViewController? {
+         didSet {
+             commentTableView.dataSource = self
+             commentTableView.delegate = self
+         }
+     }
     
     // MARK: - UI Components
     private let titleLabel = UILabel().then {
@@ -34,19 +49,22 @@ class CalendarCommentView: UIView {
     
     let commentTextField = UITextField().then {
         $0.placeholder = "댓글 달기"
-        $0.borderStyle = .roundedRect
+        $0.layer.cornerRadius = 15
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.pointOrange800.cgColor
+        $0.clipsToBounds = true
+        
+        // 왼쪽 패딩 추가
+        let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 0))
+        $0.leftView = leftPaddingView
+        $0.leftViewMode = .always
     }
     
     private let sendButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "paperplane.fill"), for: .normal)
+        $0.setImage(UIImage(named: "comment_enter"), for: .normal)
         $0.tintColor = .orange
     }
-    
-    // MARK: - Properties
-//    var comments: [String] = [] // 댓글 데이터를 저장할 배열
-    var comments: [Comment] = Comment.sampleComments // 예제 데이터 추가
-
-    
+   
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -68,8 +86,6 @@ class CalendarCommentView: UIView {
         layer.cornerRadius = 12
         layer.masksToBounds = true
         
-        organizeComments()
-        
         addSubview(titleLabel)
         addSubview(closeButton)
         addSubview(commentTableView)
@@ -86,55 +102,45 @@ class CalendarCommentView: UIView {
     
     private func setupConstraints() {
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(16)
+            $0.top.equalToSuperview().offset(20)
             $0.centerX.equalToSuperview()
         }
         
         closeButton.snp.makeConstraints {
             $0.centerY.equalTo(titleLabel)
-            $0.trailing.equalToSuperview().inset(16)
+            $0.trailing.equalToSuperview().inset(20)
         }
         
         commentTableView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(8)
-            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(6)
+            $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(inputContainerView.snp.top)
         }
         
         inputContainerView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
-            $0.height.equalTo(50)
+            $0.height.equalTo(40)
         }
         
         commentTextField.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(16)
+            $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalTo(sendButton.snp.leading).offset(-8)
-            $0.height.equalTo(44)
+            $0.height.equalTo(38)
             $0.centerY.equalToSuperview()
         }
-
         
         sendButton.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(16)
+            $0.trailing.equalToSuperview().inset(20)
+            $0.width.height.equalTo(38)
             $0.centerY.equalToSuperview()
         }
     }
     
-    // 댓글 정렬
-    private func organizeComments() {
-        let mainComments = comments.filter { $0.parentCommentId == nil }
-        let replies = comments.filter { $0.parentCommentId != nil }
-        
-        var organizedComments: [Comment] = []
-        
-        for mainComment in mainComments {
-            organizedComments.append(mainComment)
-            let mainCommentReplies = replies.filter { $0.parentCommentId == mainComment.id }
-            organizedComments.append(contentsOf: mainCommentReplies)
-        }
-        
-        comments = organizedComments
+    // MARK: - Setup Actions
+    private func setupActions() {
+       closeButton.addTarget(self, action: #selector(didTapClose), for: .touchUpInside)
+       sendButton.addTarget(viewController, action: #selector(CalendarCommentViewController.didTapSend), for: .touchUpInside)
     }
     
     // MARK: - Method
@@ -143,41 +149,23 @@ class CalendarCommentView: UIView {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-    // 키보드 내리기
+    
+    // 키보드 내리기 제스처 설정
     private func setupTapGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tapGesture.cancelsTouchesInView = false
+        tapGesture.delegate = self
         self.addGestureRecognizer(tapGesture)
-    }
-
-    
-    // MARK: - Setup Actions
-    private func setupActions() {
-        closeButton.addTarget(self, action: #selector(didTapClose), for: .touchUpInside)
-        sendButton.addTarget(self, action: #selector(didTapSend), for: .touchUpInside)
     }
     
     @objc private func didTapClose() {
-        self.removeFromSuperview()
+        if let viewController = self.findViewController() as? CalendarCommentViewController {
+            viewController.dismissView()
+        }
     }
     
     @objc private func didTapSend() {
-        if let text = commentTextField.text, !text.isEmpty {
-            let newComment = Comment(
-                id: comments.count + 1,
-                memberId: 999,
-                imageUrl: "https://example.com/images/default.jpg",
-                content: text,
-                parentCommentId: nil
-            )
-
-            comments.append(newComment)
-            organizeComments() // 댓글 추가 후 재정렬
-            commentTableView.reloadData()
-            commentTextField.text = ""
-        }
+        viewController?.didTapSend()
     }
-
     
     // 키보드 올릴 때
     @objc private func keyboardWillShow(_ notification: Notification) {
@@ -195,7 +183,7 @@ class CalendarCommentView: UIView {
             UIView.animate(withDuration: 0.3) { self.layoutIfNeeded() }
         }
     }
-
+    
     // 키보드 내릴때 댓글창 원래대로
     @objc private func keyboardWillHide(_ notification: Notification) {
         inputContainerView.snp.remakeConstraints {
@@ -210,13 +198,23 @@ class CalendarCommentView: UIView {
     @objc private func dismissKeyboard() {
         self.endEditing(true)
     }
-
-
+    
+    // MARK: - UIGestureRecognizerDelegate
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        // 터치된 뷰가 입력 컨테이너나 그 하위 뷰인 경우 제스처를 무시
+        if touch.view?.isDescendant(of: inputContainerView) ?? false {
+            return false
+        }
+        // 터치된 뷰가 전송 버튼인 경우 제스처를 무시
+        if touch.view?.isDescendant(of: sendButton) ?? false {
+            return false
+        }
+        return true
+    }
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
 extension CalendarCommentView: UITableViewDataSource, UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return comments.count
     }
@@ -226,27 +224,45 @@ extension CalendarCommentView: UITableViewDataSource, UITableViewDelegate {
         
         let comment = comments[indexPath.row]
         let isReply = comment.parentCommentId != nil
-
+        
         cell.configure(
             profileImage: comment.imageUrl,
             name: "닉네임",
             comment: comment.content,
-            isLastReply: isLastReply(comment: comment),
+            isLastReply: comment.parentCommentId == nil,
             commentId: comment.id
         )
-
-        // 대댓글이면 들여쓰기 적용
+        
+        cell.delegate = viewController
+        
+        // 대댓글 들여쓰기 처리
         if isReply {
-            cell.contentStackView.snp.updateConstraints { make in
-                make.leading.equalToSuperview().offset(40)
+            cell.mainStackView.snp.remakeConstraints {
+                $0.top.equalToSuperview()
+                $0.trailing.equalToSuperview().inset(12)
+                $0.bottom.equalToSuperview().inset(20)
+                $0.leading.equalToSuperview().inset(40)
+            }
+        } else {
+            cell.mainStackView.snp.remakeConstraints {
+                $0.leading.equalToSuperview()
+                $0.trailing.equalToSuperview().inset(12)
+                $0.top.bottom.equalToSuperview().inset(8)
             }
         }
-
+        
         return cell
     }
+}
 
-    private func isLastReply(comment: Comment) -> Bool {
-        // 부모 댓글(일반 댓글)인 경우에만 답글 달기 버튼 표시
-        return comment.parentCommentId == nil
+extension UIView {
+    func findViewController() -> UIViewController? {
+        if let nextResponder = self.next as? UIViewController {
+            return nextResponder
+        } else if let nextResponder = self.next as? UIView {
+            return nextResponder.findViewController()
+        } else {
+            return nil
+        }
     }
 }

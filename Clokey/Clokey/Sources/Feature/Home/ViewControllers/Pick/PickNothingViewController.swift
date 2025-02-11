@@ -38,6 +38,8 @@ class PickNothingViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.startUpdatingLocation()
         
         setupLocationIconTap()
+        
+        loadRecapData()
     }
     
     private func bindData() {
@@ -205,6 +207,22 @@ class PickNothingViewController: UIViewController, CLLocationManagerDelegate {
         pickNothingView.tempDetailsLabel.text = "최고/최저 기온 없음"
         pickNothingView.weatherIconView.image = nil
     }
+    
+    // Recap 데이터를 로드하고 PickView에 전달
+        private func loadRecapData() {
+            let homeService = HomeService()
+            
+            homeService.getOneYearAgoHistories { [weak self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let historyResult):
+                        self?.pickNothingView.updateRecapImages(with: historyResult.images)
+                    case .failure(let error):
+                        print("❌ 데이터 로드 실패: \(error.localizedDescription)")
+                    }
+                }
+            }
+        }
 
 }
 

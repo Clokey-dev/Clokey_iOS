@@ -26,7 +26,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let navigationController = UINavigationController(rootViewController: loginViewController)
 //        window?.rootViewController = navigationController
         
-        
         // 로그인 화면을 초기 화면으로 설정
         let loginViewController = LoginViewController(coordinator: self)
         window?.rootViewController = loginViewController
@@ -99,6 +98,14 @@ extension SceneDelegate: Coordinator {
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
+    
+    // 화면 전환 메서드 -> AgreementViewController
+//    func navigateToAgreement() {
+//        let agreementVC = AgreementViewController()
+//        let navigationController = UINavigationController(rootViewController: agreementVC)
+//        window?.rootViewController = navigationController
+//        window?.makeKeyAndVisible()
+//    }
     
     // 화면 전환 메서드 -> LoginViewController
     func switchToLogin() {

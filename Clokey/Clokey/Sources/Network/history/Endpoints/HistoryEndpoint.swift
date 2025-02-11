@@ -18,6 +18,8 @@ public enum HistoryEndpoint {
     case historyCommentUpdate(commentId: Int, data: HistoryCommentUpdateRequestDTO)
     case historyDelete(historyId: Int)
     case historyLikeList(historyId: Int)
+    case historyCreate(data: HistoryCreateRequestDTO, images: [Data])
+
 
     // 추가적인 API는 여기 케이스로 정의
 }
@@ -50,14 +52,16 @@ extension HistoryEndpoint: TargetType {
         case .historyDelete(let historyId):
             return "/histories/\(historyId)"
         case .historyLikeList(let historyId):
-            return "/histories/\(historyId)/like"
+            return "/histories/\(historyId)/likes"
+        case .historyCreate:
+            return "/histories"
         }
     }
     
     // HTTP 메서드
     public var method: Moya.Method {
         switch self {
-        case .historyLike, .historyCommentWrite:
+        case .historyLike, .historyCommentWrite, .historyCreate:
             return .post
         case .historyCommentUpdate:
             return .patch
@@ -96,6 +100,19 @@ extension HistoryEndpoint: TargetType {
             return .requestPlain
         case .historyLikeList:
             return .requestPlain
+        case .historyCreate(let data, let images):
+            var formData: [MultipartFormData] = []
+            // 이미지 데이터 추가
+            for (index, imageData) in images.enumerated() {formData.append(
+                    MultipartFormData( provider: .data(imageData), name: "imageFile", fileName: "image\(index).jpg", mimeType: "image/jpeg")
+                )
+            }
+            // JSON 데이터 추가
+            if let jsonData = try? JSONEncoder().encode(data) { formData.append(
+                    MultipartFormData( provider: .data(jsonData), name: "historyCreateRequest", mimeType: "application/json")
+                )
+            }
+            return .uploadMultipart(formData)
         }
     }
 
