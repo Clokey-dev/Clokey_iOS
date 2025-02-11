@@ -2,6 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>Permitted background task scheduler identifiers</key>
+    <array>
+        <string>com.clokey.pushProcessing</string>
+    </array>
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>fetch</string>
+        <string>remote-notification</string>
+    </array>
+
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -59,6 +69,12 @@
 			</array>
 		</dict>
 	</dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>processing</string>
+		<string>remote-notification</string>
+	</array>
 	<key>VISUAL_CROSSING_WEATHER_KEY</key>
 	<string>${VISUAL_CROSSING_WEATHER_KEY}</string>
 	<key>com.apple.developer.applesignin</key>
