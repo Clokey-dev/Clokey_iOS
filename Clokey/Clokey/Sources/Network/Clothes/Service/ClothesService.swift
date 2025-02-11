@@ -17,7 +17,9 @@ public final class ClothesService : NetworkManager {
     public init(provider: MoyaProvider<ClothesEndpoint>? = nil) {
         // 플러그인 추가
         let plugins: [PluginType] = [
-            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)) // 로그 플러그인
+            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)), // 로그 플러그인
+            AccessTokenPlugin()
+
         ]
         
         // provider 초기화
@@ -95,6 +97,30 @@ public final class ClothesService : NetworkManager {
             target: .deleteClothes(cloth_id: cloth_id),
             decodingType: Bool.self,
             completion: completion)
+    }
+    
+    // 내 옷장 조회 GET API
+    public func getClothes(
+        clokeyId: String,
+        categoryId: CLong,
+        season: String,
+        sort: String,
+        page: Int,
+        size: Int,
+        completion: @escaping (Result<GetClothesByCategoryResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .getClothes(
+                clokeyId: clokeyId,
+                categoryId: categoryId,
+                season: season,
+                sort: sort,
+                page: page,
+                size: size
+            ),
+            decodingType: GetClothesByCategoryResponseDTO.self,
+            completion: completion
+        )
     }
 }
 

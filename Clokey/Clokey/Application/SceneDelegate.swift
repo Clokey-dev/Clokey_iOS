@@ -26,7 +26,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let navigationController = UINavigationController(rootViewController: loginViewController)
 //        window?.rootViewController = navigationController
         
-        
         // 로그인 화면을 초기 화면으로 설정
         let loginViewController = LoginViewController(coordinator: self)
         window?.rootViewController = loginViewController

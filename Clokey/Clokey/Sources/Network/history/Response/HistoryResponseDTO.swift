@@ -23,34 +23,36 @@ public struct HistoryDTO: Codable {
 public struct HistoryDetailResponseDTO: Codable {
     public let memberId: Int64
     public let memberImageUrl: String
+    public let historyId: Int64
     public let nickName: String
-    public let clokeyId: Int64
-    public let content: String
-    public let images: [String]
+    public let clokeyId: String
+    public let contents: String
+    public let imageUrl: [String]
     public let hashtags: [String]
-    public let availability: Bool
+    public let visibility: Bool
     public let likeCount: Int
-    public let isLiked: Bool
+    public let commentCount: Int
+    public let liked: Bool
     public let date: String
-    public let clothes: [ClothDTO]
+    public let cloths: [ClothDTO]
 }
 
 public struct ClothDTO: Codable {
     public let clothId: Int
     public let clothImageUrl: String
+    public let clothName: String
 }
 
 // 좋아요
 public struct HistoryLikeResponseDTO: Codable {
-    public let historyId: String
-    public let isLiked: Bool
+    public let historyId: Int64
+    public let liked: Bool
     public let likeCount: Int64
 }
 
 // 댓글 조회
 public struct HistoryCommentsResponseDTO: Codable {
     public let comments: [CommentDTO]
-    public let listSize: Int
     public let totalPage: Int
     public let totalElements: Int
     public let isFirst: Bool
@@ -60,15 +62,15 @@ public struct HistoryCommentsResponseDTO: Codable {
 public struct CommentDTO: Codable {
     public let commentId: Int
     public let memberId: Int
-    public let ImageUrl: String
+    public let userImageUrl: String
     public let content: String
-    public let replies: [ReplyDTO]
+    public let replyResults: [ReplyDTO]
 }
 
 public struct ReplyDTO: Codable {
     public let commentId: Int
     public let memberId: Int
-    public let ImageUrl: String
+    public let userImageUrl: String
     public let content: String
 }
 
@@ -79,14 +81,18 @@ public struct HistoryCommentWriteResponseDTO: Codable {
 
 // 좋아요한 사람
 public struct HistoryLikeListResponseDTO: Codable {
-    public let likes: [LikeDTO]
+    public let likedUsers: [LikeDTO]
     
     public struct LikeDTO: Codable {
         public let memberId: Int64
         public let clokeyId: String
         public let nickname: String
+        public let imageUrl: String
         public let followStatus: Bool
     }
 }
 
-
+// 세부 기록 추가
+public struct HistoryCreateResponseDTO: Codable {
+    public let historyId: Int64
+}
