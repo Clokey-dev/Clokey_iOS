@@ -66,6 +66,10 @@ class TagClothViewController: UIViewController {
     // TagClothView 뷰
     let tagClothView = TagClothView()
     
+    // 현재 선택된 카테고리 ID 변수 추가
+    private var currentMainCategoryId: Int = 0
+    private var currentSubCategoryId: Int? = nil
+    
     // 서버에서 받아온 옷 데이터 페이징 변수들
     private var currentPage = 1
     private var isLoading = false
@@ -90,6 +94,7 @@ class TagClothViewController: UIViewController {
         super.viewDidLoad()
         configureInitialSetup()
         setupKeyboardDismissGestures() // 키보드 제스처 설정
+        tagClothView.customTotalSegmentView.delegate = self
     }
     
     override func viewDidLayoutSubviews() {
@@ -237,13 +242,17 @@ class TagClothViewController: UIViewController {
     
     // 특정 카테고리 - 선택된 카테고리에 맞는 의류 데이터 불러옴
     private func handleSpecificCategorySelection(_ index: Int) {
-        guard let category = CustomCategoryModel.getCategories(for: index) else { return }
         
+        guard let category = CustomCategoryModel.getCategories(for: index) else {
+            return
+        }
+
         loadClothesData(categoryId: index)
         tagClothView.customTotalSegmentView.toggleCategoryButtons(isHidden: false)
         tagClothView.customTotalSegmentView.updateCategories(for: category.buttons)
         updateContentViewConstraints(forTotal: false)
     }
+
     
     // 카테고리 변경할 때마다 레이아웃 재설정..
     private func updateContentViewConstraints(forTotal: Bool) {
@@ -274,13 +283,6 @@ class TagClothViewController: UIViewController {
     @objc private func confirmButtonTapped() {
         delegate?.didSelectTags(selectedItems)
         dismiss(animated: true)
-    }
-    
-    // 세그먼트 컨트롤 - 카테고리 변경
-    @objc private func segmentChanged(_ sender: UISegmentedControl) {
-        let index = sender.selectedSegmentIndex
-        tagClothView.customTotalSegmentView.updateIndicatorPosition(for: index)
-        updateContent(for: index)
     }
 }
 
@@ -374,11 +376,12 @@ extension TagClothViewController {
 
 // MARK: - SortDropdownViewDelegate
 extension TagClothViewController: SortDropdownViewDelegate {
-    // 정렬 드롭 메뉴 선택 처리
     func didSelectSortOption(_ option: String) {
-        currentSort = SortOption.from(option) // 선택하는 정렬 옵션으로 변환
-        // 새로운 정렬 방식으로 데이터를 다시 불러옴
-        loadClothesData(categoryId: tagClothView.customTotalSegmentView.segmentedControl.selectedSegmentIndex)
+        currentSort = SortOption.from(option)
+        // 현재 선택된 서브 카테고리가 있으면 그 ID를 사용하고,
+        // 없다면 메인 카테고리 ID를 사용
+        let categoryId = currentSubCategoryId ?? currentMainCategoryId
+        loadClothesData(categoryId: categoryId)
     }
 }
 // MARK: - UISearchTextFieldDelegate
@@ -407,10 +410,24 @@ extension TagClothViewController: UISearchTextFieldDelegate {
         tagClothView.collectionView.reloadData()
     }
     
+    // 사용자가 검색어 입력하면 currentSearchText 업데이트
     @objc private func searchFieldDidChange(_ textField: UITextField) {
         currentSearchText = textField.text?.lowercased() ?? ""
         filterItems()
     }
+    
+    // 세그먼트 감지해서 loadClothesData로 알맞은 index 값 전송
+    @objc private func segmentChanged(_ sender: UISegmentedControl) {
+        let index = sender.selectedSegmentIndex
+        currentMainCategoryId = index
+        currentSubCategoryId = nil  // 메인 카테고리 변경 시 서브 카테고리 초기화
+        
+        // 선택된 카테고리에 맞는 데이터를 로드
+        tagClothView.customTotalSegmentView.updateIndicatorPosition(for: index)
+        updateContent(for: index)
+        loadClothesData(categoryId: index)
+    }
+
 }
 
 // MARK: - UIScrollViewDelegate
@@ -427,5 +444,20 @@ extension TagClothViewController: UIScrollViewDelegate {
                 isNextPage: true
             )
         }
+    }
+}
+
+// MARK: - CustomTotalSegmentViewDelegate
+extension TagClothViewController: CustomTotalSegmentViewDelegate {
+    // 메인 카테고리 선택 시
+    func didSelectMainCategory(categoryId: Int) {
+        currentMainCategoryId = categoryId
+        currentSubCategoryId = nil
+        loadClothesData(categoryId: categoryId)
+    }
+    // 하위 카테고리 선택 시
+    func didSelectSubCategory(categoryId: Int) {
+        currentSubCategoryId = categoryId
+        loadClothesData(categoryId: categoryId)
     }
 }
