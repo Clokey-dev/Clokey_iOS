@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class RecordOOTDViewController: UIViewController {
     
@@ -100,6 +101,29 @@ class RecordOOTDViewController: UIViewController {
         mainView.updateCollectionViewHeight(hasImages)
     }
     
+    // 수정할 기록 데이터 불러오기
+    func setEditData(_ viewModel: CalendarDetailViewModel) {
+        self.contentText = viewModel.content
+        self.selectedDate = convertStringToDate(viewModel.date)
+
+        // 내용 설정
+        mainView.contentInputView.textAddBox.text = viewModel.content
+        mainView.contentInputView.textAddBox.textColor = viewModel.content.isEmpty ? .placeholderText : .black
+
+        // 해시태그 설정
+        let hashtagsArray = viewModel.hashtags.components(separatedBy: " ")
+        hashtagsArray.forEach { mainView.contentInputView.addHashtag($0) }
+
+        // 공개 여부 설정
+        mainView.contentInputView.publicButton.isSelected = viewModel.visibility
+        mainView.contentInputView.privateButton.isSelected = !viewModel.visibility
+
+        // 이미지 및 태그한 옷 설정 (비동기 로드)
+        loadImages(from: viewModel.images)
+        loadTaggedClothes(from: viewModel.cloths)
+    }
+
+    
     // MARK: - Actions
     // 뒤로가기
     @objc private func didTapBackButton() {
@@ -149,6 +173,9 @@ class RecordOOTDViewController: UIViewController {
             )
             
             // 이미지 압축 및 크기 제한
+//            let imageDataArray = selectedImages.compactMap { image in
+//                return image.jpegData(compressionQuality: 1.0)
+//            }
             let imageDataArray = selectedImages.compactMap { image in
                 // 이미지 크기 조정 (최대 1024x1024)
                 let maxSize: CGFloat = 1024
@@ -387,5 +414,76 @@ extension RecordOOTDViewController: TagClothViewControllerDelegate {
         } else {
             mainView.OOTDButton.setEnabled(false)
         }
+    }
+}
+
+// 수정하기 - 데이터 불러오기
+extension RecordOOTDViewController {
+    /*
+     Mutation of captured var in concurrently-executing code 오류
+     - swift5까지는 클로저 내부에서 외부 변수를 참조한 변수들을 여러 스레드에서 동시에 수정하는 것이 가능했음.
+     - 그러나 이 방식은 데이터 경쟁(Race Condition)을 발생할 가능성이 높아 swift6 부터는 금지함.
+     - DispatchQueue를 생성하여 loadedImages.append() 작업을 동기적으로 실행되게 수정하여 경쟁 상태 예방.
+    */
+    // 태그한 옷 불러오기
+    func loadTaggedClothes(from cloths: [CalendarDetailViewModel.ClothDTO]) {
+        // 비동기 네트워크 요청 관리를 위한 DispatchGroup 생성
+        let dispatchGroup = DispatchGroup()
+        var loadedClothes: [(id: Int, image: UIImage, title: String)] = []
+        let syncQueue = DispatchQueue(label: "clothSyncQueue")
+
+        for cloth in cloths {
+            if let url = URL(string: cloth.imageUrl) {
+                dispatchGroup.enter()
+                KingfisherManager.shared.retrieveImage(with: url) { result in
+                    switch result {
+                    case .success(let imageResult):
+                        syncQueue.sync { // 동기적으로 실행
+                            loadedClothes.append((id: cloth.clothId, image: imageResult.image, title: cloth.name))
+                        }
+                    case .failure(let error):
+                        print("옷 이미지 로드 실패: \(error)")
+                    }
+                    dispatchGroup.leave()
+                }
+            }
+        }
+        // 모든 비동기 요청이 완료된 후 메인 스레드에서 실행
+        dispatchGroup.notify(queue: .main) {
+            self.taggedItems = loadedClothes
+            self.mainView.photoTagView.tagCollectionView.reloadData()
+            self.mainView.photoTagView.updateTagCollectionViewHeight(!loadedClothes.isEmpty)
+        }
+    }
+
+    // 이미지 로드 - kingfisher 사용
+    func loadImages(from urls: [String]) {
+        let dispatchGroup = DispatchGroup()
+        var loadedImages: [UIImage] = []
+        let syncQueue = DispatchQueue(label: "imageSyncQueue")
+
+        for urlString in urls {
+            if let url = URL(string: urlString) {
+                dispatchGroup.enter()
+                KingfisherManager.shared.retrieveImage(with: url) { result in
+                    switch result {
+                    case .success(let imageResult):
+                        syncQueue.sync { // 동기적으로 실행
+                            loadedImages.append(imageResult.image)
+                        }
+                    case .failure(let error):
+                        print("이미지 로드 실패: \(error)")
+                    }
+                    dispatchGroup.leave()
+                }
+            }
+        }
+        // 모든 비동기 요청이 완료된 후 메인 스레드에서 실행
+        dispatchGroup.notify(queue: .main) {
+            self.selectedImages = loadedImages
+            self.mainView.photoTagView.imageCollectionView.reloadData()
+            self.mainView.updateCollectionViewHeight(!loadedImages.isEmpty)
+        }
+        mainView.OOTDButton.setEnabled(true)
     }
 }

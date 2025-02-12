@@ -114,7 +114,7 @@ class CalendarDetailViewController: UIViewController {
         let historyId = Int(viewModel.historyId)
         
         let actionSheet = CustomActionSheetViewController(historyId: historyId)
-        actionSheet.delegate = self // delegate 설정
+        actionSheet.delegate = self // delegate 설정 추가
         actionSheet.modalPresentationStyle = .overFullScreen
         present(actionSheet, animated: false)
     }
@@ -209,6 +209,26 @@ extension CalendarDetailViewController: CustomActionSheetDelegate {
                 self.dismiss(animated: true)
             }
         }
+    }
+    
+    // 데이터 확인
+    func didTapEdit() {
+
+        guard let viewModel = viewModel else {
+            print("viewModel이 없음")
+            return
+        }
+        
+        print("전달할 데이터 췤")
+        print("닉네임: \(viewModel.name)")
+        print("내용: \(viewModel.content)")
+        print("해시태그: \(viewModel.hashtags)")
+        print("이미지 URL: \(viewModel.images)")
+        
+        let recordOOTDVC = RecordOOTDViewController()
+        recordOOTDVC.setEditData(viewModel) // 데이터 전달
+       
+        navigationController?.pushViewController(recordOOTDVC, animated: true)
     }
 }
 

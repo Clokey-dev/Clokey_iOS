@@ -61,7 +61,7 @@ class TagClothViewController: UIViewController {
     private let clothesService = ClothesService()
     
     // TODO: 임시 데이터로 토큰으로 교체 예정
-    private let clokeyId = "dbrdldh11"
+//    private let clokeyId = "dbrdldh11"
     
     // TagClothView 뷰
     let tagClothView = TagClothView()
@@ -167,7 +167,7 @@ class TagClothViewController: UIViewController {
         let page = isNextPage ? currentPage + 1 : 1
         
         clothesService.getClothes(
-            clokeyId: clokeyId,
+            clokeyId: nil,
             categoryId: categoryId,
             season: "ALL", // TODO: - 카테고리 완성 시 수정 필요
             sort: currentSort.rawValue,

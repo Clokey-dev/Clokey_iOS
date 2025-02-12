@@ -16,7 +16,7 @@ public enum ClothesEndpoint {
     case addClothes(category_id: Int, data: AddClothesRequestDTO) // category_id 추가
     case editClothes(cloth_id: Int, category_id: Int, data: EditClothesRequestDTO)
     case deleteClothes(cloth_id: Int)
-    case getClothes(clokeyId: String, categoryId: CLong, season: String, sort: String, page: Int, size: Int)
+    case getClothes(clokeyId: String?, categoryId: CLong, season: String, sort: String, page: Int, size: Int)
 }
 
 extension ClothesEndpoint: TargetType {
@@ -45,7 +45,7 @@ extension ClothesEndpoint: TargetType {
         case .deleteClothes(let cloth_id):
             return "/clothes/\(cloth_id)"
         case .getClothes(let clokeyId, _, _, _, _, _):
-            return "/clothes/\(clokeyId)"
+            return "/clothes/closet-view"
         }
     }
     
@@ -103,18 +103,25 @@ extension ClothesEndpoint: TargetType {
             )
         case .deleteClothes(let cloth_id):
             return .requestPlain
-        case let .getClothes(_, categoryId, season, sort, page, size):
-            return .requestParameters(
-                parameters: [
+        case let .getClothes(clokeyId, categoryId, season, sort, page, size):
+                var parameters: [String: Any] = [
                     "categoryId": categoryId,
                     "season": season,
                     "sort": sort,
                     "page": page,
                     "size": size
-                ],
-                encoding: URLEncoding.queryString
-            )
-        }
+                ]
+                
+                // clokeyId가 있을 때만 파라미터에 추가
+                if let clokeyId = clokeyId {
+                    parameters["clokeyId"] = clokeyId
+                }
+                
+                return .requestParameters(
+                    parameters: parameters,
+                    encoding: URLEncoding.queryString
+                )
+            }
     }
     
     public var headers: [String : String]? {

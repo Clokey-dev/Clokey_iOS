@@ -417,14 +417,14 @@ extension CalendarDetailView {
 }
 
 // 문자열을 Date로 변환
-private func convertStringToDate(_ dateString: String) -> Date? {
+func convertStringToDate(_ dateString: String) -> Date? {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy-MM-dd"
     return dateFormatter.date(from: dateString)
 }
 
 // Date를 원하는 형식의 문자열로 변환
-private func convertDateToFormattedString(_ date: Date) -> String {
+func convertDateToFormattedString(_ date: Date) -> String {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy-MM-dd (E)"
     dateFormatter.locale = Locale(identifier: "en_US") // 영어 요일 표시

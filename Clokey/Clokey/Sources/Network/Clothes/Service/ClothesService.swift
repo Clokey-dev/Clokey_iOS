@@ -101,7 +101,7 @@ public final class ClothesService : NetworkManager {
     
     // 내 옷장 조회 GET API
     public func getClothes(
-        clokeyId: String,
+        clokeyId: String?,  
         categoryId: CLong,
         season: String,
         sort: String,
