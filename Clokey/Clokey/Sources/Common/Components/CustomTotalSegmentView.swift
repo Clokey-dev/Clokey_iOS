@@ -6,6 +6,9 @@ protocol CustomTotalSegmentViewDelegate: AnyObject {
     // 메인 카테고리와 세부 카테고리로 나뉨.
     func didSelectMainCategory(categoryId: Int)
     func didSelectSubCategory(categoryId: Int)
+    
+    // 카테고리 뷰 확인
+    func didTapSideBarButton()
 }
 
 class CustomTotalSegmentView: UIView {
@@ -13,7 +16,7 @@ class CustomTotalSegmentView: UIView {
     // MARK: - Properties
     
     // 선택한 버튼 프로퍼티
-    private var selectedCategoryButton: UIButton?
+    internal var selectedCategoryButton: UIButton?
     // delegate
     weak var delegate: CustomTotalSegmentViewDelegate?
     
@@ -80,6 +83,8 @@ class CustomTotalSegmentView: UIView {
         addSubview(indicatorBar)
         addSubview(categoryScrollView)
         categoryScrollView.addSubview(categoryButtonStackView)
+        
+        menuButton.addTarget(self, action: #selector(moveToCategoryViewButtonTapped), for: .touchUpInside)
     }
     
     private func setupConstraints() {
@@ -171,7 +176,7 @@ class CustomTotalSegmentView: UIView {
     }
 
     //(각세그먼트 눌렀을때 기존 카테고리 버튼은 초기화하고 새로운 세그먼트에 맞는 버튼을 띄움)
-    func updateCategories(for categories: [(title: String, categoryId: Int)]) {
+    func updateCategories(for categories: [(title: String, categoryId: Int)], selectedId: Int? = nil) {
         // 기존 버튼 제거
         categoryButtonStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
@@ -189,8 +194,15 @@ class CustomTotalSegmentView: UIView {
                 
                 // UI 속성 설정
                 configuration.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 14, bottom: 5, trailing: 14)
-                configuration.baseBackgroundColor = .pointOrange50
-                configuration.baseForegroundColor = .black
+                
+                // 선택된 상태에 따라 색상 설정
+                if category.categoryId == selectedId {
+                    configuration.baseBackgroundColor = .pointOrange800
+                    configuration.baseForegroundColor = .white
+                } else {
+                    configuration.baseBackgroundColor = .pointOrange50
+                    configuration.baseForegroundColor = .black
+                }
 
                 // 버튼 적용
                 $0.configuration = configuration
@@ -198,7 +210,7 @@ class CustomTotalSegmentView: UIView {
                 $0.clipsToBounds = true
                 
                 // 카테고리 ID 설정
-                $0.tag = category.categoryId // sender.tag 값 설정!
+                $0.tag = category.categoryId
             }
             
             // 버튼 선택 시
@@ -207,8 +219,11 @@ class CustomTotalSegmentView: UIView {
             // StackView에 추가
             categoryButtonStackView.addArrangedSubview(button)
             
+            // 선택된 버튼 저장
+            if category.categoryId == selectedId {
+                selectedCategoryButton = button
+            }
         }
-
 
         let totalWidth = categoryButtonStackView.arrangedSubviews.reduce(0) { $0 + $1.intrinsicContentSize.width + 16 }
         categoryScrollView.contentSize = CGSize(width: totalWidth, height: categoryScrollView.frame.height)
@@ -219,7 +234,7 @@ class CustomTotalSegmentView: UIView {
     }
     
     // 버튼 UI 업데이트
-    private func updateButtonAppearance() {
+    func updateButtonAppearance() {
         categoryButtonStackView.arrangedSubviews.forEach { view in
             if let button = view as? UIButton {
                 var config = button.configuration
@@ -259,6 +274,11 @@ class CustomTotalSegmentView: UIView {
         }
 
         print("카테고리 버튼 클릭됨: \(title)")
+    }
+    
+    // 카테고리 이동
+    @objc private func moveToCategoryViewButtonTapped() {
+        delegate?.didTapSideBarButton()
     }
 
     

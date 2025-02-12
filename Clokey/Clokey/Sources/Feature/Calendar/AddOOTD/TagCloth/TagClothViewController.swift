@@ -163,7 +163,7 @@ class TagClothViewController: UIViewController {
     }
     
     // MARK: - API (Data Handling)
-    private func loadClothesData(categoryId: Int = 0, isNextPage: Bool = false) {
+    private func loadClothesData(categoryId: Int = 0, isNextPage: Bool = false, season: String = "ALL") {
         // isLoading이 true일 -> 중복 요청을 방지하기 위해 조기 종료
         // hasMorePages가 false -> 더 이상 데이터가 없으므로 추가 요청 방지
         guard !isLoading && (hasMorePages || !isNextPage) else { return }
@@ -174,7 +174,7 @@ class TagClothViewController: UIViewController {
         clothesService.getClothes(
             clokeyId: nil,
             categoryId: categoryId,
-            season: "ALL", // TODO: - 카테고리 완성 시 수정 필요
+            season: season, 
             sort: currentSort.rawValue,
             page: page,
             size: 12
@@ -459,5 +459,59 @@ extension TagClothViewController: CustomTotalSegmentViewDelegate {
     func didSelectSubCategory(categoryId: Int) {
         currentSubCategoryId = categoryId
         loadClothesData(categoryId: categoryId)
+    }
+    
+    // 카테고리 뷰 눌렀을 때
+    func didTapSideBarButton() {
+        let addCategoryVC = AddCategoryViewController()
+        addCategoryVC.delegate = self // delegate 설정
+        navigationController?.pushViewController(addCategoryVC, animated: true)
+    }
+}
+
+extension TagClothViewController: AddCategoryViewControllerDelegate {
+    func didSelectCategory(_ categoryId: Int64, season: String?) {
+        // category ID 업데이트
+        currentSubCategoryId = Int(categoryId)
+        
+        // categoryId를 통해 메인 카테고리 찾기
+        for mainIndex in 1...4 {
+            if let categoryModel = CustomCategoryModel.getCategories(for: mainIndex) {
+                if categoryModel.buttons.contains(where: { $0.categoryId == categoryId }) {
+                    // 전체(index=0) 상태에서 특정 카테고리로 변경될 때의 레이아웃 처리
+                    let currentIndex = tagClothView.customTotalSegmentView.segmentedControl.selectedSegmentIndex
+                    if currentIndex == 0 {
+                        updateContentViewConstraints(forTotal: false)
+                    }
+                    
+                    // 메인 카테고리 세그먼트 선택
+                    tagClothView.customTotalSegmentView.segmentedControl.selectedSegmentIndex = mainIndex
+                    
+                    // 세부 카테고리 버튼들 보이게 설정
+                    tagClothView.customTotalSegmentView.toggleCategoryButtons(isHidden: false)
+                    
+                    // 해당 카테고리의 버튼들 업데이트
+                    tagClothView.customTotalSegmentView.updateCategories(for: categoryModel.buttons)
+                    
+                    // 선택된 버튼 찾아서 선택 상태로 만들기
+                    for (buttonIndex, button) in categoryModel.buttons.enumerated() {
+                        if button.categoryId == categoryId {
+                            if let buttonView = tagClothView.customTotalSegmentView.categoryButtonStackView.arrangedSubviews[buttonIndex] as? UIButton {
+                                tagClothView.customTotalSegmentView.selectedCategoryButton = buttonView
+                                tagClothView.customTotalSegmentView.updateButtonAppearance()
+                            }
+                            break
+                        }
+                    }
+                    break
+                }
+            }
+        }
+        
+        loadClothesData(
+            categoryId: Int(categoryId),
+            isNextPage: false,
+            season: season ?? "ALL"
+        )
     }
 }
