@@ -1,5 +1,13 @@
 //
 //  NotificationCell.swift
+//  Clokey
+//
+//  Created by 소민준 on 2/11/25.
+//
+
+
+//
+//  NotificationCell.swift
 //  Alarm
 //
 //  Created by 소민준 on 2/8/25.
@@ -65,6 +73,6 @@ class NotificationCell: UITableViewCell {
             profileImageView.image = UIImage(systemName: "person.crop.circle.fill") // 기본 이미지
         }
 
-        backgroundColor = notification.isRead ? .white : UIColor(white: 0.95, alpha: 1) // 읽지 않은 경우 회색 배경
+        backgroundColor = notification.isRead ? .white : UIColor(white: 1, alpha: 1) // 읽지 않은 경우 회색 배경
     }
 }
