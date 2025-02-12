@@ -29,6 +29,7 @@ class RecordOOTDViewController: UIViewController {
     private let mainView = RecordOOTDView()
     private let navBarManager = NavigationBarManager()
     
+    weak var delegate: RecordOOTDViewControllerDelegate?
     
     // MARK: - Lifecycle
     override func loadView() {
@@ -112,8 +113,13 @@ class RecordOOTDViewController: UIViewController {
 
         // 해시태그 설정
         let hashtagsArray = viewModel.hashtags.components(separatedBy: " ")
-        hashtagsArray.forEach { mainView.contentInputView.addHashtag($0) }
-
+        hashtagsArray.forEach { tag in
+            // 빈 문자열이 아닌 경우에만 해시태그 추가
+            if !tag.isEmpty {
+                self.hashtags.append(tag)  // hashtags 배열에 추가
+                mainView.contentInputView.addHashtag(tag)  // UI에 추가
+            }
+        }
         // 공개 여부 설정
         mainView.contentInputView.publicButton.isSelected = viewModel.visibility
         mainView.contentInputView.privateButton.isSelected = !viewModel.visibility
@@ -173,28 +179,8 @@ class RecordOOTDViewController: UIViewController {
             )
             
             // 이미지 압축 및 크기 제한
-//            let imageDataArray = selectedImages.compactMap { image in
-//                return image.jpegData(compressionQuality: 1.0)
-//            }
             let imageDataArray = selectedImages.compactMap { image in
-                // 이미지 크기 조정 (최대 1024x1024)
-                let maxSize: CGFloat = 1024
-                var newImage = image
-                
-                if image.size.width > maxSize || image.size.height > maxSize {
-                    let ratio = min(maxSize/image.size.width, maxSize/image.size.height)
-                    let newSize = CGSize(
-                        width: image.size.width * ratio,
-                        height: image.size.height * ratio
-                    )
-                    
-                    UIGraphicsBeginImageContext(newSize)
-                    image.draw(in: CGRect(origin: .zero, size: newSize))
-                    newImage = UIGraphicsGetImageFromCurrentImageContext() ?? image
-                    UIGraphicsEndImageContext()
-                }
-                
-                return newImage.jpegData(compressionQuality: 0.5)
+                return image.jpegData(compressionQuality: 1.0)
             }
             
             let historyService = HistoryService()
@@ -205,6 +191,7 @@ class RecordOOTDViewController: UIViewController {
                 case .success(let response):
                     print("History created successfully with ID: \(response.historyId)")
                     DispatchQueue.main.async {
+                        self.delegate?.didUpdateHistory()  // 새로고침
                         self.navigationController?.popViewController(animated: true)
                     }
                     
@@ -249,7 +236,15 @@ extension RecordOOTDViewController: UICollectionViewDataSource {
             cell.deleteButtonTapHandler = { [weak self] in
                 guard let self = self else { return }
                 self.selectedImages.remove(at: indexPath.item)
-                collectionView.reloadData()
+                
+                // 컬렉션 뷰 상태 완전 초기화
+                self.mainView.photoTagView.imageCollectionView.reloadData()
+                
+                // 이미지가 모두 삭제되었을 때 컬렉션 뷰 상태 리셋
+                if self.selectedImages.isEmpty {
+                    self.mainView.photoTagView.imageCollectionView.setContentOffset(.zero, animated: true)
+                }
+                
                 self.updateCollectionViewHeight(!self.selectedImages.isEmpty)
             }
             
@@ -345,9 +340,13 @@ extension RecordOOTDViewController: CustomGalleryViewControllerDelegate {
 // 이미지 편집 완료 결과 처리
 extension RecordOOTDViewController: PhotoEditViewControllerDelegate {
     func photoEditViewController(_ viewController: PhotoEditViewController, didFinishEditing images: [UIImage]) {
+        
         selectedImages = images
+        mainView.photoTagView.imageCollectionView.setContentOffset(.zero, animated: false)
+
         mainView.photoTagView.imageCollectionView.reloadData()
         updateCollectionViewHeight(!images.isEmpty) // 이미지가 있으면 컬렉션 뷰 높이 설정, 없으면 숨김
+        mainView.photoTagView.layoutIfNeeded()
     }
 }
 

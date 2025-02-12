@@ -8,6 +8,10 @@
 import Foundation
 import UIKit
 
+protocol RecordOOTDViewControllerDelegate: AnyObject {
+    func didUpdateHistory()
+}
+
 class CalendarDetailViewController: UIViewController {
 
     // MARK: - Properties
@@ -189,6 +193,27 @@ class CalendarDetailViewController: UIViewController {
     }
 }
 
+extension CalendarDetailViewController: RecordOOTDViewControllerDelegate {
+    func didUpdateHistory() {
+        // 히스토리 데이터 다시 불러오기
+        guard let viewModel = viewModel else { return }
+        let historyId = Int(viewModel.historyId)
+        
+        historyService.historyDetail(historyId: historyId) { [weak self] result in
+            switch result {
+            case .success(let response):
+                DispatchQueue.main.async {
+                    self?.viewModel = CalendarDetailViewModel(data: response)
+                    self?.updateView()
+                }
+            case .failure(let error):
+                print("Failed to refresh history: \(error)")
+            }
+        }
+    }
+}
+
+
 extension CalendarDetailViewController: CustomActionSheetDelegate {
     func didDeleteHistory() {
         print("didDeleteHistory called")
@@ -226,6 +251,7 @@ extension CalendarDetailViewController: CustomActionSheetDelegate {
         print("이미지 URL: \(viewModel.images)")
         
         let recordOOTDVC = RecordOOTDViewController()
+        recordOOTDVC.delegate = self
         recordOOTDVC.setEditData(viewModel) // 데이터 전달
        
         navigationController?.pushViewController(recordOOTDVC, animated: true)

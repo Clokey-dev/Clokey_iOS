@@ -19,6 +19,11 @@
 		0709165F2D58BEE1008DC9EE /* InquiryClothesDetailResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070916582D58BEE1008DC9EE /* InquiryClothesDetailResponseDTO.swift */; };
 		070916602D58BEE1008DC9EE /* ClothesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0709165A2D58BEE1008DC9EE /* ClothesService.swift */; };
 		0744001A2D5B1EFD00E60282 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 074400192D5B1EFD00E60282 /* GoogleService-Info.plist */; };
+		0744011E2D5CB9EB00E60282 /* AddCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744011A2D5CB9EB00E60282 /* AddCategoryView.swift */; };
+		0744011F2D5CB9EB00E60282 /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744011C2D5CB9EB00E60282 /* AddCategoryViewController.swift */; };
+		074401202D5CB9EB00E60282 /* AddCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401192D5CB9EB00E60282 /* AddCategoryModel.swift */; };
+		074401212D5CB9EB00E60282 /* AddCategoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401182D5CB9EB00E60282 /* AddCategoryHeaderView.swift */; };
+		074401222D5CB9EB00E60282 /* AddCategoryViewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744011B2D5CB9EB00E60282 /* AddCategoryViewCollectionViewCell.swift */; };
 		0744FF822D5B1D4500E60282 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0744FF812D5B1D4500E60282 /* FirebaseAnalytics */; };
 		0744FF842D5B1D4500E60282 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 0744FF832D5B1D4500E60282 /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		0744FF862D5B1D4500E60282 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0744FF852D5B1D4500E60282 /* FirebaseAuth */; };
@@ -167,6 +172,11 @@
 		070916582D58BEE1008DC9EE /* InquiryClothesDetailResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryClothesDetailResponseDTO.swift; sourceTree = "<group>"; };
 		0709165A2D58BEE1008DC9EE /* ClothesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesService.swift; sourceTree = "<group>"; };
 		074400192D5B1EFD00E60282 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		074401182D5CB9EB00E60282 /* AddCategoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryHeaderView.swift; sourceTree = "<group>"; };
+		074401192D5CB9EB00E60282 /* AddCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryModel.swift; sourceTree = "<group>"; };
+		0744011A2D5CB9EB00E60282 /* AddCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryView.swift; sourceTree = "<group>"; };
+		0744011B2D5CB9EB00E60282 /* AddCategoryViewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewCollectionViewCell.swift; sourceTree = "<group>"; };
+		0744011C2D5CB9EB00E60282 /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; };
 		0744FF8B2D5B1D6900E60282 /* NewsImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsImageModel.swift; sourceTree = "<group>"; };
 		0744FF8C2D5B1D6900E60282 /* OpenWeatherMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherMap.swift; sourceTree = "<group>"; };
 		0744FF8D2D5B1D6900E60282 /* PickImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickImageModel.swift; sourceTree = "<group>"; };
@@ -471,6 +481,18 @@
 				0709165B2D58BEE1008DC9EE /* Service */,
 			);
 			path = Clothes;
+			sourceTree = "<group>";
+		};
+		0744011D2D5CB9EB00E60282 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				074401182D5CB9EB00E60282 /* AddCategoryHeaderView.swift */,
+				074401192D5CB9EB00E60282 /* AddCategoryModel.swift */,
+				0744011A2D5CB9EB00E60282 /* AddCategoryView.swift */,
+				0744011B2D5CB9EB00E60282 /* AddCategoryViewCollectionViewCell.swift */,
+				0744011C2D5CB9EB00E60282 /* AddCategoryViewController.swift */,
+			);
+			path = Category;
 			sourceTree = "<group>";
 		};
 		0744FF922D5B1D6900E60282 /* Models */ = {
@@ -1085,6 +1107,7 @@
 		07E1CB492D3664C300F86BB8 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				0744011D2D5CB9EB00E60282 /* Category */,
 				07E1CB5D2D36A10000F86BB8 /* CustomButton.swift */,
 				07E1CB5E2D36A10000F86BB8 /* CustomButtonTextField.swift */,
 				07E1CB4E2D36721900F86BB8 /* CustomNavigationBar.swift */,
@@ -1413,6 +1436,11 @@
 				070916532D58BEE1008DC9EE /* HomeService.swift in Sources */,
 				07649EEA2D4DE58900B6B2B2 /* MembersInfoRequestDTO.swift in Sources */,
 				07649EEB2D4DE58900B6B2B2 /* NetworkError.swift in Sources */,
+				0744011E2D5CB9EB00E60282 /* AddCategoryView.swift in Sources */,
+				0744011F2D5CB9EB00E60282 /* AddCategoryViewController.swift in Sources */,
+				074401202D5CB9EB00E60282 /* AddCategoryModel.swift in Sources */,
+				074401212D5CB9EB00E60282 /* AddCategoryHeaderView.swift in Sources */,
+				074401222D5CB9EB00E60282 /* AddCategoryViewCollectionViewCell.swift in Sources */,
 				07649EEC2D4DE58900B6B2B2 /* HistoryRequestDTO.swift in Sources */,
 				07649EED2D4DE58900B6B2B2 /* NetworkManager+Protocol.swift in Sources */,
 				07649EEE2D4DE58900B6B2B2 /* CommonReponseDTOs.swift in Sources */,
