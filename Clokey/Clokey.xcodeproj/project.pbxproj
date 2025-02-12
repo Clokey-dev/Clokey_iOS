@@ -288,6 +288,11 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
+		489967442D5B4DCD00B5E51E /* Nofitication */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Nofitication;
+			sourceTree = "<group>";
+		};
 		A62A428F2D4D2A8D00672D3F /* Your */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Your;
@@ -1048,7 +1053,7 @@
 		07E1CADC2D36449B00F86BB8 /* Feature */ = {
 			isa = PBXGroup;
 			children = (
-				07E1CB652D36A63200F86BB8 /* ViewController.swift */,
+				489967442D5B4DCD00B5E51E /* Nofitication */,
 				4899648E2D58ED9B00B5E51E /* Search */,
 				070258AA2D31074E00065369 /* Login */,
 				07E1CB652D36A63200F86BB8 /* ViewController.swift */,
@@ -1243,6 +1248,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				4899648E2D58ED9B00B5E51E /* Search */,
+				489967442D5B4DCD00B5E51E /* Nofitication */,
 				A62A428F2D4D2A8D00672D3F /* Your */,
 				A62A42932D4D2A8D00672D3F /* My */,
 				A64C54312D3F97B3000CCB62 /* Cells */,

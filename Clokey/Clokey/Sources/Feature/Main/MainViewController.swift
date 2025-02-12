@@ -20,6 +20,7 @@ final class MainViewController: UIViewController {
     private lazy var addClothVC = AddClothViewController()
     private lazy var closetVC = ClosetViewController()
     private lazy var profileVC = ProfileViewController()
+    private lazy var notificationVC = NotificationViewController()
     
     // MARK: - Lifecycle
     override func loadView() {
@@ -96,6 +97,9 @@ extension MainViewController: HeaderViewDelegate {
 
     func didTapNotificationButton() {
         print("🔔 터치됨: 알림 버튼") // ✅ 필요하면 알림 화면으로 이동하도록 수정
+        let notificationVC = NotificationViewController()
+        navigationController?.pushViewController(notificationVC, animated: true)
+        
     }
 
     func didTapProfileButton() { // ✅ 만약 프로필 버튼 메서드가 있다면 추가해야 오류 해결됨!
