@@ -16,7 +16,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
     private var recentSearches: [String] = []
     private var selectedKeyword: String?
     private var searchHistory: [String] = []
-    private let searchTableView = UITableView() 
+    private let searchTableView = UITableView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -321,3 +321,4 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         
     }
 }
+
