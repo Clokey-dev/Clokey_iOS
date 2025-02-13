@@ -84,3 +84,12 @@ public struct ClothPreview: Codable {
     public let wearNum: Int
     public let imageUrl: String
 }
+
+// 옷장에서 옷 이름과 브랜드로 검색
+public struct ClothSearchResponseDTO: Codable {
+    public let clothPreviews: [ClothPreview]
+    public let totalPage: Int
+    public let totalElements: CLong
+    public let isFirst: Bool
+    public let isLast: Bool
+}
