@@ -2,7 +2,7 @@
 //  PopupViewController.swift
 //  Clokey
 //
-//  Created by 소민준 on 2/1/25.
+//  Created by 한금준 on 2/1/25.
 //
 
 import UIKit
@@ -21,10 +21,10 @@ class PopupViewController: UIViewController {
             
             // 선택된 계절을 영어로 변환
             let seasonMapping: [String: String] = [
-                "봄": "Spring",
-                "여름": "Summer",
-                "가을": "Fall",
-                "겨울": "Winter"
+                "봄": "SPRING",
+                "여름": "SUMMER",
+                "가을": "FALL",
+                "겨울": "WINTER"
             ]
             
             let convertedSeasons = selectedSeasons.compactMap { seasonMapping[$0] }
@@ -243,44 +243,43 @@ class PopupViewController: UIViewController {
         }
     }
     
-    // 🔹 completeButton 눌렀을 때 실행될 메서드
     @objc private func didTapCompleteButton() {
         let successVC = SuccessViewController()
-        
         successVC.modalPresentationStyle = .fullScreen // ✅ 전체 화면 모달
         navigationController?.pushViewController(successVC, animated: true)
-        
+
+        // ✅ 필수 데이터 확인
         guard let categoryId = categoryId,
-                  let clothName = clothName,
-                  let maxTemp = maxTemp,
-                  let minTemp = minTemp,
-                  let thicknessLevel = thicknessLevel,
-                  let visibility = visibility,
-                  let imageUrl = imageUrl,
-                  let brand = brand,
-              let selectedImage = cloth else {
-                print("🚨 필수 데이터 누락")
-                return
-            }
+              let clothName = clothName,
+              let maxTemp = maxTemp,
+              let minTemp = minTemp,
+              let thicknessLevel = thicknessLevel,
+              let visibility = visibility,
+              let imageUrl = imageUrl,
+              let brand = brand,
+              let selectedImage = clothImage // UIImage
+        else { // ✅ UIImage → Data 변환
+            print("🚨 필수 데이터 누락 또는 이미지 변환 실패")
+            return
+        }
 
-            let seasonArray = season.isEmpty ? ["SUMMER"] : Array(season)
+        let addClothesRequestDTO = AddClothesRequestDTO(
+            categoryId: categoryId,
+            name: clothName,
+            seasons: Array(season),
+            tempUpperBound: maxTemp,
+            tempLowerBound: minTemp,
+            thicknessLevel: thicknessLevel,
+            visibility: visibility,
+            clothUrl: imageUrl,
+            brand: brand
+        )
 
-            let addClothesRequestDTO = AddClothesRequestDTO(
-                categoryId: categoryId,
-                name: clothName,
-                seasons: seasonArray,
-                tempUpperBound: maxTemp,
-                tempLowerBound: minTemp,
-                thicknessLevel: thicknessLevel,
-                visibility: visibility,
-                clothUrl: imageUrl,
-                brand: brand
-            )
+        let clothesService = ClothesService()
 
-            let clothesService = ClothesService()
-
-            // ✅ API 호출
-            clothesService.addClothes(data: addClothesRequestDTO, image: selectedImage) { result in
+        // ✅ API 호출 (UIImage → Data 변환 후 전달)
+        clothesService.addClothes(imageData: selectedImage, data: addClothesRequestDTO) { result in
+            DispatchQueue.main.async {
                 switch result {
                 case .success(let response):
                     print("✅ 옷 추가 성공: \(response)")
@@ -288,7 +287,6 @@ class PopupViewController: UIViewController {
                     print("🚨 옷 추가 실패: \(error.localizedDescription)")
                 }
             }
+        }
     }
-    
-    
 }

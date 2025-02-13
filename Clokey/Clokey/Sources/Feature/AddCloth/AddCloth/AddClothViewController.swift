@@ -181,9 +181,9 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-        let addCategoryVC = AddCategoryViewController()
-        addCategoryVC.clothName = clothName // 값 전달
-        navigationController?.pushViewController(addCategoryVC, animated: true)
+        let categoryVC = CategoryViewController()
+        categoryVC.clothName = clothName // 값 전달
+        navigationController?.pushViewController(categoryVC, animated: true)
     }
     
     //

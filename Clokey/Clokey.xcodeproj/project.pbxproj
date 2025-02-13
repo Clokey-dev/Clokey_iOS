@@ -28,11 +28,11 @@
 		074401752D5E1F9A00E60282 /* AgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401702D5E1F9A00E60282 /* AgreementViewController.swift */; };
 		0744018F2D5E1F9A00E60282 /* lastAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401762D5E1F9A00E60282 /* lastAddView.swift */; };
 		074401902D5E1F9A00E60282 /* LastAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401772D5E1F9A00E60282 /* LastAddViewController.swift */; };
-		074401912D5E1F9A00E60282 /* AddCategoryHeaderView1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401792D5E1F9A00E60282 /* AddCategoryHeaderView1.swift */; };
-		074401922D5E1F9A00E60282 /* AddCategoryModel1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744017A2D5E1F9A00E60282 /* AddCategoryModel1.swift */; };
-		074401932D5E1F9A00E60282 /* AddCategoryView1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744017B2D5E1F9A00E60282 /* AddCategoryView1.swift */; };
-		074401942D5E1F9A00E60282 /* AddCategoryViewCollectionViewCell1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744017C2D5E1F9A00E60282 /* AddCategoryViewCollectionViewCell1.swift */; };
-		074401952D5E1F9A00E60282 /* AddCategoryViewController1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744017D2D5E1F9A00E60282 /* AddCategoryViewController1.swift */; };
+		074401912D5E1F9A00E60282 /* CategoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401792D5E1F9A00E60282 /* CategoryHeaderView.swift */; };
+		074401922D5E1F9A00E60282 /* CategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744017A2D5E1F9A00E60282 /* CategoryModel.swift */; };
+		074401932D5E1F9A00E60282 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744017B2D5E1F9A00E60282 /* CategoryView.swift */; };
+		074401942D5E1F9A00E60282 /* CategoryViewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744017C2D5E1F9A00E60282 /* CategoryViewCollectionViewCell.swift */; };
+		074401952D5E1F9A00E60282 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744017D2D5E1F9A00E60282 /* CategoryViewController.swift */; };
 		074401962D5E1F9A00E60282 /* AddClothView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744017F2D5E1F9A00E60282 /* AddClothView.swift */; };
 		074401972D5E1F9A00E60282 /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401802D5E1F9A00E60282 /* PopupView.swift */; };
 		074401982D5E1F9A00E60282 /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401812D5E1F9A00E60282 /* PopupViewController.swift */; };
@@ -228,11 +228,11 @@
 		074401702D5E1F9A00E60282 /* AgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementViewController.swift; sourceTree = "<group>"; };
 		074401762D5E1F9A00E60282 /* lastAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = lastAddView.swift; sourceTree = "<group>"; };
 		074401772D5E1F9A00E60282 /* LastAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastAddViewController.swift; sourceTree = "<group>"; };
-		074401792D5E1F9A00E60282 /* AddCategoryHeaderView1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryHeaderView1.swift; sourceTree = "<group>"; };
-		0744017A2D5E1F9A00E60282 /* AddCategoryModel1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryModel1.swift; sourceTree = "<group>"; };
-		0744017B2D5E1F9A00E60282 /* AddCategoryView1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryView1.swift; sourceTree = "<group>"; };
-		0744017C2D5E1F9A00E60282 /* AddCategoryViewCollectionViewCell1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewCollectionViewCell1.swift; sourceTree = "<group>"; };
-		0744017D2D5E1F9A00E60282 /* AddCategoryViewController1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController1.swift; sourceTree = "<group>"; };
+		074401792D5E1F9A00E60282 /* CategoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryHeaderView.swift; sourceTree = "<group>"; };
+		0744017A2D5E1F9A00E60282 /* CategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModel.swift; sourceTree = "<group>"; };
+		0744017B2D5E1F9A00E60282 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
+		0744017C2D5E1F9A00E60282 /* CategoryViewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewCollectionViewCell.swift; sourceTree = "<group>"; };
+		0744017D2D5E1F9A00E60282 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		0744017F2D5E1F9A00E60282 /* AddClothView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothView.swift; sourceTree = "<group>"; };
 		074401802D5E1F9A00E60282 /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
 		074401812D5E1F9A00E60282 /* PopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
@@ -598,11 +598,11 @@
 		0744017E2D5E1F9A00E60282 /* Category */ = {
 			isa = PBXGroup;
 			children = (
-				074401792D5E1F9A00E60282 /* AddCategoryHeaderView1.swift */,
-				0744017A2D5E1F9A00E60282 /* AddCategoryModel1.swift */,
-				0744017B2D5E1F9A00E60282 /* AddCategoryView1.swift */,
-				0744017C2D5E1F9A00E60282 /* AddCategoryViewCollectionViewCell1.swift */,
-				0744017D2D5E1F9A00E60282 /* AddCategoryViewController1.swift */,
+				074401792D5E1F9A00E60282 /* CategoryHeaderView.swift */,
+				0744017A2D5E1F9A00E60282 /* CategoryModel.swift */,
+				0744017B2D5E1F9A00E60282 /* CategoryView.swift */,
+				0744017C2D5E1F9A00E60282 /* CategoryViewCollectionViewCell.swift */,
+				0744017D2D5E1F9A00E60282 /* CategoryViewController.swift */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -1670,11 +1670,11 @@
 				0744FFD72D5B1DD500E60282 /* NewsView.swift in Sources */,
 				0744018F2D5E1F9A00E60282 /* lastAddView.swift in Sources */,
 				074401902D5E1F9A00E60282 /* LastAddViewController.swift in Sources */,
-				074401912D5E1F9A00E60282 /* AddCategoryHeaderView1.swift in Sources */,
-				074401922D5E1F9A00E60282 /* AddCategoryModel1.swift in Sources */,
-				074401932D5E1F9A00E60282 /* AddCategoryView1.swift in Sources */,
-				074401942D5E1F9A00E60282 /* AddCategoryViewCollectionViewCell1.swift in Sources */,
-				074401952D5E1F9A00E60282 /* AddCategoryViewController1.swift in Sources */,
+				074401912D5E1F9A00E60282 /* CategoryHeaderView.swift in Sources */,
+				074401922D5E1F9A00E60282 /* CategoryModel.swift in Sources */,
+				074401932D5E1F9A00E60282 /* CategoryView.swift in Sources */,
+				074401942D5E1F9A00E60282 /* CategoryViewCollectionViewCell.swift in Sources */,
+				074401952D5E1F9A00E60282 /* CategoryViewController.swift in Sources */,
 				074401962D5E1F9A00E60282 /* AddClothView.swift in Sources */,
 				074401972D5E1F9A00E60282 /* PopupView.swift in Sources */,
 				074401982D5E1F9A00E60282 /* PopupViewController.swift in Sources */,

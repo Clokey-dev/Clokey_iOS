@@ -67,28 +67,18 @@ public final class ClothesService : NetworkManager {
             decodingType: getCategoryClothesResponseDTO.self,
             completion: completion)
     }
+
     
-    public func addClothes(
-        data: AddClothesRequestDTO, image: UIImage, completion: @escaping (Result<Moya.Response, MoyaError>) -> Void
+    public func addClothes (
+        imageData: Data,
+        data: AddClothesRequestDTO,
+        completion: @escaping (Result<AddClothesResponseDTO, NetworkError>) -> Void
     ){
-            guard let imageData = image.jpegData(compressionQuality: 0.8) else {
-                print("🚨 이미지 변환 실패")
-                return
-            }
-            
-        provider.request(.addClothes(data: data, imageData: imageData)) { result in
-                switch result {
-                case .success(let response):
-                    if let jsonString = String(data: response.data, encoding: .utf8) {
-                        print("🚀 서버 응답 JSON: \(jsonString)")
-                    }
-                    completion(.success(response))
-                case .failure(let error):
-                    print("🚨 요청 실패: \(error.localizedDescription)")
-                    completion(.failure(error))
-                }
-            }
-        }
+        request(
+            target: .addClothes(image: imageData, data: data),
+            decodingType: AddClothesResponseDTO.self,
+            completion: completion)
+    }
     
     public func editClothes (
         cloth_id: Int, category_id: Int,
