@@ -11,9 +11,9 @@ import Moya
 public enum ClothesEndpoint {
     case inquiryClothesDetail(cloth_id: Int)
     case checkEditClothes(cloth_id: Int)
-    case checkPopUpClothes(cloth_id: Int)
+    case checkPopUpClothes(clothId: Int)
     case getCategoryClothes(category: String, season: String, sort: String, page: Int) // 쿼리 매개변수 추가
-    case addClothes(category_id: Int, data: AddClothesRequestDTO) // category_id 추가
+    case addClothes(data: AddClothesRequestDTO, imageData: Data) // category_id 추가
     case editClothes(cloth_id: Int, category_id: Int, data: EditClothesRequestDTO)
     case deleteClothes(cloth_id: Int)
     case getClothes(clokeyId: String?, categoryId: CLong, season: String, sort: String, page: Int, size: Int)
@@ -36,8 +36,8 @@ extension ClothesEndpoint: TargetType {
             return "/clothes/\(cloth_id)"
         case .checkEditClothes(cloth_id: let cloth_id):
             return "/clothes/\(cloth_id)/edit-view"
-        case .checkPopUpClothes(cloth_id: let cloth_id):
-            return "/clothes/\(cloth_id)/popup-view"
+        case .checkPopUpClothes(let clothId):
+            return "/clothes/\(clothId)/popup-view"
         case .getCategoryClothes:
             return "/clothes"
         case .addClothes:
@@ -79,7 +79,7 @@ extension ClothesEndpoint: TargetType {
             return .requestPlain
         case .checkEditClothes(let cloth_id):
             return .requestPlain
-        case .checkPopUpClothes(let cloth_id):
+        case .checkPopUpClothes(let clothId):
             return .requestPlain
         case .getCategoryClothes(let category, let season, let sort, let page):
             // Query parameters를 설정
@@ -93,12 +93,21 @@ extension ClothesEndpoint: TargetType {
                 encoding: URLEncoding.queryString // 쿼리 스트링 방식
             )
             
-        case .addClothes(let category_id, let data):
-            return .requestCompositeParameters(
-                bodyParameters: try! data.asDictionary(), // JSON Body
-                bodyEncoding: JSONEncoding.default,      // JSON 인코딩 방식
-                urlParameters: ["category_id": category_id] // Query String
-            )
+        case .addClothes(let data, let imageData):
+                    var multipartData = [MultipartFormData]()
+                    
+                    // ✅ JSON 데이터 추가 (metadata)
+                    if let jsonData = try? JSONEncoder().encode(data) {
+                        let jsonPart = MultipartFormData(provider: .data(jsonData), name: "clothCreateRequest", mimeType: "application/json")
+                        multipartData.append(jsonPart)
+                    }
+                    
+                    // ✅ 이미지 파일 추가
+                    let imagePart = MultipartFormData(provider: .data(imageData), name: "imageFile", fileName: "image.jpg", mimeType: "image/jpeg")
+                    multipartData.append(imagePart)
+                    
+                    return .uploadMultipart(multipartData)
+                
             
         case .editClothes(let cloth_id, let category_id, let data):
             return .requestCompositeParameters(

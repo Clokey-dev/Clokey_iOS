@@ -10,6 +10,7 @@
 import UIKit
 import Kingfisher
 import MapKit
+import Moya
 
 class PickViewController: UIViewController, CLLocationManagerDelegate {
     
@@ -31,7 +32,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         super.viewDidLoad()
         definesPresentationContext = true // 현재 컨텍스트에서 새로운 뷰 표시
         
-        //        setupUI()
+     
         setupActions()
         
         updateTimeLabel() // 현재 시간 업데이트
@@ -39,7 +40,8 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         fetchVisualCrossingWeatherData(for: "Seoul") // 기본 위치: 서울
         updateYesterdayWeatherUI()
         setupBottomLabelTap()
-        bindData()
+//        bindData()
+        fetchWeatherRecommendations()
         
         locationManager.delegate = self
         locationManager.distanceFilter = kCLDistanceFilterNone
@@ -132,12 +134,25 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     
     private func bindData() {
         // 데이터를 PickView에 바인딩
-        pickView.weatherImageView1.kf.setImage(with: URL(string: model.weatherImageURLs[0]))
-        pickView.weatherImageView2.kf.setImage(with: URL(string: model.weatherImageURLs[1]))
-        pickView.weatherImageView3.kf.setImage(with: URL(string: model.weatherImageURLs[2]))
         
         pickView.recapImageView1.kf.setImage(with: URL(string: model.recapImageURLs[0]))
         pickView.recapImageView2.kf.setImage(with: URL(string: model.recapImageURLs[1]))
+    }
+    
+    func fetchWeatherRecommendations() {
+        // 모델에서 이미지 URL 가져오기
+//        let recommendedClothes: [String] = model.weatherImageURLs // 이미지가 있음을 나타내기 위해 URL 배열 사용
+        let recommendedClothes: [String] = [] // 예제: 데이터가 없다고 가정
+        
+        // UI 업데이트 (비어 있는지 확인)
+        pickView.updateEmptyState(isEmpty: recommendedClothes.isEmpty)
+        
+        // 이미지 설정
+        if !recommendedClothes.isEmpty {
+            pickView.weatherImageView1.kf.setImage(with: URL(string: recommendedClothes[0]))
+            pickView.weatherImageView2.kf.setImage(with: URL(string: recommendedClothes[1]))
+            pickView.weatherImageView3.kf.setImage(with: URL(string: recommendedClothes[2]))
+        }
     }
     
     // MARK: - 날씨 데이터 요청
@@ -330,11 +345,27 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     private func loadRecapData() {
         let homeService = HomeService()
         
-        homeService.getOneYearAgoHistories { [weak self] result in
+        homeService.fetchOneYearAgoHistories { [weak self] result in
             DispatchQueue.main.async {
+                guard let self = self else { return }
+                
                 switch result {
                 case .success(let historyResult):
-                    self?.pickView.updateRecapImages(with: historyResult.images)
+                    let imageUrls = historyResult.imageUrls
+                    
+                    // ✅ 배열이 비어있을 경우 로그 출력
+                    if imageUrls.isEmpty {
+                        print("📷 사진이 없습니다")
+                    } else {
+                        // ✅ 배열이 비어있지 않은지 확인 후 이미지 설정
+                        if imageUrls.count > 0 {
+                            self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
+                        }
+                        if imageUrls.count > 1 {
+                            self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
+                        }
+                    }
+                    
                 case .failure(let error):
                     print("❌ 데이터 로드 실패: \(error.localizedDescription)")
                 }

@@ -55,19 +55,48 @@ class NewsViewController: UIViewController {
         setupFollowingCalendarBottomLabelTap()
         
         bindData()
+        fetchFriendClothes()
+        fetchFriendCalendar()
     }
     
     private func bindData() {
-        newsView.friendClothesImageView1.kf.setImage(with: URL(string: model.clothesImageURLs[0]))
-        newsView.friendClothesImageView2.kf.setImage(with: URL(string: model.clothesImageURLs[1]))
-        newsView.friendClothesImageView3.kf.setImage(with: URL(string: model.clothesImageURLs[2]))
-        
-        newsView.followingCalendarUpdateImageView1.kf.setImage(with: URL(string: model.calendarImageURLs[0]))
-        newsView.followingCalendarUpdateImageView2.kf.setImage(with: URL(string: model.calendarImageURLs[1]))
+
         
         newsView.hotAccountImageView1.kf.setImage(with: URL(string: model.hotImageURLs[0]))
         newsView.hotAccountImageView2.kf.setImage(with: URL(string: model.hotImageURLs[1]))
     }
+    
+    func fetchFriendClothes() {
+        // 모델에서 이미지 URL 가져오기
+//        let recommendedClothes: [String] = model.clothesImageURLs // 이미지가 있음을 나타내기 위해 URL 배열 사용
+        let recommendedClothes: [String] = [] // 예제: 데이터가 없다고 가정
+        
+        // UI 업데이트 (비어 있는지 확인)
+        newsView.updateFriendClothesEmptyState(isEmpty: recommendedClothes.isEmpty)
+        
+        // 이미지 설정
+        if !recommendedClothes.isEmpty {
+            newsView.friendClothesImageView1.kf.setImage(with: URL(string: recommendedClothes[0]))
+            newsView.friendClothesImageView2.kf.setImage(with: URL(string: recommendedClothes[1]))
+            newsView.friendClothesImageView3.kf.setImage(with: URL(string: recommendedClothes[2]))
+        }
+    }
+    
+    func fetchFriendCalendar() {
+        // 모델에서 이미지 URL 가져오기
+//        let recommendedClothes: [String] = model.calendarImageURLs // 이미지가 있음을 나타내기 위해 URL 배열 사용
+        let recommendedClothes: [String] = [] // 예제: 데이터가 없다고 가정
+        
+        // UI 업데이트 (비어 있는지 확인)
+        newsView.updateFriendCalendarEmptyState(isEmpty: recommendedClothes.isEmpty)
+        
+        // 이미지 설정
+        if !recommendedClothes.isEmpty {
+            newsView.followingCalendarUpdateImageView1.kf.setImage(with: URL(string: recommendedClothes[0]))
+            newsView.followingCalendarUpdateImageView2.kf.setImage(with: URL(string: recommendedClothes[1]))
+        }
+    }
+    
     
     private func setupDummyData() {
         recommandNewsSlides = RecommandNewsSlideModel.slideDummyData()
@@ -195,17 +224,6 @@ class NewsViewController: UIViewController {
         updateFriendCalendarViewController.modalTransitionStyle = .crossDissolve
         present(updateFriendCalendarViewController, animated: true, completion: nil)
     }
-    
-//    private func presentNewFollowingCalendarViewController() {
-//        let updateFriendCalendarViewController = UpdateFriendCalendarViewController()
-//        let navigationController = UINavigationController(rootViewController: updateFriendCalendarViewController)
-//        
-//        navigationController.modalPresentationStyle = .overFullScreen
-//        navigationController.modalTransitionStyle = .crossDissolve
-//        
-//        present(navigationController, animated: true, completion: nil)
-//    }
-    
 }
 
 extension NewsViewController: UIPageViewControllerDataSource {

@@ -7,9 +7,11 @@
 
 import Foundation
 import Moya
+import UIKit
 
 public final class MembersService: NetworkManager {
     typealias Endpoint = MembersEndpoint
+    public typealias GetTermsResponseDTOList = [GetTermsResponseDTO]
     
     // MARK: - Provider 설정
     let provider: MoyaProvider<MembersEndpoint>
@@ -49,37 +51,48 @@ public final class MembersService: NetworkManager {
     
     /// 약관 동의 POST API
     public func agreeToTerms(
-        userId: Int,
-        data: TermsAgreementRequestDTO,
-        completion: @escaping (Result<TermsAgreementResponseDTO, NetworkError>) -> Void
+        data: AgreementToTermsRequestDTO,
+        completion: @escaping (Result<AgreementToTermsResponseDTO, NetworkError>) -> Void
     ) {
         request(
-            target: .agreeToTerms(userId: userId, data: data),
-            decodingType: TermsAgreementResponseDTO.self,
+            target: .agreeToTerms(data: data),
+            decodingType: AgreementToTermsResponseDTO.self,
             completion: completion
         )
+    }
+    
+    public func getTerms(
+        completion: @escaping (Result<[GetTermsResponseDTO], NetworkError>) -> Void
+    ) {
+        request(
+            target: .getTerms,
+            decodingType: [GetTermsResponseDTO].self,
+            completion: completion)
     }
     
     /// 프로필 수정 PATCH API
     public func updateProfile(
         data: ProfileUpdateRequestDTO,
+        imageData1: Data,
+        imageData2: Data,
         completion: @escaping (Result<ProfileUpdateResponseDTO, NetworkError>) -> Void
     ) {
         request(
-            target: .updateProfile(data: data),
+            target: .updateProfile(data: data, imageData1: imageData1, imageData2: imageData2),
             decodingType: ProfileUpdateResponseDTO.self,
             completion: completion
         )
     }
+//
+    
     
     /// 아이디 중복 확인 GET API
     public func checkIdAvailability (
-        id: String,
-        completion: @escaping (Result<Bool, NetworkError>) -> Void
+        checkId: String,
+        completion: @escaping (Result<Void, NetworkError>) -> Void
     ) {
-        request(
-            target: .checkIdAvailability(id: id),
-            decodingType: Bool.self,
+        requestStatusCode(
+            target: .checkIdAvailability(checkId: checkId),
             completion: completion
         )
     }
