@@ -268,7 +268,7 @@ class CalendarDetailView: UIView {
         profileHeaderStackView.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(48)
+            $0.height.equalTo(43)
         }
         
         // 구분선
@@ -380,13 +380,14 @@ class CalendarDetailView: UIView {
         
         contentLabel.snp.makeConstraints {
             $0.top.leading.equalToSuperview()
-            $0.width.lessThanOrEqualTo(contentContainerView.snp.width)
+            $0.width.lessThanOrEqualTo(contentContainerView.snp.width).offset(-60)
         }
 
         moreButton.snp.makeConstraints {
-            $0.leading.equalTo(contentLabel.snp.trailing).offset(2)
+            $0.leading.equalTo(contentLabel.snp.trailing).offset(4)
             $0.centerY.equalTo(contentLabel)
             $0.height.equalTo(24)
+            $0.trailing.lessThanOrEqualToSuperview() // 우측 제약 추가
         }
             
         hashtagsLabel.snp.makeConstraints {
