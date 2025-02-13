@@ -147,10 +147,10 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
     private func makeCategoryTag(title: String) -> UIButton {
         let button = UIButton()
         button.setTitle(title, for: .normal)
-        button.setTitleColor(.brown, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 16)
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.pointOrange600.cgColor
+        button.layer.borderColor = UIColor.pointOrange800.cgColor
         button.layer.cornerRadius = 5
         //        button.contentEdgeInsets = UIEdgeInsets(top: 3, left: 14, bottom: 3, right: 14) // ✅ 내부 여백 추가
         // ✅ iOS 15 이상에서 contentInsets 적용
@@ -166,12 +166,19 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
         return button
     }
     
-    private func makeSeparator() -> UILabel {
-        let label = UILabel()
-        label.text = ">"
-        label.textColor = .mainBrown800
-        label.font = UIFont.ptdSemiBoldFont(ofSize: 14)
-        return label
+//    private func makeSeparator() -> UILabel {
+//        let label = UILabel()
+//        label.text = ">"
+//        label.textColor = .mainBrown800
+//        label.font = UIFont.ptdSemiBoldFont(ofSize: 14)
+//        return label
+//    }
+    private func makeSeparator() -> UIImageView {
+        let imageView = UIImageView()
+        imageView.image = UIImage(systemName: "chevron.right") // SF Symbol 설정
+        imageView.tintColor = .mainBrown800 // 색상 적용
+        imageView.contentMode = .scaleAspectFit
+        return imageView
     }
     //
     @objc private func handleReclassify() {

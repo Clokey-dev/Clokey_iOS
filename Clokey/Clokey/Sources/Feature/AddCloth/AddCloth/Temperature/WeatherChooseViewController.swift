@@ -106,7 +106,8 @@ class WeatherChooseViewController: UIViewController {
         let button = UIButton()
         button.setTitle("다음", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor.mainBrown800
+        button.backgroundColor = UIColor.mainBrown400
+        button.isEnabled = false
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -263,7 +264,7 @@ class WeatherChooseViewController: UIViewController {
             button.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor // ✅ 테두리 색상 적용
             button.layer.cornerRadius = 8
             button.backgroundColor = .clear // ✅ 기본 배경색 제거
-            button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+            button.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 16)
             button.addTarget(self, action: #selector(didTapSeasonButton(_:)), for: .touchUpInside)
             
             seasonButtons.append(button)
@@ -306,6 +307,7 @@ class WeatherChooseViewController: UIViewController {
         }
 
         updateSliderRange()
+        updateNextButtonState()
     }
     
     
@@ -330,12 +332,14 @@ class WeatherChooseViewController: UIViewController {
         
         slider.lower = minTemp
         slider.upper = maxTemp
+        
+        updateNextButtonState()
     }
     private func setupTemperatureLabels() {
         for temp in temperatureValues {
             let label = UILabel()
             label.text = "\(temp)°"
-            label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+            label.font = UIFont.ptdMediumFont(ofSize: 16)
             label.textColor = .black
             label.textAlignment = .center
             view.addSubview(label)
@@ -365,6 +369,20 @@ class WeatherChooseViewController: UIViewController {
         navigationController?.pushViewController(nextVC, animated: true) // ✅ 네비게이션 Push 방식으로 이동
     }
     
+    private func updateNextButtonState() {
+        // ✅ 슬라이더가 움직였는지 확인
+        let isSliderMoved = slider.lower != -10 || slider.upper != 20  // ✅ 초기 값과 비교
+        
+        // ✅ 계절 버튼이 하나 이상 선택되었는지 확인
+        let isSeasonSelected = !selectedSeasons.isEmpty
+        
+        // ✅ 둘 중 하나라도 변경되었으면 버튼 활성화
+        let shouldEnable = isSliderMoved || isSeasonSelected
+        
+        nextButton.isEnabled = shouldEnable
+        nextButton.backgroundColor = shouldEnable ? .mainBrown800 : .mainBrown400 // ✅ 활성화/비활성화 배경색 변경
+    }
+    
     // MARK: - 뒤로가기
     @objc private func didTapBackButton() {
         navigationController?.popViewController(animated: true)
@@ -376,7 +394,7 @@ class WeatherChooseViewController: UIViewController {
         
         let totalWidth = slider.frame.width
         let totalRange = CGFloat(slider.maxValue - slider.minValue)
-        let perDegreeWidth = totalWidth / totalRange
+        let perDegreeWidth = totalWidth / totalRange * 0.95
         
         for (index, temp) in temperatureValues.enumerated() {
             let label = temperatureLabels[index]

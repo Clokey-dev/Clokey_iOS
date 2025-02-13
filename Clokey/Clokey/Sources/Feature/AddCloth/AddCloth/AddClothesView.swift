@@ -102,7 +102,7 @@ class AddClothesView: UIView {
     let reclassifyLabel: UILabel = {
         let label = UILabel()
         label.text = "카테고리 재분류를 원하시나요?"
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont.ptdMediumFont(ofSize: 14)
         label.textColor = .gray
         return label
     }()
@@ -111,10 +111,10 @@ class AddClothesView: UIView {
         let btn = UIButton(type: .custom) // ✅ 기본 `.system`이 아닌 `.custom`으로 변경
         let title = NSAttributedString(
             string: "직접 분류하기",
-            attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue, .foregroundColor: UIColor.mainBrown400]
+            attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue, .foregroundColor: UIColor.gray]
         )
         btn.setAttributedTitle(title, for: .normal)
-        btn.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 14)
+        btn.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 14)
         return btn
     }()
     
