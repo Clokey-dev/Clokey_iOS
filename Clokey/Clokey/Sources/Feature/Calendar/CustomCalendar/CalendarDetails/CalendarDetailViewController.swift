@@ -37,16 +37,21 @@ class CalendarDetailViewController: UIViewController {
         calendarDetailView.clothesIconButton.addTarget(self, action: #selector(didTapClothesIconButton), for: .touchUpInside)
         
         calendarDetailView.moreButton.addTarget(self, action: #selector(didTapMoreButton), for: .touchUpInside)
-
         
-        // 댓글창
+        // 댓글 버튼에 직접 target-action 추가
+        calendarDetailView.commentButton.addTarget(self, action: #selector(didTapCommentButton), for: .touchUpInside)
+        
+        // 댓글 컨테이너에 gesture recognizer 추가
         let commentTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapCommentButton))
+        calendarDetailView.commentContainerView.addGestureRecognizer(commentTapGesture)
+
         calendarDetailView.commentContainerView.addGestureRecognizer(commentTapGesture)
         
         // likeLabel에 탭 제스처 추가
         let likeTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapLikeLabel))
         calendarDetailView.likeLabel.isUserInteractionEnabled = true
         calendarDetailView.likeLabel.addGestureRecognizer(likeTapGesture)
+
     }
 
     // MARK: - Setup
