@@ -134,7 +134,6 @@
 		07ECCB632D4E35FE00AFF486 /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = 07ECCB622D4E35FE00AFF486 /* RxBlocking */; };
 		07ECCB652D4E35FE00AFF486 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 07ECCB642D4E35FE00AFF486 /* RxCocoa */; };
 		07ECCB672D4E35FE00AFF486 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 07ECCB662D4E35FE00AFF486 /* RxRelay */; };
-		07ECCE092D4E44E300AFF486 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 07ECCE082D4E44E300AFF486 /* Config.xcconfig */; };
 		07ECCEA32D4E79C000AFF486 /* CalendarImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCEA22D4E79C000AFF486 /* CalendarImageCell.swift */; };
 		07ECCEA52D4E7AE400AFF486 /* CalendarCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCEA42D4E7AE400AFF486 /* CalendarCommentView.swift */; };
 		07ECCEA72D4E7ECA00AFF486 /* CalendarCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCEA62D4E7ECA00AFF486 /* CalendarCommentViewController.swift */; };
@@ -147,6 +146,7 @@
 		489967542D5D16BC00B5E51E /* SearchEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489967532D5D16BC00B5E51E /* SearchEndpoint.swift */; };
 		489967582D5D231300B5E51E /* SearchResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489967572D5D231200B5E51E /* SearchResponseDTO.swift */; };
 		4899675A2D5DD2DB00B5E51E /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489967592D5DD2DB00B5E51E /* SearchService.swift */; };
+		489EE09B2D5E22DD0099DC35 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 489EE09A2D5E22DD0099DC35 /* Config.xcconfig */; };
 		A62A429E2D4D2ADE00672D3F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429A2D4D2ADE00672D3F /* MainView.swift */; };
 		A62A429F2D4D2ADE00672D3F /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429C2D4D2ADE00672D3F /* HeaderView.swift */; };
 		A62A42A02D4D2ADE00672D3F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429B2D4D2ADE00672D3F /* MainViewController.swift */; };
@@ -266,7 +266,6 @@
 		07ECCB592D4E351E00AFF486 /* CustomSortDropdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSortDropdownView.swift; sourceTree = "<group>"; };
 		07ECCB5A2D4E351E00AFF486 /* CustomTotalSegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTotalSegmentView.swift; sourceTree = "<group>"; };
 		07ECCB5B2D4E351E00AFF486 /* CustomCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCategoryModel.swift; sourceTree = "<group>"; };
-		07ECCE082D4E44E300AFF486 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		07ECCEA22D4E79C000AFF486 /* CalendarImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarImageCell.swift; sourceTree = "<group>"; };
 		07ECCEA42D4E7AE400AFF486 /* CalendarCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCommentView.swift; sourceTree = "<group>"; };
 		07ECCEA62D4E7ECA00AFF486 /* CalendarCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCommentViewController.swift; sourceTree = "<group>"; };
@@ -280,6 +279,7 @@
 		489967532D5D16BC00B5E51E /* SearchEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEndpoint.swift; sourceTree = SOURCE_ROOT; };
 		489967572D5D231200B5E51E /* SearchResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponseDTO.swift; sourceTree = SOURCE_ROOT; };
 		489967592D5DD2DB00B5E51E /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = SOURCE_ROOT; };
+		489EE09A2D5E22DD0099DC35 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A62A429A2D4D2ADE00672D3F /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		A62A429B2D4D2ADE00672D3F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		A62A429C2D4D2ADE00672D3F /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
@@ -978,7 +978,7 @@
 				07E1CB902D3814AA00F86BB8 /* LaunchScreen.storyboard */,
 				07E1CB2F2D364BD100F86BB8 /* Fonts */,
 				076FAB322D2E6E0200FF3979 /* Assets.xcassets */,
-				07ECCE082D4E44E300AFF486 /* Config.xcconfig */,
+				489EE09A2D5E22DD0099DC35 /* Config.xcconfig */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1344,7 +1344,7 @@
 				07E1CB3A2D364BDA00F86BB8 /* Pretendard-Thin.otf in Resources */,
 				07E1CB3B2D364BDA00F86BB8 /* Pretendard-Black.otf in Resources */,
 				07E1CB3C2D364BDA00F86BB8 /* Pretendard-ExtraBold.otf in Resources */,
-				07ECCE092D4E44E300AFF486 /* Config.xcconfig in Resources */,
+				489EE09B2D5E22DD0099DC35 /* Config.xcconfig in Resources */,
 				07E1CB3D2D364BDA00F86BB8 /* Pretendard-Bold.otf in Resources */,
 				07E1CB3E2D364BDA00F86BB8 /* Pretendard-Light.otf in Resources */,
 				07E1CB3F2D364BDA00F86BB8 /* Pretendard-ExtraLight.otf in Resources */,
@@ -1494,7 +1494,7 @@
 /* Begin XCBuildConfiguration section */
 		07F093242D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 07ECCE082D4E44E300AFF486 /* Config.xcconfig */;
+			baseConfigurationReference = 489EE09A2D5E22DD0099DC35 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1528,7 +1528,7 @@
 		};
 		07F093252D24183A0075659F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 07ECCE082D4E44E300AFF486 /* Config.xcconfig */;
+			baseConfigurationReference = 489EE09A2D5E22DD0099DC35 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1562,7 +1562,7 @@
 		};
 		07F093262D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 07ECCE082D4E44E300AFF486 /* Config.xcconfig */;
+			baseConfigurationReference = 489EE09A2D5E22DD0099DC35 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1626,7 +1626,7 @@
 		};
 		07F093272D24183A0075659F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 07ECCE082D4E44E300AFF486 /* Config.xcconfig */;
+			baseConfigurationReference = 489EE09A2D5E22DD0099DC35 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

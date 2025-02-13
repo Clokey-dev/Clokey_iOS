@@ -133,6 +133,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
 
         // ✅ 🔥 API 호출해서 users 가져오기
         SearchService().searchMemeber(data: query, page: 1, size: 20) { [weak self] result in
+            print("✅ [SearchViewController] 서버 요청 보냄: \(query)")
             switch result {
             case .success(let response):
                 let users = response.memberPreviews.map { member in
@@ -155,7 +156,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
     }
     // ✅ 추천 검색어 클릭 시 실행 searchhistory
     func didTapRecommendedKeyword(_ keyword: String) {
-        selecteyword = keyword // ✅ 선택한 키워드 저장
+        selectedKeyword = keyword // ✅ 선택한 키워드 저장
         UserDefaults.standard.set(keyword, forKey: "selectedKeyword") // ✅ 선택된 키워드 저장
         
         searchView.updateSelectedKeywordUI()
