@@ -53,9 +53,9 @@ class CommentCell: UITableViewCell {
 
 
     let contentStackView = UIStackView().then {
-        $0.axis = .horizontal
+        $0.axis = .vertical
         $0.spacing = 4
-        $0.alignment = .center
+        $0.alignment = .leading
     }
 
     let mainStackView = UIStackView().then {
