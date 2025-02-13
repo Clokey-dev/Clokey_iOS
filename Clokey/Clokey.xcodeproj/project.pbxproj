@@ -144,6 +144,8 @@
 		07ECCEB02D4EAEF700AFF486 /* LikeUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCEAF2D4EAEF700AFF486 /* LikeUserCell.swift */; };
 		07ECCEB32D4EAF1C00AFF486 /* LikeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCEB22D4EAF1C00AFF486 /* LikeListViewController.swift */; };
 		07ECCEB52D4EAF5800AFF486 /* LikeUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCEB42D4EAF5800AFF486 /* LikeUserModel.swift */; };
+		489967542D5D16BC00B5E51E /* SearchEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489967532D5D16BC00B5E51E /* SearchEndpoint.swift */; };
+		489967582D5D231300B5E51E /* SearchResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489967572D5D231200B5E51E /* SearchResponseDTO.swift */; };
 		A62A429E2D4D2ADE00672D3F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429A2D4D2ADE00672D3F /* MainView.swift */; };
 		A62A429F2D4D2ADE00672D3F /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429C2D4D2ADE00672D3F /* HeaderView.swift */; };
 		A62A42A02D4D2ADE00672D3F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429B2D4D2ADE00672D3F /* MainViewController.swift */; };
@@ -274,6 +276,8 @@
 		07ECCEB22D4EAF1C00AFF486 /* LikeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeListViewController.swift; sourceTree = "<group>"; };
 		07ECCEB42D4EAF5800AFF486 /* LikeUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeUserModel.swift; sourceTree = "<group>"; };
 		07F093102D2418380075659F /* Clokey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clokey.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		489967532D5D16BC00B5E51E /* SearchEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEndpoint.swift; sourceTree = SOURCE_ROOT; };
+		489967572D5D231200B5E51E /* SearchResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponseDTO.swift; sourceTree = SOURCE_ROOT; };
 		A62A429A2D4D2ADE00672D3F /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		A62A429B2D4D2ADE00672D3F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		A62A429C2D4D2ADE00672D3F /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
@@ -918,6 +922,7 @@
 		07649EDE2D4DE58900B6B2B2 /* Endpoints */ = {
 			isa = PBXGroup;
 			children = (
+				489967532D5D16BC00B5E51E /* SearchEndpoint.swift */,
 			);
 			path = Endpoints;
 			sourceTree = "<group>";
@@ -932,6 +937,7 @@
 		07649EE02D4DE58900B6B2B2 /* Response */ = {
 			isa = PBXGroup;
 			children = (
+				489967572D5D231200B5E51E /* SearchResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1355,6 +1361,7 @@
 			files = (
 				070258BE2D31085900065369 /* ClosetView.swift in Sources */,
 				07CF63E52D55DE6900CCF9F4 /* CalendarDetailViewModel.swift in Sources */,
+				489967542D5D16BC00B5E51E /* SearchEndpoint.swift in Sources */,
 				076FAB4E2D2EBB3A00FF3979 /* KakaoAuthService.swift in Sources */,
 				0709165D2D58BEE1008DC9EE /* ClothesEndpoint.swift in Sources */,
 				0709165E2D58BEE1008DC9EE /* AddClothesRequestDTO.swift in Sources */,
@@ -1389,6 +1396,7 @@
 				07ECCB462D4E34DF00AFF486 /* CustomGalleryViewController.swift in Sources */,
 				07ECCB472D4E34DF00AFF486 /* CalendarCell.swift in Sources */,
 				07ECCB482D4E34DF00AFF486 /* ImageCollectionViewCell.swift in Sources */,
+				489967582D5D231300B5E51E /* SearchResponseDTO.swift in Sources */,
 				07ECCB492D4E34DF00AFF486 /* ContentInputView.swift in Sources */,
 				07ECCB4A2D4E34DF00AFF486 /* PhotoTagView.swift in Sources */,
 				07ECCEA92D4E834300AFF486 /* CommentCell.swift in Sources */,

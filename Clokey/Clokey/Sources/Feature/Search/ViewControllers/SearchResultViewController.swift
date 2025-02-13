@@ -25,14 +25,37 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         UserModel(userId: "아이디2", nickname: "닉네임2", profileImageUrl: ""),
         UserModel(userId: "아이디3", nickname: "닉네임3", profileImageUrl: ""),
         UserModel(userId: "아이디4", nickname: "닉네임4", profileImageUrl: ""),
-        UserModel(userId: "아이디5", nickname: "닉네임5", profileImageUrl: "")
+        UserModel(userId: "아이디5", nickname: "닉네임5", profileImageUrl: ""),
+        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
+        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
+        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
+        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
+        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
+        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
+        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
+        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
+        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
+        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
+        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: "")
     ]
     private var dummyImages: [UIImage] = [
         UIImage(named: "sample1") ?? UIImage(),
         UIImage(named: "sample2") ?? UIImage(),
         UIImage(named: "sample3") ?? UIImage(),
         UIImage(named: "sample4") ?? UIImage(),
-        UIImage(named: "sample5") ?? UIImage()
+        UIImage(named: "sample5") ?? UIImage(),
+        UIImage(named: "sample1") ?? UIImage(),
+        UIImage(named: "sample1") ?? UIImage(),
+        UIImage(named: "sample1") ?? UIImage(),
+        UIImage(named: "sample1") ?? UIImage(),
+        UIImage(named: "sample1") ?? UIImage(),
+        UIImage(named: "sample1") ?? UIImage(),
+        UIImage(named: "sample1") ?? UIImage(),
+        UIImage(named: "sample1") ?? UIImage(),
+        UIImage(named: "sample1") ?? UIImage(),
+        UIImage(named: "sample1") ?? UIImage(),
+        UIImage(named: "sample1") ?? UIImage(),
+        UIImage(named: "sample1") ?? UIImage()
     ]
     private var filteredUsers: [UserModel] = []
     private var searchHistory: [String] = []
@@ -54,6 +77,9 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         view.backgroundColor = .white
 
             // ✅ 네비게이션 바 스타일 설정
+        
+            
+       
             navigationController?.navigationBar.isTranslucent = false
             navigationController?.navigationBar.barTintColor = .white
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
@@ -122,6 +148,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         UserDefaults.standard.setValue(searchHistory, forKey: "searchHistory")
         loadSearchHistory()
     }
+    
     
     private func loadSearchHistory() {
         searchHistory = UserDefaults.standard.stringArray(forKey: "searchHistory") ?? []
