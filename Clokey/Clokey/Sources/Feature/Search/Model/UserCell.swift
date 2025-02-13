@@ -72,10 +72,10 @@ class UserCell: UICollectionViewCell {
     
     // MARK: - Configure
     func configure(with user: UserModel) {
-        userIdLabel.text = user.userId
+        userIdLabel.text = user.clokeyId
         nicknameLabel.text = user.nickname
         
-        if let url = URL(string: user.profileImageUrl) {
+        if let url = URL(string: user.profileImage) {
             profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "profile_placeholder"))
         }
     }

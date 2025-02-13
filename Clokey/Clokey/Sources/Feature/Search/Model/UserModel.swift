@@ -7,9 +7,9 @@
 
 
 struct UserModel {
-    let userId: String
+    let clokeyId: String
     let nickname: String
-    let profileImageUrl: String
+    let profileImage: String
     
 }
 
