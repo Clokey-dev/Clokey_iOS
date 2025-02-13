@@ -88,12 +88,11 @@ public final class MembersService: NetworkManager {
     
     /// 아이디 중복 확인 GET API
     public func checkIdAvailability (
-        id: String,
-        completion: @escaping (Result<Bool, NetworkError>) -> Void
+        checkId: String,
+        completion: @escaping (Result<Void, NetworkError>) -> Void
     ) {
-        request(
-            target: .checkIdAvailability(id: id),
-            decodingType: Bool.self,
+        requestStatusCode(
+            target: .checkIdAvailability(checkId: checkId),
             completion: completion
         )
     }

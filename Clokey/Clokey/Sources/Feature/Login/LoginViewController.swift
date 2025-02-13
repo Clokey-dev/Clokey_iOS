@@ -170,7 +170,29 @@ final class LoginViewController: UIViewController {
                 KeychainHelper.shared.save(response.refreshToken, forKey: "refreshToken")
                 
                 print("로그인 성공: \(response)")
-                self.handleSuccessfulLogin()
+                
+                // ✅ registerStatus 확인
+                if response.registerStatus == "REGISTERED" {
+                    DispatchQueue.main.async {
+                        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+                            sceneDelegate.switchToMain()
+                        } else {
+                            print("🚨 SceneDelegate를 찾을 수 없음")
+                        }
+                    }
+                } else if response.registerStatus == "AGREED_PROFILE_NOT_SET" {
+                    DispatchQueue.main.async {
+                        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+                            sceneDelegate.navigateToAddProfile()
+                        } else {
+                            print("🚨 SceneDelegate를 찾을 수 없음")
+                        }
+                    }
+                }
+                else {
+                    self.navigateToAgreement() // 약관 동의 화면으로 이동
+                }
+//                self.handleSuccessfulLogin()
             
             case .failure(let error):
                 if case .serverError(let statusCode, _) = error, statusCode == 4001 {

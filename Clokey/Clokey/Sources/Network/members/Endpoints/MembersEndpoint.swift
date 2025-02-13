@@ -14,7 +14,7 @@ public enum MembersEndpoint {
     case agreeToTerms(data: AgreementToTermsRequestDTO)
     case getTerms
     case updateProfile(data: ProfileUpdateRequestDTO, imageData1: Data, imageData2: Data)
-    case checkIdAvailability(id: String)
+    case checkIdAvailability(checkId: String)
     case getUserProfile(clokeyId: String)
     case followUser(data: FollowRequestDTO)
     case unfollowUser(data: UnFollowRequestDTO)
@@ -42,8 +42,10 @@ extension MembersEndpoint: TargetType {
             return "/users/terms"
         case .updateProfile:
             return "/users/profile"
-        case .checkIdAvailability:
-            return "/users/check"
+//        case .checkIdAvailability:
+//            return "/users/check"
+        case .checkIdAvailability(let clokeyId):
+            return "/users/\(clokeyId)/check"
         case .getUserProfile(let clokeyId):
             return "/users/\(clokeyId)"
         case .followUser:
@@ -110,8 +112,10 @@ extension MembersEndpoint: TargetType {
             }
 
             return .uploadMultipart(multipartData)
-        case .checkIdAvailability(let id):
-            return .requestParameters(parameters: ["id": id], encoding: URLEncoding.queryString)
+//        case .checkIdAvailability(let checkId):
+//            return .requestParameters(parameters: ["id": checkId], encoding: URLEncoding.queryString)
+        case .checkIdAvailability(_):
+            return .requestPlain
         case .getUserProfile(_):
             return .requestPlain
         case .followUser(let data):

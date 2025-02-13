@@ -143,20 +143,6 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
         
         print("📌 카테고리 태그 업데이트 완료")
     }
-
-    
-//    private func extractClothingKeyword(from text: String) -> String? {
-//        let possibleNames = AddCategoryModel.allCategories.flatMap { $0.buttons.map { $0.name } }
-//
-//        // 🔹 '/'로 구분된 단어를 개별적으로 검사
-//        for name in possibleNames {
-//            let keywords = name.lowercased().split(separator: "/") // ex) ["니트", "스웨터"]
-//            if keywords.contains(where: { text.lowercased().contains($0) }) {
-//                return name // 🔹 "니트/스웨터" 반환
-//            }
-//        }
-//        return nil
-//    }
     
     private func makeCategoryTag(title: String) -> UIButton {
         let button = UIButton()
@@ -215,6 +201,7 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
             addClothesView.inputButton.backgroundColor = .clear // ✅ 텍스트 없으면 투명
             addClothesView.inputButton.layer.borderColor = UIColor.mainBrown400.cgColor // ✅ 기본 테두리 색 유지
             addClothesView.inputButton.setTitleColor(UIColor.black, for: .normal) // ✅ 기본 글 색 유지
+            resetViewState()
         }
     }
     

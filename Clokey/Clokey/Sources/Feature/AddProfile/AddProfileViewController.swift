@@ -229,23 +229,33 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
         }
         
         // ✅ 중복 확인 로직 (임시 더미 데이터 사용)
-        let existingIds = ["test123", "user456", "sample789"] // ⚠️ 여기에 실제 중복 확인 로직을 추가해야 함
-        isDuplicated = existingIds.contains(id)
-        
-        DispatchQueue.main.async {
-            if self.isDuplicated {
-                self.addProfileView.idStatusLabel.text = "중복된 아이디입니다."
-                self.addProfileView.idStatusLabel.textColor = .pointOrange800
-                self.isIdChecked = false
-            } else {
-                self.addProfileView.idStatusLabel.text = "사용 가능한 아이디입니다."
-                self.addProfileView.idStatusLabel.textColor = .pointOrange800
-                self.isIdChecked = true
+        let membersService = MembersService()
+        membersService.checkIdAvailability(checkId: id) { [weak self] result in
+            guard let self = self else { return }
+            
+            
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self.addProfileView.idStatusLabel.text = "사용 가능한 아이디입니다."
+                    self.addProfileView.idStatusLabel.textColor = .pointOrange800
+                    self.isIdChecked = true
+                    self.addProfileView.idStatusLabel.isHidden = false
+                    self.addProfileView.idCheckButton.setTitleColor(.gray, for: .normal)
+                    self.validateForm()
+                    
+                case .failure(let error):
+                    self.addProfileView.idStatusLabel.text = "중복된 아이디입니다."
+                    self.addProfileView.idStatusLabel.textColor = .pointOrange800
+                    self.isIdChecked = false
+                    self.addProfileView.idStatusLabel.isHidden = false
+                    self.addProfileView.idCheckButton.setTitleColor(.gray, for: .normal)
+                    self.validateForm()
+                }
             }
-            self.addProfileView.idStatusLabel.isHidden = false // ✅ 라벨이 보이도록 설정
-            self.addProfileView.idCheckButton.setTitleColor(.gray, for: .normal) // ✅ 버튼 색 변경
-            self.validateForm()
         }
+        
+
     }
     
     // ✅ 한줄 소개 입력을 20자로 제한하는 함수
