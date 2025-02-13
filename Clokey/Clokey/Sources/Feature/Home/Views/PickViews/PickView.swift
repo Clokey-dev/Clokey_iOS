@@ -74,6 +74,9 @@ class PickView: UIView {
         $0.clipsToBounds = true // 코너 반경 적용
     }
     
+    
+    
+    
     /// 날씨에 따른 추천 의류 이미지 컨테이너 뷰
     let weatherImageContainerView: UIView = UIView().then {
         $0.backgroundColor = .clear
@@ -156,12 +159,7 @@ class PickView: UIView {
         $0.numberOfLines = 0 // 여러 줄 허용
     }
     
-//    let recapSubtitleLabel2: UILabel = UILabel().then {
-//        $0.text = "다른 사용자들은 1년 전 오늘 어떤 옷을 입었을까요?" // 부제목 텍스트
-//        $0.textColor = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0) // 텍스트 색상
-//        $0.font = UIFont.ptdMediumFont(ofSize: 14) // 작은 폰트 크기
-//        $0.numberOfLines = 0 // 여러 줄 허용
-//    }
+
 
     /// Recap 섹션의 이미지 컨테이너 뷰
     let recapImageContainerView: UIView = UIView().then {
@@ -227,7 +225,6 @@ class PickView: UIView {
         contentView.addSubview(bottomArrowIcon)
         contentView.addSubview(recapTitleLabel)
         contentView.addSubview(recapSubtitleLabel1)
-//        contentView.addSubview(recapSubtitleLabel2)
         contentView.addSubview(recapImageContainerView)
         recapImageContainerView.addSubview(recapImageView1)
         recapImageContainerView.addSubview(recapImageView2)
@@ -280,44 +277,44 @@ class PickView: UIView {
         weatherImageContainerView.snp.makeConstraints { make in
             make.top.equalTo(temperatureChangeLabel.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(164) // 고정 높이 설정
+            make.height.equalTo(170)/*.priority(.medium) // 우선순위를 낮춤*/
         }
         
         weatherImageView1.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview() // 상하 배치 고정
-            make.leading.equalToSuperview() // 좌측 고정
-            make.width.equalTo(112) // 고정 너비 설정
-            make.height.equalTo(148) // 고정 높이 설정
+            make.top.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.width.equalTo(weatherImageView2)
+            make.height.equalTo(148) // 적절한 높이 설정
         }
-        
+
         weatherImageName1.snp.makeConstraints { make in
             make.top.equalTo(weatherImageView1.snp.bottom).offset(5)
-            make.leading.equalTo(weatherImageView1)
+            make.leading.equalTo(weatherImageView1.snp.leading).offset(2)
         }
-        
+
         weatherImageView2.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview() // 상하 배치 고정
+            make.top.equalToSuperview()
             make.leading.equalTo(weatherImageView1.snp.trailing).offset(10)
-            make.width.equalTo(112) // 고정 너비 설정
-            make.height.equalTo(148) // 고정 높이 설정
+            make.width.equalTo(weatherImageView3)
+            make.height.equalTo(weatherImageView1)
         }
-        
+
         weatherImageName2.snp.makeConstraints { make in
             make.top.equalTo(weatherImageView2.snp.bottom).offset(5)
-            make.leading.equalTo(weatherImageView2)
+            make.leading.equalTo(weatherImageView2.snp.leading)
         }
-        
+
         weatherImageView3.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview() // 상하 배치 고정
+            make.top.equalToSuperview()
             make.leading.equalTo(weatherImageView2.snp.trailing).offset(10)
-            make.width.equalTo(112) // 고정 너비 설정
-            make.height.equalTo(148) // 고정 높이 설정
-            make.trailing.equalToSuperview() // 우측 고정
+            make.trailing.equalToSuperview()
+            make.width.equalTo(weatherImageView1)
+            make.height.equalTo(weatherImageView1)
         }
-        
+
         weatherImageName3.snp.makeConstraints { make in
             make.top.equalTo(weatherImageView3.snp.bottom).offset(5)
-            make.leading.equalTo(weatherImageView3)
+            make.leading.equalTo(weatherImageView3.snp.leading)
         }
         
         bottomButtonLabel.snp.makeConstraints { make in
@@ -328,7 +325,7 @@ class PickView: UIView {
         bottomArrowIcon.snp.makeConstraints { make in
             make.centerY.equalTo(bottomButtonLabel.snp.centerY)
             make.leading.equalTo(bottomButtonLabel.snp.trailing).offset(5)
-            make.trailing.equalToSuperview().inset(20)
+//            make.trailing.equalToSuperview().inset(20)
             make.width.equalTo(6)
             make.height.equalTo(12)
         }
@@ -342,10 +339,7 @@ class PickView: UIView {
             make.top.equalTo(recapTitleLabel.snp.bottom).offset(6)
             make.leading.equalToSuperview().offset(20)
         }
-//        recapSubtitleLabel2.snp.makeConstraints { make in
-//            make.top.equalTo(recapSubtitleLabel1.snp.bottom).offset(5)
-//            make.leading.equalToSuperview().offset(20)
-//        }
+
         
         recapImageContainerView.snp.makeConstraints { make in
             make.top.equalTo(recapSubtitleLabel1.snp.bottom).offset(9)
@@ -385,18 +379,26 @@ class PickView: UIView {
         }
     
     /// 데이터 상태에 따라 EmptyStackView 표시/숨김
-        func updateEmptyState(isEmpty: Bool) {
-            if isEmpty {
-                // 데이터가 없으면 EmptyStackView를 추가
-                weatherImageContainerView.addSubview(emptyStackView)
-                emptyStackView.snp.makeConstraints { make in
-                    make.edges.equalToSuperview()
-                }
-            } else {
-                // 데이터가 있으면 EmptyStackView를 제거
-                emptyStackView.removeFromSuperview()
+    func updateEmptyState(isEmpty: Bool) {
+        if isEmpty {
+            // 데이터가 없으면 EmptyStackView 추가하고 관련 요소 숨김
+            weatherImageContainerView.addSubview(emptyStackView)
+            emptyStackView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
             }
+            
+            temperatureChangeLabel.isHidden = true
+            bottomButtonLabel.isHidden = true
+            bottomArrowIcon.isHidden = true
+        } else {
+            // 데이터가 있으면 EmptyStackView 제거하고 관련 요소 표시
+            emptyStackView.removeFromSuperview()
+            
+            temperatureChangeLabel.isHidden = false
+            bottomButtonLabel.isHidden = false
+            bottomArrowIcon.isHidden = false
         }
+    }
 }
 
 
