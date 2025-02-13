@@ -126,7 +126,13 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
         popupVC.brand = lastAddView.brandTextField.text
         
         // 🔥 선택한 이미지를 전달
-        popupVC.clothImage = lastAddView.imageView.image
+        if let selectedImage = lastAddView.imageView.image,
+           let imageData = selectedImage.jpegData(compressionQuality: 0.8) {
+            popupVC.cloth = selectedImage
+            popupVC.clothImage = imageData
+        } else {
+            popupVC.clothImage = nil // 이미지가 없을 경우 nil 전달
+        }
         /***/
         popupVC.modalPresentationStyle = .fullScreen // ✅ 전체 화면 모달
         navigationController?.pushViewController(popupVC, animated: true)

@@ -79,84 +79,84 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
     var cate3Id: Int64?
     //
     // MARK: - Action Handlers
+    
     @objc private func handleInput() {
         guard let text = addClothesView.inputField.text, !text.isEmpty else {
             print("❌ 입력 필드가 비어 있음")
             return
         }
+
+        let categoriesService = CategoriesService()
         
-//        // 🔹 입력된 텍스트에서 옷 이름 찾기
-//            let possibleNames = AddCategoryModel.allCategories.flatMap { $0.buttons.map { $0.name } }
-//            guard let extractedKeyword = possibleNames.first(where: { text.contains($0) }) else {
-//                print("❌ 옷 종류를 추출할 수 없음")
-//                return
-//            }
-        // 🔹 수정된 함수 사용
-            guard let extractedKeyword = extractClothingKeyword(from: text) else {
-                print("❌ 옷 종류를 추출할 수 없음")
-                return
+        categoriesService.getRecommendCategory(name: text) { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                
+                switch result {
+                case .success(let response):
+                    let category1Name = response.largeCategoryName
+                    let category3Name = response.smallCategoryName
+                    let category3Id = response.categoryId
+                    
+                    // ✅ 카테고리 응답이 비어있을 경우 로그 출력
+                    if category1Name.isEmpty || category3Name.isEmpty {
+                        print("📌 추천 카테고리 없음")
+                    } else {
+                        // ✅ UI 업데이트
+                        self.updateCategoryTags(category1Name: category1Name, category3Name: category3Name, category3Id: category3Id)
+                    }
+                    
+                case .failure(let error):
+                    print("❌ 카테고리 추천 데이터 로드 실패: \(error.localizedDescription)")
+                }
             }
-
-            print("📌 추출된 옷 이름: \(extractedKeyword)")
-
-            // 🔹 AddCategoryModel에서 카테고리 찾기
-//            guard let (category1Name, category3Name) = AddCategoryModel.getCategoryByName(extractedKeyword) else {
-//                print("❌ 해당하는 카테고리를 찾을 수 없음")
-//                return
-//            }
-        guard let (category1Name, category3Name, category3Id) = AddCategoryModel.getCategoryByName(extractedKeyword) else {
-            print("❌ 해당하는 카테고리를 찾을 수 없음")
-            return
         }
-
-        
+    }
+    
+    private func updateCategoryTags(category1Name: String, category3Name: String, category3Id: Int64) {
+        // ✅ 기존 태그 제거
         addClothesView.categoryTagsContainer.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
-        // 🔹 카테고리 태그 생성
-            let category1 = makeCategoryTag(title: category1Name)
-            let separator = makeSeparator()
-            let category3 = makeCategoryTag(title: category3Name)
+        // ✅ 새로운 카테고리 태그 생성
+        let category1 = makeCategoryTag(title: category1Name)
+        let separator = makeSeparator()
+        let category3 = makeCategoryTag(title: category3Name)
         
         cate1 = category1Name
         cate3 = category3Name
         cate3Id = category3Id
         
-        
+        // ✅ UI 업데이트
         addClothesView.categoryTagsContainer.addArrangedSubview(category1)
         addClothesView.categoryTagsContainer.addArrangedSubview(separator)
         addClothesView.categoryTagsContainer.addArrangedSubview(category3)
         
         addClothesView.categoryContainer.isHidden = false
         
-        // ✅ 입력 버튼이 눌렸을 때만 nextButton 활성화 & 색상 변경
+        // ✅ 버튼 활성화
         addClothesView.nextButton.isEnabled = true
         addClothesView.nextButton.backgroundColor = .mainBrown800
         
-        // ✅ reclassifyButton이 터치 가능 상태인지 확인
-           addClothesView.reclassifyButton.isUserInteractionEnabled = true
-           addClothesView.reclassifyButton.isHidden = false
-           addClothesView.reclassifyButton.alpha = 1.0 // ✅ 투명도 문제 해결
-
-           print("📌 reclassifyButton isUserInteractionEnabled: \(addClothesView.reclassifyButton.isUserInteractionEnabled)")
-           print("📌 reclassifyButton isHidden: \(addClothesView.reclassifyButton.isHidden)")
-           print("📌 reclassifyButton frame: \(addClothesView.reclassifyButton.frame)")
+        addClothesView.reclassifyButton.isUserInteractionEnabled = true
+        addClothesView.reclassifyButton.isHidden = false
+        addClothesView.reclassifyButton.alpha = 1.0
         
-        view.layoutIfNeeded()
-
+        print("📌 카테고리 태그 업데이트 완료")
     }
+
     
-    private func extractClothingKeyword(from text: String) -> String? {
-        let possibleNames = AddCategoryModel.allCategories.flatMap { $0.buttons.map { $0.name } }
-
-        // 🔹 '/'로 구분된 단어를 개별적으로 검사
-        for name in possibleNames {
-            let keywords = name.lowercased().split(separator: "/") // ex) ["니트", "스웨터"]
-            if keywords.contains(where: { text.lowercased().contains($0) }) {
-                return name // 🔹 "니트/스웨터" 반환
-            }
-        }
-        return nil
-    }
+//    private func extractClothingKeyword(from text: String) -> String? {
+//        let possibleNames = AddCategoryModel.allCategories.flatMap { $0.buttons.map { $0.name } }
+//
+//        // 🔹 '/'로 구분된 단어를 개별적으로 검사
+//        for name in possibleNames {
+//            let keywords = name.lowercased().split(separator: "/") // ex) ["니트", "스웨터"]
+//            if keywords.contains(where: { text.lowercased().contains($0) }) {
+//                return name // 🔹 "니트/스웨터" 반환
+//            }
+//        }
+//        return nil
+//    }
     
     private func makeCategoryTag(title: String) -> UIButton {
         let button = UIButton()

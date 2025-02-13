@@ -7,6 +7,7 @@
 
 import Foundation
 import Moya
+import UIKit
 
 public final class ClothesService : NetworkManager {
     typealias Endpoint = ClothesEndpoint
@@ -48,11 +49,11 @@ public final class ClothesService : NetworkManager {
     }
     
     public func checkPopUpClothes (
-        cloth_id: Int,
+        clothId: Int,
         completion: @escaping (Result<checkPopUpClothesResponseDTO, NetworkError>) -> Void
     ) {
         request(
-            target: .checkPopUpClothes(cloth_id: cloth_id),
+            target: .checkPopUpClothes(clothId: clothId),
             decodingType: checkPopUpClothesResponseDTO.self,
             completion: completion)
     }
@@ -67,16 +68,27 @@ public final class ClothesService : NetworkManager {
             completion: completion)
     }
     
-    public func addClothes (
-        category_id: Int,
-        data: AddClothesRequestDTO,
-        completion: @escaping (Result<addClothesResponseDTO, NetworkError>) -> Void
+    public func addClothes(
+        data: AddClothesRequestDTO, image: UIImage, completion: @escaping (Result<Moya.Response, MoyaError>) -> Void
     ){
-        request(
-            target: .addClothes(category_id: category_id, data: data),
-            decodingType: addClothesResponseDTO.self,
-            completion: completion)
-    }
+            guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+                print("🚨 이미지 변환 실패")
+                return
+            }
+            
+        provider.request(.addClothes(data: data, imageData: imageData)) { result in
+                switch result {
+                case .success(let response):
+                    if let jsonString = String(data: response.data, encoding: .utf8) {
+                        print("🚀 서버 응답 JSON: \(jsonString)")
+                    }
+                    completion(.success(response))
+                case .failure(let error):
+                    print("🚨 요청 실패: \(error.localizedDescription)")
+                    completion(.failure(error))
+                }
+            }
+        }
     
     public func editClothes (
         cloth_id: Int, category_id: Int,
