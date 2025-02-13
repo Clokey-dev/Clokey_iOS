@@ -140,8 +140,8 @@ class SearchView: UIView {
         }
         
         searchField.snp.makeConstraints { make in
-            make.top.equalTo(backButton.snp.bottom).offset(13)
-            make.leading.trailing.equalToSuperview().inset(24)
+            make.top.equalTo(backButton.snp.bottom).offset(23)
+            make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(40)
         }
         

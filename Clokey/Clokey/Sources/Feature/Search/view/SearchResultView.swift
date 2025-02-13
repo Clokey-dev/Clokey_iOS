@@ -66,7 +66,7 @@ class SearchResultView: UIView {
         $0.collectionViewLayout = layout
         $0.backgroundColor = .white
         $0.isScrollEnabled = true
-        $0.clipsToBounds = false
+        $0.clipsToBounds = true
     }
     
     // 🔹 해시태그 검색 결과 CollectionView (이미지 표시)
@@ -84,7 +84,7 @@ class SearchResultView: UIView {
         $0.collectionViewLayout = layout
         $0.backgroundColor = .lightGray
         $0.isScrollEnabled = true
-        $0.clipsToBounds = false
+        $0.clipsToBounds = true
     }
     
     
