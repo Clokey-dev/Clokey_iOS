@@ -181,7 +181,7 @@ class RecordOOTDViewController: UIViewController {
             
             // 이미지 압축 및 크기 제한
             let imageDataArray = selectedImages.compactMap { image in
-                return image.jpegData(compressionQuality: 1.0)
+                return image.jpegData(compressionQuality: 1.0) ?? nil
             }
             
             let historyService = HistoryService()
@@ -302,7 +302,8 @@ extension RecordOOTDViewController {
         mainView.photoTagView.tagCollectionView.reloadData()
         // 아이템 삭제 시, 컬렉션 뷰 높이 값 수정
         mainView.photoTagView.updateTagCollectionViewHeight(!taggedItems.isEmpty)
-
+        
+        mainView.OOTDButton.setEnabled(!taggedItems.isEmpty)
     }
 }
 
@@ -426,7 +427,7 @@ extension RecordOOTDViewController {
      - DispatchQueue를 생성하여 loadedImages.append() 작업을 동기적으로 실행되게 수정하여 경쟁 상태 예방.
     */
     // 태그한 옷 불러오기
-    func loadTaggedClothes(from cloths: [CalendarDetailViewModel.ClothDTO]) {
+        func loadTaggedClothes(from cloths: [CalendarDetailViewModel.ClothDTO]) {
         // 비동기 네트워크 요청 관리를 위한 DispatchGroup 생성
         let dispatchGroup = DispatchGroup()
         var loadedClothes: [(id: Int, image: UIImage, title: String)] = []
@@ -453,6 +454,8 @@ extension RecordOOTDViewController {
             self.taggedItems = loadedClothes
             self.mainView.photoTagView.tagCollectionView.reloadData()
             self.mainView.photoTagView.updateTagCollectionViewHeight(!loadedClothes.isEmpty)
+            
+            self.mainView.OOTDButton.setEnabled(!loadedClothes.isEmpty)
         }
     }
 
