@@ -8,6 +8,7 @@
 
 import UIKit
 import TOCropViewController
+import Moya
 
 final class AddProfileViewController: UIViewController, TOCropViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -298,20 +299,84 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
         }
         
         let formattedId = "@\(id)"
-        print(formattedId)
+        let bio = addProfileView.bioTextField.text ?? ""
+        let visibility = isPublic ? "PUBLIC" : "PRIVATE"
         
-        nickName = nickname
+        // ✅ 프로필 이미지와 배경 이미지 크기 조정 및 압축 적용
+        guard let profileImage = addProfileView.profileImageView.image,
+              let backgroundImage = addProfileView.backgroundImageView.image else {
+            print("🚨 이미지가 선택되지 않음")
+            return
+        }
         
-        _ = isPublic ? "PUBLIC" : "PRIVATE"
-        _ = addProfileView.bioTextField.text ?? ""
+        let resizedProfile = resizeImage(image: profileImage, targetSize: CGSize(width: 800, height: 800))
+        let resizedBack = resizeImage(image: backgroundImage, targetSize: CGSize(width: 800, height: 800))
         
-        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
-            sceneDelegate.switchToMain()
-        } else {
-            print("🚨 SceneDelegate를 찾을 수 없음")
+        guard let profileData = resizedProfile?.jpegData(compressionQuality: 0.5),
+              let backData = resizedBack?.jpegData(compressionQuality: 0.5) else {
+            print("🚨 이미지 변환 실패")
+            return
+        }
+        
+        // ✅ ProfileUpdateRequestDTO 생성 및 JSON 데이터 확인
+        let profileUpdateData = ProfileUpdateRequestDTO(
+            nickname: nickname,
+            clokeyId: id,
+            bio: bio,
+            visibility: visibility
+        )
+
+        do {
+            let jsonData = try JSONEncoder().encode(profileUpdateData)
+            let jsonString = String(data: jsonData, encoding: .utf8) ?? "JSON 변환 실패"
+            print("✅ 전송될 JSON 데이터: \(jsonString)")
+        } catch {
+            print("🚨 JSON 인코딩 오류: \(error.localizedDescription)")
+        }
+
+        // ✅ API 호출
+        let membersService = MembersService()
+        membersService.updateProfile(
+            data: profileUpdateData,
+            imageData1: profileData,
+            imageData2: backData
+        ) { result in
+            switch result {
+            case .success(let response):
+                print("✅ 프로필 업데이트 성공: \(response)")
+                DispatchQueue.main.async {
+                    if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+                        sceneDelegate.switchToMain()
+                    } else {
+                        print("🚨 SceneDelegate를 찾을 수 없음")
+                    }
+                }
+            case .failure(let error):
+                if let response = (error as? MoyaError)?.response {
+                    let responseBody = String(data: response.data, encoding: .utf8) ?? "응답 데이터 없음"
+                    print("🚨 프로필 업데이트 실패 - 상태 코드: \(response.statusCode), 응답: \(responseBody)")
+                } else {
+                    print("🚨 프로필 업데이트 실패 - 네트워크 오류: \(error.localizedDescription)")
+                }
+            }
         }
     }
     
+    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage? {
+        let size = image.size
+        let widthRatio  = targetSize.width  / size.width
+        let heightRatio = targetSize.height / size.height
+        let newSize = CGSize(width: size.width * min(widthRatio, heightRatio),
+                             height: size.height * min(widthRatio, heightRatio))
+        
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.draw(in: CGRect(origin: .zero, size: newSize))
+        let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return resizedImage
+    }
+// 
     deinit {
         // 키보드 옵저버 제거
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)

@@ -66,7 +66,8 @@ class PopupViewController: UIViewController {
     var imageUrl: String?
     var brand: String?
     
-    var clothImage: UIImage? // 전달받은 이미지
+    var cloth: UIImage?
+    var clothImage: Data? // 전달받은 이미지
     
     private let popupView = PopupView() // ✅ 뷰 객체만 포함
 
@@ -99,7 +100,7 @@ class PopupViewController: UIViewController {
         super.viewDidLoad()
         
         popupView.nameLabel.text = clothName
-        popupView.imageView.image = clothImage
+        popupView.imageView.image = cloth
         
         if isPublicSelected == true {
             popupView.publicButton.setImage(UIImage(named: "public_icon"), for: .normal)
@@ -249,45 +250,44 @@ class PopupViewController: UIViewController {
         successVC.modalPresentationStyle = .fullScreen // ✅ 전체 화면 모달
         navigationController?.pushViewController(successVC, animated: true)
         
-        // ✅ 요청 데이터 생성
         guard let categoryId = categoryId,
                   let clothName = clothName,
-//              let season = Array(season),
                   let maxTemp = maxTemp,
                   let minTemp = minTemp,
                   let thicknessLevel = thicknessLevel,
                   let visibility = visibility,
                   let imageUrl = imageUrl,
-                  let brand = brand else {
-                print("🚨 필수 데이터가 없습니다.")
+                  let brand = brand,
+              let selectedImage = cloth else {
+                print("🚨 필수 데이터 누락")
                 return
             }
-        
-        // ✅ season이 비어 있는 경우 기본값 설정
-           let seasonArray = season.isEmpty ? ["SUMMER"] : Array(season)
 
-//            let addClothesRequestDTO = AddClothesRequestDTO(
-//                categoryId: categoryId,
-//                name: clothName,
-//                seasons: Array(season), // ✅ JSON 배열로 변환
-//                tempUpperBound: maxTemp,
-//                tempLowerBound: minTemp,
-//                thicknessLevel: thicknessLevel,
-//                visibility: visibility,
-//                clothUrl: imageUrl,
-//                brand: brand,
-//                image: clothImage // ✅ UIImage 포함 (Form-Data로 보낼 이미지)
-//            )
-//
-//            let clothesService = ClothesService()
-//            clothesService.addClothes(data: addClothesRequestDTO) { result in
-//                switch result {
-//                case .success(let response):
-//                    print("✅ 옷 추가 성공: \(response)")
-//                case .failure(let error):
-//                    print("🚨 옷 추가 실패: \(error.localizedDescription)")
-//                }
-//            }
+            let seasonArray = season.isEmpty ? ["SUMMER"] : Array(season)
+
+            let addClothesRequestDTO = AddClothesRequestDTO(
+                categoryId: categoryId,
+                name: clothName,
+                seasons: seasonArray,
+                tempUpperBound: maxTemp,
+                tempLowerBound: minTemp,
+                thicknessLevel: thicknessLevel,
+                visibility: visibility,
+                clothUrl: imageUrl,
+                brand: brand
+            )
+
+            let clothesService = ClothesService()
+
+            // ✅ API 호출
+            clothesService.addClothes(data: addClothesRequestDTO, image: selectedImage) { result in
+                switch result {
+                case .success(let response):
+                    print("✅ 옷 추가 성공: \(response)")
+                case .failure(let error):
+                    print("🚨 옷 추가 실패: \(error.localizedDescription)")
+                }
+            }
     }
     
     

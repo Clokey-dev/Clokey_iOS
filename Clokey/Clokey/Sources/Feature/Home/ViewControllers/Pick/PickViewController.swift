@@ -10,6 +10,7 @@
 import UIKit
 import Kingfisher
 import MapKit
+import Moya
 
 class PickViewController: UIViewController, CLLocationManagerDelegate {
     
@@ -39,7 +40,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         fetchVisualCrossingWeatherData(for: "Seoul") // 기본 위치: 서울
         updateYesterdayWeatherUI()
         setupBottomLabelTap()
-        bindData()
+//        bindData()
         fetchWeatherRecommendations()
         
         locationManager.delegate = self
@@ -344,11 +345,27 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     private func loadRecapData() {
         let homeService = HomeService()
         
-        homeService.getOneYearAgoHistories { [weak self] result in
+        homeService.fetchOneYearAgoHistories { [weak self] result in
             DispatchQueue.main.async {
+                guard let self = self else { return }
+                
                 switch result {
                 case .success(let historyResult):
-                    self?.pickView.updateRecapImages(with: historyResult.images)
+                    let imageUrls = historyResult.imageUrls
+                    
+                    // ✅ 배열이 비어있을 경우 로그 출력
+                    if imageUrls.isEmpty {
+                        print("📷 사진이 없습니다")
+                    } else {
+                        // ✅ 배열이 비어있지 않은지 확인 후 이미지 설정
+                        if imageUrls.count > 0 {
+                            self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
+                        }
+                        if imageUrls.count > 1 {
+                            self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
+                        }
+                    }
+                    
                 case .failure(let error):
                     print("❌ 데이터 로드 실패: \(error.localizedDescription)")
                 }
