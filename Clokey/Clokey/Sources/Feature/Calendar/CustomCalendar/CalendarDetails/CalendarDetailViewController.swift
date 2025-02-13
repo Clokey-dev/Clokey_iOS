@@ -36,6 +36,9 @@ class CalendarDetailViewController: UIViewController {
         
         calendarDetailView.clothesIconButton.addTarget(self, action: #selector(didTapClothesIconButton), for: .touchUpInside)
         
+        calendarDetailView.moreButton.addTarget(self, action: #selector(didTapMoreButton), for: .touchUpInside)
+
+        
         // 댓글창
         let commentTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapCommentButton))
         calendarDetailView.commentContainerView.addGestureRecognizer(commentTapGesture)
@@ -60,7 +63,7 @@ class CalendarDetailViewController: UIViewController {
         view.addSubview(calendarDetailView)
         
         calendarDetailView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
+            $0.edges.equalToSuperview()
         }
     }
     
@@ -137,6 +140,10 @@ class CalendarDetailViewController: UIViewController {
         }
         
         present(likeListVC, animated: true)
+    }
+    
+    @objc private func didTapMoreButton() {
+        calendarDetailView.expandContent()
     }
     
     // 뒤로가기

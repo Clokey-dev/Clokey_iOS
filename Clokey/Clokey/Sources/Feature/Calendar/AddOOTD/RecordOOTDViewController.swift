@@ -112,14 +112,15 @@ class RecordOOTDViewController: UIViewController {
         mainView.contentInputView.textAddBox.textColor = viewModel.content.isEmpty ? .placeholderText : .black
 
         // 해시태그 설정
-        let hashtagsArray = viewModel.hashtags.components(separatedBy: " ")
+        let hashtagsArray = viewModel.hashtags.components(separatedBy: "#")
+            .filter { !$0.isEmpty } // 빈 문자열 제거
+            .map { "#\($0)" } // "#"을 다시 붙여 원본 형태 복원
+
         hashtagsArray.forEach { tag in
-            // 빈 문자열이 아닌 경우에만 해시태그 추가
-            if !tag.isEmpty {
-                self.hashtags.append(tag)  // hashtags 배열에 추가
-                mainView.contentInputView.addHashtag(tag)  // UI에 추가
-            }
+            self.hashtags.append(tag)
+            mainView.contentInputView.addHashtag(tag)
         }
+        
         // 공개 여부 설정
         mainView.contentInputView.publicButton.isSelected = viewModel.visibility
         mainView.contentInputView.privateButton.isSelected = !viewModel.visibility

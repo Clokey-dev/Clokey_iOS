@@ -1161,10 +1161,10 @@
 				07ECCEB12D4EAF0A00AFF486 /* LikeUser */,
 				07ECCEAA2D4E835C00AFF486 /* Commnet */,
 				07ECCB332D4E34DF00AFF486 /* CalendarDetailView.swift */,
-				07ECCB342D4E34DF00AFF486 /* CalendarDetailViewController.swift */,
 				07CF63E42D55DE6900CCF9F4 /* CalendarDetailViewModel.swift */,
 				07ECCEA22D4E79C000AFF486 /* CalendarImageCell.swift */,
 				07ECCEAD2D4EAA2400AFF486 /* CustomActionSheetViewController.swift */,
+				07ECCB342D4E34DF00AFF486 /* CalendarDetailViewController.swift */,
 			);
 			path = CalendarDetails;
 			sourceTree = "<group>";

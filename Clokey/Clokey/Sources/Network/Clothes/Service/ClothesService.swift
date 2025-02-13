@@ -122,6 +122,24 @@ public final class ClothesService : NetworkManager {
             completion: completion
         )
     }
-}
+    
+    // 유저 옷장 검색 GET API
+    public func searchClothes(
+        keyword: String,
+        page: Int,
+        size: Int,
+        completion: @escaping (Result<ClothSearchResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .searchByNameAndBrand(
+                keyword: keyword,
+                page: page,
+                size: size
+            ),
+            decodingType: ClothSearchResponseDTO.self,
+            completion: completion
+        )
+    }
 
+}
 
