@@ -103,6 +103,13 @@ extension SceneDelegate: Coordinator {
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
+    
+    func navigateToAddProfile() {
+        let addProfileVC = AddProfileViewController()
+        let navigationController = UINavigationController(rootViewController: addProfileVC)
+        window?.rootViewController = navigationController
+        window?.makeKeyAndVisible()
+    }
     // 화면 전환 메서드 -> LoginViewController
     func switchToLogin() {
         let loginVC = LoginViewController(coordinator: self)
