@@ -22,6 +22,34 @@
 		074401202D5CB9EB00E60282 /* AddCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401192D5CB9EB00E60282 /* AddCategoryModel.swift */; };
 		074401212D5CB9EB00E60282 /* AddCategoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401182D5CB9EB00E60282 /* AddCategoryHeaderView.swift */; };
 		074401222D5CB9EB00E60282 /* AddCategoryViewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744011B2D5CB9EB00E60282 /* AddCategoryViewCollectionViewCell.swift */; };
+		074401722D5E1F9A00E60282 /* Agreement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744016D2D5E1F9A00E60282 /* Agreement.swift */; };
+		074401732D5E1F9A00E60282 /* AgreementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744016E2D5E1F9A00E60282 /* AgreementCell.swift */; };
+		074401742D5E1F9A00E60282 /* AgreementDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744016F2D5E1F9A00E60282 /* AgreementDetailViewController.swift */; };
+		074401752D5E1F9A00E60282 /* AgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401702D5E1F9A00E60282 /* AgreementViewController.swift */; };
+		0744018F2D5E1F9A00E60282 /* lastAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401762D5E1F9A00E60282 /* lastAddView.swift */; };
+		074401902D5E1F9A00E60282 /* LastAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401772D5E1F9A00E60282 /* LastAddViewController.swift */; };
+		074401912D5E1F9A00E60282 /* AddCategoryHeaderView1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401792D5E1F9A00E60282 /* AddCategoryHeaderView1.swift */; };
+		074401922D5E1F9A00E60282 /* AddCategoryModel1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744017A2D5E1F9A00E60282 /* AddCategoryModel1.swift */; };
+		074401932D5E1F9A00E60282 /* AddCategoryView1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744017B2D5E1F9A00E60282 /* AddCategoryView1.swift */; };
+		074401942D5E1F9A00E60282 /* AddCategoryViewCollectionViewCell1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744017C2D5E1F9A00E60282 /* AddCategoryViewCollectionViewCell1.swift */; };
+		074401952D5E1F9A00E60282 /* AddCategoryViewController1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744017D2D5E1F9A00E60282 /* AddCategoryViewController1.swift */; };
+		074401962D5E1F9A00E60282 /* AddClothView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744017F2D5E1F9A00E60282 /* AddClothView.swift */; };
+		074401972D5E1F9A00E60282 /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401802D5E1F9A00E60282 /* PopupView.swift */; };
+		074401982D5E1F9A00E60282 /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401812D5E1F9A00E60282 /* PopupViewController.swift */; };
+		074401992D5E1F9A00E60282 /* SuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401832D5E1F9A00E60282 /* SuccessView.swift */; };
+		0744019A2D5E1F9A00E60282 /* SuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401842D5E1F9A00E60282 /* SuccessViewController.swift */; };
+		0744019B2D5E1F9A00E60282 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401862D5E1F9A00E60282 /* Slider.swift */; };
+		0744019C2D5E1F9A00E60282 /* WeatherChooseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401872D5E1F9A00E60282 /* WeatherChooseViewController.swift */; };
+		0744019D2D5E1F9A00E60282 /* ThickSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401892D5E1F9A00E60282 /* ThickSlider.swift */; };
+		0744019E2D5E1F9A00E60282 /* ThickViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744018A2D5E1F9A00E60282 /* ThickViewController.swift */; };
+		0744019F2D5E1F9A00E60282 /* AddClothesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744018C2D5E1F9A00E60282 /* AddClothesView.swift */; };
+		074401A02D5E1F9A00E60282 /* AddClothViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744018D2D5E1F9A00E60282 /* AddClothViewController.swift */; };
+		074401A72D5E1F9A00E60282 /* AddProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401A12D5E1F9A00E60282 /* AddProfileView.swift */; };
+		074401A82D5E1F9A00E60282 /* AddProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401A22D5E1F9A00E60282 /* AddProfileViewController.swift */; };
+		074401A92D5E1F9A00E60282 /* AddProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401A32D5E1F9A00E60282 /* AddProfileViewModel.swift */; };
+		074401AA2D5E1F9A00E60282 /* ProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401A42D5E1F9A00E60282 /* ProfileRequest.swift */; };
+		074401AB2D5E1F9A00E60282 /* ProfileResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401A52D5E1F9A00E60282 /* ProfileResponse.swift */; };
+		074401AE2D5E1F9A00E60282 /* AddClothingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401AC2D5E1F9A00E60282 /* AddClothingViewController.swift */; };
 		0744FF822D5B1D4500E60282 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0744FF812D5B1D4500E60282 /* FirebaseAnalytics */; };
 		0744FF842D5B1D4500E60282 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 0744FF832D5B1D4500E60282 /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		0744FF862D5B1D4500E60282 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0744FF852D5B1D4500E60282 /* FirebaseAuth */; };
@@ -194,6 +222,34 @@
 		0744011A2D5CB9EB00E60282 /* AddCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryView.swift; sourceTree = "<group>"; };
 		0744011B2D5CB9EB00E60282 /* AddCategoryViewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewCollectionViewCell.swift; sourceTree = "<group>"; };
 		0744011C2D5CB9EB00E60282 /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; };
+		0744016D2D5E1F9A00E60282 /* Agreement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Agreement.swift; sourceTree = "<group>"; };
+		0744016E2D5E1F9A00E60282 /* AgreementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementCell.swift; sourceTree = "<group>"; };
+		0744016F2D5E1F9A00E60282 /* AgreementDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementDetailViewController.swift; sourceTree = "<group>"; };
+		074401702D5E1F9A00E60282 /* AgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementViewController.swift; sourceTree = "<group>"; };
+		074401762D5E1F9A00E60282 /* lastAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = lastAddView.swift; sourceTree = "<group>"; };
+		074401772D5E1F9A00E60282 /* LastAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastAddViewController.swift; sourceTree = "<group>"; };
+		074401792D5E1F9A00E60282 /* AddCategoryHeaderView1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryHeaderView1.swift; sourceTree = "<group>"; };
+		0744017A2D5E1F9A00E60282 /* AddCategoryModel1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryModel1.swift; sourceTree = "<group>"; };
+		0744017B2D5E1F9A00E60282 /* AddCategoryView1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryView1.swift; sourceTree = "<group>"; };
+		0744017C2D5E1F9A00E60282 /* AddCategoryViewCollectionViewCell1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewCollectionViewCell1.swift; sourceTree = "<group>"; };
+		0744017D2D5E1F9A00E60282 /* AddCategoryViewController1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController1.swift; sourceTree = "<group>"; };
+		0744017F2D5E1F9A00E60282 /* AddClothView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothView.swift; sourceTree = "<group>"; };
+		074401802D5E1F9A00E60282 /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
+		074401812D5E1F9A00E60282 /* PopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
+		074401832D5E1F9A00E60282 /* SuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessView.swift; sourceTree = "<group>"; };
+		074401842D5E1F9A00E60282 /* SuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessViewController.swift; sourceTree = "<group>"; };
+		074401862D5E1F9A00E60282 /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
+		074401872D5E1F9A00E60282 /* WeatherChooseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherChooseViewController.swift; sourceTree = "<group>"; };
+		074401892D5E1F9A00E60282 /* ThickSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThickSlider.swift; sourceTree = "<group>"; };
+		0744018A2D5E1F9A00E60282 /* ThickViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThickViewController.swift; sourceTree = "<group>"; };
+		0744018C2D5E1F9A00E60282 /* AddClothesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothesView.swift; sourceTree = "<group>"; };
+		0744018D2D5E1F9A00E60282 /* AddClothViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothViewController.swift; sourceTree = "<group>"; };
+		074401A12D5E1F9A00E60282 /* AddProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProfileView.swift; sourceTree = "<group>"; };
+		074401A22D5E1F9A00E60282 /* AddProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProfileViewController.swift; sourceTree = "<group>"; };
+		074401A32D5E1F9A00E60282 /* AddProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProfileViewModel.swift; sourceTree = "<group>"; };
+		074401A42D5E1F9A00E60282 /* ProfileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRequest.swift; sourceTree = "<group>"; };
+		074401A52D5E1F9A00E60282 /* ProfileResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileResponse.swift; sourceTree = "<group>"; };
+		074401AC2D5E1F9A00E60282 /* AddClothingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothingViewController.swift; sourceTree = "<group>"; };
 		0744FF8B2D5B1D6900E60282 /* NewsImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsImageModel.swift; sourceTree = "<group>"; };
 		0744FF8C2D5B1D6900E60282 /* OpenWeatherMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherMap.swift; sourceTree = "<group>"; };
 		0744FF8D2D5B1D6900E60282 /* PickImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickImageModel.swift; sourceTree = "<group>"; };
@@ -330,49 +386,6 @@
 		A67661AE2D5B39D3006AAB63 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		A64C54312D3F97B3000CCB62 /* Cells */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Cells;
-			sourceTree = "<group>";
-		};
-		A64C54402D3F97BB000CCB62 /* ViewControllers */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		A64C54522D3F97C6000CCB62 /* Views */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Views;
-			sourceTree = "<group>";
-		};
-		A64C54612D3F97CF000CCB62 /* Models */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Models;
-			sourceTree = "<group>";
-		};
-		A67661B52D5B3BE8006AAB63 /* AddProfile */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AddProfile;
-			sourceTree = "<group>";
-		};
-		A67661BF2D5B3BF3006AAB63 /* Agreement */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Agreement;
-			sourceTree = "<group>";
-		};
-		A67661DC2D5B3C07006AAB63 /* AddCloth */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AddCloth;
-			sourceTree = "<group>";
-		};
-		A67661DE2D5B3C07006AAB63 /* AddClothing */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AddClothing;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
-
 /* Begin PBXFrameworksBuildPhase section */
 		07F0930D2D2418380075659F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -428,8 +441,8 @@
 		070258A72D31072800065369 /* AddCloth */ = {
 			isa = PBXGroup;
 			children = (
-				A67661DC2D5B3C07006AAB63 /* AddCloth */,
-				A67661DE2D5B3C07006AAB63 /* AddClothing */,
+				0744018E2D5E1F9A00E60282 /* AddCloth */,
+				074401AD2D5E1F9A00E60282 /* AddClothing */,
 			);
 			path = AddCloth;
 			sourceTree = "<group>";
@@ -562,6 +575,110 @@
 			path = Category;
 			sourceTree = "<group>";
 		};
+		074401712D5E1F9A00E60282 /* Agreement */ = {
+			isa = PBXGroup;
+			children = (
+				0744016D2D5E1F9A00E60282 /* Agreement.swift */,
+				0744016E2D5E1F9A00E60282 /* AgreementCell.swift */,
+				0744016F2D5E1F9A00E60282 /* AgreementDetailViewController.swift */,
+				074401702D5E1F9A00E60282 /* AgreementViewController.swift */,
+			);
+			path = Agreement;
+			sourceTree = "<group>";
+		};
+		074401782D5E1F9A00E60282 /* AddImage */ = {
+			isa = PBXGroup;
+			children = (
+				074401762D5E1F9A00E60282 /* lastAddView.swift */,
+				074401772D5E1F9A00E60282 /* LastAddViewController.swift */,
+			);
+			path = AddImage;
+			sourceTree = "<group>";
+		};
+		0744017E2D5E1F9A00E60282 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				074401792D5E1F9A00E60282 /* AddCategoryHeaderView1.swift */,
+				0744017A2D5E1F9A00E60282 /* AddCategoryModel1.swift */,
+				0744017B2D5E1F9A00E60282 /* AddCategoryView1.swift */,
+				0744017C2D5E1F9A00E60282 /* AddCategoryViewCollectionViewCell1.swift */,
+				0744017D2D5E1F9A00E60282 /* AddCategoryViewController1.swift */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		074401822D5E1F9A00E60282 /* Popup */ = {
+			isa = PBXGroup;
+			children = (
+				0744017F2D5E1F9A00E60282 /* AddClothView.swift */,
+				074401802D5E1F9A00E60282 /* PopupView.swift */,
+				074401812D5E1F9A00E60282 /* PopupViewController.swift */,
+			);
+			path = Popup;
+			sourceTree = "<group>";
+		};
+		074401852D5E1F9A00E60282 /* Success */ = {
+			isa = PBXGroup;
+			children = (
+				074401832D5E1F9A00E60282 /* SuccessView.swift */,
+				074401842D5E1F9A00E60282 /* SuccessViewController.swift */,
+			);
+			path = Success;
+			sourceTree = "<group>";
+		};
+		074401882D5E1F9A00E60282 /* Temperature */ = {
+			isa = PBXGroup;
+			children = (
+				074401862D5E1F9A00E60282 /* Slider.swift */,
+				074401872D5E1F9A00E60282 /* WeatherChooseViewController.swift */,
+			);
+			path = Temperature;
+			sourceTree = "<group>";
+		};
+		0744018B2D5E1F9A00E60282 /* Thick */ = {
+			isa = PBXGroup;
+			children = (
+				074401892D5E1F9A00E60282 /* ThickSlider.swift */,
+				0744018A2D5E1F9A00E60282 /* ThickViewController.swift */,
+			);
+			path = Thick;
+			sourceTree = "<group>";
+		};
+		0744018E2D5E1F9A00E60282 /* AddCloth */ = {
+			isa = PBXGroup;
+			children = (
+				074401782D5E1F9A00E60282 /* AddImage */,
+				0744017E2D5E1F9A00E60282 /* Category */,
+				074401822D5E1F9A00E60282 /* Popup */,
+				074401852D5E1F9A00E60282 /* Success */,
+				074401882D5E1F9A00E60282 /* Temperature */,
+				0744018B2D5E1F9A00E60282 /* Thick */,
+				0744018C2D5E1F9A00E60282 /* AddClothesView.swift */,
+				0744018D2D5E1F9A00E60282 /* AddClothViewController.swift */,
+			);
+			path = AddCloth;
+			sourceTree = "<group>";
+		};
+		074401A62D5E1F9A00E60282 /* AddProfile */ = {
+			isa = PBXGroup;
+			children = (
+				074401A12D5E1F9A00E60282 /* AddProfileView.swift */,
+				074401A22D5E1F9A00E60282 /* AddProfileViewController.swift */,
+				074401A32D5E1F9A00E60282 /* AddProfileViewModel.swift */,
+				074401A42D5E1F9A00E60282 /* ProfileRequest.swift */,
+				074401A52D5E1F9A00E60282 /* ProfileResponse.swift */,
+			);
+			path = AddProfile;
+			sourceTree = "<group>";
+		};
+		074401AD2D5E1F9A00E60282 /* AddClothing */ = {
+			isa = PBXGroup;
+			children = (
+				074401AC2D5E1F9A00E60282 /* AddClothingViewController.swift */,
+			);
+			path = AddClothing;
+			sourceTree = "<group>";
+		};
 		0744FF922D5B1D6900E60282 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -687,10 +804,6 @@
 		07649BE22D4DDAE600B6B2B2 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				A64C54312D3F97B3000CCB62 /* Cells */,
-				A64C54402D3F97BB000CCB62 /* ViewControllers */,
-				A64C54522D3F97C6000CCB62 /* Views */,
-				A64C54612D3F97CF000CCB62 /* Models */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1095,8 +1208,8 @@
 		07E1CADC2D36449B00F86BB8 /* Feature */ = {
 			isa = PBXGroup;
 			children = (
-				A67661BF2D5B3BF3006AAB63 /* Agreement */,
-				A67661B52D5B3BE8006AAB63 /* AddProfile */,
+				074401712D5E1F9A00E60282 /* Agreement */,
+				074401A62D5E1F9A00E60282 /* AddProfile */,
 				070258AA2D31074E00065369 /* Login */,
 				07E1CB652D36A63200F86BB8 /* ViewController.swift */,
 				070258A42D31071900065369 /* Main */,
@@ -1384,16 +1497,6 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				A64C54312D3F97B3000CCB62 /* Cells */,
-				A64C54402D3F97BB000CCB62 /* ViewControllers */,
-				A64C54522D3F97C6000CCB62 /* Views */,
-				A64C54612D3F97CF000CCB62 /* Models */,
-				A67661B52D5B3BE8006AAB63 /* AddProfile */,
-				A67661BF2D5B3BF3006AAB63 /* Agreement */,
-				A67661DC2D5B3C07006AAB63 /* AddCloth */,
-				A67661DE2D5B3C07006AAB63 /* AddClothing */,
-			);
 			name = Clokey;
 			packageProductDependencies = (
 				076FAB1C2D2E5DD800FF3979 /* Then */,
@@ -1519,6 +1622,11 @@
 				A67661A22D5B367B006AAB63 /* FollowProfileModel.swift in Sources */,
 				A67661A32D5B367B006AAB63 /* FollowProfileView.swift in Sources */,
 				A67661A42D5B367B006AAB63 /* FollowProfileViewController.swift in Sources */,
+				074401A72D5E1F9A00E60282 /* AddProfileView.swift in Sources */,
+				074401A82D5E1F9A00E60282 /* AddProfileViewController.swift in Sources */,
+				074401A92D5E1F9A00E60282 /* AddProfileViewModel.swift in Sources */,
+				074401AA2D5E1F9A00E60282 /* ProfileRequest.swift in Sources */,
+				074401AB2D5E1F9A00E60282 /* ProfileResponse.swift in Sources */,
 				07ECCB5F2D4E351E00AFF486 /* CustomTotalSegmentView.swift in Sources */,
 				07ECCB602D4E351E00AFF486 /* CustomCollectionViewCell.swift in Sources */,
 				07ECCB3F2D4E34DF00AFF486 /* UploadModalView.swift in Sources */,
@@ -1560,6 +1668,24 @@
 				07649EE32D4DE58900B6B2B2 /* CookiePlugin.swift in Sources */,
 				07649EE42D4DE58900B6B2B2 /* MembersService.swift in Sources */,
 				0744FFD72D5B1DD500E60282 /* NewsView.swift in Sources */,
+				0744018F2D5E1F9A00E60282 /* lastAddView.swift in Sources */,
+				074401902D5E1F9A00E60282 /* LastAddViewController.swift in Sources */,
+				074401912D5E1F9A00E60282 /* AddCategoryHeaderView1.swift in Sources */,
+				074401922D5E1F9A00E60282 /* AddCategoryModel1.swift in Sources */,
+				074401932D5E1F9A00E60282 /* AddCategoryView1.swift in Sources */,
+				074401942D5E1F9A00E60282 /* AddCategoryViewCollectionViewCell1.swift in Sources */,
+				074401952D5E1F9A00E60282 /* AddCategoryViewController1.swift in Sources */,
+				074401962D5E1F9A00E60282 /* AddClothView.swift in Sources */,
+				074401972D5E1F9A00E60282 /* PopupView.swift in Sources */,
+				074401982D5E1F9A00E60282 /* PopupViewController.swift in Sources */,
+				074401992D5E1F9A00E60282 /* SuccessView.swift in Sources */,
+				0744019A2D5E1F9A00E60282 /* SuccessViewController.swift in Sources */,
+				0744019B2D5E1F9A00E60282 /* Slider.swift in Sources */,
+				0744019C2D5E1F9A00E60282 /* WeatherChooseViewController.swift in Sources */,
+				0744019D2D5E1F9A00E60282 /* ThickSlider.swift in Sources */,
+				0744019E2D5E1F9A00E60282 /* ThickViewController.swift in Sources */,
+				0744019F2D5E1F9A00E60282 /* AddClothesView.swift in Sources */,
+				074401A02D5E1F9A00E60282 /* AddClothViewController.swift in Sources */,
 				A67661892D5B367B006AAB63 /* CustomBottomSheetViewController.swift in Sources */,
 				A676618A2D5B367B006AAB63 /* EditProfileView.swift in Sources */,
 				A676618B2D5B367B006AAB63 /* EditProfileViewController.swift in Sources */,
@@ -1599,6 +1725,7 @@
 				A676619C2D5B367B006AAB63 /* SettingView.swift in Sources */,
 				A676619D2D5B367B006AAB63 /* SettingViewController.swift in Sources */,
 				A648ACDA2D5CECA50094C126 /* CategoriesEndPoint.swift in Sources */,
+				074401AE2D5E1F9A00E60282 /* AddClothingViewController.swift in Sources */,
 				07649EF22D4DE58900B6B2B2 /* HistoryService.swift in Sources */,
 				07E1CB662D36A63200F86BB8 /* ViewController.swift in Sources */,
 				0744FFDA2D5B1E1800E60282 /* UpdateFriendClothesView.swift in Sources */,
@@ -1612,6 +1739,10 @@
 				0744FFCA2D5B1D8B00E60282 /* HomeViewController.swift in Sources */,
 				0744FFCB2D5B1D8B00E60282 /* PickViewController.swift in Sources */,
 				0744FFCC2D5B1D8B00E60282 /* UpdateFriendClothesViewController.swift in Sources */,
+				074401722D5E1F9A00E60282 /* Agreement.swift in Sources */,
+				074401732D5E1F9A00E60282 /* AgreementCell.swift in Sources */,
+				074401742D5E1F9A00E60282 /* AgreementDetailViewController.swift in Sources */,
+				074401752D5E1F9A00E60282 /* AgreementViewController.swift in Sources */,
 				07E1CB582D3679A800F86BB8 /* CustomTextField.swift in Sources */,
 				0744FFCD2D5B1D9500E60282 /* UpdateFriendCalendarModel.swift in Sources */,
 				0744FFCE2D5B1D9500E60282 /* UpdateFriendClothesModel.swift in Sources */,
@@ -1666,7 +1797,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1703,7 +1834,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
