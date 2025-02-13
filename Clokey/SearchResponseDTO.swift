@@ -8,7 +8,7 @@
 import Foundation
 
 //닉네임과 ID로 사용자 검색
-public struct SearchMemberDTO: Codable {
+public struct SearchMemberResponseDTO: Codable {
     public let memberPreviews: [MemberPreviewDTO]
     public let listsize: Int
     public let totalPage: Int
@@ -26,7 +26,7 @@ public struct MemberPreviewDTO: Codable{
 }
 
 //기록해시태그와 카테고리로 검색
-public struct SearchHistoryCategoryDTO: Codable{
+public struct SearchHistoryCategoryResponseDTO: Codable{
     public let historyPreviews: [HistoryPreviewDTO]
     public let listSize: Int
     public let totalPage: Int
@@ -40,7 +40,7 @@ public struct HistoryPreviewDTO: Codable{
     public let imageUrl: String
 }
 // 옷장에서 검색
-public struct SearchClothesDTO: Codable{
+public struct SearchClothesResponseDTO: Codable{
     public let clothPreviews: [ClothPreviewDTO]
     public let totalPage: Int
     public let totalElements: Int64

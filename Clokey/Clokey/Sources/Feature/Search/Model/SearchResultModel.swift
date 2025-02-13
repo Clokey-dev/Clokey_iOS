@@ -16,11 +16,13 @@
 import Foundation
 
 struct SearchResultModel {
-    let profileImageURL: String
-    let userID: String
+    let profileImage: String
+    let clokeyID: String
     let nickname: String
+    let Id: Int64
 }
 
 struct HashtagPost {
-    let imageURL: String
+    let imageUrl: String
+    let id: Int64
 }

@@ -15,56 +15,32 @@
 import UIKit
 import SnapKit
 import Then
+import Kingfisher
+
 
 class SearchResultViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     private let searchView = SearchResultView()
     private let searchManager = SearchManager()
-    private var searchQuery: String?
-    private var users: [UserModel] = [
-        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
-        UserModel(userId: "아이디2", nickname: "닉네임2", profileImageUrl: ""),
-        UserModel(userId: "아이디3", nickname: "닉네임3", profileImageUrl: ""),
-        UserModel(userId: "아이디4", nickname: "닉네임4", profileImageUrl: ""),
-        UserModel(userId: "아이디5", nickname: "닉네임5", profileImageUrl: ""),
-        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
-        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
-        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
-        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
-        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
-        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
-        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
-        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
-        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
-        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: ""),
-        UserModel(userId: "아이디1", nickname: "닉네임1", profileImageUrl: "")
-    ]
-    private var dummyImages: [UIImage] = [
-        UIImage(named: "sample1") ?? UIImage(),
-        UIImage(named: "sample2") ?? UIImage(),
-        UIImage(named: "sample3") ?? UIImage(),
-        UIImage(named: "sample4") ?? UIImage(),
-        UIImage(named: "sample5") ?? UIImage(),
-        UIImage(named: "sample1") ?? UIImage(),
-        UIImage(named: "sample1") ?? UIImage(),
-        UIImage(named: "sample1") ?? UIImage(),
-        UIImage(named: "sample1") ?? UIImage(),
-        UIImage(named: "sample1") ?? UIImage(),
-        UIImage(named: "sample1") ?? UIImage(),
-        UIImage(named: "sample1") ?? UIImage(),
-        UIImage(named: "sample1") ?? UIImage(),
-        UIImage(named: "sample1") ?? UIImage(),
-        UIImage(named: "sample1") ?? UIImage(),
-        UIImage(named: "sample1") ?? UIImage(),
-        UIImage(named: "sample1") ?? UIImage()
-    ]
+
+    private var users: [UserModel]
+    private var query: String
+    
+    private var dummyImages: [String] = []
     private var filteredUsers: [UserModel] = []
     private var searchHistory: [String] = []
+    
+    // 서버 연결을 위한 변수들
+    private var currentPage = 1
+    private let pageSize = 20
+    private var hasMorePages = true
+    
     
     override func loadView() {
         view = searchView
     }
-    init(searchQuery: String?) {
-            self.searchQuery = searchQuery
+    init(query: String, results: [UserModel]) {
+            self.query = query
+            self.users = results
             super.init(nibName: nil, bundle: nil)
         }
 
@@ -75,7 +51,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-
+        searchView.accountsCollectionView.reloadData()
             // ✅ 네비게이션 바 스타일 설정
         
             
@@ -99,11 +75,9 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         searchView.hashtagsCollectionView.isScrollEnabled = true
         loadSearchHistory()
         
-        if let query = searchQuery {
-            searchView.searchField.text = query
-            filterUsers(with: query)
-            addSearchHistory(query)
-        }
+        searchView.searchField.text = query
+        filterUsers(with: query)
+        addSearchHistory(query)
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -119,22 +93,36 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
     }
     
     @objc private func tabSelected(_ sender: UIButton) {
+        guard !query.isEmpty else { return }
         let isAccountTab = sender == searchView.accountButton
-        
+
+        // ✅ UI 업데이트
         searchView.accountButton.setTitleColor(isAccountTab ? UIColor(named: "pointOrange800") : .lightGray, for: .normal)
         searchView.hashtagButton.setTitleColor(isAccountTab ? .lightGray : UIColor(named: "pointOrange800"), for: .normal)
-        
+
         searchView.accountsCollectionView.isHidden = !isAccountTab
         searchView.hashtagsCollectionView.isHidden = isAccountTab
-        
-        UIView.animate(withDuration: 0.2) {
-            self.searchView.indicatorView.snp.remakeConstraints { make in
-                make.centerX.equalTo(sender.snp.centerX)
-                make.bottom.equalTo(self.searchView.segmentedContainerView.snp.bottom).offset(-2)
-                make.width.equalTo(88)
-                make.height.equalTo(5)
-            }
-            self.view.layoutIfNeeded()
+
+        // ✅ 탭 변경 시 API 호출
+        currentPage = 1
+        hasMorePages = true
+
+        if isAccountTab {
+            loadMemberData(query: query, isNextPage: false)
+        } else {
+            loadHistoryData(query: query, isNextPage: false)
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let frameHeight = scrollView.frame.size.height
+
+        if offsetY > contentHeight - frameHeight - 100 {
+            guard let query = searchView.searchField.text, !query.isEmpty else { return }
+
+            loadMemberData(query: query, isNextPage: true)
         }
     }
     
@@ -165,13 +153,14 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         
         filteredUsers = users.filter { user in
             let lowercasedQuery = query.lowercased()
-            return user.userId.lowercased().contains(lowercasedQuery) ||
+            return user.clokeyId.lowercased().contains(lowercasedQuery) ||
             user.nickname.lowercased().contains(lowercasedQuery)
         }
         
         searchView.emptyLabel.isHidden = !filteredUsers.isEmpty
         searchView.accountsCollectionView.reloadData()
     }
+    
     
     private func saveSearchQuery(_ query: String) {
         var searchHistory = UserDefaults.standard.stringArray(forKey: "searchHistory") ?? []
@@ -193,6 +182,60 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
 
         // 🔥 검색 기록 다시 불러오고 UI 업데이트
         loadSearchHistory()
+    }
+    private func loadMemberData(query: String, isNextPage: Bool = false) {
+        guard hasMorePages else { return }
+
+        let page = isNextPage ? currentPage + 1 : 1
+
+        SearchService().searchMemeber(data: query, page: 1, size: 20) { [weak self] result in
+            switch result {
+            case .success(let response):
+                let users = response.memberPreviews.map { member in
+                    UserModel(
+                        clokeyId: member.clokeyId,
+                        nickname: member.name,
+                        profileImage: member.profileImage
+                    )
+                }
+
+                DispatchQueue.main.async {
+                    let resultVC = SearchResultViewController(query: query, results: users) // ✅ users 전달
+                    self?.navigationController?.pushViewController(resultVC, animated: true)
+                }
+
+            case .failure(let error):
+                print("❌ 검색 실패: \(error.localizedDescription)")
+            }
+        }
+    }
+    private func loadHistoryData(query: String, isNextPage: Bool = false) {
+        guard hasMorePages else { return }
+
+        let page = isNextPage ? currentPage + 1 : 1
+
+        SearchService().searchHistory(data: query, page: page, size: pageSize) { [weak self] result in
+            switch result {
+            case .success(let response):
+                let newImages = response.historyPreviews.map { $0.imageUrl } // 🔹 String URL 리스트 반환
+
+                DispatchQueue.main.async {
+                    if isNextPage {
+                        self?.dummyImages.append(contentsOf: newImages) // ✅ URL을 추가할 수 있도록 수정
+                        self?.currentPage = page
+                    } else {
+                        self?.dummyImages = newImages
+                        self?.currentPage = 1
+                    }
+
+                    self?.hasMorePages = newImages.count >= self!.pageSize
+                    self?.searchView.hashtagsCollectionView.reloadData()
+                    self?.searchView.emptyLabel.isHidden = !self!.dummyImages.isEmpty
+                }
+            case .failure(let error):
+                print("❌ 해시태그 검색 실패: \(error.localizedDescription)")
+            }
+        }
     }
     
     @objc private func textFieldDidChange(_ textField: UITextField) {
@@ -234,7 +277,7 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
             return dummyImages.count
         }
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == searchView.accountsCollectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UserCell.identifier, for: indexPath) as? UserCell else {
@@ -247,7 +290,13 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.identifier, for: indexPath) as? ImageCell else {
                 fatalError("❌ ImageCell을 가져올 수 없음!")
             }
-            cell.configure(with: dummyImages[indexPath.item])
+            
+            // ✅ 이미지 URL을 Kingfisher로 로드
+            let imageUrl = dummyImages[indexPath.item]
+            if let url = URL(string: imageUrl) {
+                cell.imageView.kf.setImage(with: url) // ✅ URL에서 이미지 로드
+            }
+            
             return cell
         }
     }
