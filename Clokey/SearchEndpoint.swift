@@ -5,14 +5,14 @@
 //  Created by 소민준 on 2/13/25.
 //
 
+
 import Foundation
 import Moya
 
-
 public enum SearchEndpoint {
-    case searchMember(data: String?, page: Int, size: Int)
-    case searchHistory(data: String?, page: Int, size: Int)
-    case searchClothes(keyword: String?, page: Int, size: Int)
+    case searchMember(by: String, keyword: String, page: Int, size: Int)
+    case searchHistory(by: String, keyword: String, page: Int, size: Int)
+    case searchClothes(by: String, keyword: String, page: Int, size: Int)
 }
 
 extension SearchEndpoint: TargetType {
@@ -22,6 +22,7 @@ extension SearchEndpoint: TargetType {
         }
         return url
     }
+    
     public var path: String {
         switch self {
         case .searchHistory:
@@ -32,31 +33,29 @@ extension SearchEndpoint: TargetType {
             return "/clothes/search/name-and-brand"
         }
     }
+    
     public var method: Moya.Method {
         return .get
     }
+    
     public var task: Moya.Task {
         switch self {
-        case    .searchHistory(let data, let page, let size),
-                .searchMember(let data, let page, let size),
-                .searchClothes(let data, let page, let size):
+        case .searchHistory(let by, let keyword, let page, let size),
+             .searchMember(let by, let keyword, let page, let size),
+             .searchClothes(let by, let keyword, let page, let size):
+            
             var parameters: [String: Any] = [
+                "by": by,    // 🔥 필터 옵션 추가 (예: "nickname", "id", "hashtag")
+                "keyword": keyword,
                 "page": page,
                 "size": size
             ]
-            if let data = data {
-                if case .searchClothes = self {
-                    parameters["keyword"] = data 
-                } else {
-                    parameters["data"] = data
-                }
-            }
+            
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         }
     }
+    
     public var headers: [String: String]? {
         return ["Content-Type": "application/json"]
     }
-    
-    
 }
