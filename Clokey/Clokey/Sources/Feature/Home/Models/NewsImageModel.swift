@@ -29,7 +29,9 @@ extension NewsImageModel {
             ],
             hotImageURLs: [
                 "https://cdn.newsculture.press/news/photo/202404/546298_687539_5839.jpg",
-                "https://img.sportsworldi.com/content/image/2023/06/11/20230611511522.jpg"
+                "https://img.sportsworldi.com/content/image/2023/06/11/20230611511522.jpg",
+                "https://talkimg.imbc.com/TVianUpload/tvian/TViews/image/2022/03/13/rwTp2delOQ6W637828051274144183.jpg",
+                "https://menu.moneys.co.kr/moneyweek/thumb/2024/09/30/06/2024093011160393151_6.jpg"
             ]
         )
     }

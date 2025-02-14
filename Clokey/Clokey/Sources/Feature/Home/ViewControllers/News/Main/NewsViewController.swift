@@ -64,6 +64,8 @@ class NewsViewController: UIViewController {
         
         newsView.hotAccountImageView1.kf.setImage(with: URL(string: model.hotImageURLs[0]))
         newsView.hotAccountImageView2.kf.setImage(with: URL(string: model.hotImageURLs[1]))
+        newsView.hotAccountImageView3.kf.setImage(with: URL(string: model.hotImageURLs[2]))
+        newsView.hotAccountImageView4.kf.setImage(with: URL(string: model.hotImageURLs[3]))
     }
     
     func fetchFriendClothes() {

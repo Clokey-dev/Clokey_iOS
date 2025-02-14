@@ -247,6 +247,42 @@ class NewsView: UIView {
         $0.text = "티라미수케이크"
     }
     
+    let hotAccountImageView3: UIImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFill // 비율 유지
+        $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
+        $0.backgroundColor = .gray
+    }
+    
+    let hotAccountProfileIcon3: UIImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+        $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
+        $0.clipsToBounds = true
+    }
+    
+    let hotAccountProfileName3 = UILabel().then{
+        $0.font = UIFont.ptdMediumFont(ofSize: 14)
+        $0.textColor = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0)
+        $0.text = "티라미수케이크"
+    }
+    
+    let hotAccountImageView4: UIImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFill // 비율 유지
+        $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
+        $0.backgroundColor = .gray
+    }
+    
+    let hotAccountProfileIcon4: UIImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+        $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
+        $0.clipsToBounds = true
+    }
+    
+    let hotAccountProfileName4 = UILabel().then{
+        $0.font = UIFont.ptdMediumFont(ofSize: 14)
+        $0.textColor = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0)
+        $0.text = "티라미수케이크"
+    }
+    
     // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -300,11 +336,17 @@ class NewsView: UIView {
         contentView.addSubview(hotAccountTitle)
         contentView.addSubview(hotAccountContainerView)
         hotAccountContainerView.addSubview(hotAccountImageView1)
-        hotAccountContainerView.addSubview(hotAccountImageView2)
         hotAccountContainerView.addSubview(hotAccountProfileIcon1)
         hotAccountContainerView.addSubview(hotAccountProfileName1)
+        hotAccountContainerView.addSubview(hotAccountImageView2)
         hotAccountContainerView.addSubview(hotAccountProfileIcon2)
         hotAccountContainerView.addSubview(hotAccountProfileName2)
+        hotAccountContainerView.addSubview(hotAccountImageView3)
+        hotAccountContainerView.addSubview(hotAccountProfileIcon3)
+        hotAccountContainerView.addSubview(hotAccountProfileName3)
+        hotAccountContainerView.addSubview(hotAccountImageView4)
+        hotAccountContainerView.addSubview(hotAccountProfileIcon4)
+        hotAccountContainerView.addSubview(hotAccountProfileName4)
         
         
         
@@ -473,17 +515,19 @@ class NewsView: UIView {
         hotAccountContainerView.snp.makeConstraints { make in
             make.top.equalTo(hotAccountTitle.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(220)
+            make.height.equalTo(524)
             make.bottom.equalToSuperview().offset(-40) // 스크롤 콘텐츠의 마지막 부분
         }
         
         hotAccountImageView1.snp.makeConstraints { make in
-            make.top.bottom.leading.equalToSuperview()
-            make.width.equalTo(hotAccountContainerView.snp.width).multipliedBy(0.5).offset(-5)
+            make.top.leading.equalToSuperview()
+//            make.width.equalTo(hotAccountContainerView.snp.width).multipliedBy(0.5).offset(-5)
+            make.width.equalTo(160)
+            make.height.equalTo(220)
         }
         
         hotAccountProfileIcon1.snp.makeConstraints {
-            $0.top.equalTo(hotAccountImageView1.snp.bottom).offset(11)
+            $0.top.equalTo(hotAccountImageView1.snp.bottom).offset(10)
             $0.leading.equalTo(hotAccountImageView1.snp.leading)
             $0.width.height.equalTo(20) // 아이콘 크기
         }
@@ -496,12 +540,14 @@ class NewsView: UIView {
         }
         
         hotAccountImageView2.snp.makeConstraints { make in
-            make.top.bottom.trailing.equalToSuperview()
-            make.width.equalTo(hotAccountContainerView.snp.width).multipliedBy(0.5).offset(-5)
+            make.top.trailing.equalToSuperview()
+//            make.width.equalTo(hotAccountContainerView.snp.width).multipliedBy(0.5).offset(-5)
+            make.width.equalTo(160)
+            make.height.equalTo(220)
         }
         
         hotAccountProfileIcon2.snp.makeConstraints {
-            $0.top.equalTo(hotAccountImageView2.snp.bottom).offset(11)
+            $0.top.equalTo(hotAccountImageView2.snp.bottom).offset(10)
             $0.leading.equalTo(hotAccountImageView2.snp.leading)
             $0.width.height.equalTo(20) // 아이콘 크기
         }
@@ -510,6 +556,48 @@ class NewsView: UIView {
         hotAccountProfileName2.snp.makeConstraints {
 //            $0.centerY.equalTo(hotAccountProfileIcon2) // 아이콘과 수직 정렬
             $0.top.equalTo(hotAccountImageView2.snp.bottom).offset(13)
+            $0.leading.equalTo(hotAccountProfileIcon2.snp.trailing).offset(8)
+        }
+        
+        hotAccountImageView3.snp.makeConstraints { make in
+            make.top.equalTo(hotAccountProfileIcon1.snp.bottom).offset(18)
+            make.leading.equalToSuperview()
+//            make.width.equalTo(hotAccountContainerView.snp.width).multipliedBy(0.5).offset(-5)
+            make.width.equalTo(160)
+            make.height.equalTo(220)
+        }
+        
+        hotAccountProfileIcon3.snp.makeConstraints {
+            $0.top.equalTo(hotAccountImageView3.snp.bottom).offset(10)
+            $0.leading.equalTo(hotAccountImageView3.snp.leading)
+            $0.width.height.equalTo(20) // 아이콘 크기
+        }
+        
+        // 제목 레이블 레이아웃
+        hotAccountProfileName3.snp.makeConstraints {
+//            $0.centerY.equalTo(hotAccountProfileIcon2) // 아이콘과 수직 정렬
+            $0.top.equalTo(hotAccountImageView3.snp.bottom).offset(13)
+            $0.leading.equalTo(hotAccountProfileIcon3.snp.trailing).offset(8)
+        }
+        
+        hotAccountImageView4.snp.makeConstraints { make in
+            make.top.equalTo(hotAccountProfileIcon2.snp.bottom).offset(18)
+            make.trailing.equalToSuperview()
+//            make.width.equalTo(hotAccountContainerView.snp.width).multipliedBy(0.5).offset(-5)
+            make.width.equalTo(160)
+            make.height.equalTo(220)
+        }
+        
+        hotAccountProfileIcon4.snp.makeConstraints {
+            $0.top.equalTo(hotAccountImageView4.snp.bottom).offset(10)
+            $0.leading.equalTo(hotAccountImageView2.snp.leading)
+            $0.width.height.equalTo(20) // 아이콘 크기
+        }
+        
+        // 제목 레이블 레이아웃
+        hotAccountProfileName4.snp.makeConstraints {
+//            $0.centerY.equalTo(hotAccountProfileIcon2) // 아이콘과 수직 정렬
+            $0.top.equalTo(hotAccountImageView4.snp.bottom).offset(13)
             $0.leading.equalTo(hotAccountProfileIcon2.snp.trailing).offset(8)
         }
     }

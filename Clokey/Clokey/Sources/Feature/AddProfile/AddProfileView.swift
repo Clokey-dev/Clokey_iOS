@@ -89,9 +89,9 @@ final class AddProfileView: UIView {
     }
     
     let nicknameStatusLabel = UILabel().then {
-        $0.text = "6글자 이내로 입력해주세요" // 기본적으로 숨김
+        $0.text = "" // 기본적으로 숨김
         $0.font = UIFont.ptdRegularFont(ofSize: 16)
-        $0.isHidden = true
+//        $0.isHidden = true
         $0.textColor = .pointOrange800 // 오류 시 빨간색
     }
     
@@ -337,7 +337,7 @@ final class AddProfileView: UIView {
         
         idCheckButton.snp.makeConstraints { make in
 //            make.centerY.equalTo(idTextField)
-            make.top.equalTo(idLabel.snp.bottom).offset(9)
+            make.top.equalTo(idLabel.snp.bottom).offset(3)
             make.trailing.equalToSuperview().inset(20)
             make.width.equalTo(76)
             make.height.equalTo(30)
@@ -384,6 +384,32 @@ final class AddProfileView: UIView {
             make.centerX.equalToSuperview()
             make.height.equalTo(54)
             make.width.equalTo(353)
+        }
+    }
+    
+    func nickNameError(hidden: Bool) {
+        nicknameStatusLabel.isHidden = hidden
+        
+        idLabel.snp.remakeConstraints { make in
+            if hidden {
+                make.top.equalTo(nicknameTextField.snp.bottom).offset(25)
+            } else {
+                make.top.equalTo(nicknameTextField.snp.bottom).offset(52)
+            }
+            make.leading.equalToSuperview().offset(20)
+        }
+    }
+    
+    func idError(hidden: Bool) {
+        idStatusLabel.isHidden = hidden
+        
+        bioLabel.snp.remakeConstraints { make in
+            if hidden {
+                make.top.equalTo(idTextField.snp.bottom).offset(26)
+            } else {
+                make.top.equalTo(idTextField.snp.bottom).offset(52)
+            }
+            make.leading.equalToSuperview().offset(20)
         }
     }
 }
