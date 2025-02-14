@@ -352,20 +352,40 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                 switch result {
                 case .success(let historyResult):
                     let imageUrls = historyResult.imageUrls
+                    let nickName = historyResult.nickName
                     
-                    // ✅ 배열이 비어있을 경우 로그 출력
-                    if imageUrls.isEmpty {
-                        print("📷 사진이 없습니다")
-                    } else {
-                        // ✅ 배열이 비어있지 않은지 확인 후 이미지 설정
-                        if imageUrls.count > 0 {
-                            self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
+                    if historyResult.isMine {
+                        self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님은 이 옷을 착용하셨네요!"
+                        self.pickView.recapNotMe(hidden: true)
+                        
+                        if imageUrls.isEmpty {
+                            print("📷 사진이 없습니다")
+                        } else {
+                            // ✅ 배열이 비어있지 않은지 확인 후 이미지 설정
+                            if imageUrls.count > 0 {
+                                self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
+                            }
+                            if imageUrls.count > 1 {
+                                self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
+                            }
                         }
-                        if imageUrls.count > 1 {
-                            self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
+                    } else {
+                        self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님의 기록이 없어요!"
+                        self.pickView.recapNotMe(hidden: false)
+                        
+                        // ✅ 배열이 비어있을 경우 로그 출력
+                        if imageUrls.isEmpty {
+                            print("📷 사진이 없습니다")
+                        } else {
+                            // ✅ 배열이 비어있지 않은지 확인 후 이미지 설정
+                            if imageUrls.count > 0 {
+                                self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
+                            }
+                            if imageUrls.count > 1 {
+                                self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
+                            }
                         }
                     }
-                    
                 case .failure(let error):
                     print("❌ 데이터 로드 실패: \(error.localizedDescription)")
                 }

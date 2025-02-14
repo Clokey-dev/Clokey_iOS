@@ -9,8 +9,9 @@ import Foundation
 
 // Recap
 public struct OneYearAgoHistoriesResponseDTO: Codable {
+    let isMine: Bool
     let historyId: Int64
-    let nickname: String
+    let nickName: String
     let imageUrls: [String] // 서버에서 받은 이미지 URL 리스트
 }
 

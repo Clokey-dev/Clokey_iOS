@@ -27,7 +27,7 @@ extension HomeEndPoint: TargetType {
         case .getIssues:
             return "/home"
         case .getOneYearAgoHistories: // 새로 추가된 경로
-            return "/histories/1-year-ago"
+            return "/home/1-year-ago"
         }
     }
     
