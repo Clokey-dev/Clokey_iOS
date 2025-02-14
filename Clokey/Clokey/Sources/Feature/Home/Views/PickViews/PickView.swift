@@ -371,26 +371,47 @@ class PickView: UIView {
     }
     
     /// Recap 섹션에 이미지와 데이터를 설정하는 메서드
-        func updateRecapImages(with imageUrls: [String]) {
-            if imageUrls.count > 0 {
-                recapImageView1.image = loadImage(from: imageUrls[0])
-            }
-            if imageUrls.count > 1 {
-                recapImageView2.image = loadImage(from: imageUrls[1])
-            }
-        }
-        
-        /// URL에서 이미지를 로드하는 헬퍼 메서드
-        private func loadImage(from urlString: String) -> UIImage? {
-            guard let url = URL(string: urlString),
-                  let data = try? Data(contentsOf: url) else {
-                return nil
-            }
-            return UIImage(data: data)
-        }
+//        func updateRecapImages(with imageUrls: [String]) {
+//            if imageUrls.count > 0 {
+//                recapImageView1.image = loadImage(from: imageUrls[0])
+//            }
+//            if imageUrls.count > 1 {
+//                recapImageView2.image = loadImage(from: imageUrls[1])
+//            }
+//        }
+//        
+//        /// URL에서 이미지를 로드하는 헬퍼 메서드
+//        private func loadImage(from urlString: String) -> UIImage? {
+//            guard let url = URL(string: urlString),
+//                  let data = try? Data(contentsOf: url) else {
+//                return nil
+//            }
+//            return UIImage(data: data)
+//        }
     
     /// 데이터 상태에 따라 EmptyStackView 표시/숨김
     func updateEmptyState(isEmpty: Bool) {
+        if isEmpty {
+            // 데이터가 없으면 EmptyStackView 추가하고 관련 요소 숨김
+            weatherImageContainerView.addSubview(emptyStackView)
+            emptyStackView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+            
+            temperatureChangeLabel.isHidden = true
+            bottomButtonLabel.isHidden = true
+            bottomArrowIcon.isHidden = true
+        } else {
+            // 데이터가 있으면 EmptyStackView 제거하고 관련 요소 표시
+            emptyStackView.removeFromSuperview()
+            
+            temperatureChangeLabel.isHidden = false
+            bottomButtonLabel.isHidden = false
+            bottomArrowIcon.isHidden = false
+        }
+    }
+    
+    func emptyWeatherCloth(isEmpty: Bool) {
         if isEmpty {
             // 데이터가 없으면 EmptyStackView 추가하고 관련 요소 숨김
             weatherImageContainerView.addSubview(emptyStackView)

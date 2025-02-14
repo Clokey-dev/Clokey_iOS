@@ -355,12 +355,15 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     let nickName = historyResult.nickName
                     
                     if historyResult.isMine {
-                        self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님은 이 옷을 착용하셨네요!"
-                        self.pickView.recapNotMe(hidden: true)
-                        
                         if imageUrls.isEmpty {
                             print("📷 사진이 없습니다")
+                            self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님의 기록이 없어요!"
+                            self.pickView.recapNotMe(hidden: false)
+                            self.pickView.recapSubtitleLabel2.text = "1년 전 오늘, 다른 사용자들의 기록도 없어요!"
                         } else {
+                            self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님은 이 옷을 착용하셨네요!"
+                            self.pickView.recapNotMe(hidden: true)
+                            
                             // ✅ 배열이 비어있지 않은지 확인 후 이미지 설정
                             if imageUrls.count > 0 {
                                 self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
