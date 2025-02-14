@@ -21,12 +21,13 @@ public final class SearchService : NetworkManager {
     }
     //사용자 검색 API
     public func searchMemeber(
+        by: String,
         data: String,
         page: Int,
         size: Int,
         completion: @escaping (Result< SearchMemberResponseDTO, NetworkError>) -> Void
     ){
-        request(target: .searchMember(data: data, page: page, size: size),
+        request(target: .searchMember(by: by, data: data, page: page, size: size),
                 decodingType: SearchMemberResponseDTO.self,
                 completion: completion
         )
@@ -34,13 +35,14 @@ public final class SearchService : NetworkManager {
     
     //기록, 해시태그 검색 API
     public func searchHistory(
+        by: String,
         data: String,
         page: Int,
         size: Int,
         completion: @escaping (Result< SearchHistoryCategoryResponseDTO, NetworkError>) -> Void
         
     ){
-        request(target: .searchHistory(data: data, page: page, size: size),
+        request(target: .searchHistory(by: by, data: data, page: page, size: size),
                 decodingType: SearchHistoryCategoryResponseDTO.self,
                 completion: completion
         )
@@ -48,13 +50,14 @@ public final class SearchService : NetworkManager {
     }
     //옷 검색 API
     public func searchClothes(
+        by: String,
         data: String,
         page: Int,
         size: Int,
         completion: @escaping (Result <SearchClothesResponseDTO, NetworkError>) -> Void
         
     ){
-        request(target: .searchClothes(keyword: data, page: page, size: size),
+        request(target: .searchClothes(by: by, keyword: data, page: page, size: size),
                 decodingType: SearchClothesResponseDTO.self,
                 completion: completion
         )

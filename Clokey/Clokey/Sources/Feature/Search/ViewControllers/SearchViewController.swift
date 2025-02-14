@@ -7,7 +7,6 @@
 
 import UIKit
 import SnapKit
-import Kingfisher
 
 class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDelegate {
     
@@ -131,29 +130,10 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
             self.searchView.recentSearchTableView.isHidden = self.searchHistory.isEmpty
         }
 
-        // ✅ 🔥 API 호출해서 users 가져오기
-        SearchService().searchMemeber(data: query, page: 1, size: 20) { [weak self] result in
-            print("✅ [SearchViewController] 서버 요청 보냄: \(query)")
-            switch result {
-            case .success(let response):
-                let users = response.memberPreviews.map { member in
-                    UserModel(
-                        clokeyId: member.clokeyId,
-                        nickname: member.name,
-                        profileImage: member.profileImage
-                    )
-                }
-
-                DispatchQueue.main.async {
-                    let resultVC = SearchResultViewController(query: query, results: users)
-                    self?.navigationController?.pushViewController(resultVC, animated: true)
-                }
-
-            case .failure(let error):
-                print("❌ 검색 실패: \(error.localizedDescription)")
-            }
-        }
+        let resultVC = SearchResultViewController(searchQuery: query)
+        navigationController?.pushViewController(resultVC, animated: true)
     }
+    
     // ✅ 추천 검색어 클릭 시 실행 searchhistory
     func didTapRecommendedKeyword(_ keyword: String) {
         selectedKeyword = keyword // ✅ 선택한 키워드 저장
@@ -168,33 +148,10 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let query = textField.text, !query.isEmpty else { return false }
 
-        textField.resignFirstResponder() // 🔹 키보드 내리기
+        print("✅ 검색 실행: \(query)") // 👉 검색 버튼 눌렀을 때만 저장
 
-        // 🔹 검색 기록 저장 (추천 검색어 기능 추가)
-        let searchManager = SearchManager() // ✅ 직접 인스턴스 생성
-        searchManager.addSearchKeyword(query)
-        // 🔹 API 호출 (검색 실행)
-        SearchService().searchMemeber(data: query, page: 1, size: 20) { [weak self] result in
-            switch result {
-            case .success(let response):
-                let users = response.memberPreviews.map { member in
-                    UserModel(
-                        clokeyId: member.clokeyId,
-                        nickname: member.name,
-                        profileImage: member.profileImage
-                    )
-                }
-
-                DispatchQueue.main.async {
-                    let resultVC = SearchResultViewController(query: query, results: users) // ✅ users 전달
-                    self?.navigationController?.pushViewController(resultVC, animated: true)
-                }
-
-            case .failure(let error):
-                print("❌ 검색 실패: \(error.localizedDescription)")
-            }
-        }
-
+        performSearch(with: query) // 검색 실행
+        textField.resignFirstResponder()
         return true
     }
     
@@ -230,7 +187,6 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
             guard let self = self else { return }
             let keywordToDelete = self.searchHistory[indexPath.row]
 
-            self.searchManager.removeSearchKeyword(keywordToDelete)
             self.searchManager.removeSearchKeyword(keywordToDelete)
 
             // ✅ 🔥 삭제 후 즉시 `searchHistory` 갱신
