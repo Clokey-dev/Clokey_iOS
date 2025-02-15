@@ -27,7 +27,7 @@ class UpdateFriendCalendarCollectionViewCell: UICollectionViewCell {
         $0.contentMode = .scaleAspectFit
         $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
         $0.clipsToBounds = false
-        $0.layer.cornerRadius = 20
+        $0.layer.cornerRadius = 10
         $0.layer.masksToBounds = true // 둥근 모서리 안쪽에만 이미지 표시
     }
     

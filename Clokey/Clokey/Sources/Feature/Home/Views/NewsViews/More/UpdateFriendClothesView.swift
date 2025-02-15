@@ -49,19 +49,16 @@ class UpdateFriendClothesView: UIView {
         $0.attributedText = attributedString
     }
     
-    /// 구분 선
-    private let lineView = UIView().then {
-        $0.backgroundColor = UIColor(red: 52/255, green: 52/255, blue: 52/255, alpha: 0.5)
-    }
+    
     
     let updateFriendClothesCollectionView: UICollectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout().then {
-            $0.itemSize = CGSize(width: 317, height: 154) // 셀 크기 설정
+            $0.itemSize = CGSize(width: 317, height: 176) // 셀 크기 설정
             $0.minimumInteritemSpacing = 8
             $0.minimumLineSpacing = 16 // 셀 간의 세로 간격
             $0.scrollDirection = .vertical // 세로 스크롤
-            $0.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16) // 섹션 여백
+            $0.sectionInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0) // 섹션 여백
         }
     ).then {
         $0.backgroundColor = .clear
@@ -87,7 +84,6 @@ class UpdateFriendClothesView: UIView {
         
         contentView.addSubview(backButton)
         contentView.addSubview(titleLabel)
-        contentView.addSubview(lineView)
 //        contentView.addSubview(container)
         contentView.addSubview(updateFriendClothesCollectionView)
 
@@ -118,11 +114,6 @@ class UpdateFriendClothesView: UIView {
             make.leading.equalTo(backButton.snp.trailing).offset(20)
         }
         
-        lineView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(15)
-            make.leading.trailing.equalToSuperview().inset(20)  // 화면 전체 너비
-            make.height.equalTo(1)  // 높이 1포인트
-        }
         
 //        container.snp.makeConstraints { make in
 //            make.top.equalTo(lineView.snp.bottom) // 구분선 아래
@@ -130,9 +121,10 @@ class UpdateFriendClothesView: UIView {
 //        }
         
         updateFriendClothesCollectionView.snp.makeConstraints{ make in
-            make.top.equalTo(lineView.snp.bottom).offset(12)
+            make.top.equalTo(titleLabel.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(300) // 초기 높이 (1로 설정하여 콘텐츠 크기 업데이트 유도)
+//            make.bottom.equalToSuperview().offset(-20) // ✅ 하단 고정 (UIScrollView 내부)
             
         }
         

@@ -28,18 +28,25 @@ class UpdateFriendClothesViewController: UIViewController {
         updateFriendClothesView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
     }
     
-    @objc private func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
         
         DispatchQueue.main.async {
             self.updateFriendClothesView.updateFriendClothesCollectionView.reloadData()
             self.updateCollectionViewHeight()
         }
     }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    @objc private func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
+    }
+    
     
     private func updateCollectionViewHeight() {
         updateFriendClothesView.updateFriendClothesCollectionView.layoutIfNeeded()
@@ -56,11 +63,34 @@ class UpdateFriendClothesViewController: UIViewController {
         updateFriendClothesView.updateFriendClothesCollectionView.delegate = self
     }
     
+//    private func loadData() {
+//        updates = UpdateFriendClothesModel.dummy()
+//        
+//        DispatchQueue.main.async {
+//            self.updateFriendClothesView.updateFriendClothesCollectionView.reloadData()
+//        }
+//    }
+    
     private func loadData() {
-        updates = UpdateFriendClothesModel.dummy()
-        
-        DispatchQueue.main.async {
-            self.updateFriendClothesView.updateFriendClothesCollectionView.reloadData()
+        let homeService = HomeService()
+        homeService.fetchGetDetailIssuesData(
+            section: "closet",
+            page: 1
+        ) { (result: Result<GetDetailIssuesClosetResponseDTO, NetworkError>) in
+            switch result {
+            case .success(let responseDTO):
+                self.updates = responseDTO.dailyNewsResult.map { item in
+                    return UpdateFriendClothesModel(profileImage: URL(string: item.profileImage)!, name: item.clokeyId, date: item.date, clothingImages: (item.images?.compactMap { URL(string: $0) })! )
+                }
+                
+                DispatchQueue.main.async {
+                    self.updateFriendClothesView.updateFriendClothesCollectionView.reloadData()
+                    self.updateCollectionViewHeight()
+                }
+                
+            case .failure(let error):
+                print("Failed to load calendar data: \(error)")
+            }
         }
     }
 }
@@ -79,31 +109,31 @@ extension UpdateFriendClothesViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        let update = updates[indexPath.item]
-        
-        // 이미지 로드
-        let imageViews = [cell.image1, cell.image2, cell.image3]
-        for (index, url) in update.clothingImages.enumerated() {
-            guard index < imageViews.count else { break }
-            imageViews[index].kf.setImage(
-                with: url,
-                placeholder: UIImage(named: "placeholder"),
-                options: nil,
-                progressBlock: nil,
-                completionHandler: { result in
-                    switch result {
-                    case .success(let value):
-                        print("Image loaded: \(value.source.url?.absoluteString ?? "")")
-                    case .failure(let error):
-                        print("Error loading image: \(error.localizedDescription)")
-                    }
-                }
-            )
-        }
-        
-        // 텍스트 설정
-        cell.nameLabel.text = update.name
-        cell.dateLabel.text = update.date
+//        let update = updates[indexPath.item]
+//        
+//        // 이미지 로드
+//        let imageViews = [cell.image1, cell.image2, cell.image3]
+//        for (index, url) in update.clothingImages.enumerated() {
+//            guard index < imageViews.count else { break }
+//            imageViews[index].kf.setImage(
+//                with: url,
+//                placeholder: UIImage(named: "placeholder"),
+//                options: nil,
+//                progressBlock: nil,
+//                completionHandler: { result in
+//                    switch result {
+//                    case .success(let value):
+//                        print("Image loaded: \(value.source.url?.absoluteString ?? "")")
+//                    case .failure(let error):
+//                        print("Error loading image: \(error.localizedDescription)")
+//                    }
+//                }
+//            )
+//        }
+//        
+//        // 텍스트 설정
+//        cell.nameLabel.text = update.name
+//        cell.dateLabel.text = update.date
         
         return cell
     }

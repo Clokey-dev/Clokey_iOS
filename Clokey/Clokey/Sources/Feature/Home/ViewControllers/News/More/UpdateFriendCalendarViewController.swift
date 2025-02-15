@@ -25,20 +25,24 @@ class UpdateFriendCalendarViewController: UIViewController {
         updateFriendCalendarView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
     }
     
-//    @objc private func didTapBackButton() {
-//        navigationController?.popViewController(animated: true)
-//    }
+
     @objc private func didTapBackButton() {
-        dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
         
         DispatchQueue.main.async {
             self.updateFriendCalendarView.updateFriendCalendarCollectionView.reloadData()
             self.updateCollectionViewHeight()
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     private func updateCollectionViewHeight() {
@@ -55,16 +59,40 @@ class UpdateFriendCalendarViewController: UIViewController {
         updateFriendCalendarView.updateFriendCalendarCollectionView.dataSource = self
     }
     
+//    private func loadData() {
+//        modelData = UpdateFriendCalendarModel.dummy()
+//        for item in modelData {
+//            guard let url = item.imageUrl as URL? else {
+//                print("Invalid URL for item: \(item.name)")
+//                continue
+//            }
+//            print("Loaded data: \(item.name), imageUrl: \(url.absoluteString)")
+//        }
+//        updateFriendCalendarView.updateFriendCalendarCollectionView.reloadData()
+//    }
+    
     private func loadData() {
-        modelData = UpdateFriendCalendarModel.dummy()
-        for item in modelData {
-            guard let url = item.imageUrl as URL? else {
-                print("Invalid URL for item: \(item.name)")
-                continue
+        let homeService = HomeService()
+        homeService.fetchGetDetailIssuesData(
+            section: "calendar",
+            page: 1
+        ) { (result: Result<GetDetailIssuesCalendarResponseDTO, NetworkError>) in
+            switch result {
+            case .success(let responseDTO):
+                self.modelData = responseDTO.dailyNewsResult.map { item in
+                    self.updateFriendCalendarView.subTitle.text = item.date
+                    return UpdateFriendCalendarModel(imageUrl: URL(string: item.profileImage)!, name: item.clokeyId)
+                }
+                
+                DispatchQueue.main.async {
+                    self.updateFriendCalendarView.updateFriendCalendarCollectionView.reloadData()
+                    self.updateCollectionViewHeight()
+                }
+                
+            case .failure(let error):
+                print("Failed to load calendar data: \(error)")
             }
-            print("Loaded data: \(item.name), imageUrl: \(url.absoluteString)")
         }
-        updateFriendCalendarView.updateFriendCalendarCollectionView.reloadData()
     }
 }
 

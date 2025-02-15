@@ -38,10 +38,10 @@ public struct RecommendClothesResponseDTO: Codable {
 }
 
 
-enum GetDetailIssuesResponse {
-    case closet(GetDetailIssuesClosetResponseDTO)
-    case calendar(GetDetailIssuesCalendarResponseDTO)
-}
+//public struct GetDetailIssuesResponseDTO: Codable {
+//    let closet: GetDetailIssuesClosetResponseDTO?
+//    let calendar: GetDetailIssuesCalendarResponseDTO?
+//}
 
 // Closet 섹션용 DTO
 public struct GetDetailIssuesClosetResponseDTO: Codable {
