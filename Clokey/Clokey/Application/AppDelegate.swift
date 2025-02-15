@@ -6,31 +6,73 @@
 //
 
 import UIKit
+import KakaoSDKCommon
+import KakaoSDKAuth
+import FirebaseCore
+import FirebaseMessaging
+import UserNotifications
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
-
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        // Firebase 초기화
+        FirebaseApp.configure()
+        Messaging.messaging().delegate = self
+        
+        // 푸시 알림 권한 요청
+        UNUserNotificationCenter.current().delegate = self
+        requestNotificationAuthorization(application)
+
+        // 카카오 SDK 초기화
+        if let appKey = Bundle.main.object(forInfoDictionaryKey: "KAKAO_NATIVE_APP_KEY") as? String {
+            print("Kakao App Key: \(appKey)") // 디버그용
+            KakaoSDK.initSDK(appKey: appKey)
+        }
+
         return true
     }
 
-    // MARK: UISceneSession Lifecycle
-
-    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        // Called when a new scene session is being created.
-        // Use this method to select a configuration to create the new scene with.
-        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+    private func requestNotificationAuthorization(_ application: UIApplication) {
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { granted, error in
+            if granted {
+                print("✅ 푸시 알림 권한 허용됨")
+            } else {
+                print("❌ 푸시 알림 권한 거부됨")
+            }
+        }
+        
+        // APNs 등록
+        DispatchQueue.main.async {
+            application.registerForRemoteNotifications()
+        }
     }
 
-    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-        // Called when the user discards a scene session.
-        // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+    // APNs 디바이스 토큰 받기
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let tokenString = deviceToken.map { String(format: "%02x", $0) }.joined()
+        print("📌 APNs Device Token: \(tokenString)")
+        Messaging.messaging().apnsToken = deviceToken
     }
 
-
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("❌ APNs 등록 실패: \(error.localizedDescription)")
+    }
 }
 
+// MARK: - Firebase MessagingDelegate
+extension AppDelegate: MessagingDelegate {
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        guard let fcmToken = fcmToken else { return }
+        print("📌 FCM Token: \(fcmToken)")
+    }
+}
+
+// MARK: - UNUserNotificationCenterDelegate (푸시 알림 처리)
+extension AppDelegate {
+    // 포그라운드에서 알림 수신
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert, .badge, .sound])
+    }
+}
