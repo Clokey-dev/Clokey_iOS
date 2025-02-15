@@ -27,6 +27,18 @@ public struct OneYearAgoHistoriesResponseDTO: Codable {
     }
 }
 
+public struct RecommendClothesResponseDTO: Codable {
+    let recommendations: [Recommendation]
+
+    struct Recommendation: Codable {
+        let clothId: Int64
+        let imageUrl: String
+        let clothName: String
+    }
+}
+
+
+
 // 소식 화면의 데이터 구조
 public struct GetIssuesResponseDTO: Decodable {
     let recommend: [RecommendResponseDTO]

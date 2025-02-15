@@ -9,6 +9,7 @@ import Foundation
 import Moya
 
 public enum HomeEndPoint {
+    case recommendClothes(nowTemp: Int32, minTemp: Int32, maxTemp: Int32)
     case getIssues(view: String?, section: String?, page: Int?)
     case getOneYearAgoHistories
     
@@ -24,6 +25,8 @@ extension HomeEndPoint: TargetType {
     
     public var path: String {
         switch self {
+        case .recommendClothes:
+            return "/home/recommend"
         case .getIssues:
             return "/home"
         case .getOneYearAgoHistories: // 새로 추가된 경로
@@ -33,6 +36,8 @@ extension HomeEndPoint: TargetType {
     
     public var method: Moya.Method {
         switch self {
+        case .recommendClothes:
+            return .get
         case .getIssues:
             return .get
         case .getOneYearAgoHistories:
@@ -42,6 +47,13 @@ extension HomeEndPoint: TargetType {
     
     public var task: Moya.Task {
         switch self {
+        case .recommendClothes(let nowTemp, let minTemp, let maxTemp):
+                let parameters: [String: Any] = [
+                    "nowTemp": nowTemp,
+                    "minTemp": minTemp,
+                    "maxTemp": maxTemp
+                ]
+                return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
         case .getIssues(let view, let section, let page):
             var parameters: [String: Any] = [:]
 

@@ -25,6 +25,20 @@ public final class HomeService : NetworkManager {
         self.provider = provider ?? MoyaProvider<HomeEndPoint>(plugins: plugins)
     }
     
+    func recommendClothes(
+        nowTemp: Int32,
+        minTemp: Int32,
+        maxTemp: Int32,
+        completion: @escaping (Result<RecommendClothesResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .recommendClothes(nowTemp: nowTemp, minTemp: minTemp, maxTemp: maxTemp),
+            decodingType: RecommendClothesResponseDTO.self,
+            completion: completion
+        )
+    }
+    
+    
     
     func fetchOneYearAgoHistories(
         completion: @escaping (Result<OneYearAgoHistoriesResponseDTO, NetworkError>) -> Void
