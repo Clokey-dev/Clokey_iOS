@@ -26,11 +26,11 @@ extension SearchEndpoint: TargetType {
     public var path: String {
         switch self {
         case .searchHistory:
-            return "/history/search/hashtag-and-category"
+            return "/search/histories"  // ✅ 슬래시 추가
         case .searchMember:
-            return "/member/search/id-and-nickname"
+            return "/search/members"
         case .searchClothes:
-            return "/clothes/search/name-and-brand"
+            return "/search/clothes"
         }
     }
     
@@ -44,8 +44,8 @@ extension SearchEndpoint: TargetType {
              .searchMember(let by, let keyword, let page, let size),
              .searchClothes(let by, let keyword, let page, let size):
             
-            var parameters: [String: Any] = [
-                "by": by,    // 🔥 필터 옵션 추가 (예: "nickname", "id", "hashtag")
+            let parameters: [String: Any] = [
+                "by": by,      // 🔥 API 필터 (예: "id-and-nickname", "hashtag")
                 "keyword": keyword,
                 "page": page,
                 "size": size
