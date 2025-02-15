@@ -38,6 +38,57 @@ public struct RecommendClothesResponseDTO: Codable {
 }
 
 
+enum GetDetailIssuesResponse {
+    case closet(GetDetailIssuesClosetResponseDTO)
+    case calendar(GetDetailIssuesCalendarResponseDTO)
+}
+
+// Closet 섹션용 DTO
+public struct GetDetailIssuesClosetResponseDTO: Codable {
+    let dailyNewsResult: [DailyNewsResult]
+    let totalPage: Int
+    let totalElements: Int
+    let isFirst: Bool
+    let isLast: Bool
+
+    struct DailyNewsResult: Codable {
+        let clokeyId: String
+        let profileImage: String
+        let clothesId: [Int64]?
+        let images: [String]?
+        let date: String
+    }
+}
+
+// Calendar 섹션용 DTO
+public struct GetDetailIssuesCalendarResponseDTO: Codable {
+    let dailyNewsResult: [DailyNewsCalendarResult]
+    let totalPage: Int
+    let totalElements: Int
+    let isFirst: Bool
+    let isLast: Bool
+
+    struct DailyNewsCalendarResult: Codable {
+        let date: String
+        let clokeyId: String
+        let profileImage: String
+        let events: [CalendarEventResponseDTO]?
+    }
+
+    struct CalendarEventResponseDTO: Codable {
+        let historyId: Int64
+        let imageUrl: String?
+    }
+}
+
+
+
+
+
+
+
+
+
 
 // 소식 화면의 데이터 구조
 public struct GetIssuesResponseDTO: Decodable {

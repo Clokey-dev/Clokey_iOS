@@ -70,8 +70,8 @@ class NewsViewController: UIViewController {
     
     func fetchFriendClothes() {
         // 모델에서 이미지 URL 가져오기
-//        let recommendedClothes: [String] = model.clothesImageURLs // 이미지가 있음을 나타내기 위해 URL 배열 사용
-        let recommendedClothes: [String] = [] // 예제: 데이터가 없다고 가정
+        let recommendedClothes: [String] = model.clothesImageURLs // 이미지가 있음을 나타내기 위해 URL 배열 사용
+//        let recommendedClothes: [String] = [] // 예제: 데이터가 없다고 가정
         
         // UI 업데이트 (비어 있는지 확인)
         newsView.updateFriendClothesEmptyState(isEmpty: recommendedClothes.isEmpty)
@@ -183,15 +183,55 @@ class NewsViewController: UIViewController {
     }
     
     @objc private func handleFriendClothesBottomLabelTap() {
-        if let presentedVC = presentedViewController {
-            // 이미 다른 ViewController가 표시 중인 경우 닫기
-            presentedVC.dismiss(animated: true) {
-                self.presentNewFriendClothesViewController()
+        let homeService = HomeService()
+        let section = "closet"
+        let page = 1
+        homeService.fetchGetDetailIssuesData(section: section, page: page) { [weak self] result in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    switch response {
+                    case .closet(let closetData):
+                        print("Closet Data: \(closetData)")
+                        // `dailyNewsResult`는 배열이므로 첫 번째 요소만 사용
+                        
+                        if let firstNews = closetData.dailyNewsResult.first {
+                            let friendClothes = UpdateFriendClothesCollectionViewCell()
+                            
+                            // 프로필 이미지 설정
+                            friendClothes.profileIcon.kf.setImage(with: URL(string: firstNews.profileImage))
+//                            friendClothes.dateLabel.text
+                            
+                            // 의상 이미지 (최대 3개) 설정
+                            if let clothes = firstNews.images {
+                                friendClothes.image1.kf.setImage(with: URL(string: clothes[0]))
+                                friendClothes.image2.isHidden = clothes.count < 2
+                                friendClothes.image3.isHidden = clothes.count < 3
+                                
+                                if clothes.count > 1 {
+                                    friendClothes.image2.kf.setImage(with: URL(string: clothes[1]))
+                                }
+                                if clothes.count > 2 {
+                                    friendClothes.image3.kf.setImage(with: URL(string: clothes[2]))
+                                }
+                            }
+                            
+//                            // 네비게이션을 이용하여 화면 전환
+//                            self.navigationController?.pushViewController(detailVC, animated: true)
+                        }
+                    case .calendar(let calendarData):
+                        print("Calendar Data: \(calendarData)")
+                    }
+                case .failure(let error):
+                    print("Error: \(error)")
+                }
             }
-        } else {
-            // 새 ViewController 표시
-            self.presentNewFriendClothesViewController()
         }
+        let detailVC = UpdateFriendClothesViewController()
+        // 네비게이션을 이용하여 화면 전환
+        self.navigationController?.pushViewController(detailVC, animated: true)
     }
     
     private func presentNewFriendClothesViewController() {

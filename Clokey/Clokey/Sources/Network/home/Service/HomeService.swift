@@ -50,17 +50,40 @@ public final class HomeService : NetworkManager {
         )
     }
     
-    func fetchGetIssuesData(
-        view: String? = nil,
+    func fetchGetDetailIssuesData(
         section: String? = nil,
-        page: Int? = nil,
-        completion: @escaping (Result<GetIssuesResponseDTO, NetworkError>) -> Void
+        page: Int,
+        completion: @escaping (Result<GetDetailIssuesResponse, NetworkError>) -> Void
     ) {
         request(
-            target: .getIssues(view: view, section: section, page: page),
-            decodingType: GetIssuesResponseDTO.self,
-            completion: completion
-        )
+            target: .getDetailIssues(section: section, page: page),
+            decodingType: Data.self // Data로 먼저 받아서 후에 수동 디코딩
+        ) { result in
+            switch result {
+            case .success(let data):
+                do {
+                    let decoder = JSONDecoder()
+                    let decodedResponse: GetDetailIssuesResponse
+                    
+                    if section == "closet" {
+                        let closetData = try decoder.decode(GetDetailIssuesClosetResponseDTO.self, from: data)
+                        decodedResponse = .closet(closetData)
+                    } else if section == "calendar" {
+                        let calendarData = try decoder.decode(GetDetailIssuesCalendarResponseDTO.self, from: data)
+                        decodedResponse = .calendar(calendarData)
+                    } else {
+                        throw NSError(domain: "Invalid section", code: -1, userInfo: nil)
+                    }
+                    
+                    completion(.success(decodedResponse))
+                } catch {
+                    completion(.failure(.decodingError(underlyingError: error as? DecodingError ?? DecodingError.dataCorrupted(.init(codingPath: [], debugDescription: "Unknown decoding error")))))
+                }
+                
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 }
 

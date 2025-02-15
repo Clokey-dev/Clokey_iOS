@@ -22,7 +22,7 @@ class UpdateFriendClothesView: UIView {
     }
     
     let backButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        $0.setImage(UIImage(named: "back_icon"), for: .normal)
         $0.tintColor = .black
     }
     
@@ -51,7 +51,7 @@ class UpdateFriendClothesView: UIView {
     
     /// 구분 선
     private let lineView = UIView().then {
-        $0.backgroundColor = .systemGray5
+        $0.backgroundColor = UIColor(red: 52/255, green: 52/255, blue: 52/255, alpha: 0.5)
     }
     
     let updateFriendClothesCollectionView: UICollectionView = UICollectionView(
@@ -108,7 +108,9 @@ class UpdateFriendClothesView: UIView {
         backButton.snp.makeConstraints { make in
             make.top.equalTo(contentView.safeAreaLayoutGuide).offset(20)
             make.leading.equalToSuperview().offset(20)
-            make.size.equalTo(CGSize(width: 10, height: 20))
+//            make.size.equalTo(24)
+            make.width.equalTo(10)
+            make.height.equalTo(20)
         }
         
         titleLabel.snp.makeConstraints { make in
@@ -117,7 +119,7 @@ class UpdateFriendClothesView: UIView {
         }
         
         lineView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(10)
+            make.top.equalTo(titleLabel.snp.bottom).offset(15)
             make.leading.trailing.equalToSuperview().inset(20)  // 화면 전체 너비
             make.height.equalTo(1)  // 높이 1포인트
         }

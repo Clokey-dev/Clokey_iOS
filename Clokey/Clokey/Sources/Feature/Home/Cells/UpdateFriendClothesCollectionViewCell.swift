@@ -26,10 +26,10 @@ class UpdateFriendClothesCollectionViewCell: UICollectionViewCell {
 //    }
     
     let profileIcon: UIImageView = UIImageView().then {
-        $0.image = UIImage(named: "profile_icon")
-        $0.tintColor = .gray
+//        $0.image = UIImage(named: "profile_icon")
+        $0.backgroundColor = .gray
         $0.contentMode = .scaleAspectFit
-                $0.layer.cornerRadius = 10
+        $0.layer.cornerRadius = 13
         $0.clipsToBounds = true
     }
     
@@ -114,7 +114,7 @@ class UpdateFriendClothesCollectionViewCell: UICollectionViewCell {
             make.top.equalToSuperview().offset(5)
             make.leading.equalToSuperview().offset(20)
 //            make.centerY.equalToSuperview()
-            make.width.height.equalTo(26)
+            make.size.equalTo(26)
         }
         
         nameLabel.snp.makeConstraints { make in
@@ -127,7 +127,7 @@ class UpdateFriendClothesCollectionViewCell: UICollectionViewCell {
             make.centerY.equalTo(profileIcon)
         }
         imageStack.snp.makeConstraints { make in
-            make.top.equalTo(profileIcon.snp.bottom)
+            make.top.equalTo(profileIcon.snp.bottom).offset(12)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(116)
         }
@@ -155,7 +155,7 @@ class UpdateFriendClothesCollectionViewCell: UICollectionViewCell {
             make.top.equalTo(imageStack.snp.bottom).offset(16)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(1)
-            make.bottom.equalToSuperview().offset(-14)
+            make.bottom.equalToSuperview()/*.offset(-14)*/
         }
     }
 }

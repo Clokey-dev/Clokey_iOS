@@ -10,9 +10,9 @@ import Moya
 
 public enum HomeEndPoint {
     case recommendClothes(nowTemp: Int32, minTemp: Int32, maxTemp: Int32)
-    case getIssues(view: String?, section: String?, page: Int?)
     case getOneYearAgoHistories
-    
+//    case getAllIssues
+    case getDetailIssues(section: String?, page: Int)
 }
 
 extension HomeEndPoint: TargetType {
@@ -27,10 +27,11 @@ extension HomeEndPoint: TargetType {
         switch self {
         case .recommendClothes:
             return "/home/recommend"
-        case .getIssues:
-            return "/home"
         case .getOneYearAgoHistories: // 새로 추가된 경로
             return "/home/1-year-ago"
+        case .getDetailIssues:
+            return "/home/news/detail"
+        
         }
     }
     
@@ -38,10 +39,11 @@ extension HomeEndPoint: TargetType {
         switch self {
         case .recommendClothes:
             return .get
-        case .getIssues:
-            return .get
         case .getOneYearAgoHistories:
             return .get
+        case .getDetailIssues:
+            return .get
+        
         }
     }
     
@@ -54,31 +56,25 @@ extension HomeEndPoint: TargetType {
                     "maxTemp": maxTemp
                 ]
                 return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
-        case .getIssues(let view, let section, let page):
+        case .getOneYearAgoHistories: // 새로 추가된 Task
+            return .requestPlain
+        case .getDetailIssues(let section, let page):
             var parameters: [String: Any] = [:]
 
-            // ✅ view는 기본값이 "simple"이므로 nil이면 생략 가능
-            if let view = view, !view.isEmpty {
-                parameters["view"] = view
-            }
-
-            // ✅ section은 nil이거나 유효한 값이 아닐 경우 에러 방지를 위해 처리
-            if let section = section, !section.isEmpty {
+            // section이 "closet" 또는 "calendar"일 때만 추가
+            if let section = section, ["closet", "calendar"].contains(section) {
                 parameters["section"] = section
-            } else {
-                print("❌ section 값이 유효하지 않음")
             }
 
-            // ✅ page는 view가 "full"일 때만 사용 가능하므로, nil 체크 필요
-            if let page = page, page > 0 {
+            // page는 1 이상이어야 함
+            if page >= 1 {
                 parameters["page"] = page
             } else {
-                print("❌ page 값이 유효하지 않음")
+                print("page 값이 1 이상이어야 합니다.")
             }
 
             return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
-        case .getOneYearAgoHistories: // 새로 추가된 Task
-            return .requestPlain
+        
         }
     }
     

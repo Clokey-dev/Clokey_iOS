@@ -28,11 +28,8 @@ class UpdateFriendClothesViewController: UIViewController {
         updateFriendClothesView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
     }
     
-//    @objc private func didTapBackButton() {
-//        navigationController?.popViewController(animated: true)
-//    }
     @objc private func didTapBackButton() {
-        dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {

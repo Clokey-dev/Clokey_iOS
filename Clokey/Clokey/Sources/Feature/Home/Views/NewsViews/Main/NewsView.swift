@@ -609,10 +609,15 @@ class NewsView: UIView {
             profileContainerView.addSubview(emptyStackView1)
             emptyStackView1.emptyClothesMessageTitle.text = "아직 팔로우한 계정이 없어요!"
             emptyStackView1.emptyClothesMessageSubTitle.text = "다른 사용자들을 팔로우하고\n어떤 옷들이 있는지 옷장을 구경해보세요"
+            
+            profileContainerView.snp.remakeConstraints { make in
+                make.top.equalTo(friendClothesTitle.snp.bottom).offset(26)
+                make.leading.trailing.equalToSuperview().inset(20)
+                make.height.equalTo(179)
+            }
+            
             emptyStackView1.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
-//                make.top.equalToSuperview().offset(20)
-//                make.leading.trailing.bottom.equalToSuperview()
             }
             friendClothesBottomButtonLabel.isHidden = true
             friendClothesBottomArrowIcon.isHidden = true
@@ -622,6 +627,12 @@ class NewsView: UIView {
             emptyStackView1.removeFromSuperview()
             friendClothesBottomButtonLabel.isHidden = false
             friendClothesBottomArrowIcon.isHidden = false
+            
+            profileContainerView.snp.remakeConstraints { make in
+                make.top.equalTo(friendClothesTitle.snp.bottom).offset(14)
+                make.leading.trailing.equalToSuperview().inset(20)
+                make.height.equalTo(179)
+            }
         }
     }
     
@@ -631,6 +642,13 @@ class NewsView: UIView {
             followingCalendarUpdateContainerView.addSubview(emptyStackView2)
             emptyStackView2.emptyClothesMessageTitle.text = "아직 팔로우한 계정이 없어요!"
             emptyStackView2.emptyClothesMessageSubTitle.text = "다른 사용자들을 팔로우하고\n다양한 패션 기록을 구경해보세요"
+            
+            followingCalendarUpdateContainerView.snp.remakeConstraints { make in
+                make.top.equalTo(followingCalendarUpdateSubTitle.snp.bottom).offset(26)
+                make.leading.trailing.equalToSuperview().inset(20)
+                make.height.equalTo(250) // 컨테이너 높이를 늘림
+            }
+            
             emptyStackView2.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
             }
@@ -652,6 +670,11 @@ class NewsView: UIView {
             followingCalendarUpdateSubTitle.isHidden = false
             followingCalendarBottomButtonLabel.isHidden = false
             followingCalendarBottomArrowIcon.isHidden = false
+            followingCalendarUpdateContainerView.snp.remakeConstraints { make in
+                make.top.equalTo(followingCalendarUpdateSubTitle.snp.bottom).offset(11)
+                make.leading.trailing.equalToSuperview().inset(20)
+                make.height.equalTo(250) // 컨테이너 높이를 늘림
+            }
             
             hotAccountTitle.snp.remakeConstraints { make in
                 make.top.equalTo(followingCalendarBottomButtonLabel.snp.bottom).offset(26)
