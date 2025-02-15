@@ -20,14 +20,14 @@ public final class SearchService : NetworkManager {
         self.provider = provider ?? MoyaProvider<SearchEndpoint>(plugins: plugins)
     }
     //사용자 검색 API
-    public func searchMemeber(
+    public func searchMember(
         by: String,
-        data: String,
+        keyword: String,
         page: Int,
         size: Int,
         completion: @escaping (Result< SearchMemberResponseDTO, NetworkError>) -> Void
     ){
-        request(target: .searchMember(by: by, data: data, page: page, size: size),
+        request(target: .searchMember(by: by, keyword: keyword, page: page, size: size),
                 decodingType: SearchMemberResponseDTO.self,
                 completion: completion
         )
@@ -36,13 +36,13 @@ public final class SearchService : NetworkManager {
     //기록, 해시태그 검색 API
     public func searchHistory(
         by: String,
-        data: String,
+        keyword: String,
         page: Int,
         size: Int,
         completion: @escaping (Result< SearchHistoryCategoryResponseDTO, NetworkError>) -> Void
         
     ){
-        request(target: .searchHistory(by: by, data: data, page: page, size: size),
+        request(target: .searchHistory(by: by, keyword: keyword, page: page, size: size),
                 decodingType: SearchHistoryCategoryResponseDTO.self,
                 completion: completion
         )
@@ -51,13 +51,13 @@ public final class SearchService : NetworkManager {
     //옷 검색 API
     public func searchClothes(
         by: String,
-        data: String,
+        keyword: String,
         page: Int,
         size: Int,
         completion: @escaping (Result <SearchClothesResponseDTO, NetworkError>) -> Void
         
     ){
-        request(target: .searchClothes(by: by, keyword: data, page: page, size: size),
+        request(target: .searchClothes(by: by, keyword: keyword, page: page, size: size),
                 decodingType: SearchClothesResponseDTO.self,
                 completion: completion
         )

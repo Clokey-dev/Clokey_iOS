@@ -25,7 +25,10 @@ class NotificationViewModel {
             NotificationItem(id: 3, type: .like, title: "OO님이 회원님의 기록을 좋아합니다.", content: "", createdAt: Date(), imageUrl: nil, isRead: false),
             NotificationItem(id: 4, type: .recap, title: "1년 전 오늘의 기록을 확인해보세요.", content: "", createdAt: Date(), imageUrl: nil, isRead: true),
             NotificationItem(id: 5, type: .follower, title: "새로운 유저가 당신을 팔로우했습니다!", content: "", createdAt: Date(), imageUrl: nil, isRead: false),
-            NotificationItem(id: 6, type: .recap, title: "작년 오늘의 기록을 확인하세요.", content: "", createdAt: Date(), imageUrl: nil, isRead: false)
+            NotificationItem(id: 6, type: .recap, title: "작년 오늘의 기록을 확인하세요.", content: "", createdAt: Date(), imageUrl: nil, isRead: false),
+            NotificationItem(id: 7, type: .recap, title: "작년 오늘의 기록을 확인하세요.", content: "", createdAt: Date(), imageUrl: nil, isRead: false),
+            NotificationItem(id: 8, type: .recap, title: "안녕 금준이형.", content: "", createdAt: Date(), imageUrl: nil, isRead: false)
+            
         ]
         
         loadReadStatus() // 저장된 읽음 상태 불러오기

@@ -60,8 +60,9 @@ class SearchResultView: UIView {
     let accountsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width - 32, height: 70)
-        layout.minimumLineSpacing = 10
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width - 32, height: 46)
+        layout.minimumLineSpacing = 16
+        
         layout.sectionInset = UIEdgeInsets(top: 10, left: 16, bottom: 10, right: 16)
         $0.collectionViewLayout = layout
         $0.backgroundColor = .white
@@ -69,24 +70,28 @@ class SearchResultView: UIView {
         $0.clipsToBounds = true
     }
     
+   
+   
+
     // 🔹 해시태그 검색 결과 CollectionView (이미지 표시)
-    let hashtagsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
+    // 🔹 해시태그 검색 결과 CollectionView (즉시 레이아웃 적용)
+    let hashtagsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
         layout.sectionInset = .zero
 
-        // 🔹 가로 너비를 3등분
-        let itemWidth = (UIScreen.main.bounds.width - 10) / 3
+        // 🔹 가로 너비를 3등분 (여백 없이)
+        let itemWidth = UIScreen.main.bounds.width / 3
         layout.itemSize = CGSize(width: itemWidth, height: 172)
 
-        $0.collectionViewLayout = layout
-        $0.backgroundColor = .lightGray
-        $0.isScrollEnabled = true
-        $0.clipsToBounds = true
-    }
-    
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .white
+        collectionView.isScrollEnabled = true
+        collectionView.clipsToBounds = true
+        return collectionView
+    }()
     
     
     // 🔹 검색 결과 없음 표시
@@ -134,9 +139,9 @@ class SearchResultView: UIView {
         }
 
         searchField.snp.makeConstraints { make in
-            make.top.equalTo(backButton.snp.bottom).offset(13)
+            make.top.equalTo(backButton.snp.bottom).offset(23)
             make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(40)
+            make.height.equalTo(34)
         }
 
         segmentedContainerView.snp.makeConstraints { make in
@@ -157,23 +162,21 @@ class SearchResultView: UIView {
             make.width.equalToSuperview().multipliedBy(0.5)
         }
 
-        indicatorView.snp.makeConstraints { make in
-            make.centerX.equalTo(accountButton.snp.centerX)
-            make.bottom.equalTo(segmentedContainerView.snp.bottom).offset(-2)
+        indicatorView.snp.remakeConstraints { make in
+            make.centerX.equalTo(accountButton.snp.centerX) // 🔹 기본 위치: 계정 버튼 중앙
+            make.bottom.equalTo(segmentedContainerView.snp.bottom).offset(2) // 🔥 15px 아래로 이동
             make.width.equalTo(88)
             make.height.equalTo(5)
         }
 
-        accountsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(segmentedContainerView.snp.bottom).offset(0)
+        accountsCollectionView.snp.remakeConstraints { make in
+            make.top.equalTo(indicatorView.snp.bottom).offset(10) // ✅ 인디케이터 아래 18px
             make.leading.trailing.bottom.equalToSuperview()
-            make.bottom.equalToSuperview()
         }
 
-        hashtagsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(segmentedContainerView.snp.bottom).offset(0)
+        hashtagsCollectionView.snp.remakeConstraints { make in
+            make.top.equalTo(indicatorView.snp.bottom).offset(10) // ✅ 인디케이터 아래 18px
             make.leading.trailing.bottom.equalToSuperview()
-            make.bottom.equalToSuperview()
         }
 
         emptyLabel.snp.makeConstraints { make in
