@@ -15,7 +15,8 @@ public final class SearchService : NetworkManager {
     public init(provider: MoyaProvider<SearchEndpoint>? = nil) {
         let plugins: [PluginType] = [
             NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)),
-            AccessTokenPlugin()
+            AccessTokenPlugin(),
+            TokenRefreshPlugin()
         ]
         self.provider = provider ?? MoyaProvider<SearchEndpoint>(plugins: plugins)
     }
