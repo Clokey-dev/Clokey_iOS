@@ -92,13 +92,19 @@ public struct GetDetailIssuesCalendarResponseDTO: Codable {
 
 // 소식 화면의 데이터 구조
 public struct GetIssuesResponseDTO: Codable {
-    let recommend: [RecommendResponseDTO]
-    let closet: [ClosetResponseDTO]
-    let calendar: [CalendarResponseDTO]
-    let people: [PeopleResponseDTO] // 현재 응답 예시에서는 빈 배열
+    let recommend: RecommendWrapperDTO
+//    let recommend: [RecommendResponseDTO]
+    let closet: ClosetWrapperDTO
+    let calendar: CalendarWrapperDTO
+    let people: PeopleWrapperDTO
 }
 
-// Recommend 섹션 항목
+// Recommend 섹션
+public struct RecommendWrapperDTO: Codable {
+    let innerResult: [RecommendResponseDTO]
+}
+
+
 public struct RecommendResponseDTO: Codable {
     let imageUrl: String?
     let subTitle: String
@@ -106,7 +112,11 @@ public struct RecommendResponseDTO: Codable {
     let date: String
 }
 
-// Closet 섹션 항목
+// Closet 섹션
+public struct ClosetWrapperDTO: Codable {
+    let innerResult: [ClosetResponseDTO]
+}
+
 public struct ClosetResponseDTO: Codable {
     let clokeyId: String
     let profileImage: String
@@ -115,7 +125,11 @@ public struct ClosetResponseDTO: Codable {
     let date: String
 }
 
-// Calendar 섹션 항목
+// Calendar 섹션
+public struct CalendarWrapperDTO: Codable {
+    let innerResult: [CalendarResponseDTO]
+}
+
 public struct CalendarResponseDTO: Codable {
     let date: String
     let clokeyId: String
@@ -129,7 +143,11 @@ public struct CalendarEventResponseDTO: Codable {
     let imageUrl: String?
 }
 
-// People 섹션 (현재는 빈 배열이지만 확장 가능)
+// People 섹션
+public struct PeopleWrapperDTO: Codable {
+    let innerResult: [PeopleResponseDTO]
+}
+
 public struct PeopleResponseDTO: Codable {
     let clokeyId: String
     let imageUrl: String

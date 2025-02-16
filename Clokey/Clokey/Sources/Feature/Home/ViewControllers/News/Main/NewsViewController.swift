@@ -60,13 +60,43 @@ class NewsViewController: UIViewController {
     }
     
 //    private func fetchHotData() {
-//
+//        let homeService = HomeService()
 //        
-//        newsView.hotAccountImageView1.kf.setImage(with: URL(string: model.hotImageURLs[0]))
-//        newsView.hotAccountImageView2.kf.setImage(with: URL(string: model.hotImageURLs[1]))
-//        newsView.hotAccountImageView3.kf.setImage(with: URL(string: model.hotImageURLs[2]))
-//        newsView.hotAccountImageView4.kf.setImage(with: URL(string: model.hotImageURLs[3]))
+//        homeService.fetchGetIssuesData { result in
+//            switch result {
+//            case .success(let responseDTO):
+//                DispatchQueue.main.async {
+//                    guard responseDTO.people.count >= 4 else {
+//                        print("Not enough people in response: \(responseDTO.people)")
+//                        return
+//                    }
+//                    
+//                    self.newsView.hotAccountImageView1.kf.setImage(with: URL(string: responseDTO.people[0].historyImage))
+//                    self.newsView.hotAccountProfileIcon1.kf.setImage(with: URL(string: responseDTO.people[0].imageUrl))
+//                    self.newsView.hotAccountProfileName1.text = responseDTO.people[0].clokeyId
+//                    
+//                    self.newsView.hotAccountImageView2.kf.setImage(with: URL(string: responseDTO.people[1].historyImage))
+//                    self.newsView.hotAccountProfileIcon2.kf.setImage(with: URL(string: responseDTO.people[1].imageUrl))
+//                    self.newsView.hotAccountProfileName2.text = responseDTO.people[1].clokeyId
+//                    
+//                    self.newsView.hotAccountImageView3.kf.setImage(with: URL(string: responseDTO.people[2].historyImage))
+//                    self.newsView.hotAccountProfileIcon3.kf.setImage(with: URL(string: responseDTO.people[2].imageUrl))
+//                    self.newsView.hotAccountProfileName3.text = responseDTO.people[2].clokeyId
+//                    
+//                    self.newsView.hotAccountImageView4.kf.setImage(with: URL(string: responseDTO.people[3].historyImage))
+//                    self.newsView.hotAccountProfileIcon4.kf.setImage(with: URL(string: responseDTO.people[3].imageUrl))
+//                    self.newsView.hotAccountProfileName4.text = responseDTO.people[3].clokeyId
+//                    
+//                    // ✅ 데이터 로드 후 `pageControl` 업데이트
+//                    self.setupPageControl()
+//                }
+//                
+//            case .failure(let error):
+//                print("Failed to fetch hot data: \(error.localizedDescription)")
+//            }
+//        }
 //    }
+    
     private func fetchHotData() {
         let homeService = HomeService()
         
@@ -74,26 +104,26 @@ class NewsViewController: UIViewController {
             switch result {
             case .success(let responseDTO):
                 DispatchQueue.main.async {
-                    guard responseDTO.people.count >= 4 else {
-                        print("Not enough people in response: \(responseDTO.people)")
+                    guard responseDTO.people.innerResult.count >= 4 else {
+                        print("Not enough people in response: \(responseDTO.people.innerResult)")
                         return
                     }
                     
-                    self.newsView.hotAccountImageView1.kf.setImage(with: URL(string: responseDTO.people[0].historyImage))
-                    self.newsView.hotAccountProfileIcon1.kf.setImage(with: URL(string: responseDTO.people[0].imageUrl))
-                    self.newsView.hotAccountProfileName1.text = responseDTO.people[0].clokeyId
+                    self.newsView.hotAccountImageView1.kf.setImage(with: URL(string: responseDTO.people.innerResult[0].historyImage))
+                    self.newsView.hotAccountProfileIcon1.kf.setImage(with: URL(string: responseDTO.people.innerResult[0].imageUrl))
+                    self.newsView.hotAccountProfileName1.text = responseDTO.people.innerResult[0].clokeyId
                     
-                    self.newsView.hotAccountImageView2.kf.setImage(with: URL(string: responseDTO.people[1].historyImage))
-                    self.newsView.hotAccountProfileIcon2.kf.setImage(with: URL(string: responseDTO.people[1].imageUrl))
-                    self.newsView.hotAccountProfileName2.text = responseDTO.people[1].clokeyId
+                    self.newsView.hotAccountImageView2.kf.setImage(with: URL(string: responseDTO.people.innerResult[1].historyImage))
+                    self.newsView.hotAccountProfileIcon2.kf.setImage(with: URL(string: responseDTO.people.innerResult[1].imageUrl))
+                    self.newsView.hotAccountProfileName2.text = responseDTO.people.innerResult[1].clokeyId
                     
-                    self.newsView.hotAccountImageView3.kf.setImage(with: URL(string: responseDTO.people[2].historyImage))
-                    self.newsView.hotAccountProfileIcon3.kf.setImage(with: URL(string: responseDTO.people[2].imageUrl))
-                    self.newsView.hotAccountProfileName3.text = responseDTO.people[2].clokeyId
+                    self.newsView.hotAccountImageView3.kf.setImage(with: URL(string: responseDTO.people.innerResult[2].historyImage))
+                    self.newsView.hotAccountProfileIcon3.kf.setImage(with: URL(string: responseDTO.people.innerResult[2].imageUrl))
+                    self.newsView.hotAccountProfileName3.text = responseDTO.people.innerResult[2].clokeyId
                     
-                    self.newsView.hotAccountImageView4.kf.setImage(with: URL(string: responseDTO.people[3].historyImage))
-                    self.newsView.hotAccountProfileIcon4.kf.setImage(with: URL(string: responseDTO.people[3].imageUrl))
-                    self.newsView.hotAccountProfileName4.text = responseDTO.people[3].clokeyId
+                    self.newsView.hotAccountImageView4.kf.setImage(with: URL(string: responseDTO.people.innerResult[3].historyImage))
+                    self.newsView.hotAccountProfileIcon4.kf.setImage(with: URL(string: responseDTO.people.innerResult[3].imageUrl))
+                    self.newsView.hotAccountProfileName4.text = responseDTO.people.innerResult[3].clokeyId
                     
                     // ✅ 데이터 로드 후 `pageControl` 업데이트
                     self.setupPageControl()
@@ -105,19 +135,48 @@ class NewsViewController: UIViewController {
         }
     }
     
+    
 //    func fetchFriendClothes() {
-//        // 모델에서 이미지 URL 가져오기
-//        let recommendedClothes: [String] = model.clothesImageURLs // 이미지가 있음을 나타내기 위해 URL 배열 사용
-////        let recommendedClothes: [String] = [] // 예제: 데이터가 없다고 가정
+//        let homeService = HomeService()
 //        
-//        // UI 업데이트 (비어 있는지 확인)
-//        newsView.updateFriendClothesEmptyState(isEmpty: recommendedClothes.isEmpty)
-//        
-//        // 이미지 설정
-//        if !recommendedClothes.isEmpty {
-//            newsView.friendClothesImageView1.kf.setImage(with: URL(string: recommendedClothes[0]))
-//            newsView.friendClothesImageView2.kf.setImage(with: URL(string: recommendedClothes[1]))
-//            newsView.friendClothesImageView3.kf.setImage(with: URL(string: recommendedClothes[2]))
+//        homeService.fetchGetIssuesData { result in
+//            switch result {
+//            case .success(let responseDTO):
+//                DispatchQueue.main.async {
+//                    let closetItems = responseDTO.closet
+//                    
+//                    let isEmpty = closetItems.isEmpty
+//                    self.newsView.updateFriendClothesEmptyState(isEmpty: isEmpty)
+//                    
+//                    if let firstProfileImageUrl = closetItems.first?.profileImage {
+//                        self.newsView.profileImageView.kf.setImage(with: URL(string: firstProfileImageUrl))
+//                    }
+//                    if let firstClosetItem = closetItems.first {
+//                        self.newsView.usernameLabel.text = firstClosetItem.clokeyId
+//                        self.newsView.dateLabel.text = self.formatDate(firstClosetItem.date)
+//                    }
+//                    
+//                    if isEmpty {
+//                        print("🚨 Closet 데이터가 없습니다.")
+//                        return
+//                    }
+//                    
+//                    // ✅ 최소 3개의 데이터가 있는지 체크 후 이미지 설정
+//                    if closetItems.count >= 3 {
+//                        self.newsView.friendClothesImageView1.kf.setImage(with: URL(string: closetItems[0].images.first ?? ""))
+//                        self.newsView.friendClothesImageView2.kf.setImage(with: URL(string: closetItems[1].images.first ?? ""))
+//                        self.newsView.friendClothesImageView3.kf.setImage(with: URL(string: closetItems[2].images.first ?? ""))
+//                    } else {
+//                        print("Closet 데이터가 3개 미만입니다. \(closetItems.count)개만 존재.")
+//                    }
+//                }
+//                
+//            case .failure(let error):
+//                print("Failed to fetch friend clothes data: \(error.localizedDescription)")
+//                DispatchQueue.main.async {
+//                    self.newsView.updateFriendClothesEmptyState(isEmpty: true)
+//                }
+//            }
 //        }
 //    }
     
@@ -128,7 +187,7 @@ class NewsViewController: UIViewController {
             switch result {
             case .success(let responseDTO):
                 DispatchQueue.main.async {
-                    let closetItems = responseDTO.closet
+                    let closetItems = responseDTO.closet.innerResult // ✅ 변경된 구조 반영
                     
                     let isEmpty = closetItems.isEmpty
                     self.newsView.updateFriendClothesEmptyState(isEmpty: isEmpty)
@@ -180,17 +239,49 @@ class NewsViewController: UIViewController {
     }
     
 //    func fetchFriendCalendar() {
-//        // 모델에서 이미지 URL 가져오기
-//        let recommendedClothes: [String] = model.calendarImageURLs // 이미지가 있음을 나타내기 위해 URL 배열 사용
-////        let recommendedClothes: [String] = [] // 예제: 데이터가 없다고 가정
+//        let homeService = HomeService()
 //        
-//        // UI 업데이트 (비어 있는지 확인)
-//        newsView.updateFriendCalendarEmptyState(isEmpty: recommendedClothes.isEmpty)
-//        
-//        // 이미지 설정
-//        if !recommendedClothes.isEmpty {
-//            newsView.followingCalendarUpdateImageView1.kf.setImage(with: URL(string: recommendedClothes[0]))
-//            newsView.followingCalendarUpdateImageView2.kf.setImage(with: URL(string: recommendedClothes[1]))
+//        homeService.fetchGetIssuesData { result in
+//            switch result {
+//            case .success(let responseDTO):
+//                DispatchQueue.main.async {
+//                    let calendarItems = responseDTO.calendar
+//                    
+//                    // ✅ Calendar 데이터가 있는지 확인 후 EmptyState 설정
+//                    let isEmpty = calendarItems.isEmpty
+//                    self.newsView.updateFriendCalendarEmptyState(isEmpty: isEmpty)
+//                    
+//                    
+//                    if isEmpty {
+//                        print("🚨 Calendar 데이터가 없습니다.")
+//                        return
+//                    }
+//
+//                    if let firstCalendarItem = calendarItems.first {
+//                        if let firstImageUrl = firstCalendarItem.events.first?.imageUrl {
+//                            self.newsView.followingCalendarUpdateImageView1.kf.setImage(with: URL(string: firstImageUrl))
+//                        }
+//                        self.newsView.followingCalendarUpdateSubTitle.text = self.formatDate(firstCalendarItem.date)
+//                        
+//                        self.newsView.followingCalendarProfileIcon1.kf.setImage(with: URL(string: firstCalendarItem.profileImage))
+//                        self.newsView.followingCalendarProfileName1.text = firstCalendarItem.clokeyId
+//                    }
+//                    
+//                    
+//                    if calendarItems.count > 1, let secondImageUrl = calendarItems[1].events.first?.imageUrl {
+//                        self.newsView.followingCalendarUpdateImageView2.kf.setImage(with: URL(string: secondImageUrl))
+//                        self.newsView.followingCalendarProfileIcon2.kf.setImage(with: URL(string: calendarItems[1].profileImage))
+//                        self.newsView.followingCalendarProfileName2.text = calendarItems[1].clokeyId
+//                    }
+//                    
+//                }
+//                
+//            case .failure(let error):
+//                print("Failed to fetch calendar data: \(error.localizedDescription)")
+//                DispatchQueue.main.async {
+//                    self.newsView.updateFriendCalendarEmptyState(isEmpty: true)
+//                }
+//            }
 //        }
 //    }
     
@@ -201,12 +292,11 @@ class NewsViewController: UIViewController {
             switch result {
             case .success(let responseDTO):
                 DispatchQueue.main.async {
-                    let calendarItems = responseDTO.calendar
+                    let calendarItems = responseDTO.calendar.innerResult // ✅ 변경된 구조 반영
                     
                     // ✅ Calendar 데이터가 있는지 확인 후 EmptyState 설정
                     let isEmpty = calendarItems.isEmpty
                     self.newsView.updateFriendCalendarEmptyState(isEmpty: isEmpty)
-                    
                     
                     if isEmpty {
                         print("🚨 Calendar 데이터가 없습니다.")
@@ -223,13 +313,11 @@ class NewsViewController: UIViewController {
                         self.newsView.followingCalendarProfileName1.text = firstCalendarItem.clokeyId
                     }
                     
-                    
                     if calendarItems.count > 1, let secondImageUrl = calendarItems[1].events.first?.imageUrl {
                         self.newsView.followingCalendarUpdateImageView2.kf.setImage(with: URL(string: secondImageUrl))
                         self.newsView.followingCalendarProfileIcon2.kf.setImage(with: URL(string: calendarItems[1].profileImage))
                         self.newsView.followingCalendarProfileName2.text = calendarItems[1].clokeyId
                     }
-                    
                 }
                 
             case .failure(let error):
@@ -247,6 +335,46 @@ class NewsViewController: UIViewController {
 //        
 //    }
     
+//    private func setupDummyData() {
+//        let homeService = HomeService()
+//
+//        homeService.fetchGetIssuesData { result in
+//            switch result {
+//            case .success(let responseDTO):
+//                DispatchQueue.main.async {
+//                    // ✅ recommend 배열이 비어있는지 확인
+//                    guard !responseDTO.recommend.isEmpty else {
+//                        print("🚨 No recommend data available.")
+//                        return
+//                    }
+//
+//                    // ✅ 서버에서 받아온 데이터를 recommandNewsSlides 배열에 저장
+//                    self.recommandNewsSlides = responseDTO.recommend.map { recommendItem in
+//                        return RecommandNewsSlideModel(
+//                            image: recommendItem.imageUrl,
+//                            title: recommendItem.subTitle ?? "제목 없음",
+//                            hashtag: recommendItem.hashtag ?? "#해시태그 없음",
+//                            date: recommendItem.date
+//                        )
+//                    }
+//
+//                    // ✅ 첫 번째 슬라이드를 설정하여 pageViewController에 반영
+//                    if let initialVC = self.createImageViewController(for: self.currentIndexValue()) {
+//                        self.pageViewController.setViewControllers([initialVC], direction: .forward, animated: false, completion: nil)
+//                    }
+//
+//                    // ✅ 페이지 컨트롤 UI 업데이트
+//                    self.setupPageControl()
+//
+//                    print("✅ recommandNewsSlides 업데이트 완료: \(self.recommandNewsSlides.count)개")
+//                }
+//                
+//            case .failure(let error):
+//                print("❌ Failed to load recommend data: \(error.localizedDescription)")
+//            }
+//        }
+//    }
+    
     private func setupDummyData() {
         let homeService = HomeService()
 
@@ -254,18 +382,18 @@ class NewsViewController: UIViewController {
             switch result {
             case .success(let responseDTO):
                 DispatchQueue.main.async {
-                    // ✅ recommend 배열이 비어있는지 확인
-                    guard !responseDTO.recommend.isEmpty else {
+                    // ✅ recommend.innerResult 배열이 비어있는지 확인
+                    guard !responseDTO.recommend.innerResult.isEmpty else {
                         print("🚨 No recommend data available.")
                         return
                     }
 
                     // ✅ 서버에서 받아온 데이터를 recommandNewsSlides 배열에 저장
-                    self.recommandNewsSlides = responseDTO.recommend.map { recommendItem in
+                    self.recommandNewsSlides = responseDTO.recommend.innerResult.map { recommendItem in
                         return RecommandNewsSlideModel(
                             image: recommendItem.imageUrl,
-                            title: recommendItem.subTitle ?? "제목 없음",
-                            hashtag: recommendItem.hashtag ?? "#해시태그 없음",
+                            title: recommendItem.subTitle,
+                            hashtag: recommendItem.hashtag,
                             date: recommendItem.date
                         )
                     }
