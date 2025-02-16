@@ -95,26 +95,22 @@ final class MainViewController: UIViewController {
 
 // MARK: - HeaderViewDelegate
 // 헤더뷰에 있던 버튼 이벤트 처리
-// MARK: - HeaderViewDelegate
-// 헤더뷰에 있던 버튼 이벤트 처리
-// MARK: - HeaderViewDelegate
-// 헤더뷰에 있던 버튼 이벤트 처리
 extension MainViewController: HeaderViewDelegate {
     func didTapSearchButton() {
-        print("🔍 터치됨: 검색 버튼") // ✅ 디버깅 로그 추가
+        print("터치됨: 검색 버튼") // 디버깅 로그 추가
         let searchVC = SearchViewController()
-        navigationController?.pushViewController(searchVC, animated: true) // ✅ 검색 화면으로 푸시
+        navigationController?.pushViewController(searchVC, animated: true) // 검색 화면으로 푸시
     }
 
     func didTapNotificationButton() {
-        print("🔔 터치됨: 알림 버튼") // ✅ 필요하면 알림 화면으로 이동하도록 수정
+        print("터치됨: 알림 버튼") // 필요하면 알림 화면으로 이동하도록 수정
         let notificationVC = NotificationViewController()
         navigationController?.pushViewController(notificationVC, animated: true)
         
     }
 
-    func didTapProfileButton() { // ✅ 만약 프로필 버튼 메서드가 있다면 추가해야 오류 해결됨!
-        print("👤 터치됨: 프로필 버튼")
+    func didTapProfileButton() { // 만약 프로필 버튼 메서드가 있다면 추가해야 오류 해결됨!
+        print("터치됨: 프로필 버튼")
     }
 }
     
