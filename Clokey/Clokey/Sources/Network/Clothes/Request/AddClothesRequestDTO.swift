@@ -9,15 +9,24 @@ import Foundation
 
 // 옷 추가
 public struct AddClothesRequestDTO: Codable {
+    public let categoryId: Int64
     public let name: String
-    public let season: [Season]
+    public let seasons: [String]
     public let tempUpperBound: Int
     public let tempLowerBound: Int
-    public let thicknessLevel: [ThicknessLevel]
-    public let visibility: [Visibility]
+    public let thicknessLevel: String
+    public let visibility: String
     public let clothUrl: String
     public let brand: String
+    
+    // ✅ 이미지 데이터는 Codable에서 제외하고, Form-Data로 보낼 때 따로 처리
+    public var image: Data?
+
+    enum CodingKeys: String, CodingKey {
+        case categoryId, name, seasons, tempUpperBound, tempLowerBound, thicknessLevel, visibility, clothUrl, brand
+    }
 }
+
 
 
 // 옷 수정

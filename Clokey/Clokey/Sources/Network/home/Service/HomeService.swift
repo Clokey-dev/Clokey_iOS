@@ -25,25 +25,28 @@ public final class HomeService : NetworkManager {
         self.provider = provider ?? MoyaProvider<HomeEndPoint>(plugins: plugins)
     }
     
-    public func getOneYearAgoHistories(
-        completion: @escaping (Result<HistoryResult, NetworkError>) -> Void
+    
+    func fetchOneYearAgoHistories(
+        completion: @escaping (Result<OneYearAgoHistoriesResponseDTO, NetworkError>) -> Void
     ) {
         request(
             target: .getOneYearAgoHistories,
-            decodingType: OneYearAgoHistoriesResponseDTO.self
-        ) { result in
-            switch result {
-            case .success(let responseDTO):
-                if responseDTO.isSuccess, let result = responseDTO.result {
-                    completion(.success(result))
-                } else {
-                    let errorMessage = responseDTO.message
-                    completion(.failure(NetworkError.networkError(message: errorMessage)))
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+            decodingType: OneYearAgoHistoriesResponseDTO.self,
+            completion: completion
+        )
+    }
+    
+    func fetchGetIssuesData(
+        view: String? = nil,
+        section: String? = nil,
+        page: Int? = nil,
+        completion: @escaping (Result<GetIssuesResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .getIssues(view: view, section: section, page: page),
+            decodingType: GetIssuesResponseDTO.self,
+            completion: completion
+        )
     }
 }
 

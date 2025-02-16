@@ -52,6 +52,7 @@ class ImageView: UIView {
             make.width.equalToSuperview() // 이미지 뷰 너비를 부모 뷰와 동일하게 설정
             make.height.equalToSuperview() // 이미지 뷰 높이를 부모 뷰와 동일하게 설정
         }
+        
         titleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(40)
             make.bottom.equalToSuperview().offset(-30)

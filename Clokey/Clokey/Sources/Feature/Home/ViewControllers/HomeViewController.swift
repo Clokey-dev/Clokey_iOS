@@ -23,7 +23,7 @@ final class HomeViewController: UIViewController {
     /// 'Pick' 탭에 해당하는 화면
     private let pickViewController = PickViewController()
     
-    private let pickNothingViewController = PickNothingViewController()
+//    private let pickNothingViewController = PickNothingViewController()
     
     /// 'News' 탭에 해당하는 화면
     private let newsViewController = NewsViewController()
@@ -39,6 +39,7 @@ final class HomeViewController: UIViewController {
         
         setupActions()  // 버튼 액션 설정
         selectTab(.pick) // 초기 탭 설정
+        
         
     }
     

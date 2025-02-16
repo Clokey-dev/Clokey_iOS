@@ -330,12 +330,13 @@ class ContentInputView: UIView, UITextFieldDelegate {
     
     // 해시태그 텍스트필드 엔터 처리
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if string == "\n" {
+        if string == "\n" || string == " " {
             if let text = textField.text, !text.isEmpty {
                 let hashtag = text.hasPrefix("#") ? text : "#\(text)"
                 addHashtag(hashtag)
                 delegate?.contentInputView(self, didAddHashtag: hashtag)
                 textField.text = ""
+                return false
             }
         }
         return true
