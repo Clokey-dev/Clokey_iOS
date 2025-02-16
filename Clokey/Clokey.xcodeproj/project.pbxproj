@@ -163,7 +163,6 @@
 		07ECCB632D4E35FE00AFF486 /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = 07ECCB622D4E35FE00AFF486 /* RxBlocking */; };
 		07ECCB652D4E35FE00AFF486 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 07ECCB642D4E35FE00AFF486 /* RxCocoa */; };
 		07ECCB672D4E35FE00AFF486 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 07ECCB662D4E35FE00AFF486 /* RxRelay */; };
-		07ECCE092D4E44E300AFF486 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 07ECCE082D4E44E300AFF486 /* Config.xcconfig */; };
 		07ECCEA32D4E79C000AFF486 /* CalendarImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCEA22D4E79C000AFF486 /* CalendarImageCell.swift */; };
 		07ECCEA52D4E7AE400AFF486 /* CalendarCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCEA42D4E7AE400AFF486 /* CalendarCommentView.swift */; };
 		07ECCEA72D4E7ECA00AFF486 /* CalendarCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCEA62D4E7ECA00AFF486 /* CalendarCommentViewController.swift */; };
@@ -173,6 +172,11 @@
 		07ECCEB02D4EAEF700AFF486 /* LikeUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCEAF2D4EAEF700AFF486 /* LikeUserCell.swift */; };
 		07ECCEB32D4EAF1C00AFF486 /* LikeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCEB22D4EAF1C00AFF486 /* LikeListViewController.swift */; };
 		07ECCEB52D4EAF5800AFF486 /* LikeUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCEB42D4EAF5800AFF486 /* LikeUserModel.swift */; };
+		489967542D5D16BC00B5E51E /* SearchEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489967532D5D16BC00B5E51E /* SearchEndpoint.swift */; };
+		489967582D5D231300B5E51E /* SearchResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489967572D5D231200B5E51E /* SearchResponseDTO.swift */; };
+		4899675A2D5DD2DB00B5E51E /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489967592D5DD2DB00B5E51E /* SearchService.swift */; };
+		489EE09B2D5E22DD0099DC35 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 489EE09A2D5E22DD0099DC35 /* Config.xcconfig */; };
+		489EE1592D5FD0660099DC35 /* NotificationResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489EE1582D5FD0660099DC35 /* NotificationResponseDTO.swift */; };
 		A62A429E2D4D2ADE00672D3F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429A2D4D2ADE00672D3F /* MainView.swift */; };
 		A62A429F2D4D2ADE00672D3F /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429C2D4D2ADE00672D3F /* HeaderView.swift */; };
 		A62A42A02D4D2ADE00672D3F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429B2D4D2ADE00672D3F /* MainViewController.swift */; };
@@ -344,7 +348,6 @@
 		07ECCB592D4E351E00AFF486 /* CustomSortDropdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSortDropdownView.swift; sourceTree = "<group>"; };
 		07ECCB5A2D4E351E00AFF486 /* CustomTotalSegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTotalSegmentView.swift; sourceTree = "<group>"; };
 		07ECCB5B2D4E351E00AFF486 /* CustomCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCategoryModel.swift; sourceTree = "<group>"; };
-		07ECCE082D4E44E300AFF486 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		07ECCEA22D4E79C000AFF486 /* CalendarImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarImageCell.swift; sourceTree = "<group>"; };
 		07ECCEA42D4E7AE400AFF486 /* CalendarCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCommentView.swift; sourceTree = "<group>"; };
 		07ECCEA62D4E7ECA00AFF486 /* CalendarCommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCommentViewController.swift; sourceTree = "<group>"; };
@@ -355,6 +358,11 @@
 		07ECCEB22D4EAF1C00AFF486 /* LikeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeListViewController.swift; sourceTree = "<group>"; };
 		07ECCEB42D4EAF5800AFF486 /* LikeUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeUserModel.swift; sourceTree = "<group>"; };
 		07F093102D2418380075659F /* Clokey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clokey.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		489967532D5D16BC00B5E51E /* SearchEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEndpoint.swift; sourceTree = SOURCE_ROOT; };
+		489967572D5D231200B5E51E /* SearchResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponseDTO.swift; sourceTree = SOURCE_ROOT; };
+		489967592D5DD2DB00B5E51E /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = SOURCE_ROOT; };
+		489EE09A2D5E22DD0099DC35 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		489EE1582D5FD0660099DC35 /* NotificationResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponseDTO.swift; sourceTree = SOURCE_ROOT; };
 		A62A429A2D4D2ADE00672D3F /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		A62A429B2D4D2ADE00672D3F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		A62A429C2D4D2ADE00672D3F /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
@@ -385,6 +393,34 @@
 		A67661AC2D5B3760006AAB63 /* PrivateStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateStackView.swift; sourceTree = "<group>"; };
 		A67661AE2D5B39D3006AAB63 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		4899648E2D58ED9B00B5E51E /* Search */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Search;
+			sourceTree = "<group>";
+		};
+		489967442D5B4DCD00B5E51E /* Nofitication */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Nofitication;
+			sourceTree = "<group>";
+		};
+		A62A428F2D4D2A8D00672D3F /* Your */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Your;
+			sourceTree = "<group>";
+		};
+		A62A42932D4D2A8D00672D3F /* My */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = My;
+			sourceTree = "<group>";
+		};
+		A64C54312D3F97B3000CCB62 /* Cells */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Cells;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		07F0930D2D2418380075659F /* Frameworks */ = {
@@ -1008,6 +1044,7 @@
 		07649ED62D4DE58900B6B2B2 /* Response */ = {
 			isa = PBXGroup;
 			children = (
+				489EE1582D5FD0660099DC35 /* NotificationResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1072,6 +1109,7 @@
 		07649EDE2D4DE58900B6B2B2 /* Endpoints */ = {
 			isa = PBXGroup;
 			children = (
+				489967532D5D16BC00B5E51E /* SearchEndpoint.swift */,
 			);
 			path = Endpoints;
 			sourceTree = "<group>";
@@ -1086,6 +1124,7 @@
 		07649EE02D4DE58900B6B2B2 /* Response */ = {
 			isa = PBXGroup;
 			children = (
+				489967572D5D231200B5E51E /* SearchResponseDTO.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1093,6 +1132,7 @@
 		07649EE12D4DE58900B6B2B2 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				489967592D5DD2DB00B5E51E /* SearchService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -1124,7 +1164,7 @@
 				07E1CB902D3814AA00F86BB8 /* LaunchScreen.storyboard */,
 				07E1CB2F2D364BD100F86BB8 /* Fonts */,
 				076FAB322D2E6E0200FF3979 /* Assets.xcassets */,
-				07ECCE082D4E44E300AFF486 /* Config.xcconfig */,
+				489EE09A2D5E22DD0099DC35 /* Config.xcconfig */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1208,6 +1248,8 @@
 		07E1CADC2D36449B00F86BB8 /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				489967442D5B4DCD00B5E51E /* Nofitication */,
+				4899648E2D58ED9B00B5E51E /* Search */,
 				074401712D5E1F9A00E60282 /* Agreement */,
 				074401A62D5E1F9A00E60282 /* AddProfile */,
 				070258AA2D31074E00065369 /* Login */,
@@ -1497,6 +1539,14 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				4899648E2D58ED9B00B5E51E /* Search */,
+				489967442D5B4DCD00B5E51E /* Nofitication */,
+				A62A428F2D4D2A8D00672D3F /* Your */,
+				A62A42932D4D2A8D00672D3F /* My */,
+				A64C54312D3F97B3000CCB62 /* Cells */,
+			);
+
 			name = Clokey;
 			packageProductDependencies = (
 				076FAB1C2D2E5DD800FF3979 /* Then */,
@@ -1579,7 +1629,7 @@
 				07E1CB3A2D364BDA00F86BB8 /* Pretendard-Thin.otf in Resources */,
 				07E1CB3B2D364BDA00F86BB8 /* Pretendard-Black.otf in Resources */,
 				07E1CB3C2D364BDA00F86BB8 /* Pretendard-ExtraBold.otf in Resources */,
-				07ECCE092D4E44E300AFF486 /* Config.xcconfig in Resources */,
+				489EE09B2D5E22DD0099DC35 /* Config.xcconfig in Resources */,
 				07E1CB3D2D364BDA00F86BB8 /* Pretendard-Bold.otf in Resources */,
 				07E1CB3E2D364BDA00F86BB8 /* Pretendard-Light.otf in Resources */,
 				07E1CB3F2D364BDA00F86BB8 /* Pretendard-ExtraLight.otf in Resources */,
@@ -1600,6 +1650,7 @@
 			files = (
 				070258BE2D31085900065369 /* ClosetView.swift in Sources */,
 				07CF63E52D55DE6900CCF9F4 /* CalendarDetailViewModel.swift in Sources */,
+				489967542D5D16BC00B5E51E /* SearchEndpoint.swift in Sources */,
 				076FAB4E2D2EBB3A00FF3979 /* KakaoAuthService.swift in Sources */,
 				0709165D2D58BEE1008DC9EE /* ClothesEndpoint.swift in Sources */,
 				0709165E2D58BEE1008DC9EE /* AddClothesRequestDTO.swift in Sources */,
@@ -1639,6 +1690,7 @@
 				07ECCB432D4E34DF00AFF486 /* UploadModalViewController.swift in Sources */,
 				07ECCB442D4E34DF00AFF486 /* PhotoEditViewController.swift in Sources */,
 				07ECCB452D4E34DF00AFF486 /* TagClothView.swift in Sources */,
+				4899675A2D5DD2DB00B5E51E /* SearchService.swift in Sources */,
 				07ECCB462D4E34DF00AFF486 /* CustomGalleryViewController.swift in Sources */,
 				07ECCB472D4E34DF00AFF486 /* CalendarCell.swift in Sources */,
 				A67661912D5B367B006AAB63 /* FollowerUserCell.swift in Sources */,
@@ -1646,6 +1698,7 @@
 				A67661932D5B367B006AAB63 /* FollowingUserCell.swift in Sources */,
 				A67661942D5B367B006AAB63 /* FollowListViewController.swift in Sources */,
 				07ECCB482D4E34DF00AFF486 /* ImageCollectionViewCell.swift in Sources */,
+				489967582D5D231300B5E51E /* SearchResponseDTO.swift in Sources */,
 				07ECCB492D4E34DF00AFF486 /* ContentInputView.swift in Sources */,
 				07ECCB4A2D4E34DF00AFF486 /* PhotoTagView.swift in Sources */,
 				07ECCEA92D4E834300AFF486 /* CommentCell.swift in Sources */,
@@ -1662,6 +1715,7 @@
 				07E1CB4B2D3668CE00F86BB8 /* Constants.swift in Sources */,
 				A672AEB72D572A6E003EF3FF /* EmptyStackView.swift in Sources */,
 				07ECCEB32D4EAF1C00AFF486 /* LikeListViewController.swift in Sources */,
+				489EE1592D5FD0660099DC35 /* NotificationResponseDTO.swift in Sources */,
 				07649FFA2D4DEA9000B6B2B2 /* AccessTokenPlugin.swift in Sources */,
 				07E1CB5F2D36A10000F86BB8 /* CustomButton.swift in Sources */,
 				07E1CB602D36A10000F86BB8 /* CustomButtonTextField.swift in Sources */,
@@ -1778,7 +1832,7 @@
 /* Begin XCBuildConfiguration section */
 		07F093242D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 07ECCE082D4E44E300AFF486 /* Config.xcconfig */;
+			baseConfigurationReference = 489EE09A2D5E22DD0099DC35 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1787,6 +1841,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1815,7 +1870,7 @@
 		};
 		07F093252D24183A0075659F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 07ECCE082D4E44E300AFF486 /* Config.xcconfig */;
+			baseConfigurationReference = 489EE09A2D5E22DD0099DC35 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1824,6 +1879,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1852,7 +1908,7 @@
 		};
 		07F093262D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 07ECCE082D4E44E300AFF486 /* Config.xcconfig */;
+			baseConfigurationReference = 489EE09A2D5E22DD0099DC35 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1916,7 +1972,7 @@
 		};
 		07F093272D24183A0075659F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 07ECCE082D4E44E300AFF486 /* Config.xcconfig */;
+			baseConfigurationReference = 489EE09A2D5E22DD0099DC35 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

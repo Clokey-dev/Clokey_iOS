@@ -10,6 +10,8 @@ import SnapKit
 
 class CustomTextField: UIView {
     
+    
+   
     // 상단 라벨
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -116,4 +118,6 @@ class CustomTextField: UIView {
     func setTextFieldFontSize(_ size: CGFloat) {
         textField.font = UIFont.ptdMediumFont(ofSize: size)
     }
+   
+    
 }

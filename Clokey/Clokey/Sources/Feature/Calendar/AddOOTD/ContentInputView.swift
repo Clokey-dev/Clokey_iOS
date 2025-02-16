@@ -122,6 +122,7 @@ class ContentInputView: UIView, UITextFieldDelegate {
         addSubview(publicButton)
         addSubview(privateButton)
         addSubview(publicInfoLabel)
+        
 
         
         setupConstraints()

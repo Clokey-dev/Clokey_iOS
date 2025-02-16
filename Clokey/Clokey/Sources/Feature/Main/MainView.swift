@@ -35,9 +35,8 @@ final class MainView: UIView {
     
     private func setupConstraints() {
         
-        // 상단바
         headerView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(47)
+            $0.top.equalTo(safeAreaLayoutGuide)
             $0.leading.trailing.equalTo(safeAreaLayoutGuide)
             $0.height.equalTo(50)
         }
@@ -67,7 +66,7 @@ final class MainView: UIView {
                 $0.height.equalTo(0) // headerView 높이 0
             }
             contentView.snp.remakeConstraints {
-                $0.top.equalToSuperview()
+                $0.top.equalTo(safeAreaLayoutGuide)
                 $0.leading.trailing.equalToSuperview()
                 $0.bottom.equalTo(tabBarView.snp.top)
             }
