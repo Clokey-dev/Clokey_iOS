@@ -17,7 +17,7 @@ class UpdateFriendClothesCollectionViewCell: UICollectionViewCell {
     let profileIcon: UIImageView = UIImageView().then {
         $0.image = UIImage(named: "profile_icon")
         $0.backgroundColor = .gray
-        $0.contentMode = .scaleAspectFit
+        $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 13
         $0.clipsToBounds = true
     }
@@ -42,22 +42,28 @@ class UpdateFriendClothesCollectionViewCell: UICollectionViewCell {
     let image1 = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .white
         $0.layer.cornerRadius = 0
+//        $0.layer.borderWidth = 1
+//        $0.layer.borderColor = UIColor.mainBrown800.cgColor
     }
     
     let image2 = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .white
         $0.layer.cornerRadius = 0
+//        $0.layer.borderWidth = 1
+//        $0.layer.borderColor = UIColor.mainBrown800.cgColor
     }
     
     let image3 = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .white
         $0.layer.cornerRadius = 0
+//        $0.layer.borderWidth = 1
+//        $0.layer.borderColor = UIColor.mainBrown800.cgColor
     }
     
     let separatorLine = UIView().then {
