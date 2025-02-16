@@ -43,14 +43,14 @@ public struct checkEditClothesResponseDTO: Codable {
 
 // 옷 조회(팝업용)
 public struct checkPopUpClothesResponseDTO: Codable {
-    public let id: CLong
+    public let id: Int64
     public let regDate: Date
     public let dayOfWeek: String
     public let imageUrl: String
     public let name: String
-    public let seasons: [Season]
+    public let seasons: [String]
     public let wearNum: Int
-    public let visibility: [Visibility]
+    public let visibility: [String]
     public let brand: String
     public let clothUrl: String
     public let category: String
@@ -66,7 +66,7 @@ public struct getCategoryClothesResponseDTO: Codable {
 
 // 옷 추가
 public struct addClothesResponseDTO: Codable {
-    public let id: CLong
+    public let id: Int64
 }
 
 // 유저 옷장 조회
@@ -83,4 +83,13 @@ public struct ClothPreview: Codable {
     public let name: String
     public let wearNum: Int
     public let imageUrl: String
+}
+
+// 옷장에서 옷 이름과 브랜드로 검색
+public struct ClothSearchResponseDTO: Codable {
+    public let clothPreviews: [ClothPreview]
+    public let totalPage: Int
+    public let totalElements: CLong
+    public let isFirst: Bool
+    public let isLast: Bool
 }

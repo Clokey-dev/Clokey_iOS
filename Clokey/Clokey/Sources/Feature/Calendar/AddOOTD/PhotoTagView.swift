@@ -186,6 +186,16 @@ class PhotoTagView: UIView {
         imageCollectionView.snp.updateConstraints {
             $0.height.equalTo(hasImages ? 160 : 0)
         }
+        
+        // 레이아웃 즉시 업데이트
+        UIView.animate(withDuration: 0.3) {
+            self.layoutIfNeeded()
+        }
+        
+        // 컬렉션 뷰 리프레시
+        if hasImages {
+            imageCollectionView.reloadData()
+        }
     }
     // 이미지 추가 되면 높이 0 -> 180
     func updateTagCollectionViewHeight(_ hasTags: Bool) {

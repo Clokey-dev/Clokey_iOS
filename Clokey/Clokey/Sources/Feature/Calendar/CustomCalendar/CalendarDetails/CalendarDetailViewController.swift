@@ -8,6 +8,10 @@
 import Foundation
 import UIKit
 
+protocol RecordOOTDViewControllerDelegate: AnyObject {
+    func didUpdateHistory()
+}
+
 class CalendarDetailViewController: UIViewController {
 
     // MARK: - Properties
@@ -32,14 +36,22 @@ class CalendarDetailViewController: UIViewController {
         
         calendarDetailView.clothesIconButton.addTarget(self, action: #selector(didTapClothesIconButton), for: .touchUpInside)
         
-        // 댓글창
+        calendarDetailView.moreButton.addTarget(self, action: #selector(didTapMoreButton), for: .touchUpInside)
+        
+        // 댓글 버튼에 직접 target-action 추가
+        calendarDetailView.commentButton.addTarget(self, action: #selector(didTapCommentButton), for: .touchUpInside)
+        
+        // 댓글 컨테이너에 gesture recognizer 추가
         let commentTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapCommentButton))
+        calendarDetailView.commentContainerView.addGestureRecognizer(commentTapGesture)
+
         calendarDetailView.commentContainerView.addGestureRecognizer(commentTapGesture)
         
         // likeLabel에 탭 제스처 추가
         let likeTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapLikeLabel))
         calendarDetailView.likeLabel.isUserInteractionEnabled = true
         calendarDetailView.likeLabel.addGestureRecognizer(likeTapGesture)
+
     }
 
     // MARK: - Setup
@@ -56,7 +68,7 @@ class CalendarDetailViewController: UIViewController {
         view.addSubview(calendarDetailView)
         
         calendarDetailView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
+            $0.edges.equalToSuperview()
         }
     }
     
@@ -114,7 +126,7 @@ class CalendarDetailViewController: UIViewController {
         let historyId = Int(viewModel.historyId)
         
         let actionSheet = CustomActionSheetViewController(historyId: historyId)
-        actionSheet.delegate = self // delegate 설정
+        actionSheet.delegate = self // delegate 설정 추가
         actionSheet.modalPresentationStyle = .overFullScreen
         present(actionSheet, animated: false)
     }
@@ -133,6 +145,10 @@ class CalendarDetailViewController: UIViewController {
         }
         
         present(likeListVC, animated: true)
+    }
+    
+    @objc private func didTapMoreButton() {
+        calendarDetailView.expandContent()
     }
     
     // 뒤로가기
@@ -189,6 +205,27 @@ class CalendarDetailViewController: UIViewController {
     }
 }
 
+extension CalendarDetailViewController: RecordOOTDViewControllerDelegate {
+    func didUpdateHistory() {
+        // 히스토리 데이터 다시 불러오기
+        guard let viewModel = viewModel else { return }
+        let historyId = Int(viewModel.historyId)
+        
+        historyService.historyDetail(historyId: historyId) { [weak self] result in
+            switch result {
+            case .success(let response):
+                DispatchQueue.main.async {
+                    self?.viewModel = CalendarDetailViewModel(data: response)
+                    self?.updateView()
+                }
+            case .failure(let error):
+                print("Failed to refresh history: \(error)")
+            }
+        }
+    }
+}
+
+
 extension CalendarDetailViewController: CustomActionSheetDelegate {
     func didDeleteHistory() {
         print("didDeleteHistory called")
@@ -209,6 +246,27 @@ extension CalendarDetailViewController: CustomActionSheetDelegate {
                 self.dismiss(animated: true)
             }
         }
+    }
+    
+    // 데이터 확인
+    func didTapEdit() {
+
+        guard let viewModel = viewModel else {
+            print("viewModel이 없음")
+            return
+        }
+        
+        print("전달할 데이터 췤")
+        print("닉네임: \(viewModel.name)")
+        print("내용: \(viewModel.content)")
+        print("해시태그: \(viewModel.hashtags)")
+        print("이미지 URL: \(viewModel.images)")
+        
+        let recordOOTDVC = RecordOOTDViewController()
+        recordOOTDVC.delegate = self
+        recordOOTDVC.setEditData(viewModel) // 데이터 전달
+       
+        navigationController?.pushViewController(recordOOTDVC, animated: true)
     }
 }
 

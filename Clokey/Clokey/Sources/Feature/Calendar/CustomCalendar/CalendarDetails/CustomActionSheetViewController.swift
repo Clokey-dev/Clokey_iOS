@@ -13,6 +13,7 @@ import Then
 protocol CustomActionSheetDelegate: AnyObject {
     // 글 삭제 후 현재 화면을 닫기 위한 delegte
     func didDeleteHistory()
+    func didTapEdit()
 }
 
 class CustomActionSheetViewController: UIViewController {
@@ -142,7 +143,7 @@ class CustomActionSheetViewController: UIViewController {
         let dimmedTap = UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped))
         dimmedView.addGestureRecognizer(dimmedTap)
         
-        editButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
+        editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
         deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
     }
     
@@ -168,11 +169,13 @@ class CustomActionSheetViewController: UIViewController {
         hideSheet()
     }
     
-    @objc private func shareButtonTapped() {
-        print("본문가기 tapped")
+    // 편집 버튼
+    @objc private func editButtonTapped() {
         hideSheet()
+        delegate?.didTapEdit()
     }
     
+    // 삭제 버튼
     @objc private func deleteButtonTapped() {
         historyService.historyDelete(historyId: historyId) { [weak self] result in
             guard let self = self else { return }
