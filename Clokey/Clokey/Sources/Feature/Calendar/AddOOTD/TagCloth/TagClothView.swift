@@ -18,7 +18,7 @@ final class TagClothView: UIView, SortDropdownViewDelegate {
     let customTotalSegmentView = CustomTotalSegmentView(items: ["전체", "상의", "하의", "아우터", "기타"])
     
     var dropdownView: CustomSortDropdownView?
-    weak var delegate: AnyObject? 
+    weak var delegate: AnyObject?
 
     // 검색 필드
     let searchField: CustomSearchField = {
@@ -30,7 +30,7 @@ final class TagClothView: UIView, SortDropdownViewDelegate {
     let contentView = UIView()
 
     // 정렬 라벨
-    private let sortButtonLabel: UILabel = {
+    let sortButtonLabel: UILabel = {
         let label = UILabel()
         label.text = "착용순"
         label.textColor = .black

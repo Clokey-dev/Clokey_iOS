@@ -60,8 +60,8 @@ class TagClothViewController: UIViewController {
     // API Service
     private let clothesService = ClothesService()
     
-    // TODO: 임시 데이터로 토큰으로 교체 예정
-//    private let clokeyId = "dbrdldh11"
+    // 검색 기능
+    private let searchService = SearchService()
     
     // TagClothView 뷰
     let tagClothView = TagClothView()
@@ -95,11 +95,12 @@ class TagClothViewController: UIViewController {
         configureInitialSetup()
         setupKeyboardDismissGestures() // 키보드 제스처 설정
         tagClothView.customTotalSegmentView.delegate = self
+        tagClothView.delegate = self
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        updateInitialIndicatorPosition() // 카테고리 위치 업데이트
+//        updateInitialIndicatorPosition() // 카테고리 위치 업데이트
     }
     
     // MARK: - Configuration Methods
@@ -153,33 +154,31 @@ class TagClothViewController: UIViewController {
     
     // TagClothView에서 발생하는 이벤트 처리
     private func configureTagClothView() {
-        tagClothView.delegate = self
     }
     
     // 세그먼트 컨트롤 하단 선택 인디케이터 위치 초기화
-    private func updateInitialIndicatorPosition() {
-        let initialIndex = tagClothView.customTotalSegmentView.segmentedControl.selectedSegmentIndex
-        tagClothView.customTotalSegmentView.updateIndicatorPosition(for: initialIndex)
-    }
-    
+//    private func updateInitialIndicatorPosition() {
+//        let initialIndex = tagClothView.customTotalSegmentView.segmentedControl.selectedSegmentIndex
+//        tagClothView.customTotalSegmentView.updateIndicatorPosition(for: initialIndex)
+//    }
+
     // MARK: - API (Data Handling)
+    // 옷장 의류 데이터 불러오기
     private func loadClothesData(categoryId: Int = 0, isNextPage: Bool = false, season: String = "ALL") {
-        // isLoading이 true일 -> 중복 요청을 방지하기 위해 조기 종료
-        // hasMorePages가 false -> 더 이상 데이터가 없으므로 추가 요청 방지
         guard !isLoading && (hasMorePages || !isNextPage) else { return }
         
         isLoading = true
         let page = isNextPage ? currentPage + 1 : 1
-        
+
         clothesService.getClothes(
             clokeyId: nil,
             categoryId: categoryId,
-            season: season, 
+            season: season,
             sort: currentSort.rawValue,
             page: page,
             size: 12
         ) { [weak self] result in
-            self?.isLoading = false // 새로운 요청 가능~
+            self?.isLoading = false
             
             switch result {
             case .success(let response):
@@ -191,37 +190,96 @@ class TagClothViewController: UIViewController {
                         name: preview.name
                     )
                 }
-                // 페이징 처리
+
                 if isNextPage {
                     self?.originalClothItems.append(contentsOf: newItems)
+                    self?.clothItems.append(contentsOf: newItems)
                     self?.currentPage = page
                 } else {
                     self?.originalClothItems = newItems
+                    self?.clothItems = newItems // 기존 리스트를 새로운 데이터로 덮어쓰기
                     self?.currentPage = 1
                 }
-                
-                // 데이터가 비어있지 않으면 추가 요청
+
                 self?.hasMorePages = !newItems.isEmpty
-                self?.filterItems() // 검색어 필터링 해서 화면 갱신
+
+                DispatchQueue.main.async {
+                    self?.tagClothView.collectionView.reloadData() //
+                }
             case .failure(let error):
                 print("Error loading clothes: \(error)")
             }
         }
     }
     
-    // 선택된 아이템 다시 불러와서 표시 함수 - 중요한 역할을 함.
-    private func restoreSelectionStates() {
-        for (index, item) in clothItems.enumerated() {
-            if selectedItems.contains(where: { $0.id == item.id }) { // id로 구분
-                let indexPath = IndexPath(item: index, section: 0)
-                tagClothView.collectionView.selectItem(
-                    at: indexPath,
-                    animated: false,
-                    scrollPosition: []
-                )
+    // 검색 API
+    private func searchClothesFromServer(keyword: String) {
+        guard !keyword.isEmpty else { return }
+
+        isLoading = true
+
+        searchService.searchClothes(
+            by: "name-and-brand",
+            keyword: keyword,
+            page: 1,
+            size: 12
+        ) { [weak self] result in
+            self?.isLoading = false
+
+            switch result {
+            case .success(let response):
+                let newItems = response.clothPreviews.map { preview in
+                    TagClothModel(
+                        id: Int(preview.id),
+                        image: preview.imageUrl,
+                        count: preview.wearNum,
+                        name: preview.name
+                    )
+                }
+                // 정렬 초기화 - 착용순
+                self?.currentSort = .wear
+                DispatchQueue.main.async {
+                    self?.tagClothView.sortButtonLabel.text = "착용순"
+                }
+
+                // 검색 시 항상 전체 카테고리로 변경
+                self?.currentMainCategoryId = 0
+                self?.currentSubCategoryId = nil
+                DispatchQueue.main.async {
+                    self?.tagClothView.customTotalSegmentView.segmentedControl.selectedSegmentIndex = 0
+                    self?.tagClothView.customTotalSegmentView.updateIndicatorPosition(for: 0)
+
+                    // 세부 카테고리 버튼 숨기기 및 레이아웃 재설정
+                    self?.tagClothView.customTotalSegmentView.toggleCategoryButtons(isHidden: true)
+                    self?.updateContentViewConstraints(forTotal: true)
+                }
+
+                self?.originalClothItems = newItems
+                self?.clothItems = newItems
+                self?.hasMorePages = !newItems.isEmpty
+
+                DispatchQueue.main.async {
+                    self?.tagClothView.collectionView.reloadData()
+                }
+            case .failure(let error):
+                print("검색 실패: \(error)")
             }
         }
     }
+    
+    // 선택된 아이템 다시 불러와서 표시 함수 - 중요한 역할을 함.
+//    private func restoreSelectionStates() {
+//        for (index, item) in clothItems.enumerated() {
+//            if selectedItems.contains(where: { $0.id == item.id }) { // id로 구분
+//                let indexPath = IndexPath(item: index, section: 0)
+//                tagClothView.collectionView.selectItem(
+//                    at: indexPath,
+//                    animated: false,
+//                    scrollPosition: []
+//                )
+//            }
+//        }
+//    }
     
     // MARK: - UI Updates
     // 전체보기 or 특정 카테고리 보기 설정
@@ -378,55 +436,85 @@ extension TagClothViewController {
 extension TagClothViewController: SortDropdownViewDelegate {
     func didSelectSortOption(_ option: String) {
         currentSort = SortOption.from(option)
-        // 현재 선택된 서브 카테고리가 있으면 그 ID를 사용하고,
-        // 없다면 메인 카테고리 ID를 사용
-        let categoryId = currentSubCategoryId ?? currentMainCategoryId
-        loadClothesData(categoryId: categoryId)
+        clothItems.sort {
+            // 프론트에서 구현한 검색 상태에서 정렬 필터..
+            switch currentSort {
+                case .wear: return $0.count > $1.count
+                case .notWear: return $0.count < $1.count
+                case .latest: return $0.id > $1.id
+                case .oldest: return $0.id < $1.id
+            }
+        }
+        tagClothView.collectionView.reloadData()
     }
 }
+
 // MARK: - UISearchTextFieldDelegate
 extension TagClothViewController: UISearchTextFieldDelegate {
     // 검색 필드 입력 처리
     private func setupSearchField() {
         tagClothView.searchField.textField.delegate = self
-        // 사용자가 타이핑할 때마다 실행
         tagClothView.searchField.textField.addTarget(
             self,
             action: #selector(searchFieldDidChange),
             for: .editingChanged
         )
     }
+
     // 검색어 필터링
     private func filterItems() {
-        // 검색창이 비어있을 때 -> 원본 데이터
         if currentSearchText.isEmpty {
             clothItems = originalClothItems
         } else {
-            // 검색어가 입력되면 필터링 시작
             clothItems = originalClothItems.filter {
-                $0.name.lowercased().contains(currentSearchText)
+                $0.name.lowercased().contains(currentSearchText.lowercased())
             }
         }
-        tagClothView.collectionView.reloadData()
+
+        DispatchQueue.main.async {
+            self.tagClothView.collectionView.reloadData()
+        }
     }
+
     
-    // 사용자가 검색어 입력하면 currentSearchText 업데이트
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+
+        // 검색 시 카테고리 -> 전체
+        currentMainCategoryId = 0
+        currentSubCategoryId = nil
+        tagClothView.customTotalSegmentView.segmentedControl.selectedSegmentIndex = 0
+        tagClothView.customTotalSegmentView.updateIndicatorPosition(for: 0)
+
+        searchClothesFromServer(keyword: currentSearchText)
+        return true
+    }
+
+    
+    // 검색어 업데이트
     @objc private func searchFieldDidChange(_ textField: UITextField) {
-        currentSearchText = textField.text?.lowercased() ?? ""
-        filterItems()
+        let keyword = textField.text?.trimmingCharacters(in: .whitespaces) ?? ""
+        currentSearchText = keyword
     }
     
     // 세그먼트 감지해서 loadClothesData로 알맞은 index 값 전송
     @objc private func segmentChanged(_ sender: UISegmentedControl) {
         let index = sender.selectedSegmentIndex
         currentMainCategoryId = index
-        currentSubCategoryId = nil  // 메인 카테고리 변경 시 서브 카테고리 초기화
-        
-        // 선택된 카테고리에 맞는 데이터를 로드
+        currentSubCategoryId = nil
+
+        // 특정 카테고리 선택 시 검색어 초기화
+        currentSearchText = ""
+        tagClothView.searchField.textField.text = ""
+
+        // UI 업데이트
         tagClothView.customTotalSegmentView.updateIndicatorPosition(for: index)
         updateContent(for: index)
+
+        // 기존 카테고리 데이터 로드
         loadClothesData(categoryId: index)
     }
+
 
 }
 
@@ -486,6 +574,8 @@ extension TagClothViewController: AddCategoryViewControllerDelegate {
                     
                     // 메인 카테고리 세그먼트 선택
                     tagClothView.customTotalSegmentView.segmentedControl.selectedSegmentIndex = mainIndex
+                    tagClothView.customTotalSegmentView.updateIndicatorPosition(for: mainIndex)
+                    currentMainCategoryId = mainIndex
                     
                     // 세부 카테고리 버튼들 보이게 설정
                     tagClothView.customTotalSegmentView.toggleCategoryButtons(isHidden: false)
@@ -513,5 +603,8 @@ extension TagClothViewController: AddCategoryViewControllerDelegate {
             isNextPage: false,
             season: season ?? "ALL"
         )
+        // 검색어 비우기
+        currentSearchText = ""
+        tagClothView.searchField.textField.text = ""
     }
 }
