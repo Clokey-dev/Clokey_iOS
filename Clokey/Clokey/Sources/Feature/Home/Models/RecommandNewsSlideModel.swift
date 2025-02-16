@@ -13,22 +13,6 @@ struct RecommandNewsSlideModel {
     let hashtag: String?
     let date: String?
 }
-//struct RecommandNewsSlideModel {
-//    let id: UUID // ✅ 클라이언트에서 자동 생성되는 고유 ID
-//    let image: String? // 이미지 URL
-//    let title: String
-//    let hashtag: String?
-//    let date: String?
-//
-//    // ✅ `id`는 자동 생성되도록 설정
-//    init(id: UUID = UUID(), image: String?, title: String, hashtag: String?, date: String?) {
-//        self.id = id
-//        self.image = image
-//        self.title = title
-//        self.hashtag = hashtag
-//        self.date = date
-//    }
-//}
 
 extension RecommandNewsSlideModel {
     ///  PickViewController에 들어갈 dummy 데이터 3개를 추가
