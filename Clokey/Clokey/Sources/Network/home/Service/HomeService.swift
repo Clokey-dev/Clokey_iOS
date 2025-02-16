@@ -60,6 +60,15 @@ public final class HomeService : NetworkManager {
 
         request(target: .getDetailIssues(section: section, page: page), decodingType: decodingType, completion: completion)
     }
+    
+    func fetchGetIssuesData(
+        completion: @escaping (Result<GetIssuesResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .getIssues,
+            decodingType: GetIssuesResponseDTO.self,
+            completion: completion)
+    }
 }
 
 

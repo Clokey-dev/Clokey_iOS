@@ -92,19 +92,19 @@ class NewsView: UIView {
     let friendClothesImageView1 = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-        $0.layer.cornerRadius = 0
+        $0.layer.cornerRadius = 5
     }
     
     let friendClothesImageView2 = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-        $0.layer.cornerRadius = 0
+        $0.layer.cornerRadius = 5
     }
     
     let friendClothesImageView3 = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-        $0.layer.cornerRadius = 0
+        $0.layer.cornerRadius = 5
     }
     
     let friendClothesBottomButtonLabel: UILabel = UILabel().then {
@@ -644,7 +644,7 @@ class NewsView: UIView {
             emptyStackView2.emptyClothesMessageSubTitle.text = "다른 사용자들을 팔로우하고\n다양한 패션 기록을 구경해보세요"
             
             followingCalendarUpdateContainerView.snp.remakeConstraints { make in
-                make.top.equalTo(followingCalendarUpdateSubTitle.snp.bottom).offset(26)
+                make.top.equalTo(followingCalendarUpdateTitle.snp.bottom).offset(26)
                 make.leading.trailing.equalToSuperview().inset(20)
                 make.height.equalTo(250) // 컨테이너 높이를 늘림
             }

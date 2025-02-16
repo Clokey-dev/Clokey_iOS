@@ -11,7 +11,7 @@ import Moya
 public enum HomeEndPoint {
     case recommendClothes(nowTemp: Int32, minTemp: Int32, maxTemp: Int32)
     case getOneYearAgoHistories
-//    case getAllIssues
+    case getIssues
     case getDetailIssues(section: String?, page: Int)
 }
 
@@ -29,6 +29,8 @@ extension HomeEndPoint: TargetType {
             return "/home/recommend"
         case .getOneYearAgoHistories: // 새로 추가된 경로
             return "/home/1-year-ago"
+        case .getIssues:
+            return "/home/news"
         case .getDetailIssues:
             return "/home/news/detail"
         
@@ -40,6 +42,8 @@ extension HomeEndPoint: TargetType {
         case .recommendClothes:
             return .get
         case .getOneYearAgoHistories:
+            return .get
+        case .getIssues:
             return .get
         case .getDetailIssues:
             return .get
@@ -57,6 +61,8 @@ extension HomeEndPoint: TargetType {
                 ]
                 return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
         case .getOneYearAgoHistories: // 새로 추가된 Task
+            return .requestPlain
+        case .getIssues:
             return .requestPlain
         case .getDetailIssues(let section, let page):
             var parameters: [String: Any] = [:]

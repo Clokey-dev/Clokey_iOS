@@ -131,6 +131,9 @@ public struct CalendarEventResponseDTO: Decodable {
 
 // People 섹션 (현재는 빈 배열이지만 확장 가능)
 public struct PeopleResponseDTO: Decodable {
-    // 필요한 필드가 없지만 추후 확장 가능
+    let clokeyId: String
+    let imageUrl: String
+    let historyImage: String
+    let historyId: Int64
 }
 

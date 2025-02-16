@@ -20,16 +20,7 @@ class ImageViewController: UIViewController {
         setupImageView()
         updateUI()
     }
-    
-    // ImageView를 뷰 계층에 추가하고 레이아웃 설정
-//    private func setupImageView() {
-//        view.addSubview(imageView)
-//        imageView.snp.makeConstraints { make in
-////            make.edges.equalToSuperview() // ImageView를 전체 화면에 맞게 배치
-//            make.leading.trailing.equalToSuperview().inset(24)
-//            make.size.equalTo(300)
-//        }
-//    }
+
     private func setupImageView() {
         view.addSubview(imageView)
         imageView.snp.makeConstraints { make in
@@ -39,17 +30,48 @@ class ImageViewController: UIViewController {
         }
     }
     
-    
     // UI 업데이트
+//    private func updateUI() {
+//        if let slideModel = slideModel {
+//            if let imageURL = URL(string: slideModel.image) {
+//                imageView.imageView.kf.setImage(with: imageURL) // URL을 통해 이미지 로드
+//            }
+//            imageView.titleLabel.text = slideModel.title // 제목 설정
+//            imageView.hashtagLabel.text = slideModel.hashtag // 해시태그 설정
+//        }
+//    }
+    
     private func updateUI() {
-        if let slideModel = slideModel {
-            if let imageURL = URL(string: slideModel.image) {
-                imageView.imageView.kf.setImage(with: imageURL) // URL을 통해 이미지 로드
+        let homeService = HomeService()
+        
+        homeService.fetchGetIssuesData { result in
+            switch result {
+            case .success(let responseDTO):
+                DispatchQueue.main.async {
+                    // ✅ recommend 배열이 비어있는지 확인
+                    guard let firstRecommend = responseDTO.recommend.first else {
+                        print("🚨 No recommend data available.")
+                        return
+                    }
+                    
+                    // ✅ 이미지 설정 (Kingfisher 사용)
+                    if let imageUrlString = firstRecommend.imageUrl, let imageUrl = URL(string: imageUrlString) {
+                        self.imageView.imageView.kf.setImage(with: imageUrl)
+                    } else {
+                        self.imageView.imageView.image = UIImage(named: "placeholder") // 기본 이미지 설정
+                    }
+                    
+                    // ✅ 제목과 해시태그 설정
+                    self.imageView.titleLabel.text = firstRecommend.subTitle
+                    self.imageView.hashtagLabel.text = firstRecommend.hashtag
+                }
+                
+            case .failure(let error):
+                print("❌ Failed to load recommend data: \(error.localizedDescription)")
             }
-            imageView.titleLabel.text = slideModel.title // 제목 설정
-            imageView.hashtagLabel.text = slideModel.hashtag // 해시태그 설정
         }
     }
+                                        
     
     // 외부에서 데이터를 설정할 메서드
     func configureView(with model: RecommandNewsSlideModel) {

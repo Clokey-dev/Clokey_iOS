@@ -43,7 +43,7 @@ class UpdateFriendClothesCollectionViewCell: UICollectionViewCell {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
         $0.backgroundColor = .white
-        $0.layer.cornerRadius = 0
+        $0.layer.cornerRadius = 5
 //        $0.layer.borderWidth = 1
 //        $0.layer.borderColor = UIColor.mainBrown800.cgColor
     }
@@ -52,7 +52,7 @@ class UpdateFriendClothesCollectionViewCell: UICollectionViewCell {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
         $0.backgroundColor = .white
-        $0.layer.cornerRadius = 0
+        $0.layer.cornerRadius = 5
 //        $0.layer.borderWidth = 1
 //        $0.layer.borderColor = UIColor.mainBrown800.cgColor
     }
@@ -61,7 +61,7 @@ class UpdateFriendClothesCollectionViewCell: UICollectionViewCell {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
         $0.backgroundColor = .white
-        $0.layer.cornerRadius = 0
+        $0.layer.cornerRadius = 5
 //        $0.layer.borderWidth = 1
 //        $0.layer.borderColor = UIColor.mainBrown800.cgColor
     }
