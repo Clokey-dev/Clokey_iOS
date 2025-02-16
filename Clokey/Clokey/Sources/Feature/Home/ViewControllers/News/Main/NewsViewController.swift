@@ -94,6 +94,9 @@ class NewsViewController: UIViewController {
                     self.newsView.hotAccountImageView4.kf.setImage(with: URL(string: responseDTO.people[3].historyImage))
                     self.newsView.hotAccountProfileIcon4.kf.setImage(with: URL(string: responseDTO.people[3].imageUrl))
                     self.newsView.hotAccountProfileName4.text = responseDTO.people[3].clokeyId
+                    
+                    // ✅ 데이터 로드 후 `pageControl` 업데이트
+                    self.setupPageControl()
                 }
                 
             case .failure(let error):
@@ -226,6 +229,7 @@ class NewsViewController: UIViewController {
                         self.newsView.followingCalendarProfileIcon2.kf.setImage(with: URL(string: calendarItems[1].profileImage))
                         self.newsView.followingCalendarProfileName2.text = calendarItems[1].clokeyId
                     }
+                    
                 }
                 
             case .failure(let error):
@@ -238,8 +242,49 @@ class NewsViewController: UIViewController {
     }
     
     
+//    private func setupDummyData() {
+//        recommandNewsSlides = RecommandNewsSlideModel.slideDummyData()
+//        
+//    }
+    
     private func setupDummyData() {
-        recommandNewsSlides = RecommandNewsSlideModel.slideDummyData()
+        let homeService = HomeService()
+
+        homeService.fetchGetIssuesData { result in
+            switch result {
+            case .success(let responseDTO):
+                DispatchQueue.main.async {
+                    // ✅ recommend 배열이 비어있는지 확인
+                    guard !responseDTO.recommend.isEmpty else {
+                        print("🚨 No recommend data available.")
+                        return
+                    }
+
+                    // ✅ 서버에서 받아온 데이터를 recommandNewsSlides 배열에 저장
+                    self.recommandNewsSlides = responseDTO.recommend.map { recommendItem in
+                        return RecommandNewsSlideModel(
+                            image: recommendItem.imageUrl,
+                            title: recommendItem.subTitle ?? "제목 없음",
+                            hashtag: recommendItem.hashtag ?? "#해시태그 없음",
+                            date: recommendItem.date
+                        )
+                    }
+
+                    // ✅ 첫 번째 슬라이드를 설정하여 pageViewController에 반영
+                    if let initialVC = self.createImageViewController(for: self.currentIndexValue()) {
+                        self.pageViewController.setViewControllers([initialVC], direction: .forward, animated: false, completion: nil)
+                    }
+
+                    // ✅ 페이지 컨트롤 UI 업데이트
+                    self.setupPageControl()
+
+                    print("✅ recommandNewsSlides 업데이트 완료: \(self.recommandNewsSlides.count)개")
+                }
+                
+            case .failure(let error):
+                print("❌ Failed to load recommend data: \(error.localizedDescription)")
+            }
+        }
     }
     
     // MARK: - Helper Methods
@@ -297,7 +342,8 @@ class NewsViewController: UIViewController {
     private func setupPageControl() {
         // 페이지 컨트롤 추가 및 설정
         newsView.contentView.addSubview(pageControl)
-        pageControl.numberOfPages = totalImages() // 이미지 개수 설정
+//        pageControl.numberOfPages = totalImages() // 이미지 개수 설정
+        pageControl.numberOfPages = recommandNewsSlides.count
         pageControl.currentPage = currentIndexValue()
         
         // SnapKit으로 레이아웃 설정
@@ -307,10 +353,16 @@ class NewsViewController: UIViewController {
         }
     }
     
+
     private func createImageViewController(for index: Int) -> ImageViewController? {
         guard index >= 0 && index < recommandNewsSlides.count else { return nil }
+        
         let imageVC = ImageViewController()
-        imageVC.configureView(with: recommandNewsSlides[index]) // 슬라이드 데이터 전달
+        let slideModel = recommandNewsSlides[index]
+        
+        imageVC.configureView(with: slideModel) // ✅ 정확한 데이터 전달
+        imageVC.slideModel = slideModel // ✅ 직접 slideModel 저장 (추가)
+        
         return imageVC
     }
     
@@ -321,18 +373,9 @@ class NewsViewController: UIViewController {
     }
     
     @objc private func handleFriendClothesBottomLabelTap() {
-        
-
         let detailVC = UpdateFriendClothesViewController()
         self.navigationController?.pushViewController(detailVC, animated: true)
     }
-    
-//    private func presentNewFriendClothesViewController() {
-//        let updateFriendClothesViewController = UpdateFriendClothesViewController()
-//        updateFriendClothesViewController.modalPresentationStyle = .overFullScreen
-//        updateFriendClothesViewController.modalTransitionStyle = .crossDissolve
-//        present(updateFriendClothesViewController, animated: true, completion: nil)
-//    }
     
     // MARK: - bottomLabel에 TapGestureRecognizer 추가
     private func setupFollowingCalendarBottomLabelTap() {
@@ -342,33 +385,16 @@ class NewsViewController: UIViewController {
     }
     
     @objc private func handleFollowingCalendarBottomLabelTap() {
-//        if let presentedVC = presentedViewController {
-//            // 이미 다른 ViewController가 표시 중인 경우 닫기
-//            presentedVC.dismiss(animated: true) {
-//                self.presentNewFollowingCalendarViewController()
-//            }
-//        } else {
-//            // 새 ViewController 표시
-//            self.presentNewFollowingCalendarViewController()
-//        }
-        
         let presentedVC = UpdateFriendCalendarViewController()
         self.navigationController?.pushViewController(presentedVC, animated: true)
     }
-    
-//    private func presentNewFollowingCalendarViewController() {
-//        let updateFriendCalendarViewController = UpdateFriendCalendarViewController()
-//        updateFriendCalendarViewController.modalPresentationStyle = .overFullScreen
-//        updateFriendCalendarViewController.modalTransitionStyle = .crossDissolve
-//        present(updateFriendCalendarViewController, animated: true, completion: nil)
-//    }
 }
 
 extension NewsViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let currentVC = viewController as? ImageViewController,
               let currentSlide = currentVC.slideModel, // `slideModel` 사용
-              let currentIndex = recommandNewsSlides.firstIndex(where: { $0.image == currentSlide.image }) else {
+              let currentIndex = recommandNewsSlides.firstIndex(where: { $0.title == currentSlide.title }) else {
             return nil
         }
         
@@ -380,7 +406,7 @@ extension NewsViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         guard let currentVC = viewController as? ImageViewController,
               let currentSlide = currentVC.slideModel, // `slideModel` 사용
-              let currentIndex = recommandNewsSlides.firstIndex(where: { $0.image == currentSlide.image }) else {
+              let currentIndex = recommandNewsSlides.firstIndex(where: { $0.title == currentSlide.title }) else {
             return nil
         }
         
@@ -390,12 +416,13 @@ extension NewsViewController: UIPageViewControllerDataSource {
     }
 }
 
+
 extension NewsViewController: UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         guard completed,
               let currentVC = pageViewController.viewControllers?.first as? ImageViewController,
               let currentSlide = currentVC.slideModel, // `slideModel` 사용
-              let index = recommandNewsSlides.firstIndex(where: { $0.image == currentSlide.image }) else {
+              let index = recommandNewsSlides.firstIndex(where: { $0.title == currentSlide.title }) else {
             return
         }
         
@@ -403,3 +430,6 @@ extension NewsViewController: UIPageViewControllerDelegate {
         pageControl.currentPage = index // 페이지 컨트롤 업데이트
     }
 }
+
+
+

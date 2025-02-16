@@ -91,7 +91,7 @@ public struct GetDetailIssuesCalendarResponseDTO: Codable {
 
 
 // 소식 화면의 데이터 구조
-public struct GetIssuesResponseDTO: Decodable {
+public struct GetIssuesResponseDTO: Codable {
     let recommend: [RecommendResponseDTO]
     let closet: [ClosetResponseDTO]
     let calendar: [CalendarResponseDTO]
@@ -99,15 +99,15 @@ public struct GetIssuesResponseDTO: Decodable {
 }
 
 // Recommend 섹션 항목
-public struct RecommendResponseDTO: Decodable {
+public struct RecommendResponseDTO: Codable {
     let imageUrl: String?
     let subTitle: String
-    let hashtag: String
+    let hashtag: String?
     let date: String
 }
 
 // Closet 섹션 항목
-public struct ClosetResponseDTO: Decodable {
+public struct ClosetResponseDTO: Codable {
     let clokeyId: String
     let profileImage: String
     let clothesId: [Int64]
@@ -116,7 +116,7 @@ public struct ClosetResponseDTO: Decodable {
 }
 
 // Calendar 섹션 항목
-public struct CalendarResponseDTO: Decodable {
+public struct CalendarResponseDTO: Codable {
     let date: String
     let clokeyId: String
     let profileImage: String
@@ -124,13 +124,13 @@ public struct CalendarResponseDTO: Decodable {
 }
 
 // Calendar 내 이벤트
-public struct CalendarEventResponseDTO: Decodable {
+public struct CalendarEventResponseDTO: Codable {
     let historyId: Int64
     let imageUrl: String?
 }
 
 // People 섹션 (현재는 빈 배열이지만 확장 가능)
-public struct PeopleResponseDTO: Decodable {
+public struct PeopleResponseDTO: Codable {
     let clokeyId: String
     let imageUrl: String
     let historyImage: String

@@ -40,37 +40,54 @@ class ImageViewController: UIViewController {
 //            imageView.hashtagLabel.text = slideModel.hashtag // 해시태그 설정
 //        }
 //    }
-    
     private func updateUI() {
-        let homeService = HomeService()
+        guard let slideModel = slideModel else { return } // ✅ slideModel이 nil이면 함수 종료
         
-        homeService.fetchGetIssuesData { result in
-            switch result {
-            case .success(let responseDTO):
-                DispatchQueue.main.async {
-                    // ✅ recommend 배열이 비어있는지 확인
-                    guard let firstRecommend = responseDTO.recommend.first else {
-                        print("🚨 No recommend data available.")
-                        return
-                    }
-                    
-                    // ✅ 이미지 설정 (Kingfisher 사용)
-                    if let imageUrlString = firstRecommend.imageUrl, let imageUrl = URL(string: imageUrlString) {
-                        self.imageView.imageView.kf.setImage(with: imageUrl)
-                    } else {
-                        self.imageView.imageView.image = UIImage(named: "placeholder") // 기본 이미지 설정
-                    }
-                    
-                    // ✅ 제목과 해시태그 설정
-                    self.imageView.titleLabel.text = firstRecommend.subTitle
-                    self.imageView.hashtagLabel.text = firstRecommend.hashtag
-                }
-                
-            case .failure(let error):
-                print("❌ Failed to load recommend data: \(error.localizedDescription)")
-            }
+        if let imageUrlString = slideModel.image,
+           let imageURL = URL(string: imageUrlString),
+           !imageUrlString.isEmpty {
+            // ✅ 유효한 URL인지 체크
+            imageView.imageView.kf.setImage(with: imageURL)
+        } else {
+            // ✅ 기본 이미지 설정 (플레이스홀더)
+            imageView.imageView.image = UIImage(named: "placeholder")
         }
+        
+        imageView.titleLabel.text = slideModel.title ?? "제목 없음" // ✅ nil 방어 코드
+        imageView.hashtagLabel.text = slideModel.hashtag ?? "해시태그 없음" // ✅ nil 방어 코드
     }
+    
+//    private func updateUI() {
+//        let homeService = HomeService()
+//
+//        homeService.fetchGetIssuesData { result in
+//            switch result {
+//            case .success(let responseDTO):
+//                DispatchQueue.main.async {
+//                    // ✅ recommend 배열이 비어있는지 확인
+//                    guard !responseDTO.recommend.isEmpty else {
+//                        print("🚨 No recommend data available.")
+//                        return
+//                    }
+//
+//                    // ✅ 여러 개의 recommend 데이터를 처리
+//                    responseDTO.recommend.forEach { recommendItem in
+//                        if let imageUrlString = recommendItem.imageUrl, let imageUrl = URL(string: imageUrlString) {
+//                            self.imageView.imageView.kf.setImage(with: imageUrl)
+//                        } else {
+//                            self.imageView.imageView.image = UIImage(named: "placeholder") // 기본 이미지 설정
+//                        }
+//                        
+//                        self.imageView.titleLabel.text = recommendItem.subTitle
+//                        self.imageView.hashtagLabel.text = recommendItem.hashtag
+//                    }
+//                }
+//                
+//            case .failure(let error):
+//                print("❌ Failed to load recommend data: \(error.localizedDescription)")
+//            }
+//        }
+//    }
                                         
     
     // 외부에서 데이터를 설정할 메서드
