@@ -9,7 +9,7 @@ import Foundation
 import Moya
 
 public enum MembersEndpoint {
-    case kakaoLogin(data: KakaoLoginRequestDTO)
+    case SocialLogin(data: LoginRequestDTO)
     case ReissueToken(data: ReissueTokenRequestDTO)
     case agreeToTerms(data: AgreementToTermsRequestDTO)
     case getTerms
@@ -32,7 +32,7 @@ extension MembersEndpoint: TargetType {
     // 엔드 포인트 주소
     public var path: String {
         switch self {
-        case .kakaoLogin:
+        case .SocialLogin:
             return "/login"
         case .ReissueToken:
             return "/reissue-token"
@@ -58,7 +58,7 @@ extension MembersEndpoint: TargetType {
     // HTTP 메서드
     public var method: Moya.Method {
         switch self {
-        case .kakaoLogin, .ReissueToken, .agreeToTerms, .followUser:
+        case .SocialLogin, .ReissueToken, .agreeToTerms, .followUser:
             return .post
         case .updateProfile:
             return .patch
@@ -72,7 +72,7 @@ extension MembersEndpoint: TargetType {
     // 요청 데이터(내가 서버로 보내야 하는 데이터)
     public var task: Moya.Task {
         switch self {
-        case .kakaoLogin(let data):
+        case .SocialLogin(let data):
             return .requestJSONEncodable(data)
         case .ReissueToken(let data):
             return .requestJSONEncodable(data)

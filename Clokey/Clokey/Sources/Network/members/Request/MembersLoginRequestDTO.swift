@@ -9,10 +9,12 @@ import Foundation
 
 // 애플 로그인, 카카오 로그인, 약관 동의, 프로필 수정 DTO 모음
 
-// 카카오 로그인
-public struct KakaoLoginRequestDTO: Codable {
+// 로그인(카카오/애플)
+public struct LoginRequestDTO: Codable {
     public let type: String
-    public let accessToken: String
+    public let accessToken: String?
+    public let authorizationCode: String?
+    public let deviceToken: String
 }
 
 // 토큰 재발급
