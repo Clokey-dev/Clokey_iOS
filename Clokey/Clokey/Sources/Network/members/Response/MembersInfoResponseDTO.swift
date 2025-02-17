@@ -12,7 +12,7 @@ import Foundation
 // 회원 조회
 public struct MembersInfoResponseDTO: Codable {
     public let clokeyId: String
-    public let profileImageUrl: String
+    public let profileImageUrl: String?
     public let recordCount: Int
     public let followerCount: Int
     public let followingCount: Int

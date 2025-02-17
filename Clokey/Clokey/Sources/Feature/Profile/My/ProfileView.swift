@@ -2,7 +2,7 @@
 //  ProfileView.swift
 //  Clokey
 //
-//  Created by 황상환 on 1/10/25.
+//  Created by 한금준 on 1/10/25.
 //
 
 import Foundation
@@ -11,6 +11,8 @@ import SnapKit
 import Then
 
 final class ProfileView: UIView {
+    private let privateStackView1 = PrivateStackView()
+    private let privateStackView2 = PrivateStackView()
     /// 세로 스크롤을 지원하는 ScrollView
     let scrollView: UIScrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
@@ -160,7 +162,7 @@ final class ProfileView: UIView {
     let bottomButtonLabel: UILabel = UILabel().then {
         $0.text = "옷장 구경하기" // 버튼 텍스트
         $0.textColor = .black // 텍스트 색상
-        $0.font = UIFont.systemFont(ofSize: 12) // 폰트 크기
+        $0.font = UIFont.ptdMediumFont(ofSize: 12) // 폰트 크기
     }
     
     /// 버튼 옆의 화살표 아이콘
@@ -393,5 +395,40 @@ final class ProfileView: UIView {
             make.edges.equalToSuperview()
         }
         
+    }
+    
+    /// 데이터 상태에 따라 EmptyStackView 표시/숨김
+    func updateClothesPrivateState(isPrivate: Bool) {
+        if isPrivate {
+            // 데이터가 없으면 EmptyStackView 추가하고 관련 요소 숨김
+            clothesImageContainerView.addSubview(privateStackView1)
+            privateStackView1.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+            
+            bottomButtonLabel.isHidden = true
+            bottomArrowIcon.isHidden = true
+        } else {
+            // 데이터가 있으면 EmptyStackView 제거하고 관련 요소 표시
+            privateStackView1.removeFromSuperview()
+
+            bottomButtonLabel.isHidden = false
+            bottomArrowIcon.isHidden = false
+        }
+    }
+    
+    func updateCalendarPrivateState(isPrivate: Bool) {
+        if isPrivate {
+            // 데이터가 없으면 EmptyStackView 추가하고 관련 요소 숨김
+            recordContainerView.addSubview(privateStackView2)
+            privateStackView2.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+    
+        } else {
+            // 데이터가 있으면 EmptyStackView 제거하고 관련 요소 표시
+            privateStackView2.removeFromSuperview()
+
+        }
     }
 }

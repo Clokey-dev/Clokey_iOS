@@ -37,22 +37,22 @@ class FollowProfileView: UIView {
     
     let backgroundImageView = UIImageView().then {
         $0.image = UIImage(named: "profile_background")
-        $0.backgroundColor = .systemGray6
+        $0.backgroundColor = UIColor(red: 255/255, green: 248/255, blue: 235/255, alpha: 1.0)
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
     }
     
     let profileContainer: UIView = UIView().then {
-        $0.backgroundColor = .systemBlue
+        $0.backgroundColor = .white
         $0.layer.cornerRadius = 50 // 원형으로 만들기 위해 반지름을 절반으로 설정
         $0.layer.masksToBounds = true // 자식 콘텐츠가 코너를 넘지 않도록 설정
     }
     
     let profileImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
-        $0.layer.cornerRadius = 10
+        $0.layer.cornerRadius = 50
         $0.layer.masksToBounds = true
-        $0.image = UIImage(named: "profile_icon")
+        $0.image = UIImage(named: "profile_test")
     }
     
     let nicknameLabel: UILabel = {
@@ -64,11 +64,52 @@ class FollowProfileView: UIView {
         return label
     }()
     
-    let statsLabel = UILabel().then {
-        $0.text = "게시글 000  팔로워 000  팔로잉 000"
+    let profileDetailContainer: UIView = UIView().then {
+        $0.backgroundColor = .clear
+    }
+    
+    let writeLabel = UILabel().then {
+        $0.text = "게시글"
         $0.font = UIFont.ptdRegularFont(ofSize: 12)
         $0.textColor = .black
         $0.textAlignment = .center
+    }
+    
+    let writeCountLabel = UILabel().then {
+        $0.text = "000"
+        $0.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.textColor = .black
+        $0.textAlignment = .center
+    }
+    
+    let followerLabel = UILabel().then {
+        $0.text = "팔로워"
+        $0.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.textColor = .black
+        $0.textAlignment = .center
+    }
+    
+    let followerCountButton = UIButton().then {
+        $0.setTitle("000", for: .normal)
+        $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.setTitleColor(.black, for: .normal)
+        $0.titleLabel?.textAlignment = .center
+        //        $0.addTarget(self, action: #selector(followingCountTapped), for: .touchUpInside)
+    }
+    
+    let followingLabel = UILabel().then {
+        $0.text = "팔로잉"
+        $0.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.textColor = .black
+        $0.textAlignment = .center
+    }
+    
+    let followingCountButton = UIButton().then {
+        $0.setTitle("000", for: .normal)
+        $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.setTitleColor(.black, for: .normal)
+        $0.titleLabel?.textAlignment = .center
+        //        $0.addTarget(self, action: #selector(followingCountTapped), for: .touchUpInside)
     }
     
     let descriptionLabel = UILabel().then {
@@ -84,11 +125,14 @@ class FollowProfileView: UIView {
         $0.setTitleColor(.white, for: .normal)
         $0.backgroundColor = .mainBrown800
         $0.layer.cornerRadius = 10
+        
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.mainBrown800.cgColor
     }
     
     let clothesLabel = UILabel().then {
         $0.text = "옷장"
-        $0.font = UIFont.boldSystemFont(ofSize: 18)
+        $0.font = UIFont.ptdRegularFont(ofSize: 20)
         $0.textAlignment = .left
     }
     
@@ -134,17 +178,21 @@ class FollowProfileView: UIView {
     
     let recordLabel = UILabel().then {
         $0.text = "기록"
-        $0.font = UIFont.boldSystemFont(ofSize: 18)
+        $0.font = UIFont.ptdRegularFont(ofSize: 20)
         $0.textAlignment = .left
     }
     
+    
     let recordContainerView: UIView = UIView().then {
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .clear
     }
     
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        scrollView.subviews.forEach { $0.removeFromSuperview() }
+        contentView.subviews.forEach { $0.removeFromSuperview() }
         setupUI()
         setupConstraints()
     }
@@ -166,7 +214,13 @@ class FollowProfileView: UIView {
         contentView.addSubview(profileContainer)
         profileContainer.addSubview(profileImageView)
         contentView.addSubview(nicknameLabel)
-        contentView.addSubview(statsLabel)
+        contentView.addSubview(profileDetailContainer)
+        profileDetailContainer.addSubview(writeLabel)
+        profileDetailContainer.addSubview(writeCountLabel)
+        profileDetailContainer.addSubview(followerLabel)
+        profileDetailContainer.addSubview(followerCountButton)
+        profileDetailContainer.addSubview(followingLabel)
+        profileDetailContainer.addSubview(followingCountButton)
         contentView.addSubview(descriptionLabel)
         contentView.addSubview(followButton)
         contentView.addSubview(clothesLabel)
@@ -225,15 +279,48 @@ class FollowProfileView: UIView {
         nicknameLabel.snp.makeConstraints { make in
             make.top.equalTo(profileImageView.snp.bottom).offset(13)
             make.centerX.equalToSuperview()
+            make.height.equalTo(24)
         }
         
-        statsLabel.snp.makeConstraints { make in
+        profileDetailContainer.snp.makeConstraints { make in
             make.top.equalTo(nicknameLabel.snp.bottom).offset(4)
             make.centerX.equalToSuperview()
+            make.height.equalTo(24)
+        }
+        
+        writeLabel.snp.makeConstraints { make in
+            make.top.leading.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
+        
+        writeCountLabel.snp.makeConstraints { make in
+            make.leading.equalTo(writeLabel.snp.trailing).offset(8)
+            make.centerY.equalTo(writeLabel)
+        }
+        
+        followerLabel.snp.makeConstraints { make in
+            make.leading.equalTo(writeCountLabel.snp.trailing).offset(20)
+            make.centerY.equalTo(writeCountLabel)
+        }
+        
+        followerCountButton.snp.makeConstraints { make in
+            make.leading.equalTo(followerLabel.snp.trailing).offset(8)
+            make.centerY.equalTo(followerLabel)
+        }
+        
+        followingLabel.snp.makeConstraints { make in
+            make.leading.equalTo(followerCountButton.snp.trailing).offset(20)
+            make.centerY.equalTo(followerCountButton)
+        }
+        
+        followingCountButton.snp.makeConstraints { make in
+            make.leading.equalTo(followingLabel.snp.trailing).offset(8)
+            make.centerY.equalTo(followingLabel)
+            make.trailing.equalToSuperview()
         }
         
         descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(statsLabel.snp.bottom).offset(4)
+            make.top.equalTo(profileDetailContainer.snp.bottom).offset(4)
             make.centerX.equalToSuperview()
         }
         
@@ -258,19 +345,19 @@ class FollowProfileView: UIView {
         clothesImageView1.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview() // 상하 배치 고정
             make.leading.equalToSuperview() // 좌측 고정
-            make.width.equalTo(112) // 고정 너비 설정
+            make.width.greaterThanOrEqualTo(110) // 고정 너비 설정
         }
         
         clothesImageView2.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview() // 상하 배치 고정
             make.leading.equalTo(clothesImageView1.snp.trailing).offset(9)
-            make.width.equalTo(112) // 고정 너비 설정
+            make.width.greaterThanOrEqualTo(110) // 고정 너비 설정
         }
         
         clothesImageView3.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview() // 상하 배치 고정
             make.leading.equalTo(clothesImageView2.snp.trailing).offset(9)
-            make.width.equalTo(112) // 고정 너비 설정
+            make.width.greaterThanOrEqualTo(110) // 고정 너비 설정
             make.trailing.equalToSuperview() // 우측 고정
         }
         
@@ -282,7 +369,7 @@ class FollowProfileView: UIView {
         bottomArrowIcon.snp.makeConstraints { make in
             make.centerY.equalTo(bottomButtonLabel.snp.centerY)
             make.leading.equalTo(bottomButtonLabel.snp.trailing).offset(5)
-            make.trailing.equalToSuperview().inset(20)
+//            make.trailing.equalToSuperview().inset(20)
             make.width.equalTo(6)
             make.height.equalTo(12)
         }

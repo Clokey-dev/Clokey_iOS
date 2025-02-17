@@ -75,8 +75,11 @@ final class ProfileViewController: UIViewController {
                     self.profileView.followingCountButton.setTitle("\(userProfile.followingCount)", for: .normal)
                     self.profileView.descriptionLabel.text = userProfile.bio
                     
-                    if let profileImageUrl = URL(string: userProfile.profileImageUrl) {
-                        self.profileView.profileImageView.kf.setImage(with: profileImageUrl)
+                    if let profileImageUrl = userProfile.profileImageUrl,
+                       let url = URL(string: profileImageUrl) {
+                        self.profileView.profileImageView.kf.setImage(with: url)
+                    } else {
+                        self.profileView.profileImageView.image = UIImage(named: "default_background_image") // 기본 이미지 설정
                     }
                     if let profileBackImageUrl = URL(string: userProfile.profileBackImageUrl) {
                         self.profileView.backgroundImageView.kf.setImage(with: profileBackImageUrl)
