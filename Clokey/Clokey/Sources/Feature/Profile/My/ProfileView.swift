@@ -179,7 +179,7 @@ final class ProfileView: UIView {
     let calendarView = CalendarView()
     
     let recordContainerView: UIView = UIView().then {
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .clear
     }
     
     // MARK: - Init
@@ -390,7 +390,8 @@ final class ProfileView: UIView {
         }
         
         calendarView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(10) // 내부 패딩 적용
+            make.edges.equalToSuperview()
         }
+        
     }
 }

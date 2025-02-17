@@ -42,8 +42,6 @@ extension MembersEndpoint: TargetType {
             return "/users/terms"
         case .updateProfile:
             return "/users/profile"
-//        case .checkIdAvailability:
-//            return "/users/check"
         case .checkIdAvailability(let clokeyId):
             return "/users/\(clokeyId)/check"
         case .getUserProfile(let clokeyId):

@@ -327,6 +327,8 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
         let bio = addProfileView.bioTextField.text ?? ""
         let visibility = isPublic ? "PUBLIC" : "PRIVATE"
         
+        ProfileViewModel.shared.userId = id
+        
         // ✅ 프로필 이미지와 배경 이미지 크기 조정 및 압축 적용
         guard let profileImage = addProfileView.profileImageView.image,
               let backgroundImage = addProfileView.backgroundImageView.image else {
