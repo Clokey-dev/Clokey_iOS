@@ -60,6 +60,8 @@ final class MainView: UIView {
     func setHeaderViewHidden(_ isHidden: Bool) {
         headerView.isHidden = isHidden
         
+        print("헤더 처리 상태: \(isHidden)")
+        
         // 헤더뷰 제약조건
         if isHidden {
             headerView.snp.updateConstraints {
@@ -80,6 +82,6 @@ final class MainView: UIView {
                 $0.bottom.equalTo(tabBarView.snp.top)
             }
         }
-        
+        self.layoutIfNeeded()
     }
 }

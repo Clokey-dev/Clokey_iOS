@@ -40,9 +40,15 @@ final class MainViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // 네비게이션 바 숨기기 강제 적용
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        additionalSafeAreaInsets.top = 0
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
     }
     
     // MARK: - Setup
