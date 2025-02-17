@@ -32,7 +32,7 @@ final class EditProfileView: UIView {
     
     var backgroundImageView = UIImageView().then {
         $0.image = UIImage(named: "profile_background")
-        $0.backgroundColor = .systemGray6
+        $0.backgroundColor = UIColor(red: 255/255, green: 248/255, blue: 235/255, alpha: 1)
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
     }
@@ -44,16 +44,17 @@ final class EditProfileView: UIView {
     let profileContainer: UIView = UIView().then {
         $0.layer.cornerRadius = 50 // 원형으로 만들기 위해 반지름을 절반으로 설정
         $0.layer.masksToBounds = true // 자식 콘텐츠가 코너를 넘지 않도록 설정
+        $0.backgroundColor = UIColor(red: 233/255, green: 209/255, blue: 191/255, alpha: 1)
     }
     
     // MARK: - UI Components
     var profileImageView = UIImageView().then {
-        $0.image = UIImage(named: "profile_test") // 기본 이미지
+        $0.image = UIImage(named: "profile_basic") // 기본 이미지
         $0.tintColor = UIColor.brown
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-        $0.layer.cornerRadius = 50
-        $0.layer.masksToBounds = true
+//        $0.layer.cornerRadius = 50
+//        $0.layer.masksToBounds = true
     }
     
     let addImageButton2 = UIButton().then {
@@ -62,28 +63,50 @@ final class EditProfileView: UIView {
     }
     
     let nicknameLabel = UILabel().then {
-        $0.text = "닉네임*"
-        $0.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        $0.textColor = .black
+        let fullText = "닉네임*" // 전체 텍스트
+        let attributedString = NSMutableAttributedString(string: fullText)
+
+        // *의 범위 설정
+        if let starRange = fullText.range(of: "*") {
+            let nsRange = NSRange(starRange, in: fullText)
+            attributedString.addAttribute(.foregroundColor, value: UIColor.pointOrange800, range: nsRange) // * 부분 색상 변경
+        }
+
+        // 기본 텍스트 스타일 설정
+        attributedString.addAttribute(.font, value: UIFont.ptdMediumFont(ofSize: 20), range: NSRange(location: 0, length: fullText.count))
+
+        $0.attributedText = attributedString
+        $0.textAlignment = .left
     }
     
     let nicknameTextField = UITextField().then {
         $0.placeholder = "6글자 이내"
-        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .gray
     }
     
     let nicknameStatusLabel = UILabel().then {
-        $0.text = "6글자 이내로 입력해주세요" // 기본적으로 숨김
-        $0.font = UIFont.systemFont(ofSize: 16)
-        $0.isHidden = true
-        $0.textColor = .orange // 오류 시 빨간색
+        $0.text = "" // 기본적으로 숨김
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
+//        $0.isHidden = true
+        $0.textColor = .pointOrange800 // 오류 시 빨간색
     }
     
     let idLabel = UILabel().then {
-        $0.text = "아이디*"
-        $0.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        $0.textColor = .black
+        let fullText = "아이디*" // 전체 텍스트
+        let attributedString = NSMutableAttributedString(string: fullText)
+
+        // *의 범위 설정
+        if let starRange = fullText.range(of: "*") {
+            let nsRange = NSRange(starRange, in: fullText)
+            attributedString.addAttribute(.foregroundColor, value: UIColor.pointOrange800, range: nsRange) // * 부분 색상 변경
+        }
+
+        // 기본 텍스트 스타일 설정
+        attributedString.addAttribute(.font, value: UIFont.ptdMediumFont(ofSize: 20), range: NSRange(location: 0, length: fullText.count))
+        
+        $0.attributedText = attributedString
+        $0.textAlignment = .left
     }
     
     let idTextField = UITextField().then {
@@ -96,8 +119,8 @@ final class EditProfileView: UIView {
         let subTextRange = (fullText as NSString).range(of: "(대문자, 특수문자 입력 불가)")
         
         let attributedString = NSMutableAttributedString(string: fullText)
-        attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 16), range: mainTextRange)
-        attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 12), range: subTextRange)
+        attributedString.addAttribute(.font, value: UIFont.ptdRegularFont(ofSize: 16), range: mainTextRange)
+        attributedString.addAttribute(.font, value: UIFont.ptdRegularFont(ofSize: 12), range: subTextRange)
         attributedString.addAttribute(.foregroundColor, value: UIColor.gray, range: NSMakeRange(0, fullText.count))
         
         $0.attributedPlaceholder = attributedString
@@ -106,41 +129,52 @@ final class EditProfileView: UIView {
     let idStatusLabel = UILabel().then {
         $0.text = ""
         $0.font = UIFont.systemFont(ofSize: 16)
-        $0.textColor = .green
+        $0.textColor = .pointOrange800
     }
     
     let idCheckButton = UIButton().then {
         $0.setTitle("중복 확인", for: .normal)
         $0.setTitleColor(.black, for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        $0.layer.borderColor = UIColor.black.cgColor
+        $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 16)
+        $0.layer.borderColor = UIColor.mainBrown800.cgColor
         $0.layer.borderWidth = 1
-        $0.layer.cornerRadius = 8
+        $0.layer.cornerRadius = 10
     }
     
     let bioLabel = UILabel().then {
         $0.text = "한줄소개"
-        $0.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        $0.font = UIFont.ptdMediumFont(ofSize: 20)
         $0.textColor = .black
     }
     
     let bioTextField = UITextField().then {
         $0.placeholder = "20자 이내"
-        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .gray
     }
     
     let accountTypeLabel = UILabel().then {
-        $0.text = "계정 공개 여부*"
-        $0.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-        $0.textColor = .black
+        let fullText = "계정 공개 여부*" // 전체 텍스트
+        let attributedString = NSMutableAttributedString(string: fullText)
+
+        // *의 범위 설정
+        if let starRange = fullText.range(of: "*") {
+            let nsRange = NSRange(starRange, in: fullText)
+            attributedString.addAttribute(.foregroundColor, value: UIColor.pointOrange800, range: nsRange) // * 부분 색상 변경
+        }
+
+        // 기본 텍스트 스타일 설정
+        attributedString.addAttribute(.font, value: UIFont.ptdMediumFont(ofSize: 20), range: NSRange(location: 0, length: fullText.count))
+        
+        $0.attributedText = attributedString
+        $0.textAlignment = .left
     }
     
     let publicButton = UIButton().then {
         $0.setTitle("공개", for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor.black.cgColor
+        $0.layer.borderColor = UIColor.mainBrown800.cgColor
         $0.layer.cornerRadius = 10
         $0.backgroundColor = .clear
     }
@@ -149,16 +183,16 @@ final class EditProfileView: UIView {
         $0.setTitle("비공개", for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor.black.cgColor
+        $0.layer.borderColor = UIColor.mainBrown800.cgColor
         $0.layer.cornerRadius = 10
         $0.backgroundColor = .clear
     }
     
     let completeButton = UIButton().then {
         $0.setTitle("설정 완료", for: .normal)
-        $0.backgroundColor = UIColor.lightGray
+        $0.backgroundColor = UIColor.mainBrown400
         $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 20)
         $0.layer.cornerRadius = 10
         $0.isEnabled = false
     }
@@ -261,6 +295,9 @@ final class EditProfileView: UIView {
         
         profileImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+//            make.centerX.equalToSuperview()
+//            make.centerY.equalToSuperview()
+//            make.size.equalTo(45)
         }
         
         addImageButton2.snp.makeConstraints { make in
@@ -296,7 +333,8 @@ final class EditProfileView: UIView {
         }
         
         idCheckButton.snp.makeConstraints { make in
-            make.centerY.equalTo(idTextField)
+//            make.centerY.equalTo(idTextField)
+            make.top.equalTo(idLabel.snp.bottom).offset(3)
             make.trailing.equalToSuperview().inset(20)
             make.width.equalTo(76)
             make.height.equalTo(30)
@@ -343,6 +381,32 @@ final class EditProfileView: UIView {
             make.centerX.equalToSuperview()
             make.height.equalTo(54)
             make.width.equalTo(353)
+        }
+    }
+    
+    func nickNameError(hidden: Bool) {
+        nicknameStatusLabel.isHidden = hidden
+        
+        idLabel.snp.remakeConstraints { make in
+            if hidden {
+                make.top.equalTo(nicknameTextField.snp.bottom).offset(25)
+            } else {
+                make.top.equalTo(nicknameTextField.snp.bottom).offset(52)
+            }
+            make.leading.equalToSuperview().offset(20)
+        }
+    }
+    
+    func idError(hidden: Bool) {
+        idStatusLabel.isHidden = hidden
+        
+        bioLabel.snp.remakeConstraints { make in
+            if hidden {
+                make.top.equalTo(idTextField.snp.bottom).offset(26)
+            } else {
+                make.top.equalTo(idTextField.snp.bottom).offset(52)
+            }
+            make.leading.equalToSuperview().offset(20)
         }
     }
 }

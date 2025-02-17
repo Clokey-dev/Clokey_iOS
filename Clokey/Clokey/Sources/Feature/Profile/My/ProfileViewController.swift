@@ -27,10 +27,10 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         profileView.scrollView.contentInsetAdjustmentBehavior = .never
         
-        if let userId = ProfileViewModel.shared.userId {
-            profileView.usernameLabel.text = "@\(userId)"
-            print("ProfileViewController에서 적용된 아이디: \(userId)")
-        }
+//        if let userId = ProfileViewModel.shared.userId {
+//            profileView.usernameLabel.text = "@\(userId)"
+//            print("ProfileViewController에서 적용된 아이디: \(userId)")
+//        }
 
         loadData()
         setupActions()
@@ -128,6 +128,8 @@ final class ProfileViewController: UIViewController {
         let editProfileViewController = EditProfileViewController()
         editProfileViewController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
         present(editProfileViewController, animated: true, completion: nil)
+        
+//        navigationController?.pushViewController(editProfileViewController, animated: true)
     }
     
     @objc private func didTapFollowerButton() {
