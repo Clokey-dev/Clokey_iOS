@@ -10,6 +10,7 @@ import Foundation
 //// 월별 기록 조회
 public struct HistoryMonthResponseDTO: Codable {
     public let memberId: Int64
+    public let nickName: String
     public let histories: [HistoryDTO]
 }
 

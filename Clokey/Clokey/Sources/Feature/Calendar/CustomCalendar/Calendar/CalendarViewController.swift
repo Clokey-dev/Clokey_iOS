@@ -104,7 +104,7 @@ class CalendarViewController: UIViewController {
         }
         
         monthControlStack.snp.makeConstraints {
-            $0.top.equalTo(userNameLabel.snp.bottom).offset(16)
+            $0.top.equalTo(userNameLabel.snp.bottom).offset(26)
             $0.leading.equalToSuperview().offset(25)
             $0.trailing.equalToSuperview().offset(-25)
         }
@@ -168,6 +168,7 @@ class CalendarViewController: UIViewController {
                 self.historyIdMap = response.histories.reduce(into: [:]) { dict, history in
                     dict[history.date] = history.historyId  // historyId 저장
                 }
+                self.userNameLabel.text = "\(response.nickName)의 스타일 캘린더"
                 self.updateCalendar()
             case .failure(let error):
                 print("캘린더 데이터 로드 실패: \(error.localizedDescription)")
