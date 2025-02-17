@@ -17,6 +17,10 @@ class UpdateFriendClothesViewController: UIViewController {
     // MARK: - Properties
     private var updates: [UpdateFriendClothesModel] = []
     
+    private var currentPage = 1
+    private var isLoading = false
+    private var hasMorePages = true
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,21 +32,25 @@ class UpdateFriendClothesViewController: UIViewController {
         updateFriendClothesView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
     }
     
-//    @objc private func didTapBackButton() {
-//        navigationController?.popViewController(animated: true)
-//    }
-    @objc private func didTapBackButton() {
-        dismiss(animated: true, completion: nil)
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
         
         DispatchQueue.main.async {
             self.updateFriendClothesView.updateFriendClothesCollectionView.reloadData()
             self.updateCollectionViewHeight()
         }
     }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    @objc private func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
+    }
+    
     
     private func updateCollectionViewHeight() {
         updateFriendClothesView.updateFriendClothesCollectionView.layoutIfNeeded()
@@ -59,11 +67,48 @@ class UpdateFriendClothesViewController: UIViewController {
         updateFriendClothesView.updateFriendClothesCollectionView.delegate = self
     }
     
-    private func loadData() {
-        updates = UpdateFriendClothesModel.dummy()
+    private func loadData(isNextPage: Bool = false) {
+        guard !isLoading && (hasMorePages || !isNextPage) else { return }
         
-        DispatchQueue.main.async {
-            self.updateFriendClothesView.updateFriendClothesCollectionView.reloadData()
+        isLoading = true
+        let nextPage = isNextPage ? currentPage + 1 : 1
+        
+        let homeService = HomeService()
+        homeService.fetchGetDetailIssuesData(
+            section: "closet",
+            page: nextPage
+        ) { (result: Result<GetDetailIssuesClosetResponseDTO, NetworkError>) in
+            defer { self.isLoading = false }
+            
+            switch result {
+            case .success(let responseDTO):
+                let newResult = responseDTO.dailyNewsResult.map { item in
+                    UpdateFriendClothesModel(
+                        profileImage: URL(string: item.profileImage)!,
+                        name: item.clokeyId,
+                        date: item.date,
+                        clothingImages: (item.images?.compactMap { URL(string: $0) })!
+                    )
+                }
+
+                if isNextPage {
+                    self.updates.append(contentsOf: newResult)
+                    self.currentPage = nextPage
+                } else {
+                    self.updates = newResult
+                    self.currentPage = 1
+                }
+
+                self.hasMorePages = !newResult.isEmpty
+
+                DispatchQueue.main.async {
+                    self.updateFriendClothesView.updateFriendClothesCollectionView.reloadData()
+                    self.updateCollectionViewHeight()
+                }
+
+            case .failure(let error):
+                print("Failed to load calendar data: \(error)")
+            }
         }
     }
 }
@@ -83,6 +128,27 @@ extension UpdateFriendClothesViewController: UICollectionViewDataSource {
         }
         
         let update = updates[indexPath.item]
+        
+        if let profileImageURL = update.profileImage {
+                print("Loading profile image from URL: \(profileImageURL.absoluteString)") // 디버깅 로그
+                cell.profileIcon.kf.setImage(
+                    with: profileImageURL,
+                    placeholder: UIImage(named: "profile_basic"), // 기본 이미지
+                    options: nil,
+                    progressBlock: nil,
+                    completionHandler: { result in
+                        switch result {
+                        case .success(let value):
+                            print("Profile Image loaded: \(value.source.url?.absoluteString ?? "")")
+                        case .failure(let error):
+                            print("Error loading profile image: \(error.localizedDescription)")
+                        }
+                    }
+                )
+            } else {
+                print("Profile image URL is nil") // 프로필 이미지 URL이 없을 경우 로그
+                cell.profileIcon.image = UIImage(named: "profile_placeholder")
+            }
         
         // 이미지 로드
         let imageViews = [cell.image1, cell.image2, cell.image3]
@@ -117,6 +183,6 @@ extension UpdateFriendClothesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedUpdate = updates[indexPath.item]
         print("Selected Update: \(selectedUpdate.name)")
-        // 추가 동작 (예: 상세 화면 이동) 구현
+        
     }
 }

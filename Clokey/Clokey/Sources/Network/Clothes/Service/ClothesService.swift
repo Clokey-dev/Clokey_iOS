@@ -7,6 +7,7 @@
 
 import Foundation
 import Moya
+import UIKit
 
 public final class ClothesService : NetworkManager {
     typealias Endpoint = ClothesEndpoint
@@ -18,8 +19,8 @@ public final class ClothesService : NetworkManager {
         // 플러그인 추가
         let plugins: [PluginType] = [
             NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)), // 로그 플러그인
-            AccessTokenPlugin()
-
+            AccessTokenPlugin(),
+            TokenRefreshPlugin()
         ]
         
         // provider 초기화
@@ -48,11 +49,11 @@ public final class ClothesService : NetworkManager {
     }
     
     public func checkPopUpClothes (
-        cloth_id: Int,
+        clothId: Int,
         completion: @escaping (Result<checkPopUpClothesResponseDTO, NetworkError>) -> Void
     ) {
         request(
-            target: .checkPopUpClothes(cloth_id: cloth_id),
+            target: .checkPopUpClothes(clothId: clothId),
             decodingType: checkPopUpClothesResponseDTO.self,
             completion: completion)
     }
@@ -66,15 +67,16 @@ public final class ClothesService : NetworkManager {
             decodingType: getCategoryClothesResponseDTO.self,
             completion: completion)
     }
+
     
     public func addClothes (
-        category_id: Int,
+        imageData: Data,
         data: AddClothesRequestDTO,
-        completion: @escaping (Result<addClothesResponseDTO, NetworkError>) -> Void
+        completion: @escaping (Result<AddClothesResponseDTO, NetworkError>) -> Void
     ){
         request(
-            target: .addClothes(category_id: category_id, data: data),
-            decodingType: addClothesResponseDTO.self,
+            target: .addClothes(image: imageData, data: data),
+            decodingType: AddClothesResponseDTO.self,
             completion: completion)
     }
     
@@ -101,7 +103,7 @@ public final class ClothesService : NetworkManager {
     
     // 내 옷장 조회 GET API
     public func getClothes(
-        clokeyId: String,
+        clokeyId: String?,  
         categoryId: CLong,
         season: String,
         sort: String,
@@ -122,6 +124,24 @@ public final class ClothesService : NetworkManager {
             completion: completion
         )
     }
-}
+    
+    // 유저 옷장 검색 GET API
+    public func searchClothes(
+        keyword: String,
+        page: Int,
+        size: Int,
+        completion: @escaping (Result<ClothSearchResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .searchByNameAndBrand(
+                keyword: keyword,
+                page: page,
+                size: size
+            ),
+            decodingType: ClothSearchResponseDTO.self,
+            completion: completion
+        )
+    }
 
+}
 

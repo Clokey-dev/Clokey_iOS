@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 import SnapKit
 import Then
-import Kingfisher
 
 final class ProfileView: UIView {
     /// 세로 스크롤을 지원하는 ScrollView
@@ -37,6 +36,7 @@ final class ProfileView: UIView {
     let settingButton = UIButton().then {
         $0.setImage(UIImage(named: "setting_icon"), for: .normal)
         $0.tintColor = .black
+//        $0.isUserInteractionEnabled = true
     }
     
     let backgroundImageView = UIImageView().then {
@@ -61,7 +61,7 @@ final class ProfileView: UIView {
     
     let nicknameLabel: UILabel = {
         let label = UILabel()
-        label.text = "클루"
+        label.text = "초키(닉네임란)"
         label.font = UIFont.ptdMediumFont(ofSize: 18)
         label.textColor = .black
         label.textAlignment = .center
@@ -80,7 +80,7 @@ final class ProfileView: UIView {
     }
     
     let writeCountLabel = UILabel().then {
-        $0.text = "010"
+        $0.text = "000"
         $0.font = UIFont.ptdRegularFont(ofSize: 12)
         $0.textColor = .black
         $0.textAlignment = .center
@@ -94,7 +94,7 @@ final class ProfileView: UIView {
     }
     
     let followerCountButton = UIButton().then {
-        $0.setTitle("027", for: .normal)
+        $0.setTitle("000", for: .normal)
         $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 12)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.textAlignment = .center
@@ -109,7 +109,7 @@ final class ProfileView: UIView {
     }
     
     let followingCountButton = UIButton().then {
-        $0.setTitle("043", for: .normal)
+        $0.setTitle("000", for: .normal)
         $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 12)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.textAlignment = .center
@@ -117,7 +117,7 @@ final class ProfileView: UIView {
     }
     
     let descriptionLabel = UILabel().then {
-        $0.text = "나는야멋쟁이토마토"
+        $0.text = "한줄소개란입니다아아아아아아아아"
         $0.font = UIFont.ptdRegularFont(ofSize: 14)
         $0.textColor = .black
         $0.textAlignment = .center
@@ -185,6 +185,9 @@ final class ProfileView: UIView {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        scrollView.subviews.forEach { $0.removeFromSuperview() }
+        contentView.subviews.forEach { $0.removeFromSuperview() }
         setupUI()
         setupConstraints()
     }
@@ -246,23 +249,28 @@ final class ProfileView: UIView {
             make.height.width.equalTo(393)
         }
         
-        usernameLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(72)
-            make.leading.equalToSuperview().offset(20)
+//        $0.top.equalTo(safeAreaLayoutGuide)
+//        $0.leading.trailing.equalTo(safeAreaLayoutGuide)
+//        $0.height.equalTo(50)
+        
+        usernameLabel.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide)
+            $0.leading.equalToSuperview().offset(20)
+            $0.height.equalTo(50)
         }
         
-        editButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(72)
-            make.trailing.equalToSuperview().inset(67)
-            make.width.equalTo(19)
-            make.height.equalTo(20)
+        editButton.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide).offset(10)
+            $0.trailing.equalToSuperview().inset(67)
+            $0.width.equalTo(20)
+            $0.height.equalTo(20)
         }
         
-        settingButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(72)
-            make.trailing.equalToSuperview().inset(20)
-            make.width.equalTo(24)
-            make.height.equalTo(24)
+        settingButton.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide).offset(10)
+            $0.trailing.equalToSuperview().inset(20)
+            $0.width.equalTo(20)
+            $0.height.equalTo(20)
         }
         
         profileContainer.snp.makeConstraints { make in
@@ -339,19 +347,19 @@ final class ProfileView: UIView {
         clothesImageView1.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview() // 상하 배치 고정
             make.leading.equalToSuperview() // 좌측 고정
-            make.width.equalTo(112) // 고정 너비 설정
+            make.width.greaterThanOrEqualTo(110) // 고정 너비 설정
         }
         
         clothesImageView2.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview() // 상하 배치 고정
             make.leading.equalTo(clothesImageView1.snp.trailing).offset(9)
-            make.width.equalTo(112) // 고정 너비 설정
+            make.width.greaterThanOrEqualTo(110) // 고정 너비 설정
         }
         
         clothesImageView3.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview() // 상하 배치 고정
             make.leading.equalTo(clothesImageView2.snp.trailing).offset(9)
-            make.width.equalTo(112) // 고정 너비 설정
+            make.width.greaterThanOrEqualTo(110) // 고정 너비 설정
             make.trailing.equalToSuperview() // 우측 고정
         }
         
@@ -363,7 +371,7 @@ final class ProfileView: UIView {
         bottomArrowIcon.snp.makeConstraints { make in
             make.centerY.equalTo(bottomButtonLabel.snp.centerY)
             make.leading.equalTo(bottomButtonLabel.snp.trailing).offset(5)
-            make.trailing.equalToSuperview().inset(20)
+//            make.trailing.equalToSuperview().inset(20)
             make.width.equalTo(6)
             make.height.equalTo(12)
         }
@@ -384,33 +392,5 @@ final class ProfileView: UIView {
         calendarView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(10) // 내부 패딩 적용
         }
-    }
-}
-
-extension ProfileView {
-    func configure(with data: MembersInfoResponseDTO) {
-        // 클로키 ID 설정
-        usernameLabel.text = data.clokeyId
-        
-        // 프로필 이미지 설정
-        profileImageView.kf.setImage(with: URL(string: data.profileImageUrl), placeholder: UIImage(named: "profile_placeholder"))
-        
-        // 닉네임 설정
-        nicknameLabel.text = data.nickname
-        
-        // 게시글 개수 설정
-        writeCountLabel.text = "\(data.recordCount)"
-        
-        // 팔로워 수 설정
-        followerCountButton.setTitle("\(data.followerCount)", for: .normal)
-        
-        // 팔로잉 수 설정
-        followingCountButton.setTitle("\(data.followingCount)", for: .normal)
-        
-        // 한줄 소개 (bio) 설정
-        descriptionLabel.text = data.bio
-        
-        // 배경화면 이미지 설정 (Kingfisher 사용)
-        backgroundImageView.kf.setImage(with: URL(string: data.profileBackImageUrl), placeholder: UIImage(named: "profile_background"))
     }
 }

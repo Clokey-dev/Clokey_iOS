@@ -10,10 +10,15 @@
 import UIKit
 import Kingfisher
 import MapKit
+import Moya
 
 class PickViewController: UIViewController, CLLocationManagerDelegate {
     
     private var backgroundView: UIView?// 배경 어둡게 하기 위해 선언
+    
+    var nowTemp: Int?
+    var maxTemp: Int?
+    var minTemp: Int?
     
     // 팝업 뷰
     private let popUpView = PickPopUpView()
@@ -31,7 +36,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         super.viewDidLoad()
         definesPresentationContext = true // 현재 컨텍스트에서 새로운 뷰 표시
         
-        //        setupUI()
+     
         setupActions()
         
         updateTimeLabel() // 현재 시간 업데이트
@@ -39,7 +44,8 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         fetchVisualCrossingWeatherData(for: "Seoul") // 기본 위치: 서울
         updateYesterdayWeatherUI()
         setupBottomLabelTap()
-        bindData()
+//        bindData()
+        
         
         locationManager.delegate = self
         locationManager.distanceFilter = kCLDistanceFilterNone
@@ -130,14 +136,59 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         popUpView.deleteButton.addTarget(self, action: #selector(dismissPopup), for: .touchUpInside)
     }
     
-    private func bindData() {
-        // 데이터를 PickView에 바인딩
-        pickView.weatherImageView1.kf.setImage(with: URL(string: model.weatherImageURLs[0]))
-        pickView.weatherImageView2.kf.setImage(with: URL(string: model.weatherImageURLs[1]))
-        pickView.weatherImageView3.kf.setImage(with: URL(string: model.weatherImageURLs[2]))
+    
+    func fetchWeatherRecommendations() {
         
-        pickView.recapImageView1.kf.setImage(with: URL(string: model.recapImageURLs[0]))
-        pickView.recapImageView2.kf.setImage(with: URL(string: model.recapImageURLs[1]))
+        guard let nowTemp = nowTemp,
+              let maxTemp = maxTemp,
+              let minTemp = minTemp else {
+            print("❌ 오류: 온도 값이 없습니다.")
+            return
+        }
+        let nowTemp32 = Int32(nowTemp)
+        let maxTemp32 = Int32(maxTemp)
+        let minTemp32 = Int32(minTemp)
+        
+        let homeService = HomeService()
+        
+        homeService.recommendClothes(nowTemp: nowTemp32, minTemp: minTemp32, maxTemp: maxTemp32) { [weak self] result in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    
+                    let recommendedClothes = response.recommendations
+                    
+                    self.pickView.updateEmptyState(isEmpty: response.recommendations.isEmpty)
+                    
+                    
+                    self.pickView.weatherImageView2.isHidden = recommendedClothes.isEmpty || recommendedClothes.count < 2
+                    self.pickView.weatherImageName2.isHidden = recommendedClothes.isEmpty || recommendedClothes.count < 2
+                    
+                    self.pickView.weatherImageView3.isHidden = recommendedClothes.isEmpty || recommendedClothes.count < 3
+                    self.pickView.weatherImageName3.isHidden = recommendedClothes.isEmpty || recommendedClothes.count < 3
+                    
+                    // 이미지 설정 (최대 3개)
+                    if recommendedClothes.count > 0 {
+                        self.pickView.weatherImageView1.kf.setImage(with: URL(string: recommendedClothes[0].imageUrl))
+                        self.pickView.weatherImageName1.text = recommendedClothes[0].clothName
+                    }
+                    if recommendedClothes.count > 1 {
+                        self.pickView.weatherImageView2.kf.setImage(with: URL(string: recommendedClothes[1].imageUrl))
+                        self.pickView.weatherImageName2.text = recommendedClothes[1].clothName
+                    }
+                    if recommendedClothes.count > 2 {
+                        self.pickView.weatherImageView3.kf.setImage(with: URL(string: recommendedClothes[2].imageUrl))
+                        self.pickView.weatherImageName3.text = recommendedClothes[2].clothName
+                    }
+
+                case .failure(let error):
+                    print("추천 의상 데이터 가져오기 실패: \(error.localizedDescription)")
+                    self.pickView.updateEmptyState(isEmpty: true)
+                }
+            }
+        }
     }
     
     // MARK: - 날씨 데이터 요청
@@ -170,7 +221,6 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     func updateTimeLabel() {
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
-        //        pickView.timeLabel.text = formatter.string(from: Date()) + " 대한민국 서울시 기준"
         let currentTime = formatter.string(from: Date())
         pickView.timeLabel.text = "\(currentTime) 대한민국 \(address) 기준"
     }
@@ -277,9 +327,12 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         }.resume()
     }
     
+    
     // MARK: - 날씨 데이터 업데이트
     func updateTemperatureUI(weather: WeatherData) {
         pickView.temperatureLabel.text = "\(Int(weather.main.temp))°C"
+        
+        nowTemp = Int(weather.main.temp)
         
         // 아이콘 가져오기
         if let icon = weather.weather.first?.icon {
@@ -288,9 +341,17 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
+    
+    
+    
     /// 최고/최저 온도 업데이트
     func updateWeatherHighLowUI(weather: DailyWeather) {
         pickView.tempDetailsLabel.text = " (최고: \(Int(weather.tempmax))° / 최저: \(Int(weather.tempmin))°)"
+        
+        maxTemp = Int(weather.tempmax)
+        minTemp = Int(weather.tempmin)
+        
+        fetchWeatherRecommendations()
     }
     
     func updateYesterdayWeatherUI() {
@@ -330,13 +391,49 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     private func loadRecapData() {
         let homeService = HomeService()
         
-        homeService.getOneYearAgoHistories { [weak self] result in
+        homeService.fetchOneYearAgoHistories { [weak self] result in
             DispatchQueue.main.async {
+                guard let self = self else { return }
+                
                 switch result {
                 case .success(let historyResult):
-                    self?.pickView.updateRecapImages(with: historyResult.images)
+                    let imageUrls = historyResult.imageUrls
+                    let nickName = historyResult.nickName
+                    
+                    if historyResult.isMine {
+                        if imageUrls.isEmpty {
+                            print("사진이 없습니다")
+                            self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님의 기록이 없어요!"
+                            self.pickView.recapNotMe(hidden: false)
+                            self.pickView.recapSubtitleLabel2.text = "1년 전 오늘, 다른 사용자들의 기록도 없어요!"
+                        } else {
+                            self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님은 이 옷을 착용하셨네요!"
+                            self.pickView.recapNotMe(hidden: true)
+ 
+                            if imageUrls.count > 0 {
+                                self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
+                            }
+                            if imageUrls.count > 1 {
+                                self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
+                            }
+                        }
+                    } else {
+                        self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님의 기록이 없어요!"
+                        self.pickView.recapNotMe(hidden: false)
+   
+                        if imageUrls.isEmpty {
+                            print("📷 사진이 없습니다")
+                        } else {
+                            if imageUrls.count > 0 {
+                                self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
+                            }
+                            if imageUrls.count > 1 {
+                                self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
+                            }
+                        }
+                    }
                 case .failure(let error):
-                    print("❌ 데이터 로드 실패: \(error.localizedDescription)")
+                    print("데이터 로드 실패: \(error.localizedDescription)")
                 }
             }
         }

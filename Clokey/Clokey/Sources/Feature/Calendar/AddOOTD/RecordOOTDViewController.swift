@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class RecordOOTDViewController: UIViewController {
     
@@ -28,6 +29,7 @@ class RecordOOTDViewController: UIViewController {
     private let mainView = RecordOOTDView()
     private let navBarManager = NavigationBarManager()
     
+    weak var delegate: RecordOOTDViewControllerDelegate?
     
     // MARK: - Lifecycle
     override func loadView() {
@@ -100,6 +102,35 @@ class RecordOOTDViewController: UIViewController {
         mainView.updateCollectionViewHeight(hasImages)
     }
     
+    // 수정할 기록 데이터 불러오기
+    func setEditData(_ viewModel: CalendarDetailViewModel) {
+        self.contentText = viewModel.content
+        self.selectedDate = convertStringToDate(viewModel.date)
+
+        // 내용 설정
+        mainView.contentInputView.textAddBox.text = viewModel.content
+        mainView.contentInputView.textAddBox.textColor = viewModel.content.isEmpty ? .placeholderText : .black
+
+        // 해시태그 설정
+        let hashtagsArray = viewModel.hashtags.components(separatedBy: "#")
+            .filter { !$0.isEmpty } // 빈 문자열 제거
+            .map { "#\($0)" } // "#"을 다시 붙여 원본 형태 복원
+
+        hashtagsArray.forEach { tag in
+            self.hashtags.append(tag)
+            mainView.contentInputView.addHashtag(tag)
+        }
+        
+        // 공개 여부 설정
+        mainView.contentInputView.publicButton.isSelected = viewModel.visibility
+        mainView.contentInputView.privateButton.isSelected = !viewModel.visibility
+
+        // 이미지 및 태그한 옷 설정 (비동기 로드)
+        loadImages(from: viewModel.images)
+        loadTaggedClothes(from: viewModel.cloths)
+    }
+
+    
     // MARK: - Actions
     // 뒤로가기
     @objc private func didTapBackButton() {
@@ -150,24 +181,7 @@ class RecordOOTDViewController: UIViewController {
             
             // 이미지 압축 및 크기 제한
             let imageDataArray = selectedImages.compactMap { image in
-                // 이미지 크기 조정 (최대 1024x1024)
-                let maxSize: CGFloat = 1024
-                var newImage = image
-                
-                if image.size.width > maxSize || image.size.height > maxSize {
-                    let ratio = min(maxSize/image.size.width, maxSize/image.size.height)
-                    let newSize = CGSize(
-                        width: image.size.width * ratio,
-                        height: image.size.height * ratio
-                    )
-                    
-                    UIGraphicsBeginImageContext(newSize)
-                    image.draw(in: CGRect(origin: .zero, size: newSize))
-                    newImage = UIGraphicsGetImageFromCurrentImageContext() ?? image
-                    UIGraphicsEndImageContext()
-                }
-                
-                return newImage.jpegData(compressionQuality: 0.5)
+                return image.jpegData(compressionQuality: 1.0) ?? nil
             }
             
             let historyService = HistoryService()
@@ -178,6 +192,7 @@ class RecordOOTDViewController: UIViewController {
                 case .success(let response):
                     print("History created successfully with ID: \(response.historyId)")
                     DispatchQueue.main.async {
+                        self.delegate?.didUpdateHistory()  // 새로고침
                         self.navigationController?.popViewController(animated: true)
                     }
                     
@@ -222,7 +237,15 @@ extension RecordOOTDViewController: UICollectionViewDataSource {
             cell.deleteButtonTapHandler = { [weak self] in
                 guard let self = self else { return }
                 self.selectedImages.remove(at: indexPath.item)
-                collectionView.reloadData()
+                
+                // 컬렉션 뷰 상태 완전 초기화
+                self.mainView.photoTagView.imageCollectionView.reloadData()
+                
+                // 이미지가 모두 삭제되었을 때 컬렉션 뷰 상태 리셋
+                if self.selectedImages.isEmpty {
+                    self.mainView.photoTagView.imageCollectionView.setContentOffset(.zero, animated: true)
+                }
+                
                 self.updateCollectionViewHeight(!self.selectedImages.isEmpty)
             }
             
@@ -279,7 +302,8 @@ extension RecordOOTDViewController {
         mainView.photoTagView.tagCollectionView.reloadData()
         // 아이템 삭제 시, 컬렉션 뷰 높이 값 수정
         mainView.photoTagView.updateTagCollectionViewHeight(!taggedItems.isEmpty)
-
+        
+        mainView.OOTDButton.setEnabled(!taggedItems.isEmpty)
     }
 }
 
@@ -318,9 +342,13 @@ extension RecordOOTDViewController: CustomGalleryViewControllerDelegate {
 // 이미지 편집 완료 결과 처리
 extension RecordOOTDViewController: PhotoEditViewControllerDelegate {
     func photoEditViewController(_ viewController: PhotoEditViewController, didFinishEditing images: [UIImage]) {
+        
         selectedImages = images
+        mainView.photoTagView.imageCollectionView.setContentOffset(.zero, animated: false)
+
         mainView.photoTagView.imageCollectionView.reloadData()
         updateCollectionViewHeight(!images.isEmpty) // 이미지가 있으면 컬렉션 뷰 높이 설정, 없으면 숨김
+        mainView.photoTagView.layoutIfNeeded()
     }
 }
 
@@ -387,5 +415,78 @@ extension RecordOOTDViewController: TagClothViewControllerDelegate {
         } else {
             mainView.OOTDButton.setEnabled(false)
         }
+    }
+}
+
+// 수정하기 - 데이터 불러오기
+extension RecordOOTDViewController {
+    /*
+     Mutation of captured var in concurrently-executing code 오류
+     - swift5까지는 클로저 내부에서 외부 변수를 참조한 변수들을 여러 스레드에서 동시에 수정하는 것이 가능했음.
+     - 그러나 이 방식은 데이터 경쟁(Race Condition)을 발생할 가능성이 높아 swift6 부터는 금지함.
+     - DispatchQueue를 생성하여 loadedImages.append() 작업을 동기적으로 실행되게 수정하여 경쟁 상태 예방.
+    */
+    // 태그한 옷 불러오기
+        func loadTaggedClothes(from cloths: [CalendarDetailViewModel.ClothDTO]) {
+        // 비동기 네트워크 요청 관리를 위한 DispatchGroup 생성
+        let dispatchGroup = DispatchGroup()
+        var loadedClothes: [(id: Int, image: UIImage, title: String)] = []
+        let syncQueue = DispatchQueue(label: "clothSyncQueue")
+
+        for cloth in cloths {
+            if let url = URL(string: cloth.imageUrl) {
+                dispatchGroup.enter()
+                KingfisherManager.shared.retrieveImage(with: url) { result in
+                    switch result {
+                    case .success(let imageResult):
+                        syncQueue.sync { // 동기적으로 실행
+                            loadedClothes.append((id: cloth.clothId, image: imageResult.image, title: cloth.name))
+                        }
+                    case .failure(let error):
+                        print("옷 이미지 로드 실패: \(error)")
+                    }
+                    dispatchGroup.leave()
+                }
+            }
+        }
+        // 모든 비동기 요청이 완료된 후 메인 스레드에서 실행
+        dispatchGroup.notify(queue: .main) {
+            self.taggedItems = loadedClothes
+            self.mainView.photoTagView.tagCollectionView.reloadData()
+            self.mainView.photoTagView.updateTagCollectionViewHeight(!loadedClothes.isEmpty)
+            
+            self.mainView.OOTDButton.setEnabled(!loadedClothes.isEmpty)
+        }
+    }
+
+    // 이미지 로드 - kingfisher 사용
+    func loadImages(from urls: [String]) {
+        let dispatchGroup = DispatchGroup()
+        var loadedImages: [UIImage] = []
+        let syncQueue = DispatchQueue(label: "imageSyncQueue")
+
+        for urlString in urls {
+            if let url = URL(string: urlString) {
+                dispatchGroup.enter()
+                KingfisherManager.shared.retrieveImage(with: url) { result in
+                    switch result {
+                    case .success(let imageResult):
+                        syncQueue.sync { // 동기적으로 실행
+                            loadedImages.append(imageResult.image)
+                        }
+                    case .failure(let error):
+                        print("이미지 로드 실패: \(error)")
+                    }
+                    dispatchGroup.leave()
+                }
+            }
+        }
+        // 모든 비동기 요청이 완료된 후 메인 스레드에서 실행
+        dispatchGroup.notify(queue: .main) {
+            self.selectedImages = loadedImages
+            self.mainView.photoTagView.imageCollectionView.reloadData()
+            self.mainView.updateCollectionViewHeight(!loadedImages.isEmpty)
+        }
+        mainView.OOTDButton.setEnabled(true)
     }
 }

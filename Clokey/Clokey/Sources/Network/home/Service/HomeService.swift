@@ -25,25 +25,49 @@ public final class HomeService : NetworkManager {
         self.provider = provider ?? MoyaProvider<HomeEndPoint>(plugins: plugins)
     }
     
-    public func getOneYearAgoHistories(
-        completion: @escaping (Result<HistoryResult, NetworkError>) -> Void
+    func recommendClothes(
+        nowTemp: Int32,
+        minTemp: Int32,
+        maxTemp: Int32,
+        completion: @escaping (Result<RecommendClothesResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .recommendClothes(nowTemp: nowTemp, minTemp: minTemp, maxTemp: maxTemp),
+            decodingType: RecommendClothesResponseDTO.self,
+            completion: completion
+        )
+    }
+    
+    
+    
+    func fetchOneYearAgoHistories(
+        completion: @escaping (Result<OneYearAgoHistoriesResponseDTO, NetworkError>) -> Void
     ) {
         request(
             target: .getOneYearAgoHistories,
-            decodingType: OneYearAgoHistoriesResponseDTO.self
-        ) { result in
-            switch result {
-            case .success(let responseDTO):
-                if responseDTO.isSuccess, let result = responseDTO.result {
-                    completion(.success(result))
-                } else {
-                    let errorMessage = responseDTO.message
-                    completion(.failure(NetworkError.networkError(message: errorMessage)))
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
+            decodingType: OneYearAgoHistoriesResponseDTO.self,
+            completion: completion
+        )
+    }
+    
+    func fetchGetDetailIssuesData<T: Decodable>(
+        section: String,
+        page: Int,
+        completion: @escaping (Result<T, NetworkError>) -> Void
+    ) {
+        let decodingType: T.Type = section == "closet" ? GetDetailIssuesClosetResponseDTO.self as! T.Type :
+                                   section == "calendar" ? GetDetailIssuesCalendarResponseDTO.self as! T.Type : T.self
+
+        request(target: .getDetailIssues(section: section, page: page), decodingType: decodingType, completion: completion)
+    }
+    
+    func fetchGetIssuesData(
+        completion: @escaping (Result<GetIssuesResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .getIssues,
+            decodingType: GetIssuesResponseDTO.self,
+            completion: completion)
     }
 }
 

@@ -17,7 +17,8 @@ public final class HistoryService: NetworkManager {
     public init(provider: MoyaProvider<HistoryEndpoint>? = nil) {
         let plugins: [PluginType] = [
             NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)),
-            AccessTokenPlugin()
+            AccessTokenPlugin(),
+            TokenRefreshPlugin()
         ]
         self.provider = provider ?? MoyaProvider<HistoryEndpoint>(plugins: plugins)
     }

@@ -24,12 +24,12 @@ class ImageView: UIView {
 
     let titleLabel: UILabel = UILabel().then {
         $0.textColor = .white
-        $0.font = UIFont.ptdBoldFont(ofSize: 18)
+        $0.font = UIFont.ptdMediumFont(ofSize: 16)
     }
 
     let hashtagLabel: UILabel = UILabel().then {
         $0.textColor = .white
-        $0.font = UIFont.ptdRegularFont(ofSize: 14)
+        $0.font = UIFont.ptdBoldFont(ofSize: 24)
     }
     
     override init(frame: CGRect) {
@@ -52,14 +52,15 @@ class ImageView: UIView {
             make.width.equalToSuperview() // 이미지 뷰 너비를 부모 뷰와 동일하게 설정
             make.height.equalToSuperview() // 이미지 뷰 높이를 부모 뷰와 동일하게 설정
         }
+        
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(40)
-            make.bottom.equalToSuperview().offset(-30)
+            make.leading.equalToSuperview().offset(20)
+            make.bottom.equalToSuperview().offset(-46)
         }
         
         hashtagLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(40)
+            make.top.equalTo(titleLabel.snp.bottom).offset(6)
+            make.leading.equalToSuperview().offset(20)
         }
     }
 }
