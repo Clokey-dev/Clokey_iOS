@@ -58,6 +58,16 @@ public final class ClothesService : NetworkManager {
             completion: completion)
     }
     
+    public func getSmartSummationClothes(
+        completion: @escaping (Result<SmartSummationResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .smartSummationClothes,
+            decodingType: SmartSummationResponseDTO.self,
+            completion: completion
+        )
+    }
+    
     public func getCategoryClothes (
         category: String, season: String, sort: String, page: Int,
         completion: @escaping (Result<getCategoryClothesResponseDTO, NetworkError>) -> Void

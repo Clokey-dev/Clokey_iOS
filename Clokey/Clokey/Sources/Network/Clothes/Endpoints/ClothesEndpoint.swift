@@ -12,6 +12,7 @@ public enum ClothesEndpoint {
     case inquiryClothesDetail(cloth_id: Int)
     case checkEditClothes(cloth_id: Int)
     case checkPopUpClothes(clothId: Int)
+    case smartSummationClothes
     case getCategoryClothes(category: String, season: String, sort: String, page: Int) // 쿼리 매개변수 추가
     case addClothes(image: Data, data: AddClothesRequestDTO) // category_id 추가
     case editClothes(cloth_id: Int, category_id: Int, data: EditClothesRequestDTO)
@@ -38,6 +39,8 @@ extension ClothesEndpoint: TargetType {
             return "/clothes/\(cloth_id)/edit-view"
         case .checkPopUpClothes(let clothId):
             return "/clothes/\(clothId)/popup-view"
+        case .smartSummationClothes:
+                    return "/clothes/smart-summary"
         case .getCategoryClothes:
             return "/clothes"
         case .addClothes:
@@ -67,7 +70,8 @@ extension ClothesEndpoint: TargetType {
              .checkEditClothes,
              .checkPopUpClothes,
              .getCategoryClothes,
-             .searchByNameAndBrand:
+             .searchByNameAndBrand,
+             .smartSummationClothes:
             return .get
         }
     }
@@ -80,6 +84,8 @@ extension ClothesEndpoint: TargetType {
         case .checkEditClothes(let cloth_id):
             return .requestPlain
         case .checkPopUpClothes(let clothId):
+            return .requestPlain
+        case .smartSummationClothes:
             return .requestPlain
         case .getCategoryClothes(let category, let season, let sort, let page):
             // Query parameters를 설정

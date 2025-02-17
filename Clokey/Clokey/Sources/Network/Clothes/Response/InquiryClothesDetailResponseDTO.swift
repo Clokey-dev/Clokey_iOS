@@ -93,3 +93,29 @@ public struct ClothSearchResponseDTO: Codable {
     public let isFirst: Bool
     public let isLast: Bool
 }
+
+public struct SmartSummationResponseDTO: Codable {
+    public let isSuccess: Bool
+    public let code: String
+    public let message: String
+    public let result: SmartSummaryResultDTO
+}
+
+public struct SmartSummaryResultDTO: Codable {
+    public let frequentResult: SummaryClothPreviewDTO
+    public let infrequentResult: SummaryClothPreviewDTO
+}
+
+public struct SummaryClothPreviewDTO: Codable {
+    public let baseCategoryName: String  // 예: 상의, 하의, 아우터 등
+    public let coreCategoryName: String  // 예: 셔츠/블라우스, 코트 등
+    public let usage: Int                // 착용 횟수 또는 평균값
+    public let clothPreviews: [ClothPreviewDTO] // 옷 목록 (최대 3개)
+}
+
+//public struct ClothPreviewDTO: Codable {
+//    public let id: Int
+//    public let name: String
+//    public let imageUrl: String
+//    public let wearNum: Int
+//}
