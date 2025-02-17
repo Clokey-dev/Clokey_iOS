@@ -19,8 +19,8 @@ public final class CategoriesService : NetworkManager {
         // 플러그인 추가
         let plugins: [PluginType] = [
             NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)), // 로그 플러그인
-            AccessTokenPlugin()
-
+            AccessTokenPlugin(),
+            TokenRefreshPlugin()
         ]
         
         // provider 초기화

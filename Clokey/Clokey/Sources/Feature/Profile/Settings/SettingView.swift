@@ -96,9 +96,14 @@ final class SettingView: UIView {
     }
     
     let versionInfoLabel = UILabel().then {
-        $0.text = "1.3.2"
+        $0.text = "1.0.0"
         $0.font = UIFont.systemFont(ofSize: 16)
         $0.textColor = .gray
+    }
+    
+    // 문의하기 버튼
+    let inquiryContainer = UIView().then {
+        $0.backgroundColor = .white
     }
     
     let inquiryLabel = UILabel().then {
@@ -112,6 +117,11 @@ final class SettingView: UIView {
         $0.tintColor = .black
     }
     
+    // 로그아웃 버튼
+    let logoutContainer = UIView().then {
+        $0.backgroundColor = .white
+    }
+    
     let logoutLabel = UILabel().then {
         $0.text = "로그아웃"
         $0.font = UIFont.systemFont(ofSize: 16)
@@ -121,6 +131,11 @@ final class SettingView: UIView {
     let logoutButton = UIButton().then {
         $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
         $0.tintColor = .black
+    }
+    
+    // 계정 탈퇴 버튼
+    let deleteContainer = UIView().then {
+        $0.backgroundColor = .white
     }
     
     let deleteAccountLabel = UILabel().then {
@@ -152,8 +167,13 @@ final class SettingView: UIView {
         addSubviews(
             backButton, settingLabel, infoTitleLabel, separatorLine1, kakaoImage,
             emailLabel, alarmTitleLabel, separatorLine2, pushLabel, pushSwitch, marketingLabel, marketingSwitch, supportTitleLabel, separatorLine3,
-            versionLabel, versionInfoLabel, inquiryLabel, inquiryButton,logoutLabel, logoutButton, deleteAccountLabel, deleteAccountButton
+            versionLabel, versionInfoLabel,
+            inquiryContainer, logoutContainer, deleteContainer
         )
+        
+        inquiryContainer.addSubviews(inquiryLabel, inquiryButton)
+        logoutContainer.addSubviews(logoutLabel, logoutButton)
+        deleteContainer.addSubviews(deleteAccountLabel, deleteAccountButton)
     }
     
     private func setupConstraints(){
@@ -242,34 +262,55 @@ final class SettingView: UIView {
             make.trailing.equalToSuperview().offset(-20)
         }
         
+        // 문의하기
+        inquiryContainer.snp.makeConstraints { make in
+            make.top.equalTo(versionInfoLabel.snp.bottom).offset(10)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(44)
+        }
+        
         inquiryLabel.snp.makeConstraints { make in
-            make.top.equalTo(versionLabel.snp.bottom).offset(25)
             make.leading.equalToSuperview().offset(20)
+            make.centerY.equalToSuperview()
         }
         
         inquiryButton.snp.makeConstraints { make in
-            make.centerY.equalTo(inquiryLabel)
             make.trailing.equalToSuperview().offset(-20)
+            make.centerY.equalToSuperview()
+        }
+        
+        // 로그아웃
+        logoutContainer.snp.makeConstraints { make in
+            make.top.equalTo(inquiryContainer.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(44)
         }
         
         logoutLabel.snp.makeConstraints { make in
-            make.top.equalTo(inquiryLabel.snp.bottom).offset(16)
-            make.leading.equalToSuperview().offset(16)
+            make.leading.equalToSuperview().offset(20)
+            make.centerY.equalToSuperview()
         }
         
         logoutButton.snp.makeConstraints { make in
-            make.centerY.equalTo(logoutLabel)
             make.trailing.equalToSuperview().offset(-20)
+            make.centerY.equalToSuperview()
+        }
+        
+        // 계정 탈퇴
+        deleteContainer.snp.makeConstraints { make in
+            make.top.equalTo(logoutContainer.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(44)
         }
         
         deleteAccountLabel.snp.makeConstraints { make in
-            make.top.equalTo(logoutLabel.snp.bottom).offset(16)
-            make.leading.equalToSuperview().offset(16)
+            make.leading.equalToSuperview().offset(20)
+            make.centerY.equalToSuperview()
         }
         
         deleteAccountButton.snp.makeConstraints { make in
-            make.centerY.equalTo(deleteAccountLabel)
             make.trailing.equalToSuperview().offset(-20)
+            make.centerY.equalToSuperview()
         }
     }
 }

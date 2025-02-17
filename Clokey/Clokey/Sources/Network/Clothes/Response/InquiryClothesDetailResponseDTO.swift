@@ -74,8 +74,8 @@ public struct GetClothesByCategoryResponseDTO: Codable {
     public let clothPreviews: [ClothPreview]
     public let totalPage: Int
     public let totalElements: CLong
-    public let first: Bool
-    public let last: Bool
+    public let isFirst: Bool
+    public let isLast: Bool
 }
 
 public struct ClothPreview: Codable {

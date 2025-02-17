@@ -33,7 +33,21 @@ final class HomeViewController: UIViewController {
         
         
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    
+    // MARK: - Actions
+    
+    /// 버튼의 액션(target)을 설정
     private func setupActions() {
         homeView.pickButton.addTarget(self, action: #selector(tabSelected(_:)), for: .touchUpInside)
         homeView.newsButton.addTarget(self, action: #selector(tabSelected(_:)), for: .touchUpInside)

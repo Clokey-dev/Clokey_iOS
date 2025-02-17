@@ -104,7 +104,7 @@ class AddCategoryViewController: UIViewController, UICollectionViewDataSource, U
         
         let selectedCategory = categories[section]
         let selectedButtonName = selectedCategory.buttons[item]
-        let selectedClothesName = selectedButtonName.name // 버튼 이름
+        _ = selectedButtonName.name // 버튼 이름
         let selectedClothesId = selectedButtonName.id     // 버튼 ID
 //
 //        // WeatherChooseViewController로 데이터 전달
