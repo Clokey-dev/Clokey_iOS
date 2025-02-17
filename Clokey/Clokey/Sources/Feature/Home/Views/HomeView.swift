@@ -108,7 +108,6 @@ final class HomeView: UIView {
         // 인디케이터 뷰 레이아웃 설정
         indicatorView.snp.makeConstraints { make in
             make.centerX.equalTo(pickButton.snp.centerX) // PICK 버튼 중앙에 위치
-//            make.bottom.equalTo(pickButton.snp.bottom).offset(6)
             make.bottom.equalTo(separatorLine.snp.top) // separatorLine 기준으로 수정
             make.height.equalTo(5) // 높이: 5
             make.width.equalTo(88)

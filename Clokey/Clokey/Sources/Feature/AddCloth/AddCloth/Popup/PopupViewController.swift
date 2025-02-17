@@ -2,7 +2,7 @@
 //  PopupViewController.swift
 //  Clokey
 //
-//  Created by 소민준 on 2/1/25.
+//  Created by 한금준 on 2/1/25.
 //
 
 import UIKit
@@ -21,10 +21,10 @@ class PopupViewController: UIViewController {
             
             // 선택된 계절을 영어로 변환
             let seasonMapping: [String: String] = [
-                "봄": "Spring",
-                "여름": "Summer",
-                "가을": "Fall",
-                "겨울": "Winter"
+                "봄": "SPRING",
+                "여름": "SUMMER",
+                "가을": "FALL",
+                "겨울": "WINTER"
             ]
             
             let convertedSeasons = selectedSeasons.compactMap { seasonMapping[$0] }
@@ -138,7 +138,8 @@ class PopupViewController: UIViewController {
     
         
         setupUI()
-        // 🔹 completeButton에 Target-Action 추가
+       
+        addButton.addTarget(self, action: #selector(didTapAddClothButton), for: .touchUpInside)
         completeButton.addTarget(self, action: #selector(didTapCompleteButton), for: .touchUpInside)
         
         updateSeasonButtons() // 초기 상태 업데이트
@@ -158,19 +159,15 @@ class PopupViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .white
         view.addSubview(titleLabel)
-        view.addSubview(popupView) // ✅ PopupView 추가
+        view.addSubview(popupView)
         view.addSubview(addButton)
         view.addSubview(completeButton)
 
-        // ✅ 타이틀 상단 고정
         titleLabel.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             $0.centerX.equalToSuperview()
         }
         
-        // ✅ PopupView 레이아웃 (높이 지정해서 안 보이는 문제 해결!)
-        // ✅ titleLabel과 popupView 사이 간격을 충분히 확보
-        // ✅ PopupView 모서리 둥글게 설정
         popupView.layer.cornerRadius = 30 // 원하는 둥글기 정도 (예: 20)
         popupView.clipsToBounds = true
         
@@ -180,7 +177,7 @@ class PopupViewController: UIViewController {
             $0.width.equalTo(320)
             $0.height.greaterThanOrEqualTo(508) // 최소 높이 증가
         }
-        // ✅ 버튼 배치 (하단 고정)
+   
         addButton.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide)/*.offset(-44)*/
             $0.leading.equalToSuperview().offset(20)
@@ -243,52 +240,92 @@ class PopupViewController: UIViewController {
         }
     }
     
-    // 🔹 completeButton 눌렀을 때 실행될 메서드
-    @objc private func didTapCompleteButton() {
-        let successVC = SuccessViewController()
-        
-        successVC.modalPresentationStyle = .fullScreen // ✅ 전체 화면 모달
-        navigationController?.pushViewController(successVC, animated: true)
+    @objc private func didTapAddClothButton() {
+        let addClothVC = AddClothViewController()
+        navigationController?.pushViewController(addClothVC, animated: true)
         
         guard let categoryId = categoryId,
-                  let clothName = clothName,
-                  let maxTemp = maxTemp,
-                  let minTemp = minTemp,
-                  let thicknessLevel = thicknessLevel,
-                  let visibility = visibility,
-                  let imageUrl = imageUrl,
-                  let brand = brand,
-              let selectedImage = cloth else {
-                print("🚨 필수 데이터 누락")
-                return
-            }
+              let clothName = clothName,
+              let maxTemp = maxTemp,
+              let minTemp = minTemp,
+              let thicknessLevel = thicknessLevel,
+              let visibility = visibility,
+              let imageUrl = imageUrl,
+              let brand = brand,
+              let selectedImage = clothImage // UIImage
+        else {
+            print("필수 데이터 누락 또는 이미지 변환 실패")
+            return
+        }
 
-            let seasonArray = season.isEmpty ? ["SUMMER"] : Array(season)
+        let addClothesRequestDTO = AddClothesRequestDTO(
+            categoryId: categoryId,
+            name: clothName,
+            seasons: Array(season),
+            tempUpperBound: maxTemp,
+            tempLowerBound: minTemp,
+            thicknessLevel: thicknessLevel,
+            visibility: visibility,
+            clothUrl: imageUrl,
+            brand: brand
+        )
 
-            let addClothesRequestDTO = AddClothesRequestDTO(
-                categoryId: categoryId,
-                name: clothName,
-                seasons: seasonArray,
-                tempUpperBound: maxTemp,
-                tempLowerBound: minTemp,
-                thicknessLevel: thicknessLevel,
-                visibility: visibility,
-                clothUrl: imageUrl,
-                brand: brand
-            )
+        let clothesService = ClothesService()
 
-            let clothesService = ClothesService()
-
-            // ✅ API 호출
-            clothesService.addClothes(data: addClothesRequestDTO, image: selectedImage) { result in
+        clothesService.addClothes(imageData: selectedImage, data: addClothesRequestDTO) { result in
+            DispatchQueue.main.async {
                 switch result {
                 case .success(let response):
-                    print("✅ 옷 추가 성공: \(response)")
+                    print("옷 추가 성공: \(response)")
                 case .failure(let error):
-                    print("🚨 옷 추가 실패: \(error.localizedDescription)")
+                    print("옷 추가 실패: \(error.localizedDescription)")
                 }
             }
+        }
     }
     
     
+    @objc private func didTapCompleteButton() {
+        let successVC = SuccessViewController()
+        navigationController?.pushViewController(successVC, animated: true)
+
+        guard let categoryId = categoryId,
+              let clothName = clothName,
+              let maxTemp = maxTemp,
+              let minTemp = minTemp,
+              let thicknessLevel = thicknessLevel,
+              let visibility = visibility,
+              let imageUrl = imageUrl,
+              let brand = brand,
+              let selectedImage = clothImage // UIImage
+        else {
+            print("필수 데이터 누락 또는 이미지 변환 실패")
+            return
+        }
+
+        let addClothesRequestDTO = AddClothesRequestDTO(
+            categoryId: categoryId,
+            name: clothName,
+            seasons: Array(season),
+            tempUpperBound: maxTemp,
+            tempLowerBound: minTemp,
+            thicknessLevel: thicknessLevel,
+            visibility: visibility,
+            clothUrl: imageUrl,
+            brand: brand
+        )
+
+        let clothesService = ClothesService()
+
+        clothesService.addClothes(imageData: selectedImage, data: addClothesRequestDTO) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print("옷 추가 성공: \(response)")
+                case .failure(let error):
+                    print("옷 추가 실패: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
 }

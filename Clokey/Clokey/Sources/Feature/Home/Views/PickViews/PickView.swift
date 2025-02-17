@@ -153,13 +153,18 @@ class PickView: UIView {
 
     /// Recap 섹션의 부제목 레이블
     let recapSubtitleLabel1: UILabel = UILabel().then {
-        $0.text = "1년 전 오늘, 00님은 이 옷을 착용하셨네요!"
+        $0.text = "1년 전 오늘, 00님의 기록이 없어요!"
         $0.textColor = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0) // 텍스트 색상
         $0.font = UIFont.ptdMediumFont(ofSize: 14) // 작은 폰트 크기
         $0.numberOfLines = 0 // 여러 줄 허용
     }
     
-
+    let recapSubtitleLabel2: UILabel = UILabel().then {
+        $0.text = "다른사용자들은 어떤 옷을 입었을까요?"
+        $0.textColor = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0) // 텍스트 색상
+        $0.font = UIFont.ptdMediumFont(ofSize: 14) // 작은 폰트 크기
+        $0.numberOfLines = 0 // 여러 줄 허용
+    }
 
     /// Recap 섹션의 이미지 컨테이너 뷰
     let recapImageContainerView: UIView = UIView().then {
@@ -225,6 +230,7 @@ class PickView: UIView {
         contentView.addSubview(bottomArrowIcon)
         contentView.addSubview(recapTitleLabel)
         contentView.addSubview(recapSubtitleLabel1)
+        contentView.addSubview(recapSubtitleLabel2)
         contentView.addSubview(recapImageContainerView)
         recapImageContainerView.addSubview(recapImageView1)
         recapImageContainerView.addSubview(recapImageView2)
@@ -339,10 +345,15 @@ class PickView: UIView {
             make.top.equalTo(recapTitleLabel.snp.bottom).offset(6)
             make.leading.equalToSuperview().offset(20)
         }
+        
+        recapSubtitleLabel2.snp.makeConstraints { make in
+            make.top.equalTo(recapSubtitleLabel1.snp.bottom).offset(4)
+            make.leading.equalToSuperview().offset(20)
+        }
 
         
         recapImageContainerView.snp.makeConstraints { make in
-            make.top.equalTo(recapSubtitleLabel1.snp.bottom).offset(9)
+            make.top.equalTo(recapSubtitleLabel2.snp.bottom).offset(9)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(223.22)
             make.bottom.equalToSuperview().offset(-20) // 스크롤 콘텐츠의 마지막 부분
@@ -358,25 +369,6 @@ class PickView: UIView {
             make.width.equalTo(recapImageContainerView.snp.width).multipliedBy(0.5).offset(-5)
         }
     }
-    
-    /// Recap 섹션에 이미지와 데이터를 설정하는 메서드
-        func updateRecapImages(with imageUrls: [String]) {
-            if imageUrls.count > 0 {
-                recapImageView1.image = loadImage(from: imageUrls[0])
-            }
-            if imageUrls.count > 1 {
-                recapImageView2.image = loadImage(from: imageUrls[1])
-            }
-        }
-        
-        /// URL에서 이미지를 로드하는 헬퍼 메서드
-        private func loadImage(from urlString: String) -> UIImage? {
-            guard let url = URL(string: urlString),
-                  let data = try? Data(contentsOf: url) else {
-                return nil
-            }
-            return UIImage(data: data)
-        }
     
     /// 데이터 상태에 따라 EmptyStackView 표시/숨김
     func updateEmptyState(isEmpty: Bool) {
@@ -397,6 +389,23 @@ class PickView: UIView {
             temperatureChangeLabel.isHidden = false
             bottomButtonLabel.isHidden = false
             bottomArrowIcon.isHidden = false
+        }
+    }
+    
+    func recapNotMe(hidden: Bool) {
+        recapSubtitleLabel2.isHidden = hidden
+        recapImageContainerView.snp.remakeConstraints { make in
+            if hidden {
+                make.top.equalTo(recapSubtitleLabel1.snp.bottom).offset(9)
+            }
+            else {
+                recapImageContainerView.snp.remakeConstraints { make in
+                    make.top.equalTo(recapSubtitleLabel2.snp.bottom).offset(9)
+                }
+            }
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(223.22)
+            make.bottom.equalToSuperview().offset(-20) // 스크롤 콘텐츠의 마지막 부분
         }
     }
 }

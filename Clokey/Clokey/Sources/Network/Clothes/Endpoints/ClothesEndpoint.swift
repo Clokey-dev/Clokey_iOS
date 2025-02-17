@@ -13,7 +13,7 @@ public enum ClothesEndpoint {
     case checkEditClothes(cloth_id: Int)
     case checkPopUpClothes(clothId: Int)
     case getCategoryClothes(category: String, season: String, sort: String, page: Int) // 쿼리 매개변수 추가
-    case addClothes(data: AddClothesRequestDTO, imageData: Data) // category_id 추가
+    case addClothes(image: Data, data: AddClothesRequestDTO) // category_id 추가
     case editClothes(cloth_id: Int, category_id: Int, data: EditClothesRequestDTO)
     case deleteClothes(cloth_id: Int)
     case getClothes(clokeyId: String?, categoryId: CLong, season: String, sort: String, page: Int, size: Int)
@@ -92,21 +92,35 @@ extension ClothesEndpoint: TargetType {
                 ],
                 encoding: URLEncoding.queryString // 쿼리 스트링 방식
             )
+        case .addClothes(let image, let data):
+            var multipartData = [MultipartFormData]()
+
+            do {
+                let jsonData = try JSONEncoder().encode(data)
+                
+                // ✅ JSON 확인 로그 추가
+                let jsonString = String(data: jsonData, encoding: .utf8) ?? "JSON 변환 실패"
+                print("✅ JSON 데이터: \(jsonString)")
+
+                let jsonPart = MultipartFormData(provider: .data(jsonData), name: "clothCreateRequest", mimeType: "application/json")
+                multipartData.append(jsonPart)
+            } catch {
+                print("🚨 JSON 인코딩 실패: \(error.localizedDescription)")
+                return .requestPlain
+            }
+
+            // ✅ 이미지 파일 추가 (name을 "imageFile"로 변경)
+            let fileName = "clothes_image.jpg"
+            let imagePart = MultipartFormData(provider: .data(image), name: "imageFile", fileName: fileName, mimeType: "image/jpeg")
+
+            // ✅ 이미지 크기 로그 출력
+            print("✅ 이미지 크기: \(image.count) bytes")
+
+            multipartData.append(imagePart)
+
+            return .uploadMultipart(multipartData)
             
-        case .addClothes(let data, let imageData):
-                    var multipartData = [MultipartFormData]()
-                    
-                    // ✅ JSON 데이터 추가 (metadata)
-                    if let jsonData = try? JSONEncoder().encode(data) {
-                        let jsonPart = MultipartFormData(provider: .data(jsonData), name: "clothCreateRequest", mimeType: "application/json")
-                        multipartData.append(jsonPart)
-                    }
-                    
-                    // ✅ 이미지 파일 추가
-                    let imagePart = MultipartFormData(provider: .data(imageData), name: "imageFile", fileName: "image.jpg", mimeType: "image/jpeg")
-                    multipartData.append(imagePart)
-                    
-                    return .uploadMultipart(multipartData)
+
                 
             
         case .editClothes(let cloth_id, let category_id, let data):
@@ -149,7 +163,7 @@ extension ClothesEndpoint: TargetType {
     
     public var headers: [String : String]? {
         switch self {
-        case .editClothes:
+        case .addClothes, .editClothes:
             return [
                 "Content-Type": "multipart/form-data"
             ]

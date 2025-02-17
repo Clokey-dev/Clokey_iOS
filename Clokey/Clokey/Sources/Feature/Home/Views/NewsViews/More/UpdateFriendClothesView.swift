@@ -22,7 +22,7 @@ class UpdateFriendClothesView: UIView {
     }
     
     let backButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        $0.setImage(UIImage(named: "back_icon"), for: .normal)
         $0.tintColor = .black
     }
     
@@ -49,19 +49,16 @@ class UpdateFriendClothesView: UIView {
         $0.attributedText = attributedString
     }
     
-    /// 구분 선
-    private let lineView = UIView().then {
-        $0.backgroundColor = .systemGray5
-    }
+    
     
     let updateFriendClothesCollectionView: UICollectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout().then {
-            $0.itemSize = CGSize(width: 317, height: 154) // 셀 크기 설정
+            $0.itemSize = CGSize(width: 317, height: 176) // 셀 크기 설정
             $0.minimumInteritemSpacing = 8
             $0.minimumLineSpacing = 16 // 셀 간의 세로 간격
             $0.scrollDirection = .vertical // 세로 스크롤
-            $0.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16) // 섹션 여백
+            $0.sectionInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0) // 섹션 여백
         }
     ).then {
         $0.backgroundColor = .clear
@@ -87,8 +84,6 @@ class UpdateFriendClothesView: UIView {
         
         contentView.addSubview(backButton)
         contentView.addSubview(titleLabel)
-        contentView.addSubview(lineView)
-//        contentView.addSubview(container)
         contentView.addSubview(updateFriendClothesCollectionView)
 
     }
@@ -108,7 +103,8 @@ class UpdateFriendClothesView: UIView {
         backButton.snp.makeConstraints { make in
             make.top.equalTo(contentView.safeAreaLayoutGuide).offset(20)
             make.leading.equalToSuperview().offset(20)
-            make.size.equalTo(CGSize(width: 10, height: 20))
+            make.width.equalTo(10)
+            make.height.equalTo(20)
         }
         
         titleLabel.snp.makeConstraints { make in
@@ -116,22 +112,11 @@ class UpdateFriendClothesView: UIView {
             make.leading.equalTo(backButton.snp.trailing).offset(20)
         }
         
-        lineView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview().inset(20)  // 화면 전체 너비
-            make.height.equalTo(1)  // 높이 1포인트
-        }
-        
-//        container.snp.makeConstraints { make in
-//            make.top.equalTo(lineView.snp.bottom) // 구분선 아래
-//            make.leading.trailing.bottom.equalToSuperview() // 화면의 좌우 및 아래쪽 끝까지 확장
-//        }
-        
         updateFriendClothesCollectionView.snp.makeConstraints{ make in
-            make.top.equalTo(lineView.snp.bottom).offset(12)
+            make.top.equalTo(titleLabel.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(300) // 초기 높이 (1로 설정하여 콘텐츠 크기 업데이트 유도)
-            
+
         }
         
     }

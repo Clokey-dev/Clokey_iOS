@@ -25,6 +25,20 @@ public final class HomeService : NetworkManager {
         self.provider = provider ?? MoyaProvider<HomeEndPoint>(plugins: plugins)
     }
     
+    func recommendClothes(
+        nowTemp: Int32,
+        minTemp: Int32,
+        maxTemp: Int32,
+        completion: @escaping (Result<RecommendClothesResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .recommendClothes(nowTemp: nowTemp, minTemp: minTemp, maxTemp: maxTemp),
+            decodingType: RecommendClothesResponseDTO.self,
+            completion: completion
+        )
+    }
+    
+    
     
     func fetchOneYearAgoHistories(
         completion: @escaping (Result<OneYearAgoHistoriesResponseDTO, NetworkError>) -> Void
@@ -36,17 +50,24 @@ public final class HomeService : NetworkManager {
         )
     }
     
+    func fetchGetDetailIssuesData<T: Decodable>(
+        section: String,
+        page: Int,
+        completion: @escaping (Result<T, NetworkError>) -> Void
+    ) {
+        let decodingType: T.Type = section == "closet" ? GetDetailIssuesClosetResponseDTO.self as! T.Type :
+                                   section == "calendar" ? GetDetailIssuesCalendarResponseDTO.self as! T.Type : T.self
+
+        request(target: .getDetailIssues(section: section, page: page), decodingType: decodingType, completion: completion)
+    }
+    
     func fetchGetIssuesData(
-        view: String? = nil,
-        section: String? = nil,
-        page: Int? = nil,
         completion: @escaping (Result<GetIssuesResponseDTO, NetworkError>) -> Void
     ) {
         request(
-            target: .getIssues(view: view, section: section, page: page),
+            target: .getIssues,
             decodingType: GetIssuesResponseDTO.self,
-            completion: completion
-        )
+            completion: completion)
     }
 }
 

@@ -10,7 +10,7 @@
 import Foundation
 
 struct UpdateFriendClothesModel {
-    let profileImage: URL // URL 타입으로 변경
+    let profileImage: URL? // URL 타입으로 변경
     let name: String
     let date: String
     let clothingImages: [URL] // URL 배열로 변경

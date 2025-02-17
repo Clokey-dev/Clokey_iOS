@@ -65,7 +65,7 @@ public struct getCategoryClothesResponseDTO: Codable {
 }
 
 // 옷 추가
-public struct addClothesResponseDTO: Codable {
+public struct AddClothesResponseDTO: Codable {
     public let id: Int64
 }
 

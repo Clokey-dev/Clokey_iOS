@@ -185,6 +185,11 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
             isIdChecked = false // ✅ 아이디 입력이 바뀌면 다시 중복 확인 필요
             addProfileView.idCheckButton.isEnabled = true
             addProfileView.idCheckButton.setTitleColor(.black, for: .normal)
+            
+            // ID 입력 필드가 비어있다면 오류 메시지를 숨김 처리
+            if let text = textField.text, text.isEmpty {
+                addProfileView.idError(hidden: true)
+            }
         }
         
         validateForm() // ✅ 다른 필드가 수정될 때도 완료 버튼 상태 업데이트
@@ -192,19 +197,23 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
     
     @objc private func validateNickname() {
         guard let text = addProfileView.nicknameTextField.text, !text.isEmpty else {
-            addProfileView.nicknameStatusLabel.text = ""
-            addProfileView.nicknameStatusLabel.isHidden = true // 입력 없으면 숨김
+//            addProfileView.nicknameStatusLabel.text = ""
+//            addProfileView.nicknameStatusLabel.isHidden = true // 입력 없으면 숨김
+            addProfileView.nickNameError(hidden: true)
             return
         }
+        
+        addProfileView.nickNameError(hidden: false)
         
         if text.count > 6 {
             addProfileView.nicknameStatusLabel.text = "6글자 이내로 입력해주세요."
             addProfileView.nicknameStatusLabel.textColor = .pointOrange800
-            addProfileView.nicknameStatusLabel.isHidden = false // 🚀 오류 메시지 보이게 설정
+//            addProfileView.nicknameStatusLabel.isHidden = false // 🚀 오류 메시지 보이게 설정
+            
         } else {
             addProfileView.nicknameStatusLabel.text = "사용 가능한 닉네임입니다."
             addProfileView.nicknameStatusLabel.textColor = .pointOrange800
-            addProfileView.nicknameStatusLabel.isHidden = false // 🚀 유효한 경우에도 표시
+//            addProfileView.nicknameStatusLabel.isHidden = false // 🚀 유효한 경우에도 표시
         }
         
         validateForm() // 🚀 폼 유효성 검사 실행
@@ -213,16 +222,22 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
     
     // 아이디 중복 확인
     @objc private func checkIdAvailability() {
-        guard let id = addProfileView.idTextField.text, !id.isEmpty else { return }
+        guard let id = addProfileView.idTextField.text, !id.isEmpty else {
+            addProfileView.idError(hidden: true)
+            return
+        }
+        
+        addProfileView.idError(hidden: false)
         
         // 특수문자 및 대문자가 포함된 경우 중복 확인 진행 불가
         let containsUppercase = id.rangeOfCharacter(from: CharacterSet.uppercaseLetters) != nil
         let containsSpecialCharacter = id.rangeOfCharacter(from: CharacterSet.punctuationCharacters.union(.symbols)) != nil
         
         if containsUppercase || containsSpecialCharacter {
+            
             addProfileView.idStatusLabel.text = "잘못 입력했습니다. 소문자와 숫자만 입력하세요."
             addProfileView.idStatusLabel.textColor = .pointOrange800
-            addProfileView.idStatusLabel.isHidden = false
+//            addProfileView.idStatusLabel.isHidden = false
             isIdChecked = false
             validateForm() // ✅ 유효성 검사 즉시 실행
             return
@@ -237,25 +252,25 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
             DispatchQueue.main.async {
                 switch result {
                 case .success:
+//                    self.addProfileView.idError(hidden: false)
                     self.addProfileView.idStatusLabel.text = "사용 가능한 아이디입니다."
                     self.addProfileView.idStatusLabel.textColor = .pointOrange800
                     self.isIdChecked = true
-                    self.addProfileView.idStatusLabel.isHidden = false
+//                    self.addProfileView.idStatusLabel.isHidden = false
                     self.addProfileView.idCheckButton.setTitleColor(.gray, for: .normal)
                     self.validateForm()
                     
                 case .failure(let error):
+//                    self.addProfileView.idError(hidden: false)
                     self.addProfileView.idStatusLabel.text = "중복된 아이디입니다."
                     self.addProfileView.idStatusLabel.textColor = .pointOrange800
                     self.isIdChecked = false
-                    self.addProfileView.idStatusLabel.isHidden = false
+//                    self.addProfileView.idStatusLabel.isHidden = false
                     self.addProfileView.idCheckButton.setTitleColor(.gray, for: .normal)
                     self.validateForm()
                 }
             }
         }
-        
-
     }
     
     // ✅ 한줄 소개 입력을 20자로 제한하는 함수

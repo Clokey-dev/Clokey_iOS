@@ -170,6 +170,21 @@ class AgreementViewController: UIViewController {
             $0.height.equalTo(50) // 버튼 높이
         }
         
+        // 2안
+//        tableView.snp.makeConstraints {
+//            $0.top.equalTo(headerDivider.snp.bottom).offset(9) // 구분선 아래 간격
+//            $0.leading.trailing.equalToSuperview().inset(20) // 좌우 여백
+////            $0.height.equalTo(141)
+//            $0.bottom.equalTo(agreeButton.snp.top).offset(50) // 가입 완료 버튼 위 간격
+//        }
+//        
+//        agreeButton.snp.makeConstraints {
+////            $0.top.equalTo(tableView.snp.bottom).offset(50)
+//            $0.bottom.equalTo(view.safeAreaLayoutGuide)/*.offset(-24)*/ // 하단 간격
+//            $0.leading.trailing.equalToSuperview().inset(20) // 좌우 여백
+//            $0.height.equalTo(50) // 버튼 높이
+//        }
+        
         // 버튼 클릭 이벤트 연결
         allAgreeButton.addTarget(self, action: #selector(didTapAllAgree), for: .touchUpInside) // 전체 동의 버튼 클릭 이벤트
         agreeButton.addTarget(self, action: #selector(didTapAgreeButton), for: .touchUpInside) // 가입 완료 버튼 클릭 이벤트

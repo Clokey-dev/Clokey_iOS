@@ -35,7 +35,7 @@ final class Slider: UIControl {
         label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         label.textColor = .brown
         label.textAlignment = .center
-        label.alpha = 0 // ✅ 기본적으로 숨김
+        label.alpha = 0 
         return label
     }()
     private let upperThumbLabel: UILabel = {
@@ -43,16 +43,16 @@ final class Slider: UIControl {
         label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         label.textColor = .brown
         label.textAlignment = .center
-        label.alpha = 0 // ✅ 기본적으로 숨김
+        label.alpha = 0
         return label
     }()
    
     
     private let trackView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(named: "mainBrown50")?.withAlphaComponent(0.3) // ✅ 트랙 색상 변경
-        view.layer.borderWidth = 2 // ✅ 테두리 두께 추가
-        view.layer.borderColor = UIColor(named: "mainBrown200")?.cgColor // ✅ 테두리 색상 변경
+        view.backgroundColor = UIColor(named: "mainBrown50")?.withAlphaComponent(0.3)
+        view.layer.borderWidth = 2
+        view.layer.borderColor = UIColor(named: "mainBrown200")?.cgColor
         view.isUserInteractionEnabled = false
         view.layer.cornerRadius = 5
         return view
@@ -62,7 +62,7 @@ final class Slider: UIControl {
         let view = UIView()
         view.backgroundColor = .clear
         view.isUserInteractionEnabled = false
-        view.layer.cornerRadius = 5 // ✅ 둥글게 만듦
+        view.layer.cornerRadius = 5
         return view
     }()
     
@@ -143,7 +143,7 @@ final class Slider: UIControl {
         // 트랙 배치
         self.trackView.snp.makeConstraints {
             $0.left.right.centerY.equalToSuperview()
-            $0.height.equalTo(8) // ✅ 두께 증가
+            $0.height.equalTo(8)
         }
 
         self.trackTintView.snp.makeConstraints {
@@ -173,14 +173,13 @@ final class Slider: UIControl {
         } else if self.isUpperThumbViewTouched {
             self.upperThumbButton.isSelected = true
         }
-        
-        // ✅ Thumb을 터치하면 온도 레이블이 나타남
+  
         UIView.animate(withDuration: 0.2) {
             self.lowerThumbLabel.alpha = 1
             self.upperThumbLabel.alpha = 1
         }
         
-        self.updateThumbLabels() // ✅ 초기 터치 시 온도 값 업데이트
+        self.updateThumbLabels()
         
         return self.isLowerThumbViewTouched || self.isUpperThumbViewTouched
     }
@@ -204,7 +203,7 @@ final class Slider: UIControl {
             self.upper = (self.upper + scaledDrag).clamped(to: (self.lower...self.maxValue))
         }
         
-        self.updateThumbLabels() // ✅ Thumb 이동 중에도 온도 값 업데이트
+        self.updateThumbLabels()
         
         return true
     }
@@ -216,7 +215,7 @@ final class Slider: UIControl {
         self.lowerThumbButton.isSelected = false
         self.upperThumbButton.isSelected = false
 
-        // ✅ Thumb에서 손을 떼면 온도 레이블이 사라짐
+    
         UIView.animate(withDuration: 0.3) {
             self.lowerThumbLabel.alpha = 0
             self.upperThumbLabel.alpha = 0
@@ -229,11 +228,11 @@ final class Slider: UIControl {
 
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = [
-            UIColor.mainBrown50.withAlphaComponent(0.8).cgColor,  // ✅ 더 진한 갈색 시작
-            UIColor.mainBrown800.withAlphaComponent(0.5).cgColor,  // ✅ 연한 갈색 중간
-            UIColor.clear.cgColor  // ✅ 투명한 끝
+            UIColor.mainBrown50.withAlphaComponent(0.8).cgColor,
+            UIColor.mainBrown800.withAlphaComponent(0.5).cgColor,
+            UIColor.clear.cgColor
         ]
-        gradientLayer.locations = [0.0, 0.8, 1.0] // ✅ 60% 정도까지 색상이 유지되도록 조정
+        gradientLayer.locations = [0.0, 0.8, 1.0]
         gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)
         gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)
         gradientLayer.frame = trackTintView.bounds
@@ -255,7 +254,7 @@ final class Slider: UIControl {
         let lowerX = self.lowerThumbButton.center.x
         let upperX = self.upperThumbButton.center.x
 
-        let labelOffset: CGFloat = -30 // ✅ Thumb 아래 25px 배치
+        let labelOffset: CGFloat = -30
 
         lowerThumbLabel.text = "\(Int(self.lower))°"
         upperThumbLabel.text = "\(Int(self.upper))°"
@@ -307,17 +306,17 @@ class RoundableButton: UIButton {
 class ThumbButton: RoundableButton {
     override var isSelected: Bool {
         didSet {
-            self.backgroundColor = .white // ✅ 기본 색상 유지
+            self.backgroundColor = .white
         }
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .white
-        self.layer.borderWidth = 1 // ✅ 테두리 두께 설정
-        self.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor // ✅ 테두리 색상 변경
-        self.layer.cornerRadius = 10 // ✅ 크기 조정 (20x20)
-        self.snp.makeConstraints { $0.width.height.equalTo(20) } // ✅ Thumb 크기 20x20 고정
+        self.layer.borderWidth = 1
+        self.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+        self.layer.cornerRadius = 10
+        self.snp.makeConstraints { $0.width.height.equalTo(20) }
     }
     
     required init?(coder: NSCoder) {

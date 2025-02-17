@@ -115,14 +115,6 @@ class UpdateFriendCalendarView: UIView {
             make.leading.equalTo(backButton.snp.trailing).offset(20)
         }
         
-//        // Layout using SnapKit
-//        // 기존 UI 요소 제약 추가
-//        title.snp.makeConstraints { make in
-//            make.top.equalTo(contentView.safeAreaLayoutGuide).offset(21)
-//            make.leading.equalToSuperview().offset(20)
-//            make.width.equalTo(224)
-//            make.height.equalTo(24)
-//        }
         subTitle.snp.makeConstraints { make in
             make.top.equalTo(title.snp.bottom).offset(15)
             make.leading.equalToSuperview().offset(20)

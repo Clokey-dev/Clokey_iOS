@@ -11,7 +11,7 @@ class ThickSlider: UISlider {
     
     private let stepCount = 6  // 0~5 총 6개의 값
     private var circles: [UIView] = []
-    private var temperatureLabels: [UILabel] = [] // 🔥 숫자 라벨 배열 추가
+    private var temperatureLabels: [UILabel] = [] //  숫자 라벨 배열 추가
     private let trackLayer = CAShapeLayer()  // 트랙을 직접 그림
     
     private let circleSize: CGFloat = 12
@@ -49,11 +49,11 @@ class ThickSlider: UISlider {
         
         createTrackLayer()  // 커스텀 트랙 추가
         createCircles()  // 눈금 원들 추가
-        createTemperatureLabels()  // 🔥 숫자 라벨 추가
+        createTemperatureLabels()  //  숫자 라벨 추가
         updateCircles()  // 원 위치 업데이트
     }
     
-    // MARK: - 🎨 트랙(슬라이더 선) 직접 그리기 (원을 뚫고 지나가지 않게!)
+    // MARK: -  트랙(슬라이더 선) 직접 그리기 (원을 뚫고 지나가지 않게!)
     private func createTrackLayer() {
         trackLayer.allowsEdgeAntialiasing = true  // 안티앨리어싱 활성화 (터치 영향 최소화)
         trackLayer.contentsScale = UIScreen.main.scale  // 고해상도 유지
@@ -91,7 +91,7 @@ class ThickSlider: UISlider {
         trackLayer.fillColor = UIColor.clear.cgColor
     }
     
-    // MARK: - 🎯 원(circle) 추가 (트랙 위로 선이 지나가지 않게)
+    // MARK: -  원(circle) 추가 (트랙 위로 선이 지나가지 않게)
 //    private func createCircles() {
 //        for _ in 0..<stepCount {
 //            let circle = UIView()
@@ -105,7 +105,7 @@ class ThickSlider: UISlider {
 //        }
 //    }
     
-    // 🎯 각 점(원) 생성 및 제스처 추가
+    //  각 점(원) 생성 및 제스처 추가
     private func createCircles() {
         for index in 0..<stepCount {
             let circle = UIView()
@@ -116,10 +116,10 @@ class ThickSlider: UISlider {
             addSubview(circle)
             circles.append(circle)
             
-            // 🔥 각 점(원)에 제스처 추가
+            // 각 점(원)에 제스처 추가
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(circleTapped(_:)))
             circle.addGestureRecognizer(tapGesture)
-            circle.tag = index  // ✅ 각 점에 고유 태그 설정
+            circle.tag = index  //  각 점에 고유 태그 설정
         }
     }
 
@@ -128,11 +128,11 @@ class ThickSlider: UISlider {
         guard let selectedCircle = sender.view else { return } // 눌린 점 확인
         let selectedIndex = selectedCircle.tag  // 태그에서 인덱스 가져오기
         
-        // ✅ 슬라이더 값 업데이트
+        //  슬라이더 값 업데이트
         let stepValue = Float(selectedIndex)
         setValue(stepValue, animated: true)
         
-        // ✅ UI 업데이트
+        //  UI 업데이트
         highlightSelectedCircle()
         layoutIfNeeded()
     }
@@ -143,15 +143,15 @@ class ThickSlider: UISlider {
     }
 
     @objc private func sliderEnded() {
-        let stepValue = round(value)  // 🎯 가장 가까운 정수 값으로 정렬
-        UIView.animate(withDuration: 0.2, animations: { // ✅ 애니메이션 적용
+        let stepValue = round(value)  //  가장 가까운 정수 값으로 정렬
+        UIView.animate(withDuration: 0.2, animations: { //  애니메이션 적용
             self.setValue(stepValue, animated: true)
-            self.layoutIfNeeded() // 🔥 강제 UI 업데이트
+            self.layoutIfNeeded() //  강제 UI 업데이트
         })
         highlightSelectedCircle()
     }
     
-    // 🔥 숫자 라벨 추가
+    //  숫자 라벨 추가
     private func createTemperatureLabels() {
         for i in 0..<stepCount {
             let label = UILabel()
@@ -175,10 +175,10 @@ class ThickSlider: UISlider {
             circle.frame = CGRect(x: xPosition, y: yPosition, width: circleSize, height: circleSize)
         }
         
-        updateTemperatureLabels() // 🔥 숫자 위치 업데이트
+        updateTemperatureLabels() //  숫자 위치 업데이트
     }
     
-    // 🔥 숫자 라벨 위치 업데이트
+    //  숫자 라벨 위치 업데이트
     private func updateTemperatureLabels() {
         let trackRect = self.trackRect(forBounds: bounds)
         let thumbRect = self.thumbRect(forBounds: bounds, trackRect: trackRect, value: minimumValue)
@@ -186,7 +186,7 @@ class ThickSlider: UISlider {
         
         for (index, label) in temperatureLabels.enumerated() {
             let xPosition = trackRect.origin.x + (CGFloat(index) * spacing) + (thumbRect.width / 2) - 10
-            let yPosition = bounds.height / 2 + 20 // 🔥 트랙 아래로 배치
+            let yPosition = bounds.height / 2 + 20 //  트랙 아래로 배치
             label.frame = CGRect(x: xPosition, y: yPosition, width: 20, height: 20)
         }
     }
@@ -199,13 +199,13 @@ class ThickSlider: UISlider {
         for (index, circle) in circles.enumerated() {
             UIView.animate(withDuration: 0.2) {
                 if index == selectedIndex {
-                    circle.backgroundColor = self.selectedColor // ✅ 선택된 원 색상 변경 (브라운)
-                    circle.transform = CGAffineTransform(scaleX: 1.5, y: 1.5) // ✅ 크기 키우기 (1.5배)
-                    circle.layer.borderColor = UIColor.mainBrown800.cgColor // ✅ 테두리 검은색 유지
+                    circle.backgroundColor = self.selectedColor //  선택된 원 색상 변경 (브라운)
+                    circle.transform = CGAffineTransform(scaleX: 1.5, y: 1.5) // 크기 키우기 (1.5배)
+                    circle.layer.borderColor = UIColor.mainBrown800.cgColor // 테두리 검은색 유지
                 } else {
-                    circle.backgroundColor = .white // ✅ 나머지는 흰색 유지
-                    circle.transform = CGAffineTransform.identity // ✅ 원래 크기로 복귀
-                    circle.layer.borderColor = UIColor.mainBrown400.cgColor // ✅ 테두리 검은색 유지
+                    circle.backgroundColor = .white //  나머지는 흰색 유지
+                    circle.transform = CGAffineTransform.identity //  원래 크기로 복귀
+                    circle.layer.borderColor = UIColor.mainBrown400.cgColor // 테두리 검은색 유지
                 }
             }
         }
