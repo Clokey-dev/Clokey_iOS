@@ -84,7 +84,6 @@ class UpdateFriendClothesView: UIView {
         
         contentView.addSubview(backButton)
         contentView.addSubview(titleLabel)
-//        contentView.addSubview(container)
         contentView.addSubview(updateFriendClothesCollectionView)
 
     }
@@ -104,7 +103,6 @@ class UpdateFriendClothesView: UIView {
         backButton.snp.makeConstraints { make in
             make.top.equalTo(contentView.safeAreaLayoutGuide).offset(20)
             make.leading.equalToSuperview().offset(20)
-//            make.size.equalTo(24)
             make.width.equalTo(10)
             make.height.equalTo(20)
         }
@@ -114,18 +112,11 @@ class UpdateFriendClothesView: UIView {
             make.leading.equalTo(backButton.snp.trailing).offset(20)
         }
         
-        
-//        container.snp.makeConstraints { make in
-//            make.top.equalTo(lineView.snp.bottom) // 구분선 아래
-//            make.leading.trailing.bottom.equalToSuperview() // 화면의 좌우 및 아래쪽 끝까지 확장
-//        }
-        
         updateFriendClothesCollectionView.snp.makeConstraints{ make in
             make.top.equalTo(titleLabel.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(300) // 초기 높이 (1로 설정하여 콘텐츠 크기 업데이트 유도)
-//            make.bottom.equalToSuperview().offset(-20) // ✅ 하단 고정 (UIScrollView 내부)
-            
+
         }
         
     }

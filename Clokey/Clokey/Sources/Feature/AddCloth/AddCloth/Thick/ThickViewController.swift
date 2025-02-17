@@ -23,10 +23,10 @@ class ThickViewController: UIViewController {
     private let backButton: UIButton = {
         let button = UIButton(type: .system)
         let image = UIImage(systemName: "chevron.left")?
-            .withTintColor(.mainBrown800, renderingMode: .alwaysOriginal) // 🔥 아이콘 색상 변경 (검은색)
+            .withTintColor(.mainBrown800, renderingMode: .alwaysOriginal) //  아이콘 색상 변경 (검은색)
         
         button.setImage(image, for: .normal)
-        button.contentMode = .scaleAspectFit // 🔥 아이콘 비율 유지
+        button.contentMode = .scaleAspectFit //  아이콘 비율 유지
         button.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         return button
     }()
@@ -52,15 +52,15 @@ class ThickViewController: UIViewController {
     
     
     /// 🔹 두께감 설명 버튼
-    /// 🔹 두께감 설명 버튼 (❓ 대신 아이콘 사용)
+    /// 🔹 두께감 설명 버튼 ( 대신 아이콘 사용)
     /// 🔹 두께감 설명 버튼 (텍스트만 유지)
     private let thicknessInfoButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("두께감의 기준이 궁금해요", for: .normal)
-        button.setTitleColor(.black, for: .normal) // ✅ 글자 색상이 보이도록 설정
+        button.setTitleColor(.black, for: .normal) //  글자 색상이 보이도록 설정
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.contentHorizontalAlignment = .left // ✅ 텍스트가 왼쪽 정렬되도록 설정
-        button.setContentHuggingPriority(.defaultHigh, for: .horizontal) // ✅ 크기 줄어들지 않도록 설정
+        button.contentHorizontalAlignment = .left //  텍스트가 왼쪽 정렬되도록 설정
+        button.setContentHuggingPriority(.defaultHigh, for: .horizontal) //  크기 줄어들지 않도록 설정
         button.addTarget(self, action: #selector(didTapInfoButton), for: .touchUpInside)
         return button
     }()
@@ -71,7 +71,7 @@ class ThickViewController: UIViewController {
         imageView.image = UIImage(named: "question_citrcle_icon")
         imageView.contentMode = .scaleAspectFit
         
-        // ✅ Hugging Priority 설정 → 버튼보다 먼저 크기를 유지하게 함
+        //  Hugging Priority 설정 → 버튼보다 먼저 크기를 유지하게 함
         imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
         
@@ -85,9 +85,9 @@ class ThickViewController: UIViewController {
         stack.alignment = .center
         return stack
     }()
-    /// 🔹 두께감 기준 설명 뷰 (초기에 숨김)
-    /// 🔹 두께감 기준 설명 뷰 (초기에 숨김)
-    /// ✅ 두께감 기준 설명 뷰 (초기에 숨김)
+    ///  두께감 기준 설명 뷰 (초기에 숨김)
+    ///  두께감 기준 설명 뷰 (초기에 숨김)
+    ///  두께감 기준 설명 뷰 (초기에 숨김)
     private let thicknessInfoView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(red: 255/255, green: 248/255, blue: 235/255, alpha: 1)
@@ -96,7 +96,7 @@ class ThickViewController: UIViewController {
         return view
     }()
     
-    /// ✅ 두께감 설명 라벨
+    ///  두께감 설명 라벨
     private let thicknessInfoLabel: UILabel = {
         let label = UILabel()
         
@@ -110,7 +110,7 @@ class ThickViewController: UIViewController {
         """
         
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = 8 // ✅ 줄 간격 (위아래 공간 조절)
+        paragraphStyle.lineSpacing = 8 //  줄 간격 (위아래 공간 조절)
         
         let attributedString = NSMutableAttributedString(string: text, attributes: [
             .font: UIFont.ptdRegularFont(ofSize: 14),
@@ -121,7 +121,7 @@ class ThickViewController: UIViewController {
         label.attributedText = attributedString
         label.numberOfLines = 0
         label.textAlignment = .left
-        label.backgroundColor = .clear // ✅ 배경색을 없애서 부모 뷰 색상 유지
+        label.backgroundColor = .clear // 배경색을 없애서 부모 뷰 색상 유지
         
         label.layer.cornerRadius = 10
         label.layer.masksToBounds = true
@@ -237,14 +237,14 @@ class ThickViewController: UIViewController {
         view.addSubview(nextButton)
         view.addSubview(thicknessInfoView)
         thicknessInfoView.addSubview(thicknessInfoLabel)
-        // ✅ StackView에 아이콘과 버튼 추가
+        //  StackView에 아이콘과 버튼 추가
         infoStackView.addArrangedSubview(questionIcon)
         infoStackView.addArrangedSubview(thicknessInfoButton)
         
-        // ✅ StackView를 뷰에 추가
+        //  StackView를 뷰에 추가
         view.addSubview(infoStackView)
         
-        // ✅ StackView 오토레이아웃 설정
+        // StackView 오토레이아웃 설정
         
         infoStackView.snp.makeConstraints {
             //                $0.top.equalTo(thickSlider.snp.bottom).offset(24)
@@ -254,10 +254,10 @@ class ThickViewController: UIViewController {
         }
         
         
-        // ✅ questionIcon의 너비를 고정하지 않고 자연스럽게 조정되도록 설정!
+        //  questionIcon의 너비를 고정하지 않고 자연스럽게 조정되도록 설정!
         questionIcon.snp.makeConstraints {
             $0.height.equalTo(24)
-//            $0.width.equalTo(24)// ✅ 높이만 설정
+//            $0.width.equalTo(24)//  높이만 설정
         }
         // 설명 뷰 레이아웃 (초기값)
         // 설명 뷰 레이아웃 (초기값)
@@ -293,16 +293,16 @@ class ThickViewController: UIViewController {
             $0.leading.equalToSuperview().offset(20)
         }
         thicknessInfoButton.snp.makeConstraints {
-            $0.top.equalTo(thickSlider.snp.bottom).offset(24) // 🔥 슬라이더 아래로 이동
+            $0.top.equalTo(thickSlider.snp.bottom).offset(24) //  슬라이더 아래로 이동
             $0.leading.equalToSuperview().offset(40)
-            $0.width.greaterThanOrEqualTo(180) // ✅ 최소 180px 너비 설정 (고정 아님)
+            $0.width.greaterThanOrEqualTo(180) //  최소 180px 너비 설정 (고정 아님)
             
         }
         
         thicknessInfoView.snp.makeConstraints {
             $0.top.equalTo(thicknessInfoButton.snp.bottom).offset(8) // 기본 0
             $0.leading.trailing.equalToSuperview().inset(40)
-            $0.height.equalTo(0) // ✅ 처음엔 높이 0
+            $0.height.equalTo(0) // 처음엔 높이 0
             $0.width.equalTo(311)
         }
         
@@ -317,7 +317,7 @@ class ThickViewController: UIViewController {
         
         // 공개 여부 라벨
         visibilityLabel.snp.makeConstraints {
-            $0.top.equalTo(thicknessInfoView.snp.bottom).offset(24) // 🔥 설명 뷰가 나오면 자동으로 내려가게 설정
+            $0.top.equalTo(thicknessInfoView.snp.bottom).offset(24) //  설명 뷰가 나오면 자동으로 내려가게 설정
             $0.leading.equalToSuperview().offset(20)
         }
         
@@ -351,15 +351,15 @@ class ThickViewController: UIViewController {
     
     @objc private func didTapInfoButton() {
         let isHidden = thicknessInfoView.isHidden
-        thicknessInfoView.isHidden = false // ✅ 먼저 숨김 해제 (필수)
+        thicknessInfoView.isHidden = false //  먼저 숨김 해제 (필수)
         
         UIView.animate(withDuration: 0.3, animations: {
             self.thicknessInfoView.snp.updateConstraints {
-                $0.height.equalTo(isHidden ? 180 : 0) // ✅ 토글 방식으로 높이 변경
+                $0.height.equalTo(isHidden ? 180 : 0) //  토글 방식으로 높이 변경
             }
-            self.view.layoutIfNeeded() // ✅ 애니메이션 적용
+            self.view.layoutIfNeeded() //  애니메이션 적용
         }) { _ in
-            self.thicknessInfoView.isHidden = !isHidden // ✅ 애니메이션 후 최종 숨김 여부 설정
+            self.thicknessInfoView.isHidden = !isHidden //  애니메이션 후 최종 숨김 여부 설정
         }
     }
     
@@ -406,7 +406,7 @@ class ThickViewController: UIViewController {
         lastAddVC.thickCount = Int(thickSlider.value)
         lastAddVC.isPublicSelected = isPublicSelected
         /***/
-        lastAddVC.modalPresentationStyle = .fullScreen // ✅ 전체 화면 모달
+        lastAddVC.modalPresentationStyle = .fullScreen //  전체 화면 모달
         navigationController?.pushViewController(lastAddVC, animated: true)
     }
 }

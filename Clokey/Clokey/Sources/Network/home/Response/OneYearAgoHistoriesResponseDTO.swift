@@ -37,12 +37,6 @@ public struct RecommendClothesResponseDTO: Codable {
     }
 }
 
-
-//public struct GetDetailIssuesResponseDTO: Codable {
-//    let closet: GetDetailIssuesClosetResponseDTO?
-//    let calendar: GetDetailIssuesCalendarResponseDTO?
-//}
-
 // Closet 섹션용 DTO
 public struct GetDetailIssuesClosetResponseDTO: Codable {
     let dailyNewsResult: [DailyNewsResult]
@@ -72,39 +66,21 @@ public struct GetDetailIssuesCalendarResponseDTO: Codable {
         let date: String
         let clokeyId: String
         let profileImage: String
-        let events: [CalendarEventResponseDTO]?
-    }
-
-    struct CalendarEventResponseDTO: Codable {
         let historyId: Int64
         let imageUrl: String?
     }
 }
 
 
-
-
-
-
-
-
-
-
 // 소식 화면의 데이터 구조
 public struct GetIssuesResponseDTO: Codable {
-    let recommend: RecommendWrapperDTO
-//    let recommend: [RecommendResponseDTO]
-    let closet: ClosetWrapperDTO
-    let calendar: CalendarWrapperDTO
-    let people: PeopleWrapperDTO
+    let recommend: [RecommendResponseDTO]
+    let closet: [ClosetResponseDTO]
+    let calendar: [CalendarResponseDTO]
+    let people: [PeopleResponseDTO]
 }
 
 // Recommend 섹션
-public struct RecommendWrapperDTO: Codable {
-    let innerResult: [RecommendResponseDTO]
-}
-
-
 public struct RecommendResponseDTO: Codable {
     let imageUrl: String?
     let subTitle: String
@@ -113,10 +89,6 @@ public struct RecommendResponseDTO: Codable {
 }
 
 // Closet 섹션
-public struct ClosetWrapperDTO: Codable {
-    let innerResult: [ClosetResponseDTO]
-}
-
 public struct ClosetResponseDTO: Codable {
     let clokeyId: String
     let profileImage: String
@@ -126,32 +98,18 @@ public struct ClosetResponseDTO: Codable {
 }
 
 // Calendar 섹션
-public struct CalendarWrapperDTO: Codable {
-    let innerResult: [CalendarResponseDTO]
-}
-
 public struct CalendarResponseDTO: Codable {
     let date: String
     let clokeyId: String
     let profileImage: String
-    let events: [CalendarEventResponseDTO]
-}
-
-// Calendar 내 이벤트
-public struct CalendarEventResponseDTO: Codable {
     let historyId: Int64
     let imageUrl: String?
 }
 
 // People 섹션
-public struct PeopleWrapperDTO: Codable {
-    let innerResult: [PeopleResponseDTO]
-}
-
 public struct PeopleResponseDTO: Codable {
     let clokeyId: String
+    let profileImage: String
     let imageUrl: String
-    let historyImage: String
     let historyId: Int64
 }
-

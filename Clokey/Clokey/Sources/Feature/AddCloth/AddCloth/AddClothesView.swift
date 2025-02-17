@@ -26,7 +26,7 @@ class AddClothesView: UIView {
         return label
     }()
     
-    /// 🔹 "옷의 이름을 입력해주세요!" 타이틀
+    ///  "옷의 이름을 입력해주세요!" 타이틀
     let subTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "옷의 이름을 입력해주세요!"
@@ -55,7 +55,7 @@ class AddClothesView: UIView {
         let textField = UITextField()
         textField.placeholder = "옷의 이름을 입력해주세요"
         textField.font = UIFont.ptdMediumFont(ofSize: 16)
-        textField.borderStyle = .none  // ✅ 기본 보더 제거
+        textField.borderStyle = .none  //  기본 보더 제거
         textField.textColor = .black
         
         return textField
@@ -67,19 +67,19 @@ class AddClothesView: UIView {
         btn.setTitleColor(.black, for: .normal)
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         
-        // ✅ 버튼 스타일 수정
-        btn.backgroundColor = .clear  // ✅ 기본 배경 투명
-        btn.layer.borderWidth = 1      // ✅ 테두리 추가
-        btn.layer.borderColor = UIColor.mainBrown400.cgColor // ✅ 테두리 색상 설정
-        btn.layer.cornerRadius = 10    // ✅ 둥근 모서리 설정
-        btn.clipsToBounds = true       // ✅ 클립 적용
+        //  버튼 스타일 수정
+        btn.backgroundColor = .clear  //  기본 배경 투명
+        btn.layer.borderWidth = 1      //  테두리 추가
+        btn.layer.borderColor = UIColor.mainBrown400.cgColor //  테두리 색상 설정
+        btn.layer.cornerRadius = 10    //  둥근 모서리 설정
+        btn.clipsToBounds = true       //  클립 적용
         
         return btn
     }()
     
     let underlineView: UIView = {
         let view = UIView()
-        view.backgroundColor = .mainBrown400  // ✅ 검정색 밑줄
+        view.backgroundColor = .mainBrown400  //  검정색 밑줄
         return view
     }()
     
@@ -89,7 +89,7 @@ class AddClothesView: UIView {
         return view
     }()
     
-    /// 🔹 카테고리 태그 정렬 StackView (ex: 상의 > 후드티)
+    ///  카테고리 태그 정렬 StackView (ex: 상의 > 후드티)
     let categoryTagsContainer: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -98,7 +98,7 @@ class AddClothesView: UIView {
         return stackView
     }()
     
-    /// 🔹 "카테고리 재분류" 안내 텍스트
+    ///  "카테고리 재분류" 안내 텍스트
     let reclassifyLabel: UILabel = {
         let label = UILabel()
         label.text = "카테고리 재분류를 원하시나요?"
@@ -108,7 +108,7 @@ class AddClothesView: UIView {
     }()
     
     let reclassifyButton: UIButton = {
-        let btn = UIButton(type: .custom) // ✅ 기본 `.system`이 아닌 `.custom`으로 변경
+        let btn = UIButton(type: .custom) //  기본 `.system`이 아닌 `.custom`으로 변경
         let title = NSAttributedString(
             string: "직접 분류하기",
             attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue, .foregroundColor: UIColor.gray]
@@ -121,10 +121,10 @@ class AddClothesView: UIView {
     let nextButton: UIButton = {
         let button = UIButton()
         button.setTitle("다음", for: .normal)
-        button.backgroundColor = UIColor(named: "mainBrown400") // ✅ 초기 색상 (비활성화)
+        button.backgroundColor = UIColor(named: "mainBrown400") //  초기 색상 (비활성화)
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 8
-        button.isEnabled = false // ✅ 초기에는 비활성화
+        button.isEnabled = false //  초기에는 비활성화
         return button
     }()
     
@@ -137,12 +137,12 @@ class AddClothesView: UIView {
     }
     
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        print("📌 hitTest 호출됨. 터치 위치: \(point)")
+        print("hitTest 호출됨. 터치 위치: \(point)")
         
-        // ✅ `reclassifyButton`이 터치된 경우, 무조건 버튼을 반환하도록 수정
+        // `reclassifyButton`이 터치된 경우, 무조건 버튼을 반환하도록 수정
         let buttonPoint = convert(point, to: reclassifyButton)
         if reclassifyButton.point(inside: buttonPoint, with: event) {
-            print("✅ reclassifyButton이 터치 이벤트를 받음")
+            print(" reclassifyButton이 터치 이벤트를 받음")
             return reclassifyButton
         }
         
@@ -151,12 +151,12 @@ class AddClothesView: UIView {
     
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         if reclassifyButton.frame.contains(point) {
-            print("📌 reclassifyButton 터치 가능")
+            print("reclassifyButton 터치 가능")
             return true
         }
         
         let isInside = super.point(inside: point, with: event)
-        print("📌 pointInside 결과: \(isInside) - 터치된 위치: \(point)")
+        print("pointInside 결과: \(isInside) - 터치된 위치: \(point)")
         return isInside
     }
     
@@ -175,7 +175,7 @@ class AddClothesView: UIView {
         addSubview(inputContainer)
         inputContainer.addSubview(inputField)
         inputContainer.addSubview(inputButton)
-        inputContainer.addSubview(underlineView)  // ✅ 밑줄 추가
+        inputContainer.addSubview(underlineView)  //  밑줄 추가
         
         addSubview(categoryContainer)
         categoryContainer.addSubview(categoryTagsContainer)
@@ -227,7 +227,7 @@ class AddClothesView: UIView {
             $0.height.equalTo(30)
         }
         
-        underlineView.snp.makeConstraints {  // ✅ 밑줄을 필드 + 버튼 포함하도록 설정
+        underlineView.snp.makeConstraints {  //  밑줄을 필드 + 버튼 포함하도록 설정
             $0.top.equalTo(inputField.snp.bottom).offset(9)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(1)
@@ -236,7 +236,7 @@ class AddClothesView: UIView {
         categoryContainer.snp.makeConstraints {
             $0.top.equalTo(underlineView.snp.bottom).offset(13)
             $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.greaterThanOrEqualTo(80) // ✅ 최소 높이 설정
+            $0.height.greaterThanOrEqualTo(80) //  최소 높이 설정
         }
         
         categoryTagsContainer.snp.makeConstraints {
@@ -256,11 +256,7 @@ class AddClothesView: UIView {
             $0.height.equalTo(13) // 버튼 높이 명확히 설정
         }
         
-//        nextButton.snp.makeConstraints {
-//            $0.bottom.equalToSuperview().inset(30)
-//            $0.leading.trailing.equalToSuperview().inset(20)
-//        }
-//        
+
         nextButton.snp.makeConstraints {
             $0.bottom.equalTo(safeAreaLayoutGuide).offset(-20)
             $0.leading.trailing.equalToSuperview().inset(20)

@@ -60,7 +60,7 @@ extension HomeEndPoint: TargetType {
                     "maxTemp": maxTemp
                 ]
                 return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
-        case .getOneYearAgoHistories: // 새로 추가된 Task
+        case .getOneYearAgoHistories: 
             return .requestPlain
         case .getIssues:
             return .requestPlain
@@ -72,7 +72,6 @@ extension HomeEndPoint: TargetType {
                 parameters["section"] = section
             }
 
-            // page는 1 이상이어야 함
             if page >= 1 {
                 parameters["page"] = page
             } else {

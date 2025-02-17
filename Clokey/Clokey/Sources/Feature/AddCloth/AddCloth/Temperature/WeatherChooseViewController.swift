@@ -24,10 +24,10 @@ class WeatherChooseViewController: UIViewController {
     private let backButton: UIButton = {
         let button = UIButton(type: .system)
         let image = UIImage(systemName: "chevron.left")?
-            .withTintColor(.black, renderingMode: .alwaysOriginal) // 🔥 아이콘 색상 변경 (검은색)
+            .withTintColor(.black, renderingMode: .alwaysOriginal) //  아이콘 색상 변경 (검은색)
         
         button.setImage(image, for: .normal)
-        button.contentMode = .scaleAspectFit // 🔥 아이콘 비율 유지
+        button.contentMode = .scaleAspectFit //  아이콘 비율 유지
         button.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         return button
     }()
@@ -51,33 +51,33 @@ class WeatherChooseViewController: UIViewController {
         let label = UILabel()
         label.text = "주로 어떤 날씨에 착용하세요?"
         label.font = UIFont.boldSystemFont(ofSize: 24)
-        label.textAlignment = .left // ✅ 왼쪽 정렬로 변경
+        label.textAlignment = .left //  왼쪽 정렬로 변경
         label.textColor = .black
         return label
     }()
 
-    /// 🔹 설명 라벨
+    ///  설명 라벨
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.text = "날씨를 기반으로 알맞은 옷, 추천해 드릴게요!"
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .darkGray
-        label.textAlignment = .left // ✅ 왼쪽 정렬로 변경
+        label.textAlignment = .left //  왼쪽 정렬로 변경
         return label
     }()
     //가온데 온도계 사진
     private let thermometerIcon: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "thermo_icon") // ✅ thermo.icon 적용
+        imageView.image = UIImage(named: "thermo_icon") //  thermo.icon 적용
         imageView.contentMode = .scaleAspectFit
         return imageView
         
     }()
     
-    /// 🔹 계절 버튼 배열
+    ///  계절 버튼 배열
     private var seasonButtons: [UIButton] = []
     
-    /// 🔹 계절별 온도 범위
+    ///  계절별 온도 범위
     private let seasonTemperatureRanges: [String: (min: Float, max: Float)] = [
         "봄": (7, 18),
         "여름": (18, 40),
@@ -85,10 +85,10 @@ class WeatherChooseViewController: UIViewController {
         "겨울": (-20, 7)
     ]
     
-    /// 🔹 선택된 계절 목록
+    ///  선택된 계절 목록
     private var selectedSeasons: Set<String> = []
     
-    /// 🔹 슬라이더
+    ///  슬라이더
     private let slider: Slider = {
         let slider = Slider()
         slider.minValue = -20
@@ -98,10 +98,10 @@ class WeatherChooseViewController: UIViewController {
         return slider
     }()
     
-    /// 🔹 온도 눈금 라벨
+
     
     
-    /// 🔹 다음 버튼
+    ///  다음 버튼
     private let nextButton: UIButton = {
         let button = UIButton()
         button.setTitle("다음", for: .normal)
@@ -113,26 +113,26 @@ class WeatherChooseViewController: UIViewController {
         return button
     }()
     
-    // 🔹 Lower Thumb 위에 온도 레이블
+    //  Lower Thumb 위에 온도 레이블
     private let lowerThumbLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         label.textColor = .brown
         label.textAlignment = .center
-        label.alpha = 0 // ✅ 기본적으로 숨김
+        label.alpha = 0 //  기본적으로 숨김
         return label
     }()
     
-    // 🔹 Upper Thumb 위에 온도 레이블
+    //  Upper Thumb 위에 온도 레이블
     private let upperThumbLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
         label.textColor = .brown
         label.textAlignment = .center
-        label.alpha = 0 // ✅ 기본적으로 숨김
+        label.alpha = 0 //  기본적으로 숨김
         return label
     }()
-    /// 🔹 온도 아이콘
+    ///  온도 아이콘
     private let temperatureIcon: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "temperatureIcon")
@@ -230,14 +230,14 @@ class WeatherChooseViewController: UIViewController {
         }
         
         slider.snp.makeConstraints {
-            $0.top.equalTo(thermometerIcon.snp.bottom).offset(69) // ✅ 아이콘 아래 배치
+            $0.top.equalTo(thermometerIcon.snp.bottom).offset(69) //  아이콘 아래 배치
             $0.leading.trailing.equalToSuperview().inset(20)
         }
         
-        // ✅ 다음 버튼 크기를 353 x 54로 설정
+        //  다음 버튼 크기를 353 x 54로 설정
         nextButton.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
-            $0.leading.trailing.equalToSuperview().inset(20) // ✅ 좌우 마진 유지
+            $0.leading.trailing.equalToSuperview().inset(20) //  좌우 마진 유지
             $0.height.equalTo(54) // 중앙 정렬
             
         }
@@ -259,11 +259,11 @@ class WeatherChooseViewController: UIViewController {
         for season in seasons {
             let button = UIButton()
             button.setTitle(season, for: .normal)
-            button.setTitleColor(UIColor(named: "mainBrown800"), for: .normal) // ✅ 글자 색상
-            button.layer.borderWidth = 2 // ✅ 테두리 추가
-            button.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor // ✅ 테두리 색상 적용
+            button.setTitleColor(UIColor(named: "mainBrown800"), for: .normal) //  글자 색상
+            button.layer.borderWidth = 2 //  테두리 추가
+            button.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor //  테두리 색상 적용
             button.layer.cornerRadius = 8
-            button.backgroundColor = .clear // ✅ 기본 배경색 제거
+            button.backgroundColor = .clear //  기본 배경색 제거
             button.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 16)
             button.addTarget(self, action: #selector(didTapSeasonButton(_:)), for: .touchUpInside)
             
@@ -279,7 +279,7 @@ class WeatherChooseViewController: UIViewController {
         buttonStack.snp.makeConstraints {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
-            $0.height.equalTo(32) // ✅ 버튼 높이 고정
+            $0.height.equalTo(32) //  버튼 높이 고정
         }
 
         for button in seasonButtons {
@@ -296,14 +296,14 @@ class WeatherChooseViewController: UIViewController {
 
         if selectedSeasons.contains(season) {
             selectedSeasons.remove(season)
-            sender.backgroundColor = .clear // ✅ 선택 해제 시 배경 투명
-            sender.setTitleColor(UIColor(named: "mainBrown800"), for: .normal) // ✅ 선택 해제 시 글자 색상 유지
-            sender.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor // ✅ 테두리 색상 유지
+            sender.backgroundColor = .clear // 선택 해제 시 배경 투명
+            sender.setTitleColor(UIColor(named: "mainBrown800"), for: .normal) //  선택 해제 시 글자 색상 유지
+            sender.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor //  테두리 색상 유지
         } else {
             selectedSeasons.insert(season)
-            sender.backgroundColor = UIColor(named: "mainBrown800") // ✅ 선택 시 배경색 적용 (정확하게 `mainBrown800`)
-            sender.setTitleColor(.white, for: .normal) // ✅ 선택 시 글자 색상 변경
-            sender.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor // ✅ 테두리 유지
+            sender.backgroundColor = UIColor(named: "mainBrown800") //  선택 시 배경색 적용 (정확하게 `mainBrown800`)
+            sender.setTitleColor(.white, for: .normal) //  선택 시 글자 색상 변경
+            sender.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
         }
 
         updateSliderRange()
@@ -325,8 +325,8 @@ class WeatherChooseViewController: UIViewController {
         
         for season in selectedSeasons {
             if let range = seasonTemperatureRanges[season] {
-                minTemp = min(minTemp, Double(range.min)) // ✅ Float → Double 변환
-                maxTemp = max(maxTemp, Double(range.max)) // ✅ Float → Double 변환
+                minTemp = min(minTemp, Double(range.min)) //  Float → Double 변환
+                maxTemp = max(maxTemp, Double(range.max)) //  Float → Double 변환
             }
         }
         
@@ -356,7 +356,7 @@ class WeatherChooseViewController: UIViewController {
     
     // MARK: - 다음 버튼 액션
     @objc private func didTapNextButton() {
-        let nextVC = ThickViewController() // 👉 다음으로 이동할 VC (파일명에 맞게 수정)
+        let nextVC = ThickViewController() //  다음으로 이동할 VC (파일명에 맞게 수정)
         /***/
         nextVC.clothName = clothName // 값 전달
         nextVC.categoryName = categoryName
@@ -366,21 +366,21 @@ class WeatherChooseViewController: UIViewController {
         nextVC.minTemp = Int(slider.lower)
         nextVC.maxTemp = Int(slider.upper)
         /***/
-        navigationController?.pushViewController(nextVC, animated: true) // ✅ 네비게이션 Push 방식으로 이동
+        navigationController?.pushViewController(nextVC, animated: true) // 네비게이션 Push 방식으로 이동
     }
     
     private func updateNextButtonState() {
-        // ✅ 슬라이더가 움직였는지 확인
-        let isSliderMoved = slider.lower != -10 || slider.upper != 20  // ✅ 초기 값과 비교
+        // 슬라이더가 움직였는지 확인
+        let isSliderMoved = slider.lower != -10 || slider.upper != 20  //  초기 값과 비교
         
-        // ✅ 계절 버튼이 하나 이상 선택되었는지 확인
+        //  계절 버튼이 하나 이상 선택되었는지 확인
         let isSeasonSelected = !selectedSeasons.isEmpty
         
-        // ✅ 둘 중 하나라도 변경되었으면 버튼 활성화
+        //  둘 중 하나라도 변경되었으면 버튼 활성화
         let shouldEnable = isSliderMoved || isSeasonSelected
         
         nextButton.isEnabled = shouldEnable
-        nextButton.backgroundColor = shouldEnable ? .mainBrown800 : .mainBrown400 // ✅ 활성화/비활성화 배경색 변경
+        nextButton.backgroundColor = shouldEnable ? .mainBrown800 : .mainBrown400 //  활성화/비활성화 배경색 변경
     }
     
     // MARK: - 뒤로가기

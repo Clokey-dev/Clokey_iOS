@@ -17,6 +17,10 @@ class UpdateFriendClothesViewController: UIViewController {
     // MARK: - Properties
     private var updates: [UpdateFriendClothesModel] = []
     
+    private var currentPage = 1
+    private var isLoading = false
+    private var hasMorePages = true
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,31 +67,45 @@ class UpdateFriendClothesViewController: UIViewController {
         updateFriendClothesView.updateFriendClothesCollectionView.delegate = self
     }
     
-//    private func loadData() {
-//        updates = UpdateFriendClothesModel.dummy()
-//        
-//        DispatchQueue.main.async {
-//            self.updateFriendClothesView.updateFriendClothesCollectionView.reloadData()
-//        }
-//    }
-    
-    private func loadData() {
+    private func loadData(isNextPage: Bool = false) {
+        guard !isLoading && (hasMorePages || !isNextPage) else { return }
+        
+        isLoading = true
+        let nextPage = isNextPage ? currentPage + 1 : 1
+        
         let homeService = HomeService()
         homeService.fetchGetDetailIssuesData(
             section: "closet",
-            page: 1
+            page: nextPage
         ) { (result: Result<GetDetailIssuesClosetResponseDTO, NetworkError>) in
+            defer { self.isLoading = false }
+            
             switch result {
             case .success(let responseDTO):
-                self.updates = responseDTO.dailyNewsResult.map { item in
-                    return UpdateFriendClothesModel(profileImage: URL(string: item.profileImage)!, name: item.clokeyId, date: item.date, clothingImages: (item.images?.compactMap { URL(string: $0) })! )
+                let newResult = responseDTO.dailyNewsResult.map { item in
+                    UpdateFriendClothesModel(
+                        profileImage: URL(string: item.profileImage)!,
+                        name: item.clokeyId,
+                        date: item.date,
+                        clothingImages: (item.images?.compactMap { URL(string: $0) })!
+                    )
                 }
-                
+
+                if isNextPage {
+                    self.updates.append(contentsOf: newResult)
+                    self.currentPage = nextPage
+                } else {
+                    self.updates = newResult
+                    self.currentPage = 1
+                }
+
+                self.hasMorePages = !newResult.isEmpty
+
                 DispatchQueue.main.async {
                     self.updateFriendClothesView.updateFriendClothesCollectionView.reloadData()
                     self.updateCollectionViewHeight()
                 }
-                
+
             case .failure(let error):
                 print("Failed to load calendar data: \(error)")
             }
@@ -115,7 +133,7 @@ extension UpdateFriendClothesViewController: UICollectionViewDataSource {
                 print("Loading profile image from URL: \(profileImageURL.absoluteString)") // 디버깅 로그
                 cell.profileIcon.kf.setImage(
                     with: profileImageURL,
-                    placeholder: UIImage(named: "profile_placeholder"), // 기본 이미지
+                    placeholder: UIImage(named: "profile_basic"), // 기본 이미지
                     options: nil,
                     progressBlock: nil,
                     completionHandler: { result in
@@ -154,26 +172,9 @@ extension UpdateFriendClothesViewController: UICollectionViewDataSource {
         
         // 텍스트 설정
         cell.nameLabel.text = update.name
-//        cell.dateLabel.text = update.date
-        // ✅ 날짜 포맷 변경 (시간 제거)
-        let formattedDate = formatDate(update.date)
-        cell.dateLabel.text = formattedDate // 날짜 변환 후 설정
+        cell.dateLabel.text = update.date
         
         return cell
-    }
-    
-    private func formatDate(_ dateString: String) -> String {
-        let inputFormatter = DateFormatter()
-        inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss" // 기존 형식
-        inputFormatter.locale = Locale(identifier: "ko_KR") // 한국 시간 설정
-        
-        if let date = inputFormatter.date(from: dateString) {
-            let outputFormatter = DateFormatter()
-            outputFormatter.dateFormat = "yyyy-MM-dd" // 원하는 형식
-            return outputFormatter.string(from: date)
-        }
-        
-        return dateString // 변환 실패 시 원본 반환
     }
 }
 
@@ -182,6 +183,6 @@ extension UpdateFriendClothesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedUpdate = updates[indexPath.item]
         print("Selected Update: \(selectedUpdate.name)")
-        // 추가 동작 (예: 상세 화면 이동) 구현
+        
     }
 }

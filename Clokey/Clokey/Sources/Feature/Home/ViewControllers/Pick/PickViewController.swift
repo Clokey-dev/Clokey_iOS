@@ -136,33 +136,8 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         popUpView.deleteButton.addTarget(self, action: #selector(dismissPopup), for: .touchUpInside)
     }
     
-//    private func bindData() {
-//        // 데이터를 PickView에 바인딩
-//        
-//        pickView.recapImageView1.kf.setImage(with: URL(string: model.recapImageURLs[0]))
-//        pickView.recapImageView2.kf.setImage(with: URL(string: model.recapImageURLs[1]))
-//    }
-    
-//    func fetchWeatherRecommendations() {
-//        // 모델에서 이미지 URL 가져오기
-////        let recommendedClothes: [String] = model.weatherImageURLs // 이미지가 있음을 나타내기 위해 URL 배열 사용
-//        let recommendedClothes: [String] = [] // 예제: 데이터가 없다고 가정
-//        
-//        // UI 업데이트 (비어 있는지 확인)
-//        pickView.updateEmptyState(isEmpty: recommendedClothes.isEmpty)
-//        
-//        // 이미지 설정
-//        if !recommendedClothes.isEmpty {
-//            pickView.weatherImageView1.kf.setImage(with: URL(string: recommendedClothes[0]))
-//            pickView.weatherImageView2.kf.setImage(with: URL(string: recommendedClothes[1]))
-//            pickView.weatherImageView3.kf.setImage(with: URL(string: recommendedClothes[2]))
-//        }
-//    }
     
     func fetchWeatherRecommendations() {
-//        let nowTemp = 15  // 현재 온도 (실제 데이터로 변경 필요)
-//        let highTemp = 20 // 최고 온도
-//        let lowTemp = 10  // 최저 온도
         
         guard let nowTemp = nowTemp,
               let maxTemp = maxTemp,
@@ -187,8 +162,6 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     
                     self.pickView.updateEmptyState(isEmpty: response.recommendations.isEmpty)
                     
-//                    self.pickView.weatherImageView1.isHidden = recommendedClothes.isEmpty || recommendedClothes.count < 1
-//                    self.pickView.weatherImageName1.isHidden = recommendedClothes.isEmpty || recommendedClothes.count < 1
                     
                     self.pickView.weatherImageView2.isHidden = recommendedClothes.isEmpty || recommendedClothes.count < 2
                     self.pickView.weatherImageName2.isHidden = recommendedClothes.isEmpty || recommendedClothes.count < 2
@@ -211,7 +184,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     }
 
                 case .failure(let error):
-                    print("❌ 추천 의상 데이터 가져오기 실패: \(error.localizedDescription)")
+                    print("추천 의상 데이터 가져오기 실패: \(error.localizedDescription)")
                     self.pickView.updateEmptyState(isEmpty: true)
                 }
             }
@@ -248,7 +221,6 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     func updateTimeLabel() {
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
-        //        pickView.timeLabel.text = formatter.string(from: Date()) + " 대한민국 서울시 기준"
         let currentTime = formatter.string(from: Date())
         pickView.timeLabel.text = "\(currentTime) 대한민국 \(address) 기준"
     }
@@ -430,15 +402,14 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     
                     if historyResult.isMine {
                         if imageUrls.isEmpty {
-                            print("📷 사진이 없습니다")
+                            print("사진이 없습니다")
                             self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님의 기록이 없어요!"
                             self.pickView.recapNotMe(hidden: false)
                             self.pickView.recapSubtitleLabel2.text = "1년 전 오늘, 다른 사용자들의 기록도 없어요!"
                         } else {
                             self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님은 이 옷을 착용하셨네요!"
                             self.pickView.recapNotMe(hidden: true)
-                            
-                            // ✅ 배열이 비어있지 않은지 확인 후 이미지 설정
+ 
                             if imageUrls.count > 0 {
                                 self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
                             }
@@ -449,12 +420,10 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     } else {
                         self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님의 기록이 없어요!"
                         self.pickView.recapNotMe(hidden: false)
-                        
-                        // ✅ 배열이 비어있을 경우 로그 출력
+   
                         if imageUrls.isEmpty {
                             print("📷 사진이 없습니다")
                         } else {
-                            // ✅ 배열이 비어있지 않은지 확인 후 이미지 설정
                             if imageUrls.count > 0 {
                                 self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
                             }
@@ -464,7 +433,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                         }
                     }
                 case .failure(let error):
-                    print("❌ 데이터 로드 실패: \(error.localizedDescription)")
+                    print("데이터 로드 실패: \(error.localizedDescription)")
                 }
             }
         }

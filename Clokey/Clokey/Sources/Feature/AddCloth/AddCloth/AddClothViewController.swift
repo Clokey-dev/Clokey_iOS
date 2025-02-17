@@ -38,12 +38,12 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc internal override func dismissKeyboard() {
-        view.endEditing(true) // 🔥 현재 화면에서 키보드 내리기
+        view.endEditing(true) //  현재 화면에서 키보드 내리기
     }
    
     private func setupAction() {
         addClothesView.backButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
-        addClothesView.inputField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged) // ✅ 텍스트 변경 감지
+        addClothesView.inputField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged) // 텍스트 변경 감지
         addClothesView.inputButton.addTarget(self, action: #selector(handleInput), for: .touchUpInside)
 
         addClothesView.reclassifyButton.addTarget(self, action: #selector(handleReclassify), for: .touchUpInside)
@@ -56,7 +56,7 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
     @objc private func didTapNextButton() {
         // 입력 필드 값 가져오기
         guard let clothName = addClothesView.inputField.text, !clothName.isEmpty else {
-            print("❌ 텍스트 필드가 비어 있습니다.")
+            print(" 텍스트 필드가 비어 있습니다.")
             return
         }
         
@@ -82,7 +82,7 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
     
     @objc private func handleInput() {
         guard let text = addClothesView.inputField.text, !text.isEmpty else {
-            print("❌ 입력 필드가 비어 있음")
+            print(" 입력 필드가 비어 있음")
             return
         }
 
@@ -98,26 +98,26 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
                     let category3Name = response.smallCategoryName
                     let category3Id = response.categoryId
                     
-                    // ✅ 카테고리 응답이 비어있을 경우 로그 출력
+                    // 카테고리 응답이 비어있을 경우 로그 출력
                     if category1Name.isEmpty || category3Name.isEmpty {
-                        print("📌 추천 카테고리 없음")
+                        print("추천 카테고리 없음")
                     } else {
-                        // ✅ UI 업데이트
+                        //  UI 업데이트
                         self.updateCategoryTags(category1Name: category1Name, category3Name: category3Name, category3Id: category3Id)
                     }
                     
                 case .failure(let error):
-                    print("❌ 카테고리 추천 데이터 로드 실패: \(error.localizedDescription)")
+                    print("카테고리 추천 데이터 로드 실패: \(error.localizedDescription)")
                 }
             }
         }
     }
     
     private func updateCategoryTags(category1Name: String, category3Name: String, category3Id: Int64) {
-        // ✅ 기존 태그 제거
+        //  기존 태그 제거
         addClothesView.categoryTagsContainer.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
-        // ✅ 새로운 카테고리 태그 생성
+        // 새로운 카테고리 태그 생성
         let category1 = makeCategoryTag(title: category1Name)
         let separator = makeSeparator()
         let category3 = makeCategoryTag(title: category3Name)
@@ -126,14 +126,14 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
         cate3 = category3Name
         cate3Id = category3Id
         
-        // ✅ UI 업데이트
+        //  UI 업데이트
         addClothesView.categoryTagsContainer.addArrangedSubview(category1)
         addClothesView.categoryTagsContainer.addArrangedSubview(separator)
         addClothesView.categoryTagsContainer.addArrangedSubview(category3)
         
         addClothesView.categoryContainer.isHidden = false
         
-        // ✅ 버튼 활성화
+        //  버튼 활성화
         addClothesView.nextButton.isEnabled = true
         addClothesView.nextButton.backgroundColor = .mainBrown800
         
@@ -141,7 +141,7 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
         addClothesView.reclassifyButton.isHidden = false
         addClothesView.reclassifyButton.alpha = 1.0
         
-        print("📌 카테고리 태그 업데이트 완료")
+        print("카테고리 태그 업데이트 완료")
     }
     
     private func makeCategoryTag(title: String) -> UIButton {
@@ -152,8 +152,8 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.pointOrange800.cgColor
         button.layer.cornerRadius = 5
-        //        button.contentEdgeInsets = UIEdgeInsets(top: 3, left: 14, bottom: 3, right: 14) // ✅ 내부 여백 추가
-        // ✅ iOS 15 이상에서 contentInsets 적용
+        //        button.contentEdgeInsets = UIEdgeInsets(top: 3, left: 14, bottom: 3, right: 14) //  내부 여백 추가
+        //  iOS 15 이상에서 contentInsets 적용
         if #available(iOS 15.0, *) {
             var config = UIButton.Configuration.filled()
             config.contentInsets = NSDirectionalEdgeInsets(top: 3, leading: 14, bottom: 3, trailing: 14)
@@ -166,13 +166,7 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
         return button
     }
     
-//    private func makeSeparator() -> UILabel {
-//        let label = UILabel()
-//        label.text = ">"
-//        label.textColor = .mainBrown800
-//        label.font = UIFont.ptdSemiBoldFont(ofSize: 14)
-//        return label
-//    }
+
     private func makeSeparator() -> UIImageView {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "chevron.right") // SF Symbol 설정
@@ -184,7 +178,7 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
     @objc private func handleReclassify() {
         // 입력 필드 값 가져오기
         guard let clothName = addClothesView.inputField.text, !clothName.isEmpty else {
-            print("❌ 텍스트 필드가 비어 있습니다.")
+            print("텍스트 필드가 비어 있습니다.")
             return
         }
         
@@ -196,33 +190,33 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
     //
     @objc private func handleBack() {
         navigationController?.popViewController(animated: true)
-        resetViewState() // ✅ 화면을 초기 상태로 되돌리는 함수 호출
+        resetViewState() // 화면을 초기 상태로 되돌리는 함수 호출
     }
     //
     @objc private func textFieldDidChange(_ textField: UITextField) {
         if let text = textField.text, !text.isEmpty {
-            addClothesView.inputButton.backgroundColor = .mainBrown800 // ✅ 텍스트 있으면 색 변경
+            addClothesView.inputButton.backgroundColor = .mainBrown800 //  텍스트 있으면 색 변경
             addClothesView.inputButton.setTitleColor(.white, for: .normal)
-            addClothesView.inputButton.layer.borderColor = UIColor.mainBrown800.cgColor // ✅ 테두리 색도 변경
+            addClothesView.inputButton.layer.borderColor = UIColor.mainBrown800.cgColor //  테두리 색도 변경
         } else {
-            addClothesView.inputButton.backgroundColor = .clear // ✅ 텍스트 없으면 투명
-            addClothesView.inputButton.layer.borderColor = UIColor.mainBrown400.cgColor // ✅ 기본 테두리 색 유지
-            addClothesView.inputButton.setTitleColor(UIColor.black, for: .normal) // ✅ 기본 글 색 유지
+            addClothesView.inputButton.backgroundColor = .clear //  텍스트 없으면 투명
+            addClothesView.inputButton.layer.borderColor = UIColor.mainBrown400.cgColor //  기본 테두리 색 유지
+            addClothesView.inputButton.setTitleColor(UIColor.black, for: .normal) //  기본 글 색 유지
             resetViewState()
         }
     }
     
     private func resetViewState() {
-        // 🔹 입력 필드 초기화
+        //  입력 필드 초기화
         addClothesView.inputField.text = ""
 
-        // 🔹 카테고리 태그 초기화
+        //  카테고리 태그 초기화
         addClothesView.categoryTagsContainer.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
-        // 🔹 UI 요소들 초기화
+        //  UI 요소들 초기화
         addClothesView.categoryContainer.isHidden = true
 
-        // 🔹 nextButton 초기화
+        // nextButton 초기화
         addClothesView.nextButton.isEnabled = false
         addClothesView.nextButton.backgroundColor = .mainBrown400
 
@@ -231,7 +225,7 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
         addClothesView.reclassifyButton.isHidden = true
         addClothesView.reclassifyButton.alpha = 0.0
 
-        // ✅ 필요하면 추가적인 초기화 코드 작성 가능
+        //  필요하면 추가적인 초기화 코드 작성 가능
     }
     
 }

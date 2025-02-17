@@ -56,6 +56,8 @@ class PopupView: UIView {
         $0.layer.cornerRadius = 4
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
+        $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+        $0.sizeToFit() 
     }
     
      let seasonStackView = UIStackView().then {
@@ -155,6 +157,7 @@ class PopupView: UIView {
         super.init(frame: frame)
         setupUI()
         setupConstraints()
+ 
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -218,7 +221,7 @@ class PopupView: UIView {
         
         
         categoryButton2.snp.makeConstraints { make in
-            make.width.equalTo(54)
+//            make.width.equalTo(54)
             make.height.equalTo(22)
         }
         

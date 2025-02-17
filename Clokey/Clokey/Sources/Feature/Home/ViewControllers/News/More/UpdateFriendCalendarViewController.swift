@@ -13,7 +13,11 @@ import Kingfisher
 class UpdateFriendCalendarViewController: UIViewController {
     
     private let updateFriendCalendarView = UpdateFriendCalendarView()
-    private var modelData: [UpdateFriendCalendarModel] = [] // 데이터 캐싱
+    private var modelData: [UpdateFriendCalendarModel] = []
+    
+    private var currentPage = 1
+    private var isLoading = false
+    private var hasMorePages = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,42 +63,32 @@ class UpdateFriendCalendarViewController: UIViewController {
         updateFriendCalendarView.updateFriendCalendarCollectionView.dataSource = self
     }
     
-//    private func loadData() {
-//        modelData = UpdateFriendCalendarModel.dummy()
-//        for item in modelData {
-//            guard let url = item.imageUrl as URL? else {
-//                print("Invalid URL for item: \(item.name)")
-//                continue
-//            }
-//            print("Loaded data: \(item.name), imageUrl: \(url.absoluteString)")
-//        }
-//        updateFriendCalendarView.updateFriendCalendarCollectionView.reloadData()
-//    }
-    
-    private func loadData() {
+    private func loadData(isNextPage: Bool = false) {
+        guard !isLoading && (hasMorePages || !isNextPage) else { return }
+        
+        isLoading = true
+        let nextPage = isNextPage ? currentPage + 1 : 1
+        
         let homeService = HomeService()
         homeService.fetchGetDetailIssuesData(
             section: "calendar",
-            page: 1
+            page: nextPage
         ) { (result: Result<GetDetailIssuesCalendarResponseDTO, NetworkError>) in
+            defer { self.isLoading = false }
+            
             switch result {
             case .success(let responseDTO):
-//                self.modelData = responseDTO.dailyNewsResult.map { item in
-//                    self.updateFriendCalendarView.subTitle.text = item.date
-//                    return UpdateFriendCalendarModel(imageUrl: URL(string: item.events.imageURL)!, name: item.clokeyId, profileImage: URL(string: item.profileImage))
-//                }
-                self.modelData = responseDTO.dailyNewsResult.compactMap { item in
-                    self.updateFriendCalendarView.subTitle.text = item.date
+                let newResult: [UpdateFriendCalendarModel] = responseDTO.dailyNewsResult.compactMap { item -> UpdateFriendCalendarModel? in
+                    DispatchQueue.main.async {
+                        self.updateFriendCalendarView.subTitle.text = item.date
+                    }
 
-                    // ✅ events 배열이 있고, 첫 번째 요소가 존재하는지 확인 후 가져오기
-                    guard let firstEvent = item.events?.first,  // 배열에서 첫 번째 요소 가져오기
-                          let eventImageURLString = firstEvent.imageUrl,
+                    guard let eventImageURLString = item.imageUrl,
                           let eventImageURL = URL(string: eventImageURLString) else {
-                        print("❌ Invalid event image URL for item: \(item.clokeyId)")
+                        print("Invalid event image URL for item: \(item.clokeyId)")
                         return nil
                     }
 
-                    // ✅ 프로필 이미지 URL 가져오기
                     let profileImageURL = URL(string: item.profileImage)
 
                     return UpdateFriendCalendarModel(
@@ -103,12 +97,22 @@ class UpdateFriendCalendarViewController: UIViewController {
                         profileImage: profileImageURL
                     )
                 }
-                
+
+                if isNextPage {
+                    self.modelData.append(contentsOf: newResult)
+                    self.currentPage = nextPage
+                } else {
+                    self.modelData = newResult
+                    self.currentPage = 1
+                }
+
+                self.hasMorePages = !newResult.isEmpty 
+
                 DispatchQueue.main.async {
                     self.updateFriendCalendarView.updateFriendCalendarCollectionView.reloadData()
                     self.updateCollectionViewHeight()
                 }
-                
+
             case .failure(let error):
                 print("Failed to load calendar data: \(error)")
             }

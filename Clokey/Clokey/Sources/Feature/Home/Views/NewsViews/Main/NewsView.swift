@@ -404,7 +404,7 @@ class NewsView: UIView {
         dateLabel.snp.makeConstraints { make in
             make.centerY.equalTo(profileImageView)
             make.trailing.equalToSuperview().inset(23)
-            make.width.equalTo(60)
+//            make.width.equalTo(60)
             make.height.equalTo(16)
         }
         
@@ -656,7 +656,6 @@ class NewsView: UIView {
             followingCalendarBottomButtonLabel.isHidden = true
             followingCalendarBottomArrowIcon.isHidden = true
             
-            // 🔥 hotAccountTitle 위치를 위로 조정
             hotAccountTitle.snp.remakeConstraints { make in
                 make.top.equalTo(followingCalendarUpdateContainerView.snp.bottom) // 기존보다 위로 조정
                 make.leading.equalToSuperview().offset(20)
