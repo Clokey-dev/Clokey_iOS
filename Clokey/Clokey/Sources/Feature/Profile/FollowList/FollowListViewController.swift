@@ -95,7 +95,8 @@ class FollowListViewController: UIViewController {
         setupUI()
         setupActions()
         setupCollectionViews()
-        loadDummyData()
+        loadFollowerDummyData()
+        loadFollowingDummyData()
         
         // 초기 탭 설정
         updateCollectionView(for: selectedTab)
@@ -244,7 +245,7 @@ class FollowListViewController: UIViewController {
         }
     }
     
-    private func loadDummyData() {
+    private func loadFollowerDummyData() {
         follwerusers = [
             FollowerUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollower: true),
             FollowerUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollower: true),
@@ -266,8 +267,10 @@ class FollowListViewController: UIViewController {
             FollowerUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollower: true),
             FollowerUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollower: true),
             FollowerUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollower: false)
-                    // Add more dummy data as needed
-                ]
+            // Add more dummy data as needed
+        ]
+    }
+    private func loadFollowingDummyData() {
         
         followingusers = [
             FollowingUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: true),
