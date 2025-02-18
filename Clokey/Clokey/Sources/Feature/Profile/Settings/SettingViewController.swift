@@ -98,10 +98,7 @@ class SettingViewController: UIViewController {
         dismiss(animated: true, completion: nil)
         
     }
-    
-    
-    
-    
+
     @objc private func didTapAgreeTerms() {
         let marketingState = settingView.marketingSwitch.isOn 
         let pushState = settingView.pushSwitch.isOn
@@ -121,7 +118,6 @@ class SettingViewController: UIViewController {
                 case .success(let response):
                     print("✅ 선택 동의 상태 변경 성공: \(response)")
 
-                    // ✅ 서버 응답을 UI에 반영
                     if let marketingTerm = response.terms.first(where: { $0.termId == 4 }) {
                         self.settingView.marketingSwitch.isOn = marketingTerm.agreed
                     }
@@ -132,19 +128,12 @@ class SettingViewController: UIViewController {
                 case .failure(let error):
                     print("🚨 선택 동의 상태 변경 실패: \(error.localizedDescription)")
 
-                    // ✅ 요청 실패 시 스위치 상태 복구
                     self.settingView.marketingSwitch.isOn.toggle()
                     self.settingView.pushSwitch.isOn.toggle()
                 }
             }
         }
     }
-    
-    
-    
-    
-    
-    
     
     @objc private func didTapInquiry() {
         print("문의하기")

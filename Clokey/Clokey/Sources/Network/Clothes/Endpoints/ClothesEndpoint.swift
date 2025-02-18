@@ -120,9 +120,6 @@ extension ClothesEndpoint: TargetType {
 
             return .uploadMultipart(multipartData)
             
-
-                
-            
         case .editClothes(let cloth_id, let category_id, let data):
             return .requestCompositeParameters(
                 bodyParameters: try! data.asDictionary(),

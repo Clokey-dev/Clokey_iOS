@@ -146,12 +146,12 @@ class FollowProfileViewController: UIViewController {
 //        }
 //    }
     @objc private func didTapFollowButton() {
-        //        guard let clokeyId = ProfileViewModel.shared.userId else {
-        //            print("🚨 사용자 ID 없음")
-        //            return
-        //        }
+                guard let clokeyId = ProfileViewModel.shared.userId else {
+                    print("🚨 사용자 ID 없음")
+                    return
+                }
                 
-        let clokeyId = "qw12"
+//        let clokeyId = "qw12"
         
         let isCurrentlyFollowing = followProfileView.followButton.backgroundColor
         let followService = MembersService()
