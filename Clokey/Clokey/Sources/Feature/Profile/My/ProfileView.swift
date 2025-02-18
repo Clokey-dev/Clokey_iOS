@@ -254,25 +254,21 @@ final class ProfileView: UIView {
             make.height.width.equalTo(393)
         }
         
-//        $0.top.equalTo(safeAreaLayoutGuide)
-//        $0.leading.trailing.equalTo(safeAreaLayoutGuide)
-//        $0.height.equalTo(50)
-        
         usernameLabel.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide)
+            $0.top.equalTo(contentView.safeAreaLayoutGuide.snp.top)
             $0.leading.equalToSuperview().offset(20)
             $0.height.equalTo(50)
         }
         
         editButton.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide).offset(10)
+            $0.top.equalTo(contentView.safeAreaLayoutGuide.snp.top).offset(10)
             $0.trailing.equalToSuperview().inset(67)
             $0.width.equalTo(20)
             $0.height.equalTo(20)
         }
         
         settingButton.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide).offset(10)
+            $0.top.equalTo(contentView.safeAreaLayoutGuide.snp.top).offset(10)
             $0.trailing.equalToSuperview().inset(20)
             $0.width.equalTo(20)
             $0.height.equalTo(20)
