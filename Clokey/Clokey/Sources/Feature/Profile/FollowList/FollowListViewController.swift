@@ -18,8 +18,12 @@ class FollowListViewController: UIViewController {
     var selectedTab: FollowTabType = .follower // 기본값: 팔로워
     
     // MARK: - Properties
-    private var follwerusers: [FollowerUserModel] = []
+    private var followerusers: [FollowerUserModel] = []
     private var followingusers: [FollowingUserModel] = []
+    
+    private var currentPage = 1
+    private var isLoading = false
+    private var hasMorePages = true
     
     // MARK: - UI Components
     private let navigationBar = UIView().then {
@@ -95,7 +99,7 @@ class FollowListViewController: UIViewController {
         setupUI()
         setupActions()
         setupCollectionViews()
-        loadFollowerDummyData()
+        loadFollowerData()
         loadFollowingDummyData()
         
         // 초기 탭 설정
@@ -245,58 +249,112 @@ class FollowListViewController: UIViewController {
         }
     }
     
-    private func loadFollowerDummyData() {
-        follwerusers = [
-            FollowerUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollower: true),
-            FollowerUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollower: true),
-            FollowerUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollower: true),
-            FollowerUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollower: true),
-            FollowerUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollower: true),
-            FollowerUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollower: true),
-            FollowerUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollower: true),
-            FollowerUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollower: true),
-            FollowerUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollower: true),
-            FollowerUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollower: true),
-            FollowerUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollower: true),
-            FollowerUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollower: true),
-            FollowerUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollower: true),
-            FollowerUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollower: true),
-            FollowerUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollower: true),
-            FollowerUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollower: true),
-            FollowerUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollower: true),
-            FollowerUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollower: true),
-            FollowerUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollower: true),
-            FollowerUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollower: false)
-            // Add more dummy data as needed
-        ]
+    private func loadFollowerData(isNextPage: Bool = false) {
+        guard !isLoading && (hasMorePages || !isNextPage) else { return }
+        isLoading = true
+        let nextPage = isNextPage ? currentPage + 1 : 1
+        
+        let clokeyId = "현재 로그인한 유저 ID" // 실제 로그인한 사용자의 ID로 변경해야 함
+        let isFollowing = false // false면 팔로워 리스트를 가져옴
+
+        let membersService = MembersService()
+
+        membersService.getFollowPeople(clokeyId: clokeyId, page: nextPage, isFollowing: isFollowing) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                let newResult: [FollowerUserModel] = response.members.compactMap { item -> FollowerUserModel? in
+                    let profileImageURL = URL(string: item.profileImage)
+                    return FollowerUserModel(
+                        userId: item.clokeyId,
+                        nickname: item.nickname,
+                        profileImageUrl: item.profileImage,
+                        isFollowing: item.isFollowed
+                    )
+                }
+                
+                if isNextPage {
+                    self.followerusers.append(contentsOf: newResult)
+                    self.currentPage = nextPage
+                } else {
+                    self.followerusers = newResult
+                    self.currentPage = 1
+                }
+
+                self.hasMorePages = !newResult.isEmpty
+                
+                DispatchQueue.main.async {
+                    self.followerCollectionView.reloadData()
+                    self.updateFollowerCollectionViewHeight()
+                }
+            case .failure(let error):
+                print("🚨 팔로워 데이터 가져오기 실패: \(error.localizedDescription)")
+            }
+        }
     }
-    private func loadFollowingDummyData() {
+    
+    private func updateFollowerCollectionViewHeight() {
+        followerCollectionView.layoutIfNeeded()
+        let contentHeight = followerCollectionView.contentSize.height
+        print("Content Height: \(contentHeight)") // 디버깅용 출력
         
-        followingusers = [
-            FollowingUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: true),
-            FollowingUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            FollowingUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: true),
-            FollowingUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            FollowingUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: true),
-            FollowingUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            FollowingUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: true),
-            FollowingUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            FollowingUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: true),
-            FollowingUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            FollowingUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: true),
-            FollowingUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            FollowingUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: true),
-            FollowingUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            FollowingUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: true),
-            FollowingUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            FollowingUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: true),
-            FollowingUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            FollowingUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: true),
-            FollowingUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: false)
-                    // Add more dummy data as needed
-                ]
+        followerCollectionView.snp.updateConstraints { make in
+            make.height.equalTo(contentHeight)
+        }
+    }
+    
+    private func loadFollowingDummyData(isNextPage: Bool = false) {
+        guard !isLoading && (hasMorePages || !isNextPage) else { return }
+        isLoading = true
+        let nextPage = isNextPage ? currentPage + 1 : 1
         
-        followerCollectionView.reloadData()
+        let clokeyId = "현재 로그인한 유저 ID" // 실제 로그인한 사용자의 ID로 변경해야 함
+        let isFollowing = true // true면 팔로잉 리스트를 가져옴
+
+        let membersService = MembersService()
+
+        membersService.getFollowPeople(clokeyId: clokeyId, page: nextPage, isFollowing: isFollowing) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                let newResult: [FollowingUserModel] = response.members.compactMap { item -> FollowingUserModel? in
+                    let profileImageURL = URL(string: item.profileImage)
+                    return FollowingUserModel(
+                        userId: item.clokeyId,
+                        nickname: item.nickname,
+                        profileImageUrl: item.profileImage,
+                        isFollowing: item.isFollowed
+                    )
+                }
+                
+                if isNextPage {
+                    self.followingusers.append(contentsOf: newResult)
+                    self.currentPage = nextPage
+                } else {
+                    self.followingusers = newResult
+                    self.currentPage = 1
+                }
+
+                self.hasMorePages = !newResult.isEmpty
+                
+                DispatchQueue.main.async {
+                    self.followingCollectionView.reloadData()
+                    self.updateFollowingCollectionViewHeight()
+                }
+            case .failure(let error):
+                print("🚨 팔로워 데이터 가져오기 실패: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func updateFollowingCollectionViewHeight() {
+        followingCollectionView.layoutIfNeeded()
+        let contentHeight = followingCollectionView.contentSize.height
+        print("Content Height: \(contentHeight)") // 디버깅용 출력
+        
+        followingCollectionView.snp.updateConstraints { make in
+            make.height.equalTo(contentHeight)
+        }
     }
 }
 
@@ -304,7 +362,7 @@ class FollowListViewController: UIViewController {
 extension FollowListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == followerCollectionView {
-            return follwerusers.count
+            return followerusers.count
         } else if collectionView == followingCollectionView {
             return followingusers.count
         }
@@ -314,7 +372,7 @@ extension FollowListViewController: UICollectionViewDataSource, UICollectionView
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == followerCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FollowerUserCell.identifier, for: indexPath) as! FollowerUserCell
-            cell.configure(with: follwerusers[indexPath.item])
+            cell.configure(with: followerusers[indexPath.item])
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FollowingUserCell.identifier, for: indexPath) as! FollowingUserCell

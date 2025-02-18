@@ -79,21 +79,8 @@ final class ProfileViewController: UIViewController {
         calendarViewController.removeFromParent()
     }
     
-    var clokeyId: String = ""
-    
     private func loadData() {
-//        guard let clokeyId = ProfileViewModel.shared.userId else {
-//            print("🚨 사용자 ID 없음")
-//            return
-//        }
-        
-        if var clokeyId = ProfileViewModel.shared.userId {
-//                profileView.usernameLabel.text = "@\(clokeyId)"
-            self.clokeyId = clokeyId
-                print("✅ ProfileViewController에서 불러온 ID: \(clokeyId)")
-            }
-        
-//        let clokeyId = "qw12"
+        let clokeyId: String = ""
         
         let membersService = MembersService()
         

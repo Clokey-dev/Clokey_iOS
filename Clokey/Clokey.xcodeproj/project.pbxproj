@@ -133,7 +133,6 @@
 		077DC91C2D62085100C02FA4 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077DC91B2D62085100C02FA4 /* TokenManager.swift */; };
 		077DC91D2D62085100C02FA4 /* JWTHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077DC91A2D62085100C02FA4 /* JWTHelper.swift */; };
 		077DC91F2D62092700C02FA4 /* TokenRefreshPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077DC91E2D62092700C02FA4 /* TokenRefreshPlugin.swift */; };
-		07CB2E9C2D64F36C00B3F9B7 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 07CB2E9B2D64F36C00B3F9B7 /* Config.xcconfig */; };
 		07CF63E52D55DE6900CCF9F4 /* CalendarDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF63E42D55DE6900CCF9F4 /* CalendarDetailViewModel.swift */; };
 		07CF63FF2D563CAD00CCF9F4 /* RecordTagClothViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF63FE2D563CAD00CCF9F4 /* RecordTagClothViewController.swift */; };
 		07E1CB392D364BDA00F86BB8 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 07E1CB352D364BDA00F86BB8 /* Pretendard-Medium.otf */; };
@@ -213,6 +212,7 @@
 		A62A429F2D4D2ADE00672D3F /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429C2D4D2ADE00672D3F /* HeaderView.swift */; };
 		A62A42A02D4D2ADE00672D3F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429B2D4D2ADE00672D3F /* MainViewController.swift */; };
 		A62A42A12D4D2ADE00672D3F /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429D2D4D2ADE00672D3F /* TabBarView.swift */; };
+		A646C42B2D65007100993FA5 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A646C42A2D65007100993FA5 /* Config.xcconfig */; };
 		A648ACDA2D5CECA50094C126 /* CategoriesEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A648ACD92D5CECA50094C126 /* CategoriesEndPoint.swift */; };
 		A648ACDC2D5CECAC0094C126 /* CategoriesRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A648ACDB2D5CECAC0094C126 /* CategoriesRequestDTO.swift */; };
 		A648ACDE2D5CECF00094C126 /* CategoriesResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A648ACDD2D5CECF00094C126 /* CategoriesResponseDTO.swift */; };
@@ -341,7 +341,6 @@
 		077DC91A2D62085100C02FA4 /* JWTHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWTHelper.swift; sourceTree = "<group>"; };
 		077DC91B2D62085100C02FA4 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		077DC91E2D62092700C02FA4 /* TokenRefreshPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenRefreshPlugin.swift; sourceTree = "<group>"; };
-		07CB2E9B2D64F36C00B3F9B7 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		07CF63E42D55DE6900CCF9F4 /* CalendarDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDetailViewModel.swift; sourceTree = "<group>"; };
 		07CF63FE2D563CAD00CCF9F4 /* RecordTagClothViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordTagClothViewController.swift; sourceTree = "<group>"; };
 		07E1CB302D364BDA00F86BB8 /* Pretendard-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Black.otf"; sourceTree = "<group>"; };
@@ -421,6 +420,7 @@
 		A62A429B2D4D2ADE00672D3F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		A62A429C2D4D2ADE00672D3F /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		A62A429D2D4D2ADE00672D3F /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
+		A646C42A2D65007100993FA5 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A648ACD92D5CECA50094C126 /* CategoriesEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesEndPoint.swift; sourceTree = "<group>"; };
 		A648ACDB2D5CECAC0094C126 /* CategoriesRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesRequestDTO.swift; sourceTree = "<group>"; };
 		A648ACDD2D5CECF00094C126 /* CategoriesResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesResponseDTO.swift; sourceTree = "<group>"; };
@@ -1208,6 +1208,7 @@
 				07F859B32D62021700DD5BF8 /* Lottie */,
 				07E1CB2F2D364BD100F86BB8 /* Fonts */,
 				076FAB322D2E6E0200FF3979 /* Assets.xcassets */,
+				A646C42A2D65007100993FA5 /* Config.xcconfig */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1780,6 +1781,7 @@
 				07E1CB412D364BDA00F86BB8 /* Pretendard-Regular.otf in Resources */,
 				076FAB422D2E6E0200FF3979 /* Assets.xcassets in Resources */,
 				07F859B42D62021700DD5BF8 /* Onboarding_no.json in Resources */,
+				A646C42B2D65007100993FA5 /* Config.xcconfig in Resources */,
 				07F859B52D62021700DD5BF8 /* Onboarding_yes.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1987,6 +1989,7 @@
 /* Begin XCBuildConfiguration section */
 		07F093242D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A646C42A2D65007100993FA5 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -2021,6 +2024,7 @@
 		};
 		07F093252D24183A0075659F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A646C42A2D65007100993FA5 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -2055,6 +2059,7 @@
 		};
 		07F093262D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A646C42A2D65007100993FA5 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -2118,6 +2123,7 @@
 		};
 		07F093272D24183A0075659F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A646C42A2D65007100993FA5 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

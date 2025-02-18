@@ -15,11 +15,13 @@ public enum MembersEndpoint {
     case getTerms
     case updateProfile(data: ProfileUpdateRequestDTO, imageData1: Data, imageData2: Data)
     case checkIdAvailability(checkId: String)
-    case getUserProfile(clokeyId: String)
+    case getUserProfile(clokeyId: String?)
+    //    case getUser
     case followUser(data: FollowRequestDTO)
     case unfollowUser(data: UnFollowRequestDTO)
     case getAgreedTerms
     case optionalTermAgree(data: OptionalTermAgreeRequestDTO)
+    case getFollowPeople(clokeyId: String, page: Int, isFollowing: Bool)
     // 추가적인 API는 여기 케이스로 정의
 }
 
@@ -46,8 +48,10 @@ extension MembersEndpoint: TargetType {
             return "/users/profile"
         case .checkIdAvailability(let clokeyId):
             return "/users/\(clokeyId)/check"
-        case .getUserProfile(let clokeyId):
-            return "/users/\(clokeyId)"
+        case .getUserProfile:
+            return "/users"
+            //        case .getUser:
+            //            return "/users"
         case .followUser:
             return "/users/follow"
         case .unfollowUser:
@@ -56,6 +60,8 @@ extension MembersEndpoint: TargetType {
             return "/users/terms/optional"
         case .optionalTermAgree:
             return "users/terms/optional"
+        case .getFollowPeople(let clokeyId, _, _):
+            return "/users/\(clokeyId)/follow"
         }
     }
     
@@ -66,7 +72,7 @@ extension MembersEndpoint: TargetType {
             return .post
         case .updateProfile:
             return .patch
-        case .checkIdAvailability, .getUserProfile, .getTerms, .getAgreedTerms:
+        case .checkIdAvailability, .getUserProfile,/*.getUser,*/ .getTerms, .getAgreedTerms, .getFollowPeople:
             return .get
         case .unfollowUser:
             return .delete
@@ -86,7 +92,7 @@ extension MembersEndpoint: TargetType {
             return .requestPlain
         case .updateProfile(let data, let imageData1, let imageData2):
             var multipartData = [MultipartFormData]()
-
+            
             // ✅ JSON 데이터 추가 (profileRequest)
             do {
                 let jsonData = try JSONEncoder().encode(data)
@@ -96,7 +102,7 @@ extension MembersEndpoint: TargetType {
             } catch {
                 print("🚨 JSON 인코딩 오류: \(error.localizedDescription)")
             }
-
+            
             // ✅ 첫 번째 이미지 파일 추가 (프로필 사진)
             let imagePart1 = MultipartFormData(provider: .data(imageData1), name: "profileImage", fileName: "profile.jpg", mimeType: "image/jpeg")
             multipartData.append(imagePart1)
@@ -104,7 +110,7 @@ extension MembersEndpoint: TargetType {
             // ✅ 두 번째 이미지 파일 추가 (배경 사진)
             let imagePart2 = MultipartFormData(provider: .data(imageData2), name: "profileBackImage", fileName: "background.jpg", mimeType: "image/jpeg")
             multipartData.append(imagePart2)
-
+            
             // 🔹 추가된 데이터 확인
             for item in multipartData {
                 switch item.provider {
@@ -114,14 +120,18 @@ extension MembersEndpoint: TargetType {
                     print("📂 Multipart 데이터 추가됨: \(item.name)")
                 }
             }
-
+            
             return .uploadMultipart(multipartData)
-//        case .checkIdAvailability(let checkId):
-//            return .requestParameters(parameters: ["id": checkId], encoding: URLEncoding.queryString)
         case .checkIdAvailability(_):
             return .requestPlain
-        case .getUserProfile(_):
-            return .requestPlain
+        case .getUserProfile(let clokeyId):
+            var parameters: [String: Any] = [:]
+            if let clokeyId = clokeyId {
+                parameters["ClokeyId"] = clokeyId
+            }
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
+            //        case .getUser:
+            //            return .requestPlain
         case .followUser(let data):
             return .requestJSONEncodable(data)
         case .unfollowUser(let data):
@@ -130,6 +140,12 @@ extension MembersEndpoint: TargetType {
             return .requestPlain
         case .optionalTermAgree(let data):
             return .requestJSONEncodable(data)
+        case .getFollowPeople(_, let page, let isFollowing):
+            var parameters: [String: Any] = [
+                "page": page,
+                "isFollowing": isFollowing
+            ]
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
         }
     }
     

@@ -11,7 +11,7 @@ struct FollowerUserModel {
     let userId: String
     let nickname: String
     let profileImageUrl: String
-    var isFollower: Bool
+    var isFollowing: Bool
 }
 
 struct FollowingUserModel {

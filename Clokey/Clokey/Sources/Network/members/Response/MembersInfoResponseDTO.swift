@@ -39,4 +39,19 @@ public struct GetAgreedTermsResponseDTO: Codable {
     }
 }
 
+public struct GetFollowPeopleResponseDTO: Codable {
+    let members: [Members]
+    let totalPage: Int
+    let totalElements: Int
+    let isFirst: Bool
+    let isLast: Bool
+
+    struct Members: Codable {
+        let nickname: String
+        let clokeyId: String
+        let profileImage: String
+        let isFollowed: Bool
+    }
+}
+
 
