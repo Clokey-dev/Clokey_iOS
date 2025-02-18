@@ -39,6 +39,7 @@ final class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        loadData()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -52,13 +53,21 @@ final class ProfileViewController: UIViewController {
         view.layoutIfNeeded()
     }
     
+    var clokeyId: String = ""
+    
     private func loadData() {
 //        guard let clokeyId = ProfileViewModel.shared.userId else {
 //            print("🚨 사용자 ID 없음")
 //            return
 //        }
         
-        let clokeyId = "qw12"
+        if var clokeyId = ProfileViewModel.shared.userId {
+//                profileView.usernameLabel.text = "@\(clokeyId)"
+            self.clokeyId = clokeyId
+                print("✅ ProfileViewController에서 불러온 ID: \(clokeyId)")
+            }
+        
+//        let clokeyId = "qw12"
         
         let membersService = MembersService()
         

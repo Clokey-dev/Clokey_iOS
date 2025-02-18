@@ -327,6 +327,8 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
         let visibility = isPublic ? "PUBLIC" : "PRIVATE"
         
         ProfileViewModel.shared.userId = id
+        UserDefaults.standard.set(id, forKey: "userId")
+        print("✅ 저장된 ID: \(ProfileViewModel.shared.userId ?? "없음")")
         
         // ✅ 프로필 이미지와 배경 이미지 크기 조정 및 압축 적용
         guard let profileImage = editProfileView.profileImageView.image,

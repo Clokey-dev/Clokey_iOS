@@ -16,10 +16,10 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
     private var isSelectingProfileImage = false
     
     var isIdChecked = false
-    var isPublicAccount: Bool? = nil // ✅ 초기값: 선택되지 않음
+    var isPublicAccount: Bool? = nil
     var isDuplicated: Bool = false
-    private var isProfileImageSelected = false  // ✅ 프로필 사진 선택 여부
-    private var isBackgroundImageSelected = false // ✅ 배경 사진 선택 여부
+    private var isProfileImageSelected = false
+    private var isBackgroundImageSelected = false
     
     override func loadView() {
         view = addProfileView
@@ -328,6 +328,7 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
         let visibility = isPublic ? "PUBLIC" : "PRIVATE"
         
         ProfileViewModel.shared.userId = id
+        UserDefaults.standard.set(id, forKey: "userId")
         
         // ✅ 프로필 이미지와 배경 이미지 크기 조정 및 압축 적용
         guard let profileImage = addProfileView.profileImageView.image,
