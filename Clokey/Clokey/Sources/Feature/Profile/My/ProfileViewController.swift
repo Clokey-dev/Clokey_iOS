@@ -17,6 +17,9 @@ final class ProfileViewController: UIViewController {
     
     private let model = ProfileModel.dummy()
     
+    // calendarview
+    private let calendarViewController = CalendarViewController()
+    
     // MARK: - Lifecycle
     override func loadView() {
         
@@ -31,7 +34,8 @@ final class ProfileViewController: UIViewController {
 //            profileView.usernameLabel.text = "@\(userId)"
 //            print("ProfileViewController에서 적용된 아이디: \(userId)")
 //        }
-
+        calendarViewController.shouldHideUserNameLabel = true
+        addCalendarViewController()
         loadData()
         setupActions()
     }
@@ -51,6 +55,27 @@ final class ProfileViewController: UIViewController {
         additionalSafeAreaInsets.top = 0
         view.setNeedsLayout()
         view.layoutIfNeeded()
+    }
+    
+    private func addCalendarViewController() {
+        // 자식 뷰컨트롤러 추가
+        addChild(calendarViewController)
+        profileView.calendarContainerView.addSubview(calendarViewController.view)
+        
+        // AutoLayout 설정
+        calendarViewController.view.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+
+        // 자식 뷰컨트롤러 등록 완료
+        calendarViewController.didMove(toParent: self)
+    }
+
+    deinit {
+        // 제거 시 메모리 정리
+        calendarViewController.willMove(toParent: nil)
+        calendarViewController.view.removeFromSuperview()
+        calendarViewController.removeFromParent()
     }
     
     var clokeyId: String = ""
