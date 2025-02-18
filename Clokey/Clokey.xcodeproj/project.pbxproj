@@ -100,6 +100,7 @@
 		0769733A2D63687200AEA5D1 /* NotificationEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076973392D63687200AEA5D1 /* NotificationEndpoints.swift */; };
 		0769733C2D63687800AEA5D1 /* NotificationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0769733B2D63687800AEA5D1 /* NotificationRequest.swift */; };
 		0769733E2D63687E00AEA5D1 /* NotificationResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0769733D2D63687E00AEA5D1 /* NotificationResponseDTO.swift */; };
+		076973402D64E32100AEA5D1 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0769733F2D64E32100AEA5D1 /* Config.xcconfig */; };
 		076FAB3F2D2E6E0200FF3979 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB2F2D2E6E0200FF3979 /* AppDelegate.swift */; };
 		076FAB402D2E6E0200FF3979 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB302D2E6E0200FF3979 /* SceneDelegate.swift */; };
 		076FAB422D2E6E0200FF3979 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 076FAB322D2E6E0200FF3979 /* Assets.xcassets */; };
@@ -204,7 +205,6 @@
 		07F859A42D61D94000DD5BF8 /* SearchEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F859A32D61D94000DD5BF8 /* SearchEndpoint.swift */; };
 		07F859A62D61D94A00DD5BF8 /* SearchResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F859A52D61D94A00DD5BF8 /* SearchResponseDTO.swift */; };
 		07F859A82D61D95000DD5BF8 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F859A72D61D95000DD5BF8 /* SearchService.swift */; };
-		07F859AA2D61E68A00DD5BF8 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 07F859A92D61E68A00DD5BF8 /* Config.xcconfig */; };
 		07F859B42D62021700DD5BF8 /* Onboarding_no.json in Resources */ = {isa = PBXBuildFile; fileRef = 07F859B12D62021700DD5BF8 /* Onboarding_no.json */; };
 		07F859B52D62021700DD5BF8 /* Onboarding_yes.json in Resources */ = {isa = PBXBuildFile; fileRef = 07F859B22D62021700DD5BF8 /* Onboarding_yes.json */; };
 		07F859B82D62024300DD5BF8 /* LottieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F859B62D62024300DD5BF8 /* LottieViewController.swift */; };
@@ -218,7 +218,6 @@
 		A648ACDE2D5CECF00094C126 /* CategoriesResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A648ACDD2D5CECF00094C126 /* CategoriesResponseDTO.swift */; };
 		A648ACE02D5CECF50094C126 /* CategoriesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A648ACDF2D5CECF50094C126 /* CategoriesService.swift */; };
 		A6548E532D3F47DE00F79B66 /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */; };
-		A66BA2952D635CBD00E69A4F /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A66BA2942D635CBD00E69A4F /* Config.xcconfig */; };
 		A66BA3352D636AD400E69A4F /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66BA3342D636AD400E69A4F /* ProfileViewModel.swift */; };
 		A672AEB72D572A6E003EF3FF /* EmptyStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */; };
 		A67661892D5B367B006AAB63 /* CustomBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661852D5B367B006AAB63 /* CustomBottomSheetViewController.swift */; };
@@ -332,6 +331,7 @@
 		076973392D63687200AEA5D1 /* NotificationEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEndpoints.swift; sourceTree = "<group>"; };
 		0769733B2D63687800AEA5D1 /* NotificationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRequest.swift; sourceTree = "<group>"; };
 		0769733D2D63687E00AEA5D1 /* NotificationResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponseDTO.swift; sourceTree = "<group>"; };
+		0769733F2D64E32100AEA5D1 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		076FAB2F2D2E6E0200FF3979 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		076FAB302D2E6E0200FF3979 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		076FAB322D2E6E0200FF3979 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -414,7 +414,6 @@
 		07F859A32D61D94000DD5BF8 /* SearchEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEndpoint.swift; sourceTree = "<group>"; };
 		07F859A52D61D94A00DD5BF8 /* SearchResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponseDTO.swift; sourceTree = "<group>"; };
 		07F859A72D61D95000DD5BF8 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
-		07F859A92D61E68A00DD5BF8 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		07F859B12D62021700DD5BF8 /* Onboarding_no.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Onboarding_no.json; sourceTree = "<group>"; };
 		07F859B22D62021700DD5BF8 /* Onboarding_yes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Onboarding_yes.json; sourceTree = "<group>"; };
 		07F859B62D62024300DD5BF8 /* LottieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieViewController.swift; sourceTree = "<group>"; };
@@ -427,7 +426,6 @@
 		A648ACDD2D5CECF00094C126 /* CategoriesResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesResponseDTO.swift; sourceTree = "<group>"; };
 		A648ACDF2D5CECF50094C126 /* CategoriesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesService.swift; sourceTree = "<group>"; };
 		A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
-		A66BA2942D635CBD00E69A4F /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A66BA3342D636AD400E69A4F /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStackView.swift; sourceTree = "<group>"; };
 		A67661852D5B367B006AAB63 /* CustomBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomSheetViewController.swift; sourceTree = "<group>"; };
@@ -1207,11 +1205,10 @@
 		076FAB342D2E6E0200FF3979 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				A66BA2942D635CBD00E69A4F /* Config.xcconfig */,
 				07F859B32D62021700DD5BF8 /* Lottie */,
 				07E1CB2F2D364BD100F86BB8 /* Fonts */,
 				076FAB322D2E6E0200FF3979 /* Assets.xcassets */,
-				07F859A92D61E68A00DD5BF8 /* Config.xcconfig */,
+				0769733F2D64E32100AEA5D1 /* Config.xcconfig */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1773,19 +1770,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				0744001A2D5B1EFD00E60282 /* GoogleService-Info.plist in Resources */,
-				A66BA2952D635CBD00E69A4F /* Config.xcconfig in Resources */,
 				07E1CB392D364BDA00F86BB8 /* Pretendard-Medium.otf in Resources */,
 				07E1CB3A2D364BDA00F86BB8 /* Pretendard-Thin.otf in Resources */,
 				07E1CB3B2D364BDA00F86BB8 /* Pretendard-Black.otf in Resources */,
 				07E1CB3C2D364BDA00F86BB8 /* Pretendard-ExtraBold.otf in Resources */,
 				07E1CB3D2D364BDA00F86BB8 /* Pretendard-Bold.otf in Resources */,
 				07E1CB3E2D364BDA00F86BB8 /* Pretendard-Light.otf in Resources */,
-				07F859AA2D61E68A00DD5BF8 /* Config.xcconfig in Resources */,
 				07E1CB3F2D364BDA00F86BB8 /* Pretendard-ExtraLight.otf in Resources */,
 				07E1CB402D364BDA00F86BB8 /* Pretendard-SemiBold.otf in Resources */,
 				07E1CB412D364BDA00F86BB8 /* Pretendard-Regular.otf in Resources */,
 				076FAB422D2E6E0200FF3979 /* Assets.xcassets in Resources */,
 				07F859B42D62021700DD5BF8 /* Onboarding_no.json in Resources */,
+				076973402D64E32100AEA5D1 /* Config.xcconfig in Resources */,
 				07F859B52D62021700DD5BF8 /* Onboarding_yes.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1993,17 +1989,14 @@
 /* Begin XCBuildConfiguration section */
 		07F093242D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 07F859A92D61E68A00DD5BF8 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
+				DEVELOPMENT_TEAM = BBVZV8T99P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱 사용 중 위치 접근 권한이 필요합니다.";
@@ -2021,7 +2014,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2030,17 +2022,14 @@
 		};
 		07F093252D24183A0075659F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 07F859A92D61E68A00DD5BF8 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
+				DEVELOPMENT_TEAM = BBVZV8T99P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱 사용 중 위치 접근 권한이 필요합니다.";
@@ -2058,7 +2047,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2067,7 +2055,6 @@
 		};
 		07F093262D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 07F859A92D61E68A00DD5BF8 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -2131,7 +2118,6 @@
 		};
 		07F093272D24183A0075659F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 07F859A92D61E68A00DD5BF8 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
