@@ -85,32 +85,16 @@ struct CategoryModel {
     }
 }
 
-//extension AddCategoryModel {
-//    static func getCategoryByName(_ buttonName: String) -> (String, String)? {
-//        for category in allCategories {
-//            if let button = category.buttons.first(where: { $0.name == buttonName }) {
-//                return (category.name, button.name)
-//            }
-//        }
-//        return nil
-//    }
-//}
-
-//extension AddCategoryModel {
-//    static func getCategoryByName(_ userInput: String) -> (String, String)? {
-//        let lowercasedInput = userInput.lowercased()
-//
-//        for category in allCategories {
-//            if let button = category.buttons.first(where: { button in
-//                let components = button.name.lowercased().split(separator: "/") // 🔹 '/' 기준으로 나누기
-//                return components.contains { lowercasedInput.contains($0) } // 🔹 사용자 입력에서 키워드 포함 여부 검사
-//            }) {
-//                return (category.name, button.name)
-//            }
-//        }
-//        return nil
-//    }
-//}
+extension CategoryModel {
+    static func getCategoryNameByClothName(_ clothName: String) -> String? {
+        for category in allCategories {
+            if category.buttons.contains(where: { $0.name == clothName }) {
+                return category.name 
+            }
+        }
+        return nil // 없으면 nil 반환
+    }
+}
 
 extension CategoryModel {
     static func getCategoryByName(_ userInput: String) -> (String, String, Int64)? {

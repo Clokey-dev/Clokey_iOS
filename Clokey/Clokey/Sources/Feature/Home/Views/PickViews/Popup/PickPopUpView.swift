@@ -10,7 +10,7 @@ import SnapKit
 import Then
 
 class PickPopUpView: UIView {
-
+    
     // MARK: - UI Components
     var nameLabel = UILabel().then {
         $0.text = "회색 레터링 후드티"
@@ -38,7 +38,7 @@ class PickPopUpView: UIView {
         $0.spacing = 6
         $0.alignment = .center
     }
-
+    
     let categoryButton1 = UIButton().then {
         $0.setTitle("상의", for: .normal)
         $0.setTitleColor(.black, for: .normal)
@@ -53,8 +53,8 @@ class PickPopUpView: UIView {
         $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
         $0.tintColor = UIColor(named: "mainBrown600")
     }
-
-
+    
+    
     let categoryButton2 = UIButton().then {
         $0.setTitle("후드티", for: .normal)
         $0.setTitleColor(.black, for: .normal)
@@ -68,47 +68,52 @@ class PickPopUpView: UIView {
         $0.sizeToFit()
     }
     
-     let seasonStackView = UIStackView().then {
+    let seasonStackView = UIStackView().then {
         $0.axis = .horizontal
         $0.spacing = 6
         $0.alignment = .center
     }
     
     let springButton = UIButton().then {
-       $0.setTitle("봄", for: .normal)
-       $0.setTitleColor(.white, for: .normal)
-       $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-       $0.backgroundColor = UIColor(named: "mainBrown600")
-       $0.layer.cornerRadius = 5
-   }
-
+        $0.setTitle("봄", for: .normal)
+        $0.setTitleColor(.black, for: .normal)
+        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+        $0.backgroundColor = UIColor.clear
+        $0.layer.cornerRadius = 5
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+    }
+    
     let summerButton = UIButton().then {
-       $0.setTitle("여름", for: .normal)
-       $0.setTitleColor(.black, for: .normal)
-       $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-       $0.backgroundColor = UIColor.clear
-       $0.layer.cornerRadius = 5
-       $0.layer.borderWidth = 1
-       $0.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
-   }
-
+        $0.setTitle("여름", for: .normal)
+        $0.setTitleColor(.black, for: .normal)
+        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+        $0.backgroundColor = UIColor.clear
+        $0.layer.cornerRadius = 5
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+    }
+    
     let fallButton = UIButton().then {
-       $0.setTitle("가을", for: .normal)
-       $0.setTitleColor(.white, for: .normal)
-       $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-       $0.backgroundColor = UIColor(named: "mainBrown600")
-       $0.layer.cornerRadius = 5
-       $0.layer.borderWidth = 1
-   }
-
+        $0.setTitle("가을", for: .normal)
+        $0.setTitleColor(.black, for: .normal)
+        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+        $0.backgroundColor = UIColor.clear
+        $0.layer.cornerRadius = 5
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+    }
+    
     let winterButton = UIButton().then {
-       $0.setTitle("겨울", for: .normal)
-       $0.setTitleColor(.white, for: .normal)
-       $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-       $0.backgroundColor = UIColor(named: "mainBrown600")
-       $0.layer.cornerRadius = 5
-   }
-
+        $0.setTitle("겨울", for: .normal)
+        $0.setTitleColor(.black, for: .normal)
+        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+        $0.backgroundColor = UIColor.clear
+        $0.layer.cornerRadius = 5
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+    }
+    
     
     let wearCountLabel: UILabel = {
         let label = UILabel()
@@ -116,7 +121,7 @@ class PickPopUpView: UIView {
         label.font = UIFont.ptdMediumFont(ofSize: 16)
         return label
     }()
-
+    
     let wearCountButton = UIButton().then {
         $0.setTitle("0회", for: .normal)
         $0.setTitleColor(.white, for: .normal)
@@ -215,8 +220,8 @@ class PickPopUpView: UIView {
         
         publicButton.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.top).offset(10)
-            make.trailing.equalTo(imageView.snp.trailing).offset(-20)
-            make.size.equalTo(30)
+            make.trailing.equalTo(imageView.snp.trailing).offset(-10)
+            make.size.equalTo(20)
         }
         
         categoryStackView.snp.makeConstraints { make in
@@ -232,9 +237,9 @@ class PickPopUpView: UIView {
         frontButton.snp.makeConstraints { make in
             make.size.equalTo(16)
         }
-
+        
         categoryButton2.snp.makeConstraints { make in
-//            make.width.equalTo(54)
+            //            make.width.equalTo(54)
             make.height.equalTo(22)
         }
         
@@ -255,16 +260,16 @@ class PickPopUpView: UIView {
                 make.height.equalTo(18)
             }
         } //스택 내 버튼 한번에 처리
-
+        
         wearCountLabel.snp.makeConstraints { make in
             make.top.equalTo(seasonStackView.snp.bottom).offset(14)
             make.leading.equalToSuperview().offset(92)
         }
         
         wearCountButton.snp.makeConstraints { make in
-//            make.top.equalTo(seasonStackView.snp.bottom).offset(14)
+            //            make.top.equalTo(seasonStackView.snp.bottom).offset(14)
             make.centerY.equalTo(wearCountLabel)
-//            make.leading.equalToSuperview().offset(159)
+            //            make.leading.equalToSuperview().offset(159)
             make.leading.equalTo(wearCountLabel.snp.trailing).offset(7)
             make.height.equalTo(18)
             make.width.equalTo(39)
@@ -289,11 +294,11 @@ class PickPopUpView: UIView {
             make.centerY.equalTo(urlLabel)
             make.leading.equalTo(urlLabel.snp.trailing).offset(5)
         }
-
+        
     }
     // 이미지 설정 메서드 추가
-        func setImage(_ image: UIImage?) {
-            imageView.image = image
-        }
-
+    func setImage(_ image: UIImage?) {
+        imageView.image = image
+    }
+    
 }

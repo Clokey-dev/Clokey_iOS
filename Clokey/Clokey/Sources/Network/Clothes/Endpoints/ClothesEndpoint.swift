@@ -11,7 +11,7 @@ import Moya
 public enum ClothesEndpoint {
     case inquiryClothesDetail(cloth_id: Int)
     case checkEditClothes(cloth_id: Int)
-    case checkPopUpClothes(clothId: Int)
+    case checkPopUpClothes(clothId: Int64)
     case getCategoryClothes(category: String, season: String, sort: String, page: Int) // 쿼리 매개변수 추가
     case addClothes(image: Data, data: AddClothesRequestDTO) // category_id 추가
     case editClothes(cloth_id: Int, category_id: Int, data: EditClothesRequestDTO)
