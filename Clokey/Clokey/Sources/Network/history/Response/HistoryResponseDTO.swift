@@ -10,6 +10,7 @@ import Foundation
 //// 월별 기록 조회
 public struct HistoryMonthResponseDTO: Codable {
     public let memberId: Int64
+    public let nickName: String
     public let histories: [HistoryDTO]
 }
 
@@ -61,6 +62,7 @@ public struct HistoryCommentsResponseDTO: Codable {
 
 public struct CommentDTO: Codable {
     public let commentId: Int
+    public let nickName: String
     public let memberId: Int
     public let userImageUrl: String
     public let content: String
@@ -69,6 +71,7 @@ public struct CommentDTO: Codable {
 
 public struct ReplyDTO: Codable {
     public let commentId: Int
+    public let nickName: String
     public let memberId: Int
     public let userImageUrl: String
     public let content: String

@@ -227,7 +227,7 @@ extension CalendarCommentView: UITableViewDataSource, UITableViewDelegate {
         
         cell.configure(
             profileImage: comment.imageUrl,
-            name: "닉네임",
+            name: comment.nickName,
             comment: comment.content,
             isLastReply: comment.parentCommentId == nil,
             commentId: comment.id
