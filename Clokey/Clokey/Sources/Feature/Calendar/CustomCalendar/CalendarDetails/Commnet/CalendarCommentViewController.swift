@@ -40,6 +40,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     
     // 서비스 및 히스토리 ID
     private let historyService = HistoryService()
+    private let notificationService = NotificationService()
     private let historyId: Int
     
     // MARK: - Init
@@ -117,14 +118,14 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     @objc func dismissView() {
         self.dismiss(animated: true)
     }
-    
+
     // 댓글 쓰기 버튼 눌렀을 때
     @objc func didTapSend() {
         guard let text = commentView.commentTextField.text, !text.isEmpty else { return }
 
         let requestDTO = HistoryCommentWriteRequestDTO(
             content: text,
-            commentId: selectedCommentId
+            commentId: selectedCommentId // 선택된 댓글이 있으면 대댓글, 없으면 일반 댓글
         )
         
         historyService.historyCommentWrite(
@@ -134,31 +135,67 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
             guard let self = self else { return }
            
             switch result {
-            case .success(_):
+            case .success(let response):
                 DispatchQueue.main.async {
-                    // 이전에 선택된 셀의 선택 상태 해제
-                    if let oldIndexPath = self.selectedIndexPath {
-                       let oldCell = self.commentView.commentTableView.cellForRow(at:   oldIndexPath) as? CommentCell
-                        oldCell?.setSelected(false)
-                    }
-                    
-                    self.selectedIndexPath = nil
-                    self.commentView.commentTextField.placeholder = "댓글 달기"
-                    self.commentView.commentTextField.text = ""
-                    self.selectedCommentId = nil
-                   
-                    // 댓글 목록 새로고침
-                    self.currentPage = 1
-                    self.comments = []
-                    self.isLastPage = false
-                    self.fetchComments()
+                    // UI 초기화
+                    self.resetCommentInput()
+                    self.fetchComments() // 댓글 목록 새로고침
                 }
-                
+
+                // 댓글 성공 시 notificationComment 전송
+                let commentId = response.commentId
+
+                if self.selectedCommentId == nil {
+                    // 일반 댓글 작성 시
+                    self.sendCommentNotification(historyId: self.historyId, commentId: commentId)
+                } else {
+                    // 대댓글 작성 시
+                    self.sendReplyNotification(commentId: self.selectedCommentId!, replyId: commentId)
+                }
+
             case .failure(let error):
                 print("댓글 작성 실패: \(error)")
             }
         }
     }
+
+    // 댓글 UI 초기화
+    private func resetCommentInput() {
+        if let oldIndexPath = selectedIndexPath {
+            let oldCell = commentView.commentTableView.cellForRow(at: oldIndexPath) as? CommentCell
+            oldCell?.setSelected(false)
+        }
+        
+        selectedIndexPath = nil
+        selectedCommentId = nil
+        commentView.commentTextField.placeholder = "댓글 달기"
+        commentView.commentTextField.text = ""
+    }
+
+    // 댓글 알림 전송
+    private func sendCommentNotification(historyId: Int, commentId: Int64) {
+        notificationService.notificationComment(historyId: Int64(historyId), commentId: commentId) { result in
+            switch result {
+            case .success:
+                print("댓글 알림 전송 성공")
+            case .failure(let error):
+                print("댓글 알림 전송 실패: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    // 대댓글 알림 전송
+    private func sendReplyNotification(commentId: Int64, replyId: Int64) {
+        notificationService.notificationReply(commentId: commentId, replyId: replyId) { result in
+            switch result {
+            case .success:
+                print("대댓글 알림 전송 성공")
+            case .failure(let error):
+                print("대댓글 알림 전송 실패: \(error.localizedDescription)")
+            }
+        }
+    }
+
    
     
     // MARK: - CommentCellDelegate 구현

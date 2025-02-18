@@ -206,6 +206,12 @@ class CalendarDetailView: UIView {
     
     // MARK: - Setup
 
+    private enum LayoutConstants {
+        static let profileStackHeight: CGFloat = 48.0
+        static let spacing: CGFloat = 8.0
+        static let contentInset: CGFloat = 20.0
+    }
+    
     private func setupUI() {
         backgroundColor = .white
         
@@ -267,8 +273,8 @@ class CalendarDetailView: UIView {
         // 프로필 헤더 (이미지/닉네임 + 잠굼/더보기 버튼)
         profileHeaderStackView.snp.makeConstraints {
             $0.top.equalToSuperview()
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.equalTo(43)
+            $0.leading.trailing.equalToSuperview().inset(LayoutConstants.contentInset)
+            $0.height.equalTo(LayoutConstants.profileStackHeight)
         }
         
         // 구분선
@@ -280,28 +286,34 @@ class CalendarDetailView: UIView {
         
         // 이미지/닉네임 스택
         leftStackView.snp.makeConstraints {
-            $0.height.equalTo(48)
+            $0.height.equalTo(LayoutConstants.profileStackHeight)
+            $0.leading.equalToSuperview()
         }
         
         profileImage.snp.makeConstraints {
             $0.width.height.equalTo(24)
+            $0.centerY.equalToSuperview()
         }
         
         nameLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
             $0.leading.equalTo(profileImage.snp.trailing).offset(8)
         }
         
         // 잠굼/더보기 스택
         rightStackView.snp.makeConstraints {
-            $0.height.equalTo(48)
+            $0.height.equalTo(LayoutConstants.profileStackHeight)
+            $0.trailing.equalToSuperview()
         }
         
         lockCheckImageView.snp.makeConstraints {
             $0.width.height.equalTo(20)
+            $0.centerY.equalToSuperview()
         }
         
         plusButton.snp.makeConstraints {
             $0.width.height.equalTo(24)
+            $0.centerY.equalToSuperview()
         }
         
         // 이미지 컬렉션 뷰 (슬라이드 가능)
@@ -402,6 +414,23 @@ class CalendarDetailView: UIView {
         }
         
 //        footerStack.spacing = 10
+        
+    }
+    private func configureStackViews() {
+        // 프로필 헤더 스택뷰
+        profileHeaderStackView.axis = .horizontal
+        profileHeaderStackView.distribution = .equalSpacing
+        profileHeaderStackView.alignment = .center
+        
+        // 왼쪽 스택뷰
+        leftStackView.axis = .horizontal
+        leftStackView.spacing = LayoutConstants.spacing
+        leftStackView.alignment = .center
+        
+        // 오른쪽 스택뷰
+        rightStackView.axis = .horizontal
+        rightStackView.spacing = LayoutConstants.spacing
+        rightStackView.alignment = .center
     }
 
     // MARK: - Method
