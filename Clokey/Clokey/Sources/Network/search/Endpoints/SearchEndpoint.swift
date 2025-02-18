@@ -45,7 +45,7 @@ extension SearchEndpoint: TargetType {
              .searchClothes(let by, let keyword, let page, let size):
             
             let parameters: [String: Any] = [
-                "by": by,      // 🔥 API 필터 (예: "id-and-nickname", "hashtag")
+                "by": by,      //  API 필터 (예: "id-and-nickname", "hashtag")
                 "keyword": keyword,
                 "page": page,
                 "size": size
