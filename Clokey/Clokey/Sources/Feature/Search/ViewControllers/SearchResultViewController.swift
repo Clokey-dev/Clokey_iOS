@@ -214,7 +214,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
             case .success(let response):
                 let users = response.profilePreviews.map { member in
                     UserModel(
-                        id: member.id,
+                        
                         clokeyId: member.clokeyId ?? "없는 사용자",
                         nickname: member.nickname ?? "없는 닉네임",
                         profileImage: member.profileImage ?? "없는 프로필"
@@ -328,7 +328,7 @@ extension SearchResultViewController: UITextFieldDelegate {
                 case .success(let response):
                     let users = response.profilePreviews.map { member in
                         UserModel(
-                            id: member.id,
+                           
                             clokeyId: member.clokeyId ?? "없는 사용자",
                             nickname: member.nickname ?? "없는 닉네임",
                             profileImage: member.profileImage ?? "없는 프로필"

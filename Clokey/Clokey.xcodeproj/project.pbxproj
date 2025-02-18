@@ -208,6 +208,7 @@
 		07F859B42D62021700DD5BF8 /* Onboarding_no.json in Resources */ = {isa = PBXBuildFile; fileRef = 07F859B12D62021700DD5BF8 /* Onboarding_no.json */; };
 		07F859B52D62021700DD5BF8 /* Onboarding_yes.json in Resources */ = {isa = PBXBuildFile; fileRef = 07F859B22D62021700DD5BF8 /* Onboarding_yes.json */; };
 		07F859B82D62024300DD5BF8 /* LottieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F859B62D62024300DD5BF8 /* LottieViewController.swift */; };
+		489FCD6C2D64936B0030A185 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 489FCD6B2D64936B0030A185 /* RxGesture */; };
 		A62A429E2D4D2ADE00672D3F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429A2D4D2ADE00672D3F /* MainView.swift */; };
 		A62A429F2D4D2ADE00672D3F /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429C2D4D2ADE00672D3F /* HeaderView.swift */; };
 		A62A42A02D4D2ADE00672D3F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429B2D4D2ADE00672D3F /* MainViewController.swift */; };
@@ -475,6 +476,7 @@
 				077DC8D72D62067400C02FA4 /* FirebaseFirestore in Frameworks */,
 				071D4C412D620C2600A6286D /* RxCocoa in Frameworks */,
 				077DC8E92D6206B900C02FA4 /* CropViewController in Frameworks */,
+				489FCD6C2D64936B0030A185 /* RxGesture in Frameworks */,
 				071D4C3E2D620AE900A6286D /* Kingfisher in Frameworks */,
 				077DC8F62D6206F000C02FA4 /* KakaoSDK in Frameworks */,
 				077DC9002D6206F000C02FA4 /* KakaoSDKFriendCore in Frameworks */,
@@ -1713,6 +1715,7 @@
 				071D4C3D2D620AE900A6286D /* Kingfisher */,
 				071D4C402D620C2600A6286D /* RxCocoa */,
 				071D4C422D620C2600A6286D /* RxSwift */,
+				489FCD6B2D64936B0030A185 /* RxGesture */,
 			);
 			productName = Clokey;
 			productReference = 07F093102D2418380075659F /* Clokey.app */;
@@ -1752,6 +1755,7 @@
 				071D4C392D6209C600A6286D /* XCRemoteSwiftPackageReference "SnapKit" */,
 				071D4C3C2D620AE900A6286D /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				071D4C3F2D620C2600A6286D /* XCRemoteSwiftPackageReference "RxSwift" */,
+				489FCD6A2D64936B0030A185 /* XCRemoteSwiftPackageReference "RxGesture" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 07F093112D2418380075659F /* Products */;
@@ -1999,6 +2003,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱 사용 중 위치 접근 권한이 필요합니다.";
@@ -2035,6 +2040,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱 사용 중 위치 접근 권한이 필요합니다.";
@@ -2276,6 +2282,14 @@
 				minimumVersion = 2.23.0;
 			};
 		};
+		489FCD6A2D64936B0030A185 /* XCRemoteSwiftPackageReference "RxGesture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxGesture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -2418,6 +2432,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 077DC8F42D6206F000C02FA4 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDKUser;
+		};
+		489FCD6B2D64936B0030A185 /* RxGesture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 489FCD6A2D64936B0030A185 /* XCRemoteSwiftPackageReference "RxGesture" */;
+			productName = RxGesture;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
