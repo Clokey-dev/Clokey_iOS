@@ -128,23 +128,6 @@ class FollowProfileViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-//    @objc private func didTapFollowButton() {
-//        let isCurrentlyFollowing = followProfileView.followButton.backgroundColor == .mainBrown800
-//        
-//        if isCurrentlyFollowing {
-//            followProfileView.followButton.setTitle("팔로우", for: .normal)
-//            followProfileView.followButton.backgroundColor = .white
-//            followProfileView.followButton.setTitleColor(.black, for: .normal)
-//            followProfileView.followButton.layer.borderColor = UIColor.mainBrown800.cgColor
-//            followProfileView.followButton.layer.borderWidth = 1
-//        } else {
-//            followProfileView.followButton.setTitle("팔로잉", for: .normal)
-//            followProfileView.followButton.backgroundColor = .mainBrown800
-//            followProfileView.followButton.setTitleColor(.white, for: .normal)
-//            followProfileView.followButton.layer.borderColor = UIColor.mainBrown800.cgColor
-//            followProfileView.followButton.layer.borderWidth = 1
-//        }
-//    }
     @objc private func didTapFollowButton() {
                 guard let clokeyId = ProfileViewModel.shared.userId else {
                     print("🚨 사용자 ID 없음")
