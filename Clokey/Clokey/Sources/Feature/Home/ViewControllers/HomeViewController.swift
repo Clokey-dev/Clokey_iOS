@@ -30,8 +30,6 @@ final class HomeViewController: UIViewController {
         
         setupActions()
         selectTab(.pick)
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
