@@ -45,7 +45,7 @@ public enum RedirectInfo: Codable {
 }
  //알림 목록조회
     public struct NotificationResponseDTO: Codable {
-        public let NotificationResults: [NotificationResultsResponseDTO]
+        public let notificationResults: [NotificationResultsResponseDTO]
         public let totalPage: Int64
         public let totalElements: Int64
         public let isFirst: Bool

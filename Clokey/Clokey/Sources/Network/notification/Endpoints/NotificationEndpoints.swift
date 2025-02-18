@@ -21,6 +21,7 @@ public enum NotificationEndpoints {
     
     case notificationList(page : Int)
     case notificationRead(notificationId: Int64)
+    case notificationAllRead
     case notificationExist
     case notificationLove(historyId: Int64)
     case notificationFollow(clokeyId: String)
@@ -52,7 +53,9 @@ extension NotificationEndpoints: TargetType {
         case .notificationList:
             return "/notifications"
         case .notificationRead(let notificationId):
-            return "/notifications/\(notificationId)"
+            return "/notifications/\(notificationId)/read"
+        case .notificationAllRead:
+            return "/notifications"
         case .notificationExist:
             return "/notifications/not-read-exist"
         case .notificationLove:
@@ -76,7 +79,7 @@ extension NotificationEndpoints: TargetType {
         switch self {
         case .notificationList, .notificationExist:
             return .get
-        case .notificationRead:
+        case .notificationAllRead, .notificationRead:
             return .patch
         case .notificationLove, .notificationFollow, .notificationComment, .notificationReply:
             return .post
@@ -94,10 +97,9 @@ extension NotificationEndpoints: TargetType {
             )
             
         case .notificationRead(let notificationId):
-            return .requestParameters(
-                parameters: ["notificationId": notificationId],
-                encoding: URLEncoding.queryString
-            )
+            return .requestPlain
+        case .notificationAllRead:
+            return .requestPlain
             
         case .notificationExist:
             return .requestPlain

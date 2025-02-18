@@ -133,6 +133,7 @@
 		077DC91C2D62085100C02FA4 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077DC91B2D62085100C02FA4 /* TokenManager.swift */; };
 		077DC91D2D62085100C02FA4 /* JWTHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077DC91A2D62085100C02FA4 /* JWTHelper.swift */; };
 		077DC91F2D62092700C02FA4 /* TokenRefreshPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077DC91E2D62092700C02FA4 /* TokenRefreshPlugin.swift */; };
+		07CB2E9C2D64F36C00B3F9B7 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 07CB2E9B2D64F36C00B3F9B7 /* Config.xcconfig */; };
 		07CF63E52D55DE6900CCF9F4 /* CalendarDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF63E42D55DE6900CCF9F4 /* CalendarDetailViewModel.swift */; };
 		07CF63FF2D563CAD00CCF9F4 /* RecordTagClothViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF63FE2D563CAD00CCF9F4 /* RecordTagClothViewController.swift */; };
 		07E1CB392D364BDA00F86BB8 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 07E1CB352D364BDA00F86BB8 /* Pretendard-Medium.otf */; };
@@ -207,6 +208,7 @@
 		07F859B42D62021700DD5BF8 /* Onboarding_no.json in Resources */ = {isa = PBXBuildFile; fileRef = 07F859B12D62021700DD5BF8 /* Onboarding_no.json */; };
 		07F859B52D62021700DD5BF8 /* Onboarding_yes.json in Resources */ = {isa = PBXBuildFile; fileRef = 07F859B22D62021700DD5BF8 /* Onboarding_yes.json */; };
 		07F859B82D62024300DD5BF8 /* LottieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F859B62D62024300DD5BF8 /* LottieViewController.swift */; };
+		489FCD6C2D64936B0030A185 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 489FCD6B2D64936B0030A185 /* RxGesture */; };
 		A62A429E2D4D2ADE00672D3F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429A2D4D2ADE00672D3F /* MainView.swift */; };
 		A62A429F2D4D2ADE00672D3F /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429C2D4D2ADE00672D3F /* HeaderView.swift */; };
 		A62A42A02D4D2ADE00672D3F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429B2D4D2ADE00672D3F /* MainViewController.swift */; };
@@ -216,7 +218,6 @@
 		A648ACDE2D5CECF00094C126 /* CategoriesResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A648ACDD2D5CECF00094C126 /* CategoriesResponseDTO.swift */; };
 		A648ACE02D5CECF50094C126 /* CategoriesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A648ACDF2D5CECF50094C126 /* CategoriesService.swift */; };
 		A6548E532D3F47DE00F79B66 /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */; };
-		A65C82462D64C8F40036C568 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A65C82452D64C8F40036C568 /* Config.xcconfig */; };
 		A66BA3352D636AD400E69A4F /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66BA3342D636AD400E69A4F /* ProfileViewModel.swift */; };
 		A672AEB72D572A6E003EF3FF /* EmptyStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */; };
 		A67661892D5B367B006AAB63 /* CustomBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661852D5B367B006AAB63 /* CustomBottomSheetViewController.swift */; };
@@ -340,6 +341,7 @@
 		077DC91A2D62085100C02FA4 /* JWTHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWTHelper.swift; sourceTree = "<group>"; };
 		077DC91B2D62085100C02FA4 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		077DC91E2D62092700C02FA4 /* TokenRefreshPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenRefreshPlugin.swift; sourceTree = "<group>"; };
+		07CB2E9B2D64F36C00B3F9B7 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		07CF63E42D55DE6900CCF9F4 /* CalendarDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDetailViewModel.swift; sourceTree = "<group>"; };
 		07CF63FE2D563CAD00CCF9F4 /* RecordTagClothViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordTagClothViewController.swift; sourceTree = "<group>"; };
 		07E1CB302D364BDA00F86BB8 /* Pretendard-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Black.otf"; sourceTree = "<group>"; };
@@ -424,7 +426,6 @@
 		A648ACDD2D5CECF00094C126 /* CategoriesResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesResponseDTO.swift; sourceTree = "<group>"; };
 		A648ACDF2D5CECF50094C126 /* CategoriesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesService.swift; sourceTree = "<group>"; };
 		A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
-		A65C82452D64C8F40036C568 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A66BA3342D636AD400E69A4F /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStackView.swift; sourceTree = "<group>"; };
 		A67661852D5B367B006AAB63 /* CustomBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomSheetViewController.swift; sourceTree = "<group>"; };
@@ -473,6 +474,7 @@
 				077DC8D72D62067400C02FA4 /* FirebaseFirestore in Frameworks */,
 				071D4C412D620C2600A6286D /* RxCocoa in Frameworks */,
 				077DC8E92D6206B900C02FA4 /* CropViewController in Frameworks */,
+				489FCD6C2D64936B0030A185 /* RxGesture in Frameworks */,
 				071D4C3E2D620AE900A6286D /* Kingfisher in Frameworks */,
 				077DC8F62D6206F000C02FA4 /* KakaoSDK in Frameworks */,
 				077DC9002D6206F000C02FA4 /* KakaoSDKFriendCore in Frameworks */,
@@ -1206,7 +1208,6 @@
 				07F859B32D62021700DD5BF8 /* Lottie */,
 				07E1CB2F2D364BD100F86BB8 /* Fonts */,
 				076FAB322D2E6E0200FF3979 /* Assets.xcassets */,
-				A65C82452D64C8F40036C568 /* Config.xcconfig */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1710,6 +1711,7 @@
 				071D4C3D2D620AE900A6286D /* Kingfisher */,
 				071D4C402D620C2600A6286D /* RxCocoa */,
 				071D4C422D620C2600A6286D /* RxSwift */,
+				489FCD6B2D64936B0030A185 /* RxGesture */,
 			);
 			productName = Clokey;
 			productReference = 07F093102D2418380075659F /* Clokey.app */;
@@ -1749,6 +1751,7 @@
 				071D4C392D6209C600A6286D /* XCRemoteSwiftPackageReference "SnapKit" */,
 				071D4C3C2D620AE900A6286D /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				071D4C3F2D620C2600A6286D /* XCRemoteSwiftPackageReference "RxSwift" */,
+				489FCD6A2D64936B0030A185 /* XCRemoteSwiftPackageReference "RxGesture" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 07F093112D2418380075659F /* Products */;
@@ -1777,7 +1780,6 @@
 				07E1CB412D364BDA00F86BB8 /* Pretendard-Regular.otf in Resources */,
 				076FAB422D2E6E0200FF3979 /* Assets.xcassets in Resources */,
 				07F859B42D62021700DD5BF8 /* Onboarding_no.json in Resources */,
-				A65C82462D64C8F40036C568 /* Config.xcconfig in Resources */,
 				07F859B52D62021700DD5BF8 /* Onboarding_yes.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1985,14 +1987,12 @@
 /* Begin XCBuildConfiguration section */
 		07F093242D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A65C82452D64C8F40036C568 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
@@ -2013,7 +2013,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2022,14 +2021,12 @@
 		};
 		07F093252D24183A0075659F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A65C82452D64C8F40036C568 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
@@ -2050,7 +2047,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2059,7 +2055,6 @@
 		};
 		07F093262D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A65C82452D64C8F40036C568 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -2123,7 +2118,6 @@
 		};
 		07F093272D24183A0075659F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A65C82452D64C8F40036C568 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -2274,6 +2268,14 @@
 				minimumVersion = 2.23.0;
 			};
 		};
+		489FCD6A2D64936B0030A185 /* XCRemoteSwiftPackageReference "RxGesture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxGesture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -2416,6 +2418,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 077DC8F42D6206F000C02FA4 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDKUser;
+		};
+		489FCD6B2D64936B0030A185 /* RxGesture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 489FCD6A2D64936B0030A185 /* XCRemoteSwiftPackageReference "RxGesture" */;
+			productName = RxGesture;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
