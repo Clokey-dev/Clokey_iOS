@@ -73,6 +73,15 @@ class CalendarViewController: UIViewController {
         updateCalendar()
         
         calendarView.delegate = self
+        if shouldHideUserNameLabel {
+            userNameLabel.isHidden = true
+            userNameLabel.snp.removeConstraints()
+            monthControlStack.snp.remakeConstraints {
+                $0.top.equalTo(view.safeAreaLayoutGuide).offset(16) 
+                $0.leading.equalToSuperview().offset(25)
+                $0.trailing.equalToSuperview().offset(-25)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -129,6 +138,24 @@ class CalendarViewController: UIViewController {
             }
             .disposed(by: disposeBag)
     }
+    
+    // MARK: - Methods
+    var shouldHideUserNameLabel: Bool = false {
+        didSet {
+            userNameLabel.isHidden = shouldHideUserNameLabel
+            userNameLabel.snp.removeConstraints()
+
+            // 숨겨지면 monthControlStack의 제약을 변경
+            if shouldHideUserNameLabel {
+                monthControlStack.snp.remakeConstraints {
+                    $0.top.equalTo(view.safeAreaLayoutGuide).offset(16) // 바로 safeArea 아래에 붙이기
+                    $0.leading.equalToSuperview().offset(25)
+                    $0.trailing.equalToSuperview().offset(-25)
+                }
+            }
+        }
+    }
+
     
     // MARK: - Calendar Methods
     private func updateCalendar() {

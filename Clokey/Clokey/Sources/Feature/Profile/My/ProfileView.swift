@@ -128,7 +128,7 @@ final class ProfileView: UIView {
     
     let clothesLabel = UILabel().then {
         $0.text = "옷장"
-        $0.font = UIFont.ptdRegularFont(ofSize: 20)
+        $0.font = UIFont.ptdMediumFont(ofSize: 20)
         $0.textAlignment = .left
     }
     
@@ -174,11 +174,14 @@ final class ProfileView: UIView {
     
     let recordLabel = UILabel().then {
         $0.text = "기록"
-        $0.font = UIFont.ptdRegularFont(ofSize: 20)
+        $0.font = UIFont.ptdMediumFont(ofSize: 20)
         $0.textAlignment = .left
     }
     
-    let calendarView = CalendarView()
+    // 캘린더 뷰컨이 들어갈 컨테이너 뷰
+    let calendarContainerView = UIView().then {
+        $0.backgroundColor = .clear
+    }
     
     let recordContainerView: UIView = UIView().then {
         $0.backgroundColor = .clear
@@ -228,11 +231,11 @@ final class ProfileView: UIView {
         contentView.addSubview(bottomButtonLabel)
         contentView.addSubview(bottomArrowIcon)
         contentView.addSubview(recordLabel)
-        contentView.addSubview(recordContainerView)
+//        contentView.addSubview(recordContainerView)
         
-        recordContainerView.addSubview(calendarView)
+        contentView.addSubview(calendarContainerView)
+
     }
-    
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints { make in
@@ -383,16 +386,11 @@ final class ProfileView: UIView {
             make.leading.equalToSuperview().offset(20)
         }
         
-        recordContainerView.snp.makeConstraints { make in
-            make.top.equalTo(recordLabel.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(520)
-            make.bottom.equalToSuperview().offset(-40) // 스크롤 콘텐츠의 마지막 부분
-        }
-        
-        calendarView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        calendarContainerView.snp.makeConstraints {
+            $0.top.equalTo(recordLabel.snp.bottom)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(600)
+            $0.bottom.equalToSuperview().offset(20)
         }
         
     }
@@ -431,4 +429,5 @@ final class ProfileView: UIView {
 
         }
     }
+    
 }
