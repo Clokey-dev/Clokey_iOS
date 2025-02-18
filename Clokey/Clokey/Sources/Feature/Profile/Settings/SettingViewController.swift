@@ -19,10 +19,49 @@ class SettingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        updateUI()
         setupActions()
     }
     
+    private func updateUI() {
+        let membersService = MembersService()
+        
+        membersService.getAgreedTerms{ [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let agreedTerms):
+                DispatchQueue.main.async {
+                    if agreedTerms.socialType == "KAKAO" {
+                        self.settingView.kakaoImage.image = UIImage(named: "kakao_icon")
+                    } else {
+                        self.settingView.kakaoImage.image = UIImage(named: "apple_logo2")
+                    }
+                    
+                    self.settingView.emailLabel.text = agreedTerms.email
+                    
+                    if let marketingTerm = agreedTerms.terms.first(where: { $0.termId == 4 }) {
+                        self.settingView.marketingSwitch.isOn = marketingTerm.agreed
+                    }
+                    
+                    if let pushTerm = agreedTerms.terms.first(where: { $0.termId == 5 }) {
+                        self.settingView.pushSwitch.isOn = pushTerm.agreed
+                    }
+                    
+                    self.settingView.versionLabel.text = agreedTerms.appVersion
+                }
+            case .failure(let error):
+                print("설정 UI 업데이트 실패: \(error.localizedDescription)")
+            }
+            
+        }
+    }
+    
+    
     private func setupActions() {
+        settingView.marketingSwitch.addTarget(self, action: #selector(didTapAgreeTerms), for: .valueChanged)
+        settingView.pushSwitch.addTarget(self, action: #selector(didTapAgreeTerms), for: .valueChanged)
+        
         // 백 버튼
         settingView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         
@@ -59,6 +98,53 @@ class SettingViewController: UIViewController {
         dismiss(animated: true, completion: nil)
         
     }
+    
+    
+    
+    
+    @objc private func didTapAgreeTerms() {
+        let marketingState = settingView.marketingSwitch.isOn 
+        let pushState = settingView.pushSwitch.isOn
+
+        let requestData = OptionalTermAgreeRequestDTO(
+            terms: [
+                OptionalTermAgreeRequestDTO.Terms(termId: 4, agreed: marketingState),
+                OptionalTermAgreeRequestDTO.Terms(termId: 5, agreed: pushState)
+            ]
+        )
+
+        MembersService().optionalTermAgree(data: requestData) { [weak self] result in
+            guard let self = self else { return }
+
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    print("✅ 선택 동의 상태 변경 성공: \(response)")
+
+                    // ✅ 서버 응답을 UI에 반영
+                    if let marketingTerm = response.terms.first(where: { $0.termId == 4 }) {
+                        self.settingView.marketingSwitch.isOn = marketingTerm.agreed
+                    }
+                    
+                    if let pushTerm = response.terms.first(where: { $0.termId == 5 }) {
+                        self.settingView.pushSwitch.isOn = pushTerm.agreed
+                    }
+                case .failure(let error):
+                    print("🚨 선택 동의 상태 변경 실패: \(error.localizedDescription)")
+
+                    // ✅ 요청 실패 시 스위치 상태 복구
+                    self.settingView.marketingSwitch.isOn.toggle()
+                    self.settingView.pushSwitch.isOn.toggle()
+                }
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    
     
     @objc private func didTapInquiry() {
         print("문의하기")

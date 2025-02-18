@@ -18,6 +18,8 @@ public enum MembersEndpoint {
     case getUserProfile(clokeyId: String)
     case followUser(data: FollowRequestDTO)
     case unfollowUser(data: UnFollowRequestDTO)
+    case getAgreedTerms
+    case optionalTermAgree(data: OptionalTermAgreeRequestDTO)
     // 추가적인 API는 여기 케이스로 정의
 }
 
@@ -50,17 +52,21 @@ extension MembersEndpoint: TargetType {
             return "/users/follow"
         case .unfollowUser:
             return "/users/follow"
+        case .getAgreedTerms:
+            return "/users/terms/optional"
+        case .optionalTermAgree:
+            return "users/terms/optional"
         }
     }
     
     // HTTP 메서드
     public var method: Moya.Method {
         switch self {
-        case .SocialLogin, .ReissueToken, .agreeToTerms, .followUser:
+        case .SocialLogin, .ReissueToken, .agreeToTerms, .followUser, .optionalTermAgree:
             return .post
         case .updateProfile:
             return .patch
-        case .checkIdAvailability, .getUserProfile, .getTerms:
+        case .checkIdAvailability, .getUserProfile, .getTerms, .getAgreedTerms:
             return .get
         case .unfollowUser:
             return .delete
@@ -119,6 +125,10 @@ extension MembersEndpoint: TargetType {
         case .followUser(let data):
             return .requestJSONEncodable(data)
         case .unfollowUser(let data):
+            return .requestJSONEncodable(data)
+        case .getAgreedTerms:
+            return .requestPlain
+        case .optionalTermAgree(let data):
             return .requestJSONEncodable(data)
         }
     }

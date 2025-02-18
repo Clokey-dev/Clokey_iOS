@@ -25,3 +25,12 @@ public struct UnFollowRequestDTO: Codable {
     public let myClokeyId: String
     public let yourClokeyId: String
 }
+
+public struct OptionalTermAgreeRequestDTO: Codable {
+    public let terms: [Terms]
+    
+    public struct Terms: Codable {
+        public let termId: Int
+        public let agreed: Bool
+    }
+}

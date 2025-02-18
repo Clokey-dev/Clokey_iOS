@@ -35,7 +35,7 @@ final class SettingView: UIView {
     let kakaoImage = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .clear
         $0.layer.cornerRadius = 20
         $0.image = UIImage(named: "kakao_icon")
     }

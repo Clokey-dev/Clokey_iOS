@@ -26,3 +26,17 @@ public struct MembersInfoResponseDTO: Codable {
     public let isFollowing: Bool
 }
 
+public struct GetAgreedTermsResponseDTO: Codable {
+    public let socialType: String
+    public let email: String
+    public let appVersion: String
+    public let terms: [Terms]
+    
+    public struct Terms: Codable {
+        public let termId: Int
+        public let title: String
+        public let agreed: Bool
+    }
+}
+
+
