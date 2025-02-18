@@ -44,6 +44,23 @@ public final class NotificationService : NetworkManager {
             
         )
     }
+    public func notificationRead(
+        notificationId: Int64,
+        completion: @escaping (Result<Void, NetworkError>) -> Void
+    ) {
+        requestStatusCode(
+            target: .notificationRead(notificationId: notificationId),
+            completion: completion
+        )
+    }
+    
+    public func notificationAllRead(
+        completion: @escaping (Result<Void, NetworkError>) -> Void
+    ) {
+        
+        requestStatusCode(target: .notificationAllRead, completion: completion)
+    }
+    
     public func notificationLove(
         historyId: Int64,
         completion: @escaping (Result<NotificationLoveResponseDTO, NetworkError>) -> Void

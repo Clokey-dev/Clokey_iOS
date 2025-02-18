@@ -1,60 +1,83 @@
-//
-//  NotificationViewModel.swift
-//  Clokey
-//
-//  Created by 소민준 on 2/11/25.
-//
 
-
-//
-//  NotificationViewModel.swift
-//  Alarm
-//
-//  Created by 소민준 on 2/8/25.
-//
 import Foundation
-
 
 class NotificationViewModel {
     var notifications: [NotificationItem] = []
+    let notificationService = NotificationService()
 
-    func fetchDummyNotifications() {
-        notifications = [
-            NotificationItem(id: 1, type: .like, title: "OO님이 회원님의 옷장을 팔로우하기 시작했습니다.", content: "", createdAt: Date(), imageUrl: nil, isRead: false),
-            NotificationItem(id: 2, type: .weather, title: "기온이 어제보다 6도 낮아요!", content: "", createdAt: Date(), imageUrl: nil, isRead: false),
-            NotificationItem(id: 3, type: .like, title: "OO님이 회원님의 기록을 좋아합니다.", content: "", createdAt: Date(), imageUrl: nil, isRead: false),
-            NotificationItem(id: 4, type: .recap, title: "1년 전 오늘의 기록을 확인해보세요.", content: "", createdAt: Date(), imageUrl: nil, isRead: true),
-            NotificationItem(id: 5, type: .follower, title: "새로운 유저가 당신을 팔로우했습니다!", content: "", createdAt: Date(), imageUrl: nil, isRead: false),
-            NotificationItem(id: 6, type: .recap, title: "작년 오늘의 기록을 확인하세요.", content: "", createdAt: Date(), imageUrl: nil, isRead: false),
-            NotificationItem(id: 7, type: .recap, title: "작년 오늘의 기록을 확인하세요.", content: "", createdAt: Date(), imageUrl: nil, isRead: false),
-            NotificationItem(id: 8, type: .recap, title: "안녕 금준이형.", content: "", createdAt: Date(), imageUrl: nil, isRead: false)
-            
-        ]
-        
-        loadReadStatus() // 저장된 읽음 상태 불러오기
-    }
-
-    func markAllAsRead() {
-        for index in notifications.indices {
-            if !notifications[index].isRead {
-                notifications[index].isRead = true // 읽지 않은 것들만 읽음으로 변경
+    func fetchNotificationsFromAPI() {
+        notificationService.notificationList(page: 1) { [weak self] result in
+            switch result {
+            case .success(let response):
+                self?.notifications = response.notificationResults.map { dto in
+                    NotificationItem(
+                        id: Int(dto.notificationId),
+                        type: NotificationType(rawValue: dto.redirectType.rawValue) ?? .like,
+                        title: dto.content,
+                        content: "",
+                        createdAt: Self.formatDate(dto.createdAt),
+                        imageUrl: dto.notificationImageUrl,
+                        isRead: dto.isRead
+                    )
+                }
+                // 여기서는 NotificationViewController에서만 테이블 뷰를 리로드하게 함
+                NotificationCenter.default.post(name: NSNotification.Name("ReloadNotifications"), object: nil)
+            case .failure(let error):
+                print("❌ 알림 목록 조회 실패: \(error.localizedDescription)")
             }
         }
-        saveReadStatus() // 저장된 읽음 상태 업데이트
+    }
+    
+    private static func formatDate(_ dateString: String) -> Date {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter.date(from: dateString) ?? Date()
     }
 
-    // 읽음 상태를 UserDefaults에 저장
-    private func saveReadStatus() {
+    func saveReadStatus() {
         let readStatus = notifications.reduce(into: [String: Bool]()) { $0["\($1.id)"] = $1.isRead }
         UserDefaults.standard.set(readStatus, forKey: "ReadStatus")
     }
 
-    // UserDefaults에서 읽음 상태 불러오기
-    private func loadReadStatus() {
+    func loadReadStatus() {
         guard let savedStatus = UserDefaults.standard.dictionary(forKey: "ReadStatus") as? [String: Bool] else { return }
         for index in notifications.indices {
             if let isRead = savedStatus["\(notifications[index].id)"] {
                 notifications[index].isRead = isRead
+            }
+        }
+    }
+    func markNotificationAsRead(notificationId: Int) {
+        notificationService.notificationRead(notificationId: Int64(notificationId)) { [weak self] result in
+            switch result {
+            case .success:
+                // 성공 시 로컬 데이터 업데이트
+                if let index = self?.notifications.firstIndex(where: { $0.id == notificationId }) {
+                    self?.notifications[index].isRead = true
+                }
+                // UI 갱신
+                NotificationCenter.default.post(name: NSNotification.Name("ReloadNotifications"), object: nil)
+            case .failure(let error):
+                print("❌ 읽음 처리 실패: \(error.localizedDescription)")
+            }
+        }
+    }
+    func markAllNotificationsAsRead(completion: @escaping () -> Void) {
+        notificationService.notificationAllRead { [weak self] result in
+            switch result {
+            case .success:
+                // 로컬 데이터 업데이트: 모든 알림을 읽음으로 표시
+                self?.notifications = self?.notifications.map { notification in
+                    var updatedNotification = notification
+                    updatedNotification.isRead = true
+                    return updatedNotification
+                } ?? []
+                // UI 갱신을 위해 NotificationCenter로 알림 전송
+                NotificationCenter.default.post(name: NSNotification.Name("ReloadNotifications"), object: nil)
+                completion()
+            case .failure(let error):
+                print("❌ 전체 읽음 처리 실패: \(error.localizedDescription)")
+                completion()
             }
         }
     }

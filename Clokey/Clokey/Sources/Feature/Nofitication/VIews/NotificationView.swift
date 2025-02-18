@@ -5,14 +5,12 @@
 //  Created by 소민준 on 2/11/25.
 //
 
-
 //
 //  NotificationView.swift
 //  Alarm
 //
 //  Created by 소민준 on 2/11/25.
 //
-
 
 import UIKit
 import SnapKit
@@ -74,7 +72,7 @@ class NotificationView: UIView {
         }
 
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(backButton.snp.bottom).offset(30)
+            make.top.equalTo(backButton.snp.bottom).offset(18)
             
             make.leading.trailing.bottom.equalToSuperview()
         }
