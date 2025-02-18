@@ -13,6 +13,9 @@
 
 //
 import UIKit
+import RxSwift
+import RxCocoa
+import RxGesture
 
 class NotificationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     

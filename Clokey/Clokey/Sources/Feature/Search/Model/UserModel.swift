@@ -7,7 +7,6 @@
 
 
 struct UserModel {
-    let id: Int64
     let clokeyId: String
     let nickname: String
     let profileImage: String

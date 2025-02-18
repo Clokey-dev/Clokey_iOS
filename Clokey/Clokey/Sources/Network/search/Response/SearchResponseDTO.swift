@@ -19,7 +19,7 @@ public struct SearchMemberResponseDTO: Codable {
 
 //memberpreviewDTO정의
 public struct MemberPreviewDTO: Codable{
-    public let id: Int64
+    //public let id: Int64?
     public let nickname: String?
     public let clokeyId: String?
     public let profileImage: String?

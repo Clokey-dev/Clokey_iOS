@@ -1,6 +1,7 @@
 
 import Foundation
 
+
 class NotificationViewModel {
     var notifications: [NotificationItem] = []
     let notificationService = NotificationService()
