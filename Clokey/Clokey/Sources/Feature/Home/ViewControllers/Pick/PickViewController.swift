@@ -56,7 +56,9 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         setupLocationIconTap()
         
         loadRecapData()
+        
     }
+
     
     private func setupActions() {
         popUpView.deleteButton.addTarget(self, action: #selector(dismissPopup), for: .touchUpInside)

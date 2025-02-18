@@ -26,14 +26,20 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         profileView.scrollView.contentInsetAdjustmentBehavior = .never
+        
+//        if let userId = ProfileViewModel.shared.userId {
+//            profileView.usernameLabel.text = "@\(userId)"
+//            print("ProfileViewController에서 적용된 아이디: \(userId)")
+//        }
 
-        bindData()
+        loadData()
         setupActions()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        loadData()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -46,14 +52,72 @@ final class ProfileViewController: UIViewController {
         view.setNeedsLayout()
         view.layoutIfNeeded()
     }
-
     
-    private func bindData() {
-        // 데이터를 PickView에 바인딩
-        profileView.clothesImageView1.kf.setImage(with: URL(string: model.profileImageURLs[0]))
-        profileView.clothesImageView2.kf.setImage(with: URL(string: model.profileImageURLs[1]))
-        profileView.clothesImageView3.kf.setImage(with: URL(string: model.profileImageURLs[2]))
+    var clokeyId: String = ""
+    
+    private func loadData() {
+//        guard let clokeyId = ProfileViewModel.shared.userId else {
+//            print("🚨 사용자 ID 없음")
+//            return
+//        }
+        
+        if var clokeyId = ProfileViewModel.shared.userId {
+//                profileView.usernameLabel.text = "@\(clokeyId)"
+            self.clokeyId = clokeyId
+                print("✅ ProfileViewController에서 불러온 ID: \(clokeyId)")
+            }
+        
+//        let clokeyId = "qw12"
+        
+        let membersService = MembersService()
+        
+        membersService.getUserProfile(clokeyId: clokeyId) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let userProfile):
+                DispatchQueue.main.async {
+                    self.profileView.usernameLabel.text = userProfile.clokeyId
+                    self.profileView.nicknameLabel.text = userProfile.nickname
+                    self.profileView.writeCountLabel.text = "\(userProfile.recordCount)"
+                    self.profileView.followerCountButton.setTitle("\(userProfile.followerCount)", for: .normal)
+                    self.profileView.followingCountButton.setTitle("\(userProfile.followingCount)", for: .normal)
+                    self.profileView.descriptionLabel.text = userProfile.bio
+                    
+                    if let profileImageUrl = userProfile.profileImageUrl,
+                       let url = URL(string: profileImageUrl) {
+                        self.profileView.profileImageView.kf.setImage(with: url)
+                    } else {
+                        self.profileView.profileImageView.image = UIImage(named: "default_background_image") // 기본 이미지 설정
+                    }
+                    if let profileBackImageUrl = URL(string: userProfile.profileBackImageUrl) {
+                        self.profileView.backgroundImageView.kf.setImage(with: profileBackImageUrl)
+                    }
+                    
+                    if let clothImage1 = userProfile.clothImage1, let clothImageUrl1 = URL(string: clothImage1) {
+                        self.profileView.clothesImageView1.kf.setImage(with: clothImageUrl1)
+                    } else {
+                        self.profileView.clothesImageView1.image = UIImage(named: "default_cloth_image") // 기본 이미지 설정
+                    }
+                    
+                    if let clothImage2 = userProfile.clothImage2, let clothImageUrl2 = URL(string: clothImage2) {
+                        self.profileView.clothesImageView2.kf.setImage(with: clothImageUrl2)
+                    } else {
+                        self.profileView.clothesImageView2.image = UIImage(named: "default_cloth_image")
+                    }
+                    
+                    if let clothImage3 = userProfile.clothImage3, let clothImageUrl3 = URL(string: clothImage3) {
+                        self.profileView.clothesImageView3.kf.setImage(with: clothImageUrl3)
+                    } else {
+                        self.profileView.clothesImageView3.image = UIImage(named: "default_cloth_image")
+                    }
+                }
+            case .failure(let error):
+                print("🚨 프로필 데이터를 불러오는 데 실패함: \(error.localizedDescription)")
+            }
+        }
     }
+    
     
     
     private func setupActions() {
@@ -76,6 +140,8 @@ final class ProfileViewController: UIViewController {
         let editProfileViewController = EditProfileViewController()
         editProfileViewController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
         present(editProfileViewController, animated: true, completion: nil)
+        
+//        navigationController?.pushViewController(editProfileViewController, animated: true)
     }
     
     @objc private func didTapFollowerButton() {

@@ -145,5 +145,25 @@ public final class MembersService: NetworkManager {
             }
         )
     }
+    
+    public func getAgreedTerms(
+        completion: @escaping (Result<GetAgreedTermsResponseDTO, NetworkError>) -> Void
+    ){
+        request(
+            target: .getAgreedTerms,
+            decodingType: GetAgreedTermsResponseDTO.self,
+            completion: completion)
+    }
+    
+    public func optionalTermAgree(
+        data: OptionalTermAgreeRequestDTO,
+        completion: @escaping (Result<GetAgreedTermsResponseDTO, NetworkError>) -> Void
+    ){
+        request(
+            target: .optionalTermAgree(data: data),
+            decodingType: GetAgreedTermsResponseDTO.self,
+            completion: completion
+        )
+    }
 
 }
