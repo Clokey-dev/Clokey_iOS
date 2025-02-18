@@ -34,8 +34,6 @@ final class TabBarView: UIView {
     // 하단 탭바
     let tabBar: UITabBar = {
         let tabBar = UITabBar()
-        tabBar.tintColor = .black
-        tabBar.unselectedItemTintColor = .gray
         tabBar.backgroundColor = .white
         
         let appearance = UITabBarAppearance()
@@ -55,6 +53,7 @@ final class TabBarView: UIView {
         setupUI()
         setupConstraints()
         setupTabBar()
+        setupTabBarAppearance()
     }
     
     required init?(coder: NSCoder) {
@@ -68,6 +67,29 @@ final class TabBarView: UIView {
         tabBar.delegate = self
     }
     
+    private func setupTabBarAppearance() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .white
+        
+        // 선택된 아이콘 및 텍스트 색상
+        appearance.stackedLayoutAppearance.selected.iconColor = UIColor(named: "mainBrown800")
+        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
+            .foregroundColor: UIColor(named: "mainBrown800") ?? .black
+        ]
+
+        // 선택되지 않은 아이콘 및 텍스트 색상
+        appearance.stackedLayoutAppearance.normal.iconColor = UIColor(named: "mainBrown200")
+        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
+            .foregroundColor: UIColor(named: "mainBrown200") ?? .gray
+        ]
+
+        // 탭바에 appearance 적용
+        tabBar.standardAppearance = appearance
+        tabBar.scrollEdgeAppearance = appearance
+    }
+
+    
     // 탭바 레이아웃 설정
     private func setupConstraints() {
         tabBar.snp.makeConstraints {
@@ -78,22 +100,51 @@ final class TabBarView: UIView {
     // 각 탭바 아이템 설정
     private func setupTabBar() {
         let items = [
-            UITabBarItem(title: "홈", image: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill")),
-            UITabBarItem(title: "캘린더", image: UIImage(systemName: "calendar"), selectedImage: UIImage(systemName: "calendar.fill")),
-            UITabBarItem(title: "추가", image: UIImage(systemName: "plus"), selectedImage: UIImage(systemName: "plus.circle.fill")),
-            UITabBarItem(title: "내옷장", image: UIImage(systemName: "tshirt"), selectedImage: UIImage(systemName: "tshirt.fill")),
-            UITabBarItem(title: "프로필", image: UIImage(systemName: "person"), selectedImage: UIImage(systemName: "person.fill"))
+            UITabBarItem(
+                title: "홈",
+                image: resizedImage(named: "home_icon", size: CGSize(width: 24, height: 24)),
+                selectedImage: resizedImage(named: "home_n_icon", size: CGSize(width: 24, height: 24))
+            ),
+            UITabBarItem(
+                title: "캘린더",
+                image: resizedImage(named: "calendar_n_icon", size: CGSize(width: 24, height: 24)),
+                selectedImage: resizedImage(named: "calendar_icon", size: CGSize(width: 24, height: 24))
+            ),
+            UITabBarItem(
+                title: "추가",
+                image: resizedImage(named: "add_n_icon", size: CGSize(width: 24, height: 24)),
+                selectedImage: resizedImage(named: "add_icon", size: CGSize(width: 24, height: 24))
+            ),
+            UITabBarItem(
+                title: "내 옷장",
+                image: resizedImage(named: "hanger_n_icon", size: CGSize(width: 24, height: 24)),
+                selectedImage: resizedImage(named: "hanger_icon", size: CGSize(width: 24, height: 24))
+            ),
+            UITabBarItem(
+                title: "내 프로필",
+                image: resizedImage(named: "profile_n_icon", size: CGSize(width: 24, height: 24)),
+                selectedImage: resizedImage(named: "profile_icon", size: CGSize(width: 24, height: 24))
+            )
         ]
         
-        // index 사용해서 탭바 구분
         items.enumerated().forEach { index, item in
             item.tag = index
         }
         
-        // 탭바 디폴트 설정
         tabBar.setItems(items, animated: false)
         tabBar.selectedItem = items[0]
     }
+
+    
+    // 하단 메뉴 이미지 크기 조절
+    func resizedImage(named: String, size: CGSize) -> UIImage? {
+        guard let image = UIImage(named: named) else { return nil }
+        let renderer = UIGraphicsImageRenderer(size: size)
+        return renderer.image { _ in
+            image.draw(in: CGRect(origin: .zero, size: size))
+        }
+    }
+
 }
 
 // MARK: - UITabBarDelegate

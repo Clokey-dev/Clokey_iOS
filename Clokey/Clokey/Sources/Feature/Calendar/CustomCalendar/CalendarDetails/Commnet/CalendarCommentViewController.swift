@@ -26,7 +26,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     }
     
     private let commentView = CalendarCommentView()
-    private var comments: [Comment] = Comment.sampleComments
+    private var comments: [Comment] = []
     private var selectedCommentId: Int64? = nil // 대댓글 대상 ID
     
     // 선택한 댓글
@@ -207,6 +207,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
                     let mainComment = Comment(
                         id: comment.commentId,
                         memberId: comment.memberId,
+                        nickName: comment.nickName,
                         imageUrl: comment.userImageUrl,
                         content: comment.content,
                         parentCommentId: nil
@@ -217,6 +218,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
                         Comment(
                             id: reply.commentId,
                             memberId: reply.memberId,
+                            nickName: reply.nickName,
                             imageUrl: reply.userImageUrl,
                             content: reply.content,
                             parentCommentId: comment.commentId
@@ -276,7 +278,7 @@ extension CalendarCommentViewController: UITableViewDataSource, UITableViewDeleg
 
         cell.configure(
             profileImage: comment.imageUrl,
-            name: "닉네임",
+            name: comment.nickName,
             comment: comment.content,
             isLastReply: comment.parentCommentId == nil, // parentCommentId가 nil인 경우에만 답글 달기 표시
             commentId: comment.id

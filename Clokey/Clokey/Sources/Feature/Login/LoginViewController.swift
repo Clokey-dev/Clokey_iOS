@@ -30,7 +30,7 @@ final class LoginViewController: UIViewController {
     // 로그인 상태 및 에러 메시지 관리
     @Published private var errorMessage: String?
     // fcm 디바이스 토큰
-    private let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") ?? ""
+    private let fcmToken = UserDefaults.standard.string(forKey: "FCMToken") ?? ""
 
     // MARK: - Initialization
     init(coordinator: Coordinator) {
@@ -145,6 +145,8 @@ final class LoginViewController: UIViewController {
             authorizationCode: authorizationCode,
             deviceToken: fcmToken ?? ""
         )
+        
+        print("FCM Token 테스트: \(String(describing: fcmToken))\n")
         
         memberService.SocialLogin(data: requestDTO) { [weak self] result in
             switch result {

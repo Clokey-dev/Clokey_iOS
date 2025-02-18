@@ -19,8 +19,13 @@ class CalendarDetailViewController: UIViewController {
     private var viewModel: CalendarDetailViewModel?
 
     private var detailData: HistoryDetailResponseDTO?
+    
+    // 서버 API Service
     private let historyService = HistoryService()
+    private let notificationService = NotificationService()
+    
     let navBarManager = NavigationBarManager()
+    
     
     // MARK: - Lifecycle
 
@@ -197,13 +202,31 @@ class CalendarDetailViewController: UIViewController {
                         self.calendarDetailView.updateLikeState(with: updatedViewModel)
                     }
                 }
+                // 좋아요 누르면 true일때 알림 전송
+                if response.liked {
+                    self.sendLikeNotification(historyId: historyId)
+                }
                 
             case .failure(let error):
                 print("좋아요 변경 실패: \(error.localizedDescription)")
             }
         }
     }
+    
+    // 좋아요 알림
+    private func sendLikeNotification(historyId: Int) {
+        notificationService.notificationLove(historyId: Int64(historyId)) { result in
+            switch result {
+            case .success:
+                print("좋아요 알림 전송 성공")
+            case .failure(let error):
+                print("좋아요 알림 전송 실패: \(error.localizedDescription)")
+            }
+        }
+    }
 }
+
+
 
 extension CalendarDetailViewController: RecordOOTDViewControllerDelegate {
     func didUpdateHistory() {

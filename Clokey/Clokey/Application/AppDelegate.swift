@@ -66,6 +66,9 @@ extension AppDelegate: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         guard let fcmToken = fcmToken else { return }
         print("📌 FCM Token: \(fcmToken)")
+        // FCM Token을 UserDefaults에 저장
+        UserDefaults.standard.set(fcmToken, forKey: "FCMToken")
+        UserDefaults.standard.synchronize()
     }
 }
 

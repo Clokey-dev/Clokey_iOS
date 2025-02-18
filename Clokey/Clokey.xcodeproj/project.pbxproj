@@ -96,6 +96,10 @@
 		07649EF22D4DE58900B6B2B2 /* HistoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649EC12D4DE58900B6B2B2 /* HistoryService.swift */; };
 		07649FF82D4DE9AC00B6B2B2 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649FF72D4DE9AC00B6B2B2 /* KeychainHelper.swift */; };
 		07649FFA2D4DEA9000B6B2B2 /* AccessTokenPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649FF92D4DEA9000B6B2B2 /* AccessTokenPlugin.swift */; };
+		076973382D63686D00AEA5D1 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076973372D63686D00AEA5D1 /* NotificationService.swift */; };
+		0769733A2D63687200AEA5D1 /* NotificationEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076973392D63687200AEA5D1 /* NotificationEndpoints.swift */; };
+		0769733C2D63687800AEA5D1 /* NotificationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0769733B2D63687800AEA5D1 /* NotificationRequest.swift */; };
+		0769733E2D63687E00AEA5D1 /* NotificationResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0769733D2D63687E00AEA5D1 /* NotificationResponseDTO.swift */; };
 		076FAB3F2D2E6E0200FF3979 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB2F2D2E6E0200FF3979 /* AppDelegate.swift */; };
 		076FAB402D2E6E0200FF3979 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB302D2E6E0200FF3979 /* SceneDelegate.swift */; };
 		076FAB422D2E6E0200FF3979 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 076FAB322D2E6E0200FF3979 /* Assets.xcassets */; };
@@ -323,6 +327,10 @@
 		07649ED12D4DE58900B6B2B2 /* MembersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembersService.swift; sourceTree = "<group>"; };
 		07649FF72D4DE9AC00B6B2B2 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
 		07649FF92D4DEA9000B6B2B2 /* AccessTokenPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenPlugin.swift; sourceTree = "<group>"; };
+		076973372D63686D00AEA5D1 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		076973392D63687200AEA5D1 /* NotificationEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEndpoints.swift; sourceTree = "<group>"; };
+		0769733B2D63687800AEA5D1 /* NotificationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRequest.swift; sourceTree = "<group>"; };
+		0769733D2D63687E00AEA5D1 /* NotificationResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponseDTO.swift; sourceTree = "<group>"; };
 		076FAB2F2D2E6E0200FF3979 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		076FAB302D2E6E0200FF3979 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		076FAB322D2E6E0200FF3979 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -1054,45 +1062,6 @@
 			path = members;
 			sourceTree = "<group>";
 		};
-		07649ED42D4DE58900B6B2B2 /* Endpoints */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Endpoints;
-			sourceTree = "<group>";
-		};
-		07649ED52D4DE58900B6B2B2 /* Request */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Request;
-			sourceTree = "<group>";
-		};
-		07649ED62D4DE58900B6B2B2 /* Response */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Response;
-			sourceTree = "<group>";
-		};
-		07649ED72D4DE58900B6B2B2 /* Service */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Service;
-			sourceTree = "<group>";
-		};
-		07649ED82D4DE58900B6B2B2 /* notification */ = {
-			isa = PBXGroup;
-			children = (
-				07649ED42D4DE58900B6B2B2 /* Endpoints */,
-				07649ED52D4DE58900B6B2B2 /* Request */,
-				07649ED62D4DE58900B6B2B2 /* Response */,
-				07649ED72D4DE58900B6B2B2 /* Service */,
-			);
-			path = notification;
-			sourceTree = "<group>";
-		};
 		07649ED92D4DE58900B6B2B2 /* Endpoints */ = {
 			isa = PBXGroup;
 			children = (
@@ -1174,6 +1143,56 @@
 			path = search;
 			sourceTree = "<group>";
 		};
+		076973312D63680000AEA5D1 /* notification */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = notification;
+			sourceTree = "<group>";
+		};
+		076973322D63680600AEA5D1 /* Endpoints */ = {
+			isa = PBXGroup;
+			children = (
+				076973392D63687200AEA5D1 /* NotificationEndpoints.swift */,
+			);
+			path = Endpoints;
+			sourceTree = "<group>";
+		};
+		076973332D63681200AEA5D1 /* notification */ = {
+			isa = PBXGroup;
+			children = (
+				076973322D63680600AEA5D1 /* Endpoints */,
+				076973342D63682000AEA5D1 /* Request */,
+				076973352D63682800AEA5D1 /* Response */,
+				076973362D63682D00AEA5D1 /* Service */,
+			);
+			path = notification;
+			sourceTree = "<group>";
+		};
+		076973342D63682000AEA5D1 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				0769733B2D63687800AEA5D1 /* NotificationRequest.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		076973352D63682800AEA5D1 /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				0769733D2D63687E00AEA5D1 /* NotificationResponseDTO.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
+		076973362D63682D00AEA5D1 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				076973372D63686D00AEA5D1 /* NotificationService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
 		076FAB312D2E6E0200FF3979 /* Application */ = {
 			isa = PBXGroup;
 			children = (
@@ -1251,6 +1270,7 @@
 		076FAB5C2D3020E100FF3979 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				076973312D63680000AEA5D1 /* notification */,
 				070916502D58BEE1008DC9EE /* home */,
 				0709165C2D58BEE1008DC9EE /* Clothes */,
 				07649EB52D4DE58900B6B2B2 /* Common */,
@@ -1258,7 +1278,7 @@
 				07649EBA2D4DE58900B6B2B2 /* folder */,
 				07649EC32D4DE58900B6B2B2 /* history */,
 				07649ED32D4DE58900B6B2B2 /* members */,
-				07649ED82D4DE58900B6B2B2 /* notification */,
+				076973332D63681200AEA5D1 /* notification */,
 				07649EDD2D4DE58900B6B2B2 /* recommend */,
 				07649EE22D4DE58900B6B2B2 /* search */,
 			);
@@ -1784,6 +1804,7 @@
 				070258C02D31086A00065369 /* ClosetViewController.swift in Sources */,
 				A6548E532D3F47DE00F79B66 /* WeatherAPI.swift in Sources */,
 				07ECCEB02D4EAEF700AFF486 /* LikeUserCell.swift in Sources */,
+				0769733A2D63687200AEA5D1 /* NotificationEndpoints.swift in Sources */,
 				0744FFD92D5B1E0700E60282 /* UpdateFriendCalendarView.swift in Sources */,
 				A62A429E2D4D2ADE00672D3F /* MainView.swift in Sources */,
 				A62A429F2D4D2ADE00672D3F /* HeaderView.swift in Sources */,
@@ -1904,6 +1925,7 @@
 				07649EEB2D4DE58900B6B2B2 /* NetworkError.swift in Sources */,
 				0744011E2D5CB9EB00E60282 /* AddCategoryView.swift in Sources */,
 				0744011F2D5CB9EB00E60282 /* AddCategoryViewController.swift in Sources */,
+				0769733E2D63687E00AEA5D1 /* NotificationResponseDTO.swift in Sources */,
 				074401202D5CB9EB00E60282 /* AddCategoryModel.swift in Sources */,
 				074401212D5CB9EB00E60282 /* AddCategoryHeaderView.swift in Sources */,
 				074401222D5CB9EB00E60282 /* AddCategoryViewCollectionViewCell.swift in Sources */,
@@ -1931,6 +1953,7 @@
 				07E1CB482D3662EC00F86BB8 /* UIImage+Extensions.swift in Sources */,
 				07E1CB442D3662D900F86BB8 /* UIFont+Extensions.swift in Sources */,
 				0744FFC72D5B1D8B00E60282 /* UpdateFriendCalendarViewController.swift in Sources */,
+				0769733C2D63687800AEA5D1 /* NotificationRequest.swift in Sources */,
 				0744FFC82D5B1D8B00E60282 /* NewsViewController.swift in Sources */,
 				0744FFC92D5B1D8B00E60282 /* ImageViewController.swift in Sources */,
 				A648ACDE2D5CECF00094C126 /* CategoriesResponseDTO.swift in Sources */,
@@ -1954,6 +1977,7 @@
 				07ECCEAC2D4E857B00AFF486 /* Comment.swift in Sources */,
 				07649FF82D4DE9AC00B6B2B2 /* KeychainHelper.swift in Sources */,
 				07E1CB4F2D36721900F86BB8 /* CustomNavigationBar.swift in Sources */,
+				076973382D63686D00AEA5D1 /* NotificationService.swift in Sources */,
 				076FAB402D2E6E0200FF3979 /* SceneDelegate.swift in Sources */,
 				07CF63FF2D563CAD00CCF9F4 /* RecordTagClothViewController.swift in Sources */,
 				076FAB4A2D2E748B00FF3979 /* LoginView.swift in Sources */,
@@ -1975,7 +1999,6 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱 사용 중 위치 접근 권한이 필요합니다.";
@@ -2012,7 +2035,6 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱 사용 중 위치 접근 권한이 필요합니다.";
