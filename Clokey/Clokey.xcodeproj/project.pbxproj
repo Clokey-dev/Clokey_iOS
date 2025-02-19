@@ -1576,10 +1576,10 @@
 		A62A42FE2D4D30F700672D3F /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */,
 				0744FFBD2D5B1D6900E60282 /* ViewControllers */,
 				0744FFA72D5B1D6900E60282 /* Views */,
 				0744FF922D5B1D6900E60282 /* Models */,
-				A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */,
 				07649C282D4DDD5D00B6B2B2 /* Cells */,
 			);
 			path = Home;

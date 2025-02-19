@@ -59,6 +59,9 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         
     }
     
+    var clothId1:Int64?
+    var clothId2:Int64?
+    var clothId3:Int64?
     
     private func setupActions() {
         popUpView.deleteButton.addTarget(self, action: #selector(dismissPopup), for: .touchUpInside)
@@ -331,14 +334,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    
-    
-    var clothId1:Int64?
-    var clothId2:Int64?
-    var clothId3:Int64?
-    
-    
-    
+
     func fetchWeatherRecommendations() {
         
         guard let nowTemp = nowTemp,
