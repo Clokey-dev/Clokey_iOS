@@ -209,13 +209,11 @@ class FollowProfileViewController: UIViewController {
         followProfileView.followingCountButton.addTarget(self, action: #selector(didTapFollowingButton), for: .touchUpInside)
     }
     
-//    @objc private func didTapBackButton() {
-//        let targetViewController = MainViewController() // 원하는 뷰 컨트롤러 인스턴스 생성
-//        navigationController?.setViewControllers([targetViewController], animated: false)
-//    }
     @objc private func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
+        let targetViewController = MainViewController() // 원하는 뷰 컨트롤러 인스턴스 생성
+        navigationController?.setViewControllers([targetViewController], animated: false)
     }
+   
     
     @objc private func didTapFollowButton() {
         let isCurrentlyFollowing = followProfileView.followButton.backgroundColor
