@@ -129,6 +129,11 @@ extension SceneDelegate: Coordinator {
             UserDefaults.standard.removeObject(forKey: "PendingHistoryId") // 사용 후 삭제
             fetchHistoryDetail(historyId: historyId)
         }
+        // 자동으로 clokeyId가 있는 경우 FollowProfileViewController로 이동
+        if let clokeyId = UserDefaults.standard.string(forKey: "PendingClokeyId") {
+            UserDefaults.standard.removeObject(forKey: "PendingClokeyId")
+            navigateToFollowProfile(clokeyId: clokeyId)
+        }
     }
     
     private func fetchHistoryDetail(historyId: Int) {
@@ -139,7 +144,7 @@ extension SceneDelegate: Coordinator {
 
            switch result {
            case .success(let response):
-               print("✅ 히스토리 상세 조회 성공: \(response)")
+               print("히스토리 상세 조회 성공: \(response)")
                
                DispatchQueue.main.async {
                    let detailVC = FriendsCalendarDetailViewController()
@@ -150,10 +155,29 @@ extension SceneDelegate: Coordinator {
                    }
                }
            case .failure(let error):
-               print("❌ 히스토리 상세 조회 실패: \(error.localizedDescription)")
+               print("히스토리 상세 조회 실패: \(error.localizedDescription)")
            }
        }
    }
+    
+    func handleNotificationFollow(clokeyId: String) {
+        DispatchQueue.main.async {
+            self.navigateToFollowProfile(clokeyId: clokeyId)
+        }
+    }
+    
+    private func navigateToFollowProfile(clokeyId: String) {
+        DispatchQueue.main.async {
+            guard let navController = self.window?.rootViewController as? UINavigationController else {
+                print("네비게이션 컨트롤러가 없음")
+                return
+            }
+            
+            let followProfileVC = FollowProfileViewController()
+            followProfileVC.followId = clokeyId
+            navController.pushViewController(followProfileVC, animated: true)
+        }
+    }
     
     // 화면 전환 메서드 -> AgreementViewController
     func navigateToAgreement() {
