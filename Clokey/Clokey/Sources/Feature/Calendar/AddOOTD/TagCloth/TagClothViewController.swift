@@ -120,6 +120,8 @@ class TagClothViewController: UIViewController {
     // 네비게이션 설정
     private func setupNavigationBar() {
         navigationItem.rightBarButtonItem = confirmButton
+        navigationController?.navigationBar.barTintColor = .white
+
         let navBarManager = NavigationBarManager()
         navBarManager.addBackButton(
             to: navigationItem,

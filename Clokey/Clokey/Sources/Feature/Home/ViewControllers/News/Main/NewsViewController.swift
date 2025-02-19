@@ -259,7 +259,7 @@ class NewsViewController: UIViewController {
                         self.newsView.followingCalendarUpdateSubTitle.text = firstCalendarItem.date
                         
                         self.newsView.followingCalendarProfileIcon1.kf.setImage(with: URL(string: firstCalendarItem.profileImage))
-                        
+
                         self.newsView.followingCalendarProfileName1.text = firstCalendarItem.clokeyId
                         
                         
@@ -267,21 +267,27 @@ class NewsViewController: UIViewController {
                         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleCalendarImageTap))
                         self.newsView.followingCalendarUpdateImageView1.isUserInteractionEnabled = true
                         self.newsView.followingCalendarUpdateImageView1.addGestureRecognizer(tapGesture)
-                        
+                       
                     }
                     
                     
-                    if calendarItems.count > 1, let secondImageUrl = calendarItems[1].imageUrl {
-                        self.newsView.followingCalendarUpdateImageView2.kf.setImage(with: URL(string: secondImageUrl))
-                        self.newsView.followingCalendarProfileIcon2.kf.setImage(with: URL(string: calendarItems[1].profileImage))
-                        self.newsView.followingCalendarProfileName2.text = calendarItems[1].clokeyId
-                        
-                        self.newsView.followingCalendarProfileIcon2.accessibilityIdentifier = calendarItems[1].clokeyId
-                        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileIconTap))
-                        self.newsView.followingCalendarProfileIcon2.isUserInteractionEnabled = true
-                        self.newsView.followingCalendarProfileIcon2.addGestureRecognizer(tapGesture)
-                        
+                    if calendarItems.count > 1 {
+                        let secondCalendarItem = calendarItems[1]
+
+                        if let secondImageUrl = secondCalendarItem.imageUrl {
+                            self.newsView.followingCalendarUpdateImageView2.kf.setImage(with: URL(string: secondImageUrl))
+                        }
+
+                        self.newsView.followingCalendarProfileIcon2.kf.setImage(with: URL(string: secondCalendarItem.profileImage))
+                        self.newsView.followingCalendarProfileName2.text = secondCalendarItem.clokeyId
+
+                        self.newsView.followingCalendarUpdateImageView2.accessibilityIdentifier = "\(secondCalendarItem.historyId)"
+
+                        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleCalendarImageTap))
+                        self.newsView.followingCalendarUpdateImageView2.isUserInteractionEnabled = true
+                        self.newsView.followingCalendarUpdateImageView2.addGestureRecognizer(tapGesture)
                     }
+
                     
                 }
                 

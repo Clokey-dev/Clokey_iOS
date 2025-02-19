@@ -79,7 +79,8 @@ class CalendarDetailViewController: UIViewController {
     
     private func setupNavigationBar() {
         navigationController?.navigationBar.isHidden = false
-        
+        navigationController?.navigationBar.barTintColor = .white
+
         navBarManager.addBackButton(
             to: navigationItem,
             target: self,
