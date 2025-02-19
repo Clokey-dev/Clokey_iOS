@@ -117,7 +117,8 @@ class LikeListViewController: UIViewController {
                         userId: like.clokeyId,
                         nickname: like.nickname,
                         profileImageUrl: like.imageUrl,
-                        isFollowing: like.followStatus
+                        isFollowing: like.followStatus,
+                        isMe: like.me
                     )
                 }
                 DispatchQueue.main.async {
@@ -140,26 +141,7 @@ class LikeListViewController: UIViewController {
     private func loadDummyData() {
         // 테스트용 더미 데이터
         users = [
-            LikeUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: false),
-            LikeUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            LikeUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: false),
-            LikeUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            LikeUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: false),
-            LikeUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            LikeUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: false),
-            LikeUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            LikeUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: false),
-            LikeUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            LikeUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: false),
-            LikeUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            LikeUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: false),
-            LikeUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            LikeUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: false),
-            LikeUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            LikeUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: false),
-            LikeUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            LikeUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: false),
-            LikeUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true)
+           
             // Add more dummy data as needed
         ]
         collectionView.reloadData()

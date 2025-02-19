@@ -19,7 +19,7 @@ class LikeUserCell: UICollectionViewCell {
     private let profileImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-        $0.layer.cornerRadius = 20  
+        $0.layer.cornerRadius = 20
 //        $0.backgroundColor = .systemGray5
     }
     
@@ -111,6 +111,9 @@ class LikeUserCell: UICollectionViewCell {
         }
         
         updateFollowButton(isFollowing: user.isFollowing)
+        
+        // 본인이면 followButton 숨김
+        followButton.isHidden = user.isMe
     }
     
     func updateFollowButton(isFollowing: Bool) {
