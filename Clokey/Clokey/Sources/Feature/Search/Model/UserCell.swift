@@ -79,4 +79,6 @@ class UserCell: UICollectionViewCell {
             profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "profile_placeholder"))
         }
     }
+    
+    
 }

@@ -26,6 +26,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
     private var query: String
     
     var dummyImages: [String] = []
+    var dummyHistoryIDs: [Int] = []
     private var filteredUsers: [UserModel] = []
     private var searchHistory: [String] = []
     private var initialTabIsHashtag: Bool = false
@@ -183,7 +184,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
     
     private func loadSearchHistory() {
         searchHistory = UserDefaults.standard.stringArray(forKey: "searchHistory") ?? []
-        print("📂 불러온 검색 기록: \(searchHistory)")
+       
     }
     
     private func filterUsers(with query: String) {
@@ -214,7 +215,6 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
     private func saveSearchQuery(_ query: String) {
         var searchHistory = UserDefaults.standard.stringArray(forKey: "searchHistory") ?? []
         
-        print("🔴 [Before] 기존 검색 기록: \(searchHistory)")
         
         //  중복 제거 후 맨 앞에 추가
         searchHistory.removeAll { $0 == query }
@@ -227,7 +227,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         
         UserDefaults.standard.setValue(searchHistory, forKey: "searchHistory")
         
-        print("🟢 [After] 저장된 검색 기록: \(searchHistory)")
+        
         
         //  검색 기록 다시 불러오고 UI 업데이트
         loadSearchHistory()
@@ -282,23 +282,27 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         SearchService().searchHistory(by: "hashtag-and-category", keyword: query, page: page, size: pageSize) { [weak self] result in
             switch result {
             case .success(let response):
+                // HistoryPreviewDTO에서 imageUrl과 id 값을 추출합니다.
                 let newImages = response.historyPreviews.map { $0.imageUrl }
+                let newHistoryIDs: [Int] = response.historyPreviews.map { Int($0.id) }
                 
                 DispatchQueue.main.async {
                     guard let self = self else { return }
                     
-                    //  기존 데이터 유지하면서 새 검색 결과만 추가
                     if isNextPage {
                         self.dummyImages.append(contentsOf: newImages)
+                        self.dummyHistoryIDs.append(contentsOf: newHistoryIDs)
                         self.currentPage = page
                     } else {
                         self.dummyImages = newImages
+                        self.dummyHistoryIDs = newHistoryIDs
                         self.currentPage = 1
                     }
                     
-                    //  새 검색 결과가 없을 때만 emptyLabel 보이도록 수정
                     self.searchView.emptyLabel.isHidden = !self.dummyImages.isEmpty
                     self.searchView.hashtagsCollectionView.reloadData()
+                    
+                    
                 }
                 
             case .failure(let error):
@@ -325,7 +329,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
             return
         }
         
-        print(" 현재 입력 중: \(query)")
+        
         
         //  계정 탭이 선택된 경우, 필터링 수행
         if !searchView.accountsCollectionView.isHidden {
@@ -336,13 +340,26 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
     @objc private func didTapBackButton() {
         navigationController?.popViewController(animated: true)
     }
+    @objc private func handleCalendarImageTap(_ sender: UITapGestureRecognizer) {
+        // sender.view가 UIImageView임을 확인하고, accessibilityIdentifier에 저장된 히스토리 아이디를 가져옴
+        guard let imageView = sender.view as? UIImageView,
+              let historyIdString = imageView.accessibilityIdentifier,
+              let historyId = Int(historyIdString) else {
+            
+            return
+        }
+        
+        // 히스토리 아이디를 이용하여 상세 정보를 조회
+        fetchHistoryDetail(historyId: historyId)
+    }
+
 }
 
 extension SearchResultViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let query = textField.text, !query.isEmpty else { return false }
         
-        print(" [SearchResultViewController] 검색 실행: \(query) → 검색어 저장!")
+       
         
         //  검색어 저장 추가
         searchManager.addSearchKeyword(query)
@@ -369,8 +386,7 @@ extension SearchResultViewController: UITextFieldDelegate {
                         self.users = users
                         self.filteredUsers = users
                         
-                        print("🔍 검색된 유저 수: \(users.count)")
-                        print("📌 검색된 유저 목록: \(users)")
+                      
                         
                         //  검색 결과에 따라 emptyLabel 상태 변경
                         
@@ -396,8 +412,7 @@ extension SearchResultViewController: UITextFieldDelegate {
                         self.query = query
                         self.dummyImages = newImages
                         
-                        print("🔍 검색된 해시태그 수: \(newImages.count)")
-                        print("📌 검색된 해시태그 목록: \(newImages)")
+                      
                         
                         //  검색 결과에 따라 emptyLabel 상태 변경
                         self.searchView.emptyLabel.isHidden = !newImages.isEmpty
@@ -419,6 +434,7 @@ extension SearchResultViewController: UITextFieldDelegate {
 }
 
 extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == searchView.accountsCollectionView {
             return filteredUsers.count
@@ -428,27 +444,110 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView == searchView.accountsCollectionView {
+        if collectionView == searchView.hashtagsCollectionView {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.identifier, for: indexPath) as? ImageCell else {
+                fatalError("ImageCell을 가져올 수 없음!")
+            }
+            let imageUrlString = dummyImages[indexPath.item]
+            if let url = URL(string: imageUrlString) {
+                cell.imageView.kf.setImage(with: url)
+            }
+            // dummyHistoryIDs 배열에서 historyId를 설정합니다.
+            if dummyHistoryIDs.indices.contains(indexPath.item) {
+                let historyId = dummyHistoryIDs[indexPath.item]
+                cell.imageView.accessibilityIdentifier = "\(historyId)"
+               
+            } else {
+                print(" dummyHistoryIDs에 \(indexPath.item) 인덱스 없음")
+            }
+            return cell
+        } else if collectionView == searchView.accountsCollectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UserCell.identifier, for: indexPath) as? UserCell else {
-                fatalError("❌ UserCell을 가져올 수 없음!")
+                fatalError(" UserCell을 가져올 수 없음!")
             }
             let user = filteredUsers[indexPath.item]
             cell.configure(with: user)
             return cell
-        } else {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.identifier, for: indexPath) as? ImageCell else {
-                fatalError("❌ ImageCell을 가져올 수 없음!")
+        }
+        fatalError("알 수 없는 컬렉션뷰")
+    
+    }
+    // MARK: - UICollectionViewDelegate
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == searchView.hashtagsCollectionView {
+            guard let cell = collectionView.cellForItem(at: indexPath) as? ImageCell,
+                  let historyIdString = cell.imageView.accessibilityIdentifier,
+                  let historyId = Int(historyIdString) else {
+                print("historyId 못찾음")
+                return
             }
+            fetchHistoryDetail(historyId: historyId)
+        } else if collectionView == searchView.accountsCollectionView {
+            let user = filteredUsers[indexPath.item]
+            let followProfileVC = FollowProfileViewController()
+            followProfileVC.followId = user.clokeyId
+            navigationController?.pushViewController(followProfileVC, animated: true)
+        }
+    }
+    
+    // MARK: - UICollectionViewDelegateFlowLayout
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if collectionView == searchView.accountsCollectionView {
+            // 계정 컬렉션뷰: 레이아웃에서 지정한 크기와 동일하게
+            return CGSize(width: UIScreen.main.bounds.width - 32, height: 46)
+        } else if collectionView == searchView.hashtagsCollectionView {
+            // 해시태그 컬렉션뷰: 레이아웃에서 지정한 크기와 동일하게
+            return CGSize(width: UIScreen.main.bounds.width / 3, height: 172)
+        }
+        return CGSize.zero
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        if collectionView == searchView.accountsCollectionView {
+            return 0  // accounts의 경우 delegate에서 별도의 interitem spacing을 설정하지 않음
+        } else if collectionView == searchView.hashtagsCollectionView {
+            return 0  // 해시태그 레이아웃에서 이미 0으로 설정
+        }
+        return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        if collectionView == searchView.accountsCollectionView {
+            return 16 // 계정 컬렉션뷰의 경우
+        } else if collectionView == searchView.hashtagsCollectionView {
+            return 0  // 해시태그 컬렉션뷰의 경우
+        }
+        return 0
+    }
+    
+    // MARK: - History Detail Fetch
+    
+    private func fetchHistoryDetail(historyId: Int) {
+        let historyService = HistoryService()
+        
+        historyService.historyDetail(historyId: historyId) { [weak self] result in
+            guard let self = self else { return }
             
-            //  이미지 URL을 Kingfisher로 로드
-            let imageUrl = dummyImages[indexPath.item]
-            if let url = URL(string: imageUrl) {
-                cell.imageView.kf.setImage(with: url) //  URL에서 이미지 로드
+            switch result {
+            case .success(let response):
+               
+                
+                let detailVC = FriendsCalendarDetailViewController()
+                detailVC.setDetailData(response) // 상세 데이터 전달
+                self.navigationController?.pushViewController(detailVC, animated: true)
+                
+            case .failure(let error):
+                print("히스토리 상세 조회 실패: \(error.localizedDescription)")
             }
-            
-            return cell
         }
     }
 }
-
-
+            

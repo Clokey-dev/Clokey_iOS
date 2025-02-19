@@ -223,7 +223,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
     private func performHashtagSearch(with query: String) {
         guard !query.isEmpty else { return }
         
-        print("🔍 해시태그 검색 실행: \(query)")
+       
         
         // 검색어 저장
         searchManager.addSearchKeyword(query)
@@ -251,7 +251,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
 //  최근 검색어 목록을 위한 UITableView 구현
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(" [SearchViewController] 테이블 뷰 데이터 개수: \(searchHistory.count)")
+        
         return searchHistory.count
         
     }
@@ -278,7 +278,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         
-        print(" [SearchViewController] 테이블 뷰 셀 생성: \(searchHistory[indexPath.row])")
+       
         return cell
     }
     
