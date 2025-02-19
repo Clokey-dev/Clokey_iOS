@@ -269,7 +269,7 @@ class YourFollowListViewController: UIViewController {
     }
     
     private func animateIndicator(to button: UIButton) {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.1) {
             self.indicatorView.snp.remakeConstraints { make in
                 make.centerX.equalTo(button)
                 make.top.equalTo(button.snp.bottom).offset(2)
@@ -410,5 +410,26 @@ extension YourFollowListViewController: UICollectionViewDataSource, UICollection
             return cell
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+            if collectionView == followerCollectionView {
+                let selectedUser = followerusers[indexPath.item]
+                print("팔로워 선택됨: \(selectedUser.nickname)")
+
+                // 예: 프로필 화면으로 이동
+                let followProfileViewController = FollowProfileViewController()
+                followProfileViewController.followId = selectedUser.userId
+                navigationController?.pushViewController(followProfileViewController, animated: true)
+
+            } else if collectionView == followingCollectionView {
+                let selectedUser = followingusers[indexPath.item]
+                print("팔로잉 선택됨: \(selectedUser.nickname)")
+                
+                let followProfileViewController = FollowProfileViewController()
+                followProfileViewController.followId = selectedUser.userId
+                navigationController?.pushViewController(followProfileViewController, animated: true)
+
+            }
+        }
 }
 

@@ -24,8 +24,8 @@ public struct MembersInfoResponseDTO: Codable {
     public let isFollowing: Bool?
     
     public struct ClothResult: Codable {
-        public let clothId: Int64
-        public let clothImage: String
+        public let clothId: Int64?
+        public let clothImage: String?
     }
 }
 

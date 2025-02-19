@@ -132,17 +132,47 @@ class FollowProfileViewController: UIViewController {
                     
                     // 이미지 설정 (최대 3개)
                     if clothes.count > 0 {
-                        self.followProfileView.clothesImageView1.kf.setImage(with: URL(string: clothes[0].clothImage))
-                        self.clothId1 = clothes[0].clothId
+                        if let clothImage = clothes[0].clothImage, let url = URL(string: clothImage) {
+                            self.followProfileView.clothesImageView1.kf.setImage(with: url)
+                        } else {
+                            self.followProfileView.clothesImageView1.image = UIImage(named: "default_cloth_image") // 기본 이미지 설정
+                        }
+
+                        if let clothId = clothes[0].clothId {
+                            self.clothId1 = clothId
+                        } else {
+                            print("❌ clothId1 값이 nil 입니다.")
+                        }
                     }
+                    
                     if clothes.count > 1 {
-                        self.followProfileView.clothesImageView2.kf.setImage(with: URL(string: clothes[1].clothImage))
-                        self.clothId2 = clothes[1].clothId
+                        if let clothImage = clothes[1].clothImage, let url = URL(string: clothImage) {
+                            self.followProfileView.clothesImageView2.kf.setImage(with: url)
+                        } else {
+                            self.followProfileView.clothesImageView2.image = UIImage(named: "default_cloth_image") // 기본 이미지 설정
+                        }
+
+                        if let clothId = clothes[1].clothId {
+                            self.clothId2 = clothId
+                        } else {
+                            print("❌ clothId1 값이 nil 입니다.")
+                        }
                     }
+                    
                     if clothes.count > 2 {
-                        self.followProfileView.clothesImageView3.kf.setImage(with: URL(string: clothes[2].clothImage))
-                        self.clothId3 = clothes[2].clothId
+                        if let clothImage = clothes[2].clothImage, let url = URL(string: clothImage) {
+                            self.followProfileView.clothesImageView3.kf.setImage(with: url)
+                        } else {
+                            self.followProfileView.clothesImageView3.image = UIImage(named: "default_cloth_image") // 기본 이미지 설정
+                        }
+
+                        if let clothId = clothes[2].clothId {
+                            self.clothId3 = clothId
+                        } else {
+                            print("❌ clothId1 값이 nil 입니다.")
+                        }
                     }
+                    
                     guard let isFollowing = userProfile.isFollowing else {
                         self.followProfileView.followButton.setTitle("팔로우", for: .normal)
                         self.followProfileView.followButton.backgroundColor = .mainBrown800
