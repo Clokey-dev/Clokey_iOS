@@ -12,8 +12,8 @@ import Then
 import Kingfisher
 
 // MARK: - Like User Cell
-class FollowingUserCell: UICollectionViewCell {
-    static let identifier = "FollowingUserCell"
+class MyFollowingUserCell: UICollectionViewCell {
+    static let identifier = "MyFollowingUserCell"
     
     // MARK: - UI Components
     private let profileImageView = UIImageView().then {
@@ -90,7 +90,7 @@ class FollowingUserCell: UICollectionViewCell {
     }
     
     // MARK: - Configure
-    func configure(with user: FollowingUserModel) {
+    func configure(with user: MyFollowingUserModel) {
         userIdLabel.text = user.userId
         nicknameLabel.text = user.nickname
         

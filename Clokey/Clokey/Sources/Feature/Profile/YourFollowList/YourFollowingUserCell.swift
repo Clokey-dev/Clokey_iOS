@@ -12,8 +12,8 @@ import Then
 import Kingfisher
 
 // MARK: - Like User Cell
-class FollowerUserCell: UICollectionViewCell {
-    static let identifier = "FollowerUserCell"
+class YourFollowingUserCell: UICollectionViewCell {
+    static let identifier = "YourFollowingUserCell"
     
     // MARK: - UI Components
     private let profileImageView = UIImageView().then {
@@ -30,18 +30,18 @@ class FollowerUserCell: UICollectionViewCell {
     }
     
     private let userIdLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 14, weight: .medium)
+        $0.font = .ptdMediumFont(ofSize: 14)
         $0.textColor = .black
     }
     
     private let nicknameLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 12)
+        $0.font = .ptdMediumFont(ofSize: 12)
         $0.textColor = .gray
     }
     
     let followButton = {
         var configuration = UIButton.Configuration.plain()
-        configuration.title = "팔로우"
+        configuration.title = "팔로잉"
         configuration.baseForegroundColor = .white
         configuration.background.backgroundColor = .black
         configuration.cornerStyle = .medium
@@ -90,7 +90,7 @@ class FollowerUserCell: UICollectionViewCell {
     }
     
     // MARK: - Configure
-    func configure(with user: FollowerUserModel) {
+    func configure(with user: YourFollowingUserModel) {
         userIdLabel.text = user.userId
         nicknameLabel.text = user.nickname
         
@@ -98,25 +98,25 @@ class FollowerUserCell: UICollectionViewCell {
             profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "profile_placeholder"))
         }
         
-        updateFollowButton(isFollower: user.isFollower)
+        updateFollowButton(isFollowing: user.isFollowing)
     }
     
-    func updateFollowButton(isFollower: Bool) {
+    func updateFollowButton(isFollowing: Bool) {
         var configuration = UIButton.Configuration.plain()
-        configuration.title = isFollower ? "팔로우" : "팔로잉"
-        configuration.baseForegroundColor = isFollower ? .white : .black
-        configuration.background.backgroundColor = isFollower ? .brown : .white
+        configuration.title = isFollowing ? "팔로잉" : "팔로우"
+        configuration.baseForegroundColor = isFollowing ? .mainBrown800 : .white
+        configuration.background.backgroundColor = isFollowing ? .white : .mainBrown800
         configuration.cornerStyle = .medium
         
-        if isFollower {
-            followButton.layer.borderWidth = 0
-            followButton.layer.cornerRadius = 10
-            followButton.layer.masksToBounds = true
-        } else {
+        if isFollowing {
             followButton.layer.borderWidth = 1
             followButton.layer.masksToBounds = true
             followButton.layer.cornerRadius = 10
-            followButton.layer.borderColor = UIColor.systemGray4.cgColor
+            followButton.layer.borderColor = UIColor.mainBrown400.cgColor
+        } else {
+            followButton.layer.borderWidth = 0
+            followButton.layer.cornerRadius = 10
+            followButton.layer.masksToBounds = true
         }
         
         followButton.configuration = configuration

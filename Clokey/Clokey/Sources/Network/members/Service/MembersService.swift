@@ -98,34 +98,26 @@ public final class MembersService: NetworkManager {
     
     /// 회원 조회 GET API
     public func getUserProfile (
-        clokeyId: String?,
+        clokey_id: String?,
         completion: @escaping (Result<MembersInfoResponseDTO, NetworkError>) -> Void
     ) {
         request(
-            target: .getUserProfile(clokeyId: clokeyId),
+            
+            
+            target: .getUserProfile(clokey_id: clokey_id),
             decodingType: MembersInfoResponseDTO.self,
             completion: completion
         )
     }
     
-//    public func getUser(
-//        completion: @escaping (Result<MembersInfoResponseDTO, NetworkError>) -> Void
-//    ){
-//        request(
-//            target: .getUser,
-//            decodingType: MembersInfoResponseDTO.self,
-//            completion: completion)
-//        
-//    }
     
     /// 팔로우 POST API
     public func followUser (
         data: FollowRequestDTO,
         completion: @escaping (Result<Void, NetworkError>) -> Void
     ) {
-        request(
+        requestStatusCode(
             target: .followUser(data: data),
-            decodingType: EmptyResponse.self,
             completion: { result in
                 switch result {
                 case .success:

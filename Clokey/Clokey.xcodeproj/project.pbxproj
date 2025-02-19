@@ -213,6 +213,10 @@
 		A62A42A02D4D2ADE00672D3F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429B2D4D2ADE00672D3F /* MainViewController.swift */; };
 		A62A42A12D4D2ADE00672D3F /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429D2D4D2ADE00672D3F /* TabBarView.swift */; };
 		A646C42B2D65007100993FA5 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A646C42A2D65007100993FA5 /* Config.xcconfig */; };
+		A646C4312D65ACB300993FA5 /* YourFollowerUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646C42E2D65ACB300993FA5 /* YourFollowerUserModel.swift */; };
+		A646C4322D65ACB300993FA5 /* YourFollowerUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646C42D2D65ACB300993FA5 /* YourFollowerUserCell.swift */; };
+		A646C4332D65ACB300993FA5 /* YourFollowingUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646C42F2D65ACB300993FA5 /* YourFollowingUserCell.swift */; };
+		A646C4342D65ACB300993FA5 /* YourFollowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646C4302D65ACB300993FA5 /* YourFollowListViewController.swift */; };
 		A648ACDA2D5CECA50094C126 /* CategoriesEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A648ACD92D5CECA50094C126 /* CategoriesEndPoint.swift */; };
 		A648ACDC2D5CECAC0094C126 /* CategoriesRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A648ACDB2D5CECAC0094C126 /* CategoriesRequestDTO.swift */; };
 		A648ACDE2D5CECF00094C126 /* CategoriesResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A648ACDD2D5CECF00094C126 /* CategoriesResponseDTO.swift */; };
@@ -223,10 +227,10 @@
 		A67661892D5B367B006AAB63 /* CustomBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661852D5B367B006AAB63 /* CustomBottomSheetViewController.swift */; };
 		A676618A2D5B367B006AAB63 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661862D5B367B006AAB63 /* EditProfileView.swift */; };
 		A676618B2D5B367B006AAB63 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661872D5B367B006AAB63 /* EditProfileViewController.swift */; };
-		A67661912D5B367B006AAB63 /* FollowerUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676618C2D5B367B006AAB63 /* FollowerUserCell.swift */; };
-		A67661922D5B367B006AAB63 /* FollowerUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676618D2D5B367B006AAB63 /* FollowerUserModel.swift */; };
-		A67661932D5B367B006AAB63 /* FollowingUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676618E2D5B367B006AAB63 /* FollowingUserCell.swift */; };
-		A67661942D5B367B006AAB63 /* FollowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676618F2D5B367B006AAB63 /* FollowListViewController.swift */; };
+		A67661912D5B367B006AAB63 /* MyFollowerUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676618C2D5B367B006AAB63 /* MyFollowerUserCell.swift */; };
+		A67661922D5B367B006AAB63 /* MyFollowerUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676618D2D5B367B006AAB63 /* MyFollowerUserModel.swift */; };
+		A67661932D5B367B006AAB63 /* MyFollowingUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676618E2D5B367B006AAB63 /* MyFollowingUserCell.swift */; };
+		A67661942D5B367B006AAB63 /* MyFollowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676618F2D5B367B006AAB63 /* MyFollowListViewController.swift */; };
 		A676619A2D5B367B006AAB63 /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661952D5B367B006AAB63 /* DeleteAccountView.swift */; };
 		A676619B2D5B367B006AAB63 /* DeleteAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661962D5B367B006AAB63 /* DeleteAccountViewController.swift */; };
 		A676619C2D5B367B006AAB63 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661972D5B367B006AAB63 /* SettingView.swift */; };
@@ -421,6 +425,10 @@
 		A62A429C2D4D2ADE00672D3F /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		A62A429D2D4D2ADE00672D3F /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		A646C42A2D65007100993FA5 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		A646C42D2D65ACB300993FA5 /* YourFollowerUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFollowerUserCell.swift; sourceTree = "<group>"; };
+		A646C42E2D65ACB300993FA5 /* YourFollowerUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFollowerUserModel.swift; sourceTree = "<group>"; };
+		A646C42F2D65ACB300993FA5 /* YourFollowingUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFollowingUserCell.swift; sourceTree = "<group>"; };
+		A646C4302D65ACB300993FA5 /* YourFollowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFollowListViewController.swift; sourceTree = "<group>"; };
 		A648ACD92D5CECA50094C126 /* CategoriesEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesEndPoint.swift; sourceTree = "<group>"; };
 		A648ACDB2D5CECAC0094C126 /* CategoriesRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesRequestDTO.swift; sourceTree = "<group>"; };
 		A648ACDD2D5CECF00094C126 /* CategoriesResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesResponseDTO.swift; sourceTree = "<group>"; };
@@ -431,10 +439,10 @@
 		A67661852D5B367B006AAB63 /* CustomBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomSheetViewController.swift; sourceTree = "<group>"; };
 		A67661862D5B367B006AAB63 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		A67661872D5B367B006AAB63 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
-		A676618C2D5B367B006AAB63 /* FollowerUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowerUserCell.swift; sourceTree = "<group>"; };
-		A676618D2D5B367B006AAB63 /* FollowerUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowerUserModel.swift; sourceTree = "<group>"; };
-		A676618E2D5B367B006AAB63 /* FollowingUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingUserCell.swift; sourceTree = "<group>"; };
-		A676618F2D5B367B006AAB63 /* FollowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowListViewController.swift; sourceTree = "<group>"; };
+		A676618C2D5B367B006AAB63 /* MyFollowerUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFollowerUserCell.swift; sourceTree = "<group>"; };
+		A676618D2D5B367B006AAB63 /* MyFollowerUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFollowerUserModel.swift; sourceTree = "<group>"; };
+		A676618E2D5B367B006AAB63 /* MyFollowingUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFollowingUserCell.swift; sourceTree = "<group>"; };
+		A676618F2D5B367B006AAB63 /* MyFollowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFollowListViewController.swift; sourceTree = "<group>"; };
 		A67661952D5B367B006AAB63 /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		A67661962D5B367B006AAB63 /* DeleteAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountViewController.swift; sourceTree = "<group>"; };
 		A67661972D5B367B006AAB63 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
@@ -529,8 +537,9 @@
 		070258A92D31074500065369 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				A646C42C2D65AC8600993FA5 /* YourFollowList */,
 				A67661AC2D5B3760006AAB63 /* PrivateStackView.swift */,
-				A67661902D5B367B006AAB63 /* FollowList */,
+				A67661902D5B367B006AAB63 /* MyFollowList */,
 				A67661882D5B367B006AAB63 /* EditProfile */,
 				A67661992D5B367B006AAB63 /* Settings */,
 				A67661A12D5B367B006AAB63 /* Your */,
@@ -1571,6 +1580,17 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		A646C42C2D65AC8600993FA5 /* YourFollowList */ = {
+			isa = PBXGroup;
+			children = (
+				A646C42D2D65ACB300993FA5 /* YourFollowerUserCell.swift */,
+				A646C42E2D65ACB300993FA5 /* YourFollowerUserModel.swift */,
+				A646C42F2D65ACB300993FA5 /* YourFollowingUserCell.swift */,
+				A646C4302D65ACB300993FA5 /* YourFollowListViewController.swift */,
+			);
+			path = YourFollowList;
+			sourceTree = "<group>";
+		};
 		A648ACD42D5CEC4D0094C126 /* categories */ = {
 			isa = PBXGroup;
 			children = (
@@ -1624,15 +1644,15 @@
 			path = EditProfile;
 			sourceTree = "<group>";
 		};
-		A67661902D5B367B006AAB63 /* FollowList */ = {
+		A67661902D5B367B006AAB63 /* MyFollowList */ = {
 			isa = PBXGroup;
 			children = (
-				A676618C2D5B367B006AAB63 /* FollowerUserCell.swift */,
-				A676618D2D5B367B006AAB63 /* FollowerUserModel.swift */,
-				A676618E2D5B367B006AAB63 /* FollowingUserCell.swift */,
-				A676618F2D5B367B006AAB63 /* FollowListViewController.swift */,
+				A676618C2D5B367B006AAB63 /* MyFollowerUserCell.swift */,
+				A676618D2D5B367B006AAB63 /* MyFollowerUserModel.swift */,
+				A676618E2D5B367B006AAB63 /* MyFollowingUserCell.swift */,
+				A676618F2D5B367B006AAB63 /* MyFollowListViewController.swift */,
 			);
-			path = FollowList;
+			path = MyFollowList;
 			sourceTree = "<group>";
 		};
 		A67661992D5B367B006AAB63 /* Settings */ = {
@@ -1798,6 +1818,10 @@
 				077DC91F2D62092700C02FA4 /* TokenRefreshPlugin.swift in Sources */,
 				076FAB4E2D2EBB3A00FF3979 /* KakaoAuthService.swift in Sources */,
 				0709165D2D58BEE1008DC9EE /* ClothesEndpoint.swift in Sources */,
+				A646C4312D65ACB300993FA5 /* YourFollowerUserModel.swift in Sources */,
+				A646C4322D65ACB300993FA5 /* YourFollowerUserCell.swift in Sources */,
+				A646C4332D65ACB300993FA5 /* YourFollowingUserCell.swift in Sources */,
+				A646C4342D65ACB300993FA5 /* YourFollowListViewController.swift in Sources */,
 				0709165E2D58BEE1008DC9EE /* AddClothesRequestDTO.swift in Sources */,
 				0709165F2D58BEE1008DC9EE /* InquiryClothesDetailResponseDTO.swift in Sources */,
 				070916602D58BEE1008DC9EE /* ClothesService.swift in Sources */,
@@ -1852,10 +1876,10 @@
 				07ECCB452D4E34DF00AFF486 /* TagClothView.swift in Sources */,
 				07ECCB462D4E34DF00AFF486 /* CustomGalleryViewController.swift in Sources */,
 				07ECCB472D4E34DF00AFF486 /* CalendarCell.swift in Sources */,
-				A67661912D5B367B006AAB63 /* FollowerUserCell.swift in Sources */,
-				A67661922D5B367B006AAB63 /* FollowerUserModel.swift in Sources */,
-				A67661932D5B367B006AAB63 /* FollowingUserCell.swift in Sources */,
-				A67661942D5B367B006AAB63 /* FollowListViewController.swift in Sources */,
+				A67661912D5B367B006AAB63 /* MyFollowerUserCell.swift in Sources */,
+				A67661922D5B367B006AAB63 /* MyFollowerUserModel.swift in Sources */,
+				A67661932D5B367B006AAB63 /* MyFollowingUserCell.swift in Sources */,
+				A67661942D5B367B006AAB63 /* MyFollowListViewController.swift in Sources */,
 				07ECCB482D4E34DF00AFF486 /* ImageCollectionViewCell.swift in Sources */,
 				07ECCB492D4E34DF00AFF486 /* ContentInputView.swift in Sources */,
 				07ECCB4A2D4E34DF00AFF486 /* PhotoTagView.swift in Sources */,
@@ -1995,7 +2019,8 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
@@ -2016,6 +2041,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2030,7 +2056,8 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
@@ -2051,6 +2078,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

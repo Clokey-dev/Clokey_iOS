@@ -11,7 +11,7 @@ import Foundation
 
 // 회원 조회
 public struct MembersInfoRequestDTO: Codable {
-    public let clokeyId: String
+    public let clokey_id: String
 }
 
 // 팔로우

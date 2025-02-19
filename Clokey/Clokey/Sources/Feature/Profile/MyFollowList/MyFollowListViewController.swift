@@ -9,21 +9,29 @@ import UIKit
 import SnapKit
 import Then
 
-enum FollowTabType: Int {
+enum MyFollowTabType: Int {
     case follower = 0
     case following = 1
 }
 
-class FollowListViewController: UIViewController {
-    var selectedTab: FollowTabType = .follower // 기본값: 팔로워
+class MyFollowListViewController: UIViewController {
+    var selectedTab: MyFollowTabType = .follower // 기본값: 팔로워
+    
+    var clokeyId: String = ""
+    var followerCount: Int = 0
+    var followingCount: Int = 0
     
     // MARK: - Properties
-    private var followerusers: [FollowerUserModel] = []
-    private var followingusers: [FollowingUserModel] = []
+    private var followerusers: [MyFollowerUserModel] = []
+    private var followingusers: [MyFollowingUserModel] = []
     
     private var currentPage = 1
     private var isLoading = false
     private var hasMorePages = true
+    
+    private var currentPage1 = 1
+    private var isLoading1 = false
+    private var hasMorePages1 = true
     
     // MARK: - UI Components
     private let navigationBar = UIView().then {
@@ -32,7 +40,7 @@ class FollowListViewController: UIViewController {
     
     private let titleLabel = UILabel().then {
         $0.text = "cake123(아이디란)"
-        $0.font = .systemFont(ofSize: 16, weight: .semibold)
+        $0.font = .ptdMediumFont(ofSize: 16)
     }
     
     private let closeButton = UIButton().then {
@@ -43,15 +51,15 @@ class FollowListViewController: UIViewController {
     let followerButton = UIButton(type: .system).then {
         $0.setTitle("팔로워(000)", for: .normal)
         $0.setTitleColor(.orange, for: .normal)
-        $0.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        $0.tag = FollowTabType.follower.rawValue
+        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 16)
+        $0.tag = MyFollowTabType.follower.rawValue
     }
     
     let followingButton = UIButton(type: .system).then {
         $0.setTitle("팔로잉(000)", for: .normal)
         $0.setTitleColor(.gray, for: .normal)
-        $0.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        $0.tag = FollowTabType.following.rawValue
+        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 16)
+        $0.tag = MyFollowTabType.following.rawValue
     }
     
     let separatorLine = UIView().then {
@@ -76,7 +84,7 @@ class FollowListViewController: UIViewController {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .white
-        collectionView.register(FollowerUserCell.self, forCellWithReuseIdentifier: FollowerUserCell.identifier)
+        collectionView.register(MyFollowerUserCell.self, forCellWithReuseIdentifier: MyFollowerUserCell.identifier)
         return collectionView
     }()
     
@@ -89,7 +97,7 @@ class FollowListViewController: UIViewController {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .white
-        collectionView.register(FollowingUserCell.self, forCellWithReuseIdentifier: FollowingUserCell.identifier)
+        collectionView.register(MyFollowingUserCell.self, forCellWithReuseIdentifier: MyFollowingUserCell.identifier)
         return collectionView
     }()
     
@@ -102,6 +110,10 @@ class FollowListViewController: UIViewController {
         loadFollowerData()
         loadFollowingDummyData()
         
+        titleLabel.text = clokeyId
+        followerButton.setTitle("팔로워(\(followerCount))", for: .normal)
+        followingButton.setTitle("팔로잉(\(followingCount))", for: .normal)
+        
         // 초기 탭 설정
         updateCollectionView(for: selectedTab)
         updateButtonColors(
@@ -109,6 +121,16 @@ class FollowListViewController: UIViewController {
             unselectedButton: selectedTab == .follower ? followingButton : followerButton
         )
         animateIndicator(to: selectedTab == .follower ? followerButton : followingButton)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     // MARK: - Setup
@@ -177,6 +199,7 @@ class FollowListViewController: UIViewController {
         
         followerCollectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+            $0.height.equalTo(1)
         }
         
         closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
@@ -196,7 +219,7 @@ class FollowListViewController: UIViewController {
     
     // MARK: - Button Actions
     @objc private func closeButtonTapped() {
-        dismiss(animated: true)
+        navigationController?.popViewController(animated: true)
     }
     
     @objc private func followerButtonTapped() {
@@ -217,23 +240,27 @@ class FollowListViewController: UIViewController {
     }
     
     // MARK: - Update Collection View
-     func updateCollectionView(for tabType: FollowTabType) {
+     func updateCollectionView(for tabType: MyFollowTabType) {
         followerCollectionView.removeFromSuperview()
         followingCollectionView.removeFromSuperview()
         
         switch tabType {
         case .follower:
             containerView.addSubview(followerCollectionView)
-            followerCollectionView.snp.makeConstraints {
+            followerCollectionView.snp.remakeConstraints {
                 $0.edges.equalToSuperview()
+                $0.height.equalTo(1)
             }
             followerCollectionView.reloadData()
+            loadFollowerData()
         case .following:
             containerView.addSubview(followingCollectionView)
-            followingCollectionView.snp.makeConstraints {
+            followingCollectionView.snp.remakeConstraints {
                 $0.edges.equalToSuperview()
+                $0.height.equalTo(1)
             }
             followingCollectionView.reloadData()
+            loadFollowingDummyData()
         }
     }
     
@@ -254,7 +281,7 @@ class FollowListViewController: UIViewController {
         isLoading = true
         let nextPage = isNextPage ? currentPage + 1 : 1
         
-        let clokeyId = "현재 로그인한 유저 ID" // 실제 로그인한 사용자의 ID로 변경해야 함
+        let clokeyId = clokeyId // 실제 로그인한 사용자의 ID로 변경해야 함
         let isFollowing = false // false면 팔로워 리스트를 가져옴
 
         let membersService = MembersService()
@@ -263,9 +290,8 @@ class FollowListViewController: UIViewController {
             guard let self = self else { return }
             switch result {
             case .success(let response):
-                let newResult: [FollowerUserModel] = response.members.compactMap { item -> FollowerUserModel? in
-                    let profileImageURL = URL(string: item.profileImage)
-                    return FollowerUserModel(
+                let newResult: [MyFollowerUserModel] = response.members.compactMap { item -> MyFollowerUserModel? in
+                    return MyFollowerUserModel(
                         userId: item.clokeyId,
                         nickname: item.nickname,
                         profileImageUrl: item.profileImage,
@@ -295,7 +321,7 @@ class FollowListViewController: UIViewController {
     
     private func updateFollowerCollectionViewHeight() {
         followerCollectionView.layoutIfNeeded()
-        let contentHeight = followerCollectionView.contentSize.height
+        let contentHeight = max(followerCollectionView.contentSize.height, 1)
         print("Content Height: \(contentHeight)") // 디버깅용 출력
         
         followerCollectionView.snp.updateConstraints { make in
@@ -303,23 +329,22 @@ class FollowListViewController: UIViewController {
         }
     }
     
-    private func loadFollowingDummyData(isNextPage: Bool = false) {
-        guard !isLoading && (hasMorePages || !isNextPage) else { return }
-        isLoading = true
-        let nextPage = isNextPage ? currentPage + 1 : 1
+    private func loadFollowingDummyData(isNextPage1: Bool = false) {
+        guard !isLoading && (hasMorePages1 || !isNextPage1) else { return }
+        isLoading1 = true
+        let nextPage1 = isNextPage1 ? currentPage1 + 1 : 1
         
-        let clokeyId = "현재 로그인한 유저 ID" // 실제 로그인한 사용자의 ID로 변경해야 함
+        let clokeyId = clokeyId // 실제 로그인한 사용자의 ID로 변경해야 함
         let isFollowing = true // true면 팔로잉 리스트를 가져옴
 
         let membersService = MembersService()
 
-        membersService.getFollowPeople(clokeyId: clokeyId, page: nextPage, isFollowing: isFollowing) { [weak self] result in
+        membersService.getFollowPeople(clokeyId: clokeyId, page: nextPage1, isFollowing: isFollowing) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let response):
-                let newResult: [FollowingUserModel] = response.members.compactMap { item -> FollowingUserModel? in
-                    let profileImageURL = URL(string: item.profileImage)
-                    return FollowingUserModel(
+                let newResult: [MyFollowingUserModel] = response.members.compactMap { item -> MyFollowingUserModel? in
+                    return MyFollowingUserModel(
                         userId: item.clokeyId,
                         nickname: item.nickname,
                         profileImageUrl: item.profileImage,
@@ -327,15 +352,15 @@ class FollowListViewController: UIViewController {
                     )
                 }
                 
-                if isNextPage {
+                if isNextPage1 {
                     self.followingusers.append(contentsOf: newResult)
-                    self.currentPage = nextPage
+                    self.currentPage1 = nextPage1
                 } else {
                     self.followingusers = newResult
-                    self.currentPage = 1
+                    self.currentPage1 = 1
                 }
 
-                self.hasMorePages = !newResult.isEmpty
+                self.hasMorePages1 = !newResult.isEmpty
                 
                 DispatchQueue.main.async {
                     self.followingCollectionView.reloadData()
@@ -349,7 +374,7 @@ class FollowListViewController: UIViewController {
     
     private func updateFollowingCollectionViewHeight() {
         followingCollectionView.layoutIfNeeded()
-        let contentHeight = followingCollectionView.contentSize.height
+        let contentHeight = max(followingCollectionView.contentSize.height, 1)
         print("Content Height: \(contentHeight)") // 디버깅용 출력
         
         followingCollectionView.snp.updateConstraints { make in
@@ -359,7 +384,7 @@ class FollowListViewController: UIViewController {
 }
 
 // MARK: - UICollectionView DataSource & Delegate
-extension FollowListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension MyFollowListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == followerCollectionView {
             return followerusers.count
@@ -371,11 +396,11 @@ extension FollowListViewController: UICollectionViewDataSource, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == followerCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FollowerUserCell.identifier, for: indexPath) as! FollowerUserCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyFollowerUserCell.identifier, for: indexPath) as! MyFollowerUserCell
             cell.configure(with: followerusers[indexPath.item])
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FollowingUserCell.identifier, for: indexPath) as! FollowingUserCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyFollowingUserCell.identifier, for: indexPath) as! MyFollowingUserCell
             cell.configure(with: followingusers[indexPath.item])
             return cell
         }

@@ -23,7 +23,7 @@ public struct MembersInfoResponseDTO: Codable {
     public let clothImage1: String?
     public let clothImage2: String?
     public let clothImage3: String?
-    public let isFollowing: Bool
+    public let isFollowing: Bool?
 }
 
 public struct GetAgreedTermsResponseDTO: Codable {

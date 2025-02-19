@@ -15,7 +15,7 @@ public enum MembersEndpoint {
     case getTerms
     case updateProfile(data: ProfileUpdateRequestDTO, imageData1: Data, imageData2: Data)
     case checkIdAvailability(checkId: String)
-    case getUserProfile(clokeyId: String?)
+    case getUserProfile(clokey_id: String?)
     //    case getUser
     case followUser(data: FollowRequestDTO)
     case unfollowUser(data: UnFollowRequestDTO)
@@ -124,10 +124,10 @@ extension MembersEndpoint: TargetType {
             return .uploadMultipart(multipartData)
         case .checkIdAvailability(_):
             return .requestPlain
-        case .getUserProfile(let clokeyId):
+        case .getUserProfile(let clokey_id):
             var parameters: [String: Any] = [:]
-            if let clokeyId = clokeyId {
-                parameters["ClokeyId"] = clokeyId
+            if let clokey_id = clokey_id, !clokey_id.isEmpty {
+                parameters["clokey_id"] = clokey_id
             }
             return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
             //        case .getUser:

@@ -30,14 +30,14 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         profileView.scrollView.contentInsetAdjustmentBehavior = .never
         
-//        if let userId = ProfileViewModel.shared.userId {
-//            profileView.usernameLabel.text = "@\(userId)"
-//            print("ProfileViewController에서 적용된 아이디: \(userId)")
-//        }
         calendarViewController.shouldHideUserNameLabel = true
         addCalendarViewController()
         loadData()
         setupActions()
+        
+//        profileView.followerCountButton.setTitle("\(followerCount)", for: .normal)
+//        
+//        profileView.followingCountButton.setTitle("\(followingCount)", for: .normal)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -79,22 +79,29 @@ final class ProfileViewController: UIViewController {
         calendarViewController.removeFromParent()
     }
     
+    var clokeyId: String = ""
+    var followerCount: Int = 0
+    var followingCount: Int = 0
+    
     private func loadData() {
         let clokeyId: String = ""
         
         let membersService = MembersService()
         
-        membersService.getUserProfile(clokeyId: clokeyId) { [weak self] result in
+        membersService.getUserProfile(clokey_id: clokeyId) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case .success(let userProfile):
                 DispatchQueue.main.async {
                     self.profileView.usernameLabel.text = userProfile.clokeyId
+                    self.clokeyId = userProfile.clokeyId
                     self.profileView.nicknameLabel.text = userProfile.nickname
                     self.profileView.writeCountLabel.text = "\(userProfile.recordCount)"
                     self.profileView.followerCountButton.setTitle("\(userProfile.followerCount)", for: .normal)
+                    self.followerCount = userProfile.followerCount
                     self.profileView.followingCountButton.setTitle("\(userProfile.followingCount)", for: .normal)
+                    self.followingCount = userProfile.followingCount
                     self.profileView.descriptionLabel.text = userProfile.bio
                     
                     if let profileImageUrl = userProfile.profileImageUrl,
@@ -158,18 +165,20 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc private func didTapFollowerButton() {
-        let followListViewController = FollowListViewController()
-//        followListViewController.updateCollectionView(for: .follower)
+        let followListViewController = MyFollowListViewController()
+        followListViewController.clokeyId = clokeyId
+        followListViewController.followerCount = followerCount
+        followListViewController.followingCount = followingCount
         followListViewController.selectedTab = .follower // 팔로워 탭으로 설정
-        followListViewController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
-        present(followListViewController, animated: true, completion: nil)
+        navigationController?.pushViewController(followListViewController, animated: true)
     }
     
     @objc private func didTapFollowingButton() {
-        let followListViewController = FollowListViewController()
-        followListViewController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
-//        followListViewController.updateCollectionView(for: .following)
+        let followListViewController = MyFollowListViewController()
+        followListViewController.clokeyId = clokeyId
+        followListViewController.followerCount = followerCount
+        followListViewController.followingCount = followingCount
         followListViewController.selectedTab = .following // 팔로잉 탭으로 설정
-        present(followListViewController, animated: true, completion: nil)
+        navigationController?.pushViewController(followListViewController, animated: true)
     }
 }
