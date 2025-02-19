@@ -48,7 +48,7 @@ class SettingViewController: UIViewController {
                         self.settingView.pushSwitch.isOn = pushTerm.agreed
                     }
                     
-                    self.settingView.versionLabel.text = agreedTerms.appVersion
+                    self.settingView.versionInfoLabel.text = agreedTerms.appVersion
                 }
             case .failure(let error):
                 print("설정 UI 업데이트 실패: \(error.localizedDescription)")
@@ -96,7 +96,6 @@ class SettingViewController: UIViewController {
     
     @objc private func didTapBackButton() {
         dismiss(animated: true, completion: nil)
-        
     }
 
     @objc private func didTapAgreeTerms() {

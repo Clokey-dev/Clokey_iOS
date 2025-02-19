@@ -145,19 +145,11 @@ class FollowProfileViewController: UIViewController {
     }
     
     @objc private func didTapFollowButton() {
-        guard let clokeyId = ProfileViewModel.shared.userId else {
-            print("🚨 사용자 ID 없음")
-            return
-        }
-        
-        //        let clokeyId = "qw12"
-        
         let isCurrentlyFollowing = followProfileView.followButton.backgroundColor
         let followService = MembersService()
-        let requestDTO = FollowRequestDTO(myClokeyId: clokeyId, yourClokeyId: followId)
         
         // 팔로우 중이면 -> 언팔 API 호출 / 팔로우 중이 아니면 -> 팔로우 API 호출
-        followService.followUser(data: requestDTO) { [weak self] result in
+        followService.followUser(clokeyId: followId) { [weak self] result in
             guard let self = self else { return }
             
             DispatchQueue.main.async {

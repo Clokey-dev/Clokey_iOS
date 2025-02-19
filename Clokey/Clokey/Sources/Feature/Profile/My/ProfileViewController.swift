@@ -138,8 +138,6 @@ final class ProfileViewController: UIViewController {
         }
     }
     
-    
-    
     private func setupActions() {
         profileView.settingButton.addTarget(self, action: #selector(didTapSettingButton), for: .touchUpInside)
         

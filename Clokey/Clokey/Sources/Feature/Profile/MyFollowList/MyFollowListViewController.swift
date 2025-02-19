@@ -108,7 +108,7 @@ class MyFollowListViewController: UIViewController {
         setupActions()
         setupCollectionViews()
         loadFollowerData()
-        loadFollowingDummyData()
+//        loadFollowingData()
         
         titleLabel.text = clokeyId
         followerButton.setTitle("팔로워(\(followerCount))", for: .normal)
@@ -226,12 +226,14 @@ class MyFollowListViewController: UIViewController {
         updateCollectionView(for: .follower)
         updateButtonColors(selectedButton: followerButton, unselectedButton: followingButton)
         animateIndicator(to: followerButton)
+        loadFollowerData()
     }
     
     @objc private func followingButtonTapped() {
         updateCollectionView(for: .following)
         updateButtonColors(selectedButton: followingButton, unselectedButton: followerButton)
         animateIndicator(to: followingButton)
+        loadFollowingData()
     }
     
     private func updateButtonColors(selectedButton: UIButton, unselectedButton: UIButton) {
@@ -260,7 +262,7 @@ class MyFollowListViewController: UIViewController {
                 $0.height.equalTo(1)
             }
             followingCollectionView.reloadData()
-            loadFollowingDummyData()
+            loadFollowingData()
         }
     }
     
@@ -329,8 +331,8 @@ class MyFollowListViewController: UIViewController {
         }
     }
     
-    private func loadFollowingDummyData(isNextPage1: Bool = false) {
-        guard !isLoading && (hasMorePages1 || !isNextPage1) else { return }
+    private func loadFollowingData(isNextPage1: Bool = false) {
+        guard !isLoading1 && (hasMorePages1 || !isNextPage1) else { return }
         isLoading1 = true
         let nextPage1 = isNextPage1 ? currentPage1 + 1 : 1
         

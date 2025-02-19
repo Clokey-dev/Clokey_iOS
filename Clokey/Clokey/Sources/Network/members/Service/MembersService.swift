@@ -102,8 +102,6 @@ public final class MembersService: NetworkManager {
         completion: @escaping (Result<MembersInfoResponseDTO, NetworkError>) -> Void
     ) {
         request(
-            
-            
             target: .getUserProfile(clokey_id: clokey_id),
             decodingType: MembersInfoResponseDTO.self,
             completion: completion
@@ -113,11 +111,11 @@ public final class MembersService: NetworkManager {
     
     /// 팔로우 POST API
     public func followUser (
-        data: FollowRequestDTO,
+        clokeyId: String,
         completion: @escaping (Result<Void, NetworkError>) -> Void
     ) {
         requestStatusCode(
-            target: .followUser(data: data),
+            target: .followUser(clokeyId: clokeyId),
             completion: { result in
                 switch result {
                 case .success:

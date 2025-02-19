@@ -104,7 +104,7 @@ class YourFollowingUserCell: UICollectionViewCell {
     func updateFollowButton(isFollowing: Bool) {
         var configuration = UIButton.Configuration.plain()
         configuration.title = isFollowing ? "팔로잉" : "팔로우"
-        configuration.baseForegroundColor = isFollowing ? .mainBrown800 : .white
+        configuration.baseForegroundColor = isFollowing ? .black : .white
         configuration.background.backgroundColor = isFollowing ? .white : .mainBrown800
         configuration.cornerStyle = .medium
         
@@ -112,7 +112,7 @@ class YourFollowingUserCell: UICollectionViewCell {
             followButton.layer.borderWidth = 1
             followButton.layer.masksToBounds = true
             followButton.layer.cornerRadius = 10
-            followButton.layer.borderColor = UIColor.mainBrown400.cgColor
+            followButton.layer.borderColor = UIColor.mainBrown800.cgColor
         } else {
             followButton.layer.borderWidth = 0
             followButton.layer.cornerRadius = 10

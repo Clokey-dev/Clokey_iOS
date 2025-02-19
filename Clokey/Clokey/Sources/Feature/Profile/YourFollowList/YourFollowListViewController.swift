@@ -29,6 +29,10 @@ class YourFollowListViewController: UIViewController {
     private var isLoading = false
     private var hasMorePages = true
     
+    private var currentPage1 = 1
+    private var isLoading1 = false
+    private var hasMorePages1 = true
+    
     // MARK: - UI Components
     private let navigationBar = UIView().then {
         $0.backgroundColor = .white
@@ -104,7 +108,7 @@ class YourFollowListViewController: UIViewController {
         setupActions()
         setupCollectionViews()
         loadFollowerData()
-        loadFollowingDummyData()
+//        loadFollowingData()
         
         titleLabel.text = clokeyId
         followerButton.setTitle("팔로워(\(followerCount))", for: .normal)
@@ -117,6 +121,16 @@ class YourFollowListViewController: UIViewController {
             unselectedButton: selectedTab == .follower ? followingButton : followerButton
         )
         animateIndicator(to: selectedTab == .follower ? followerButton : followingButton)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     // MARK: - Setup
@@ -212,12 +226,16 @@ class YourFollowListViewController: UIViewController {
         updateCollectionView(for: .follower)
         updateButtonColors(selectedButton: followerButton, unselectedButton: followingButton)
         animateIndicator(to: followerButton)
+        
+        loadFollowerData()
     }
     
     @objc private func followingButtonTapped() {
         updateCollectionView(for: .following)
         updateButtonColors(selectedButton: followingButton, unselectedButton: followerButton)
         animateIndicator(to: followingButton)
+        
+        loadFollowingData()
     }
     
     private func updateButtonColors(selectedButton: UIButton, unselectedButton: UIButton) {
@@ -246,7 +264,7 @@ class YourFollowListViewController: UIViewController {
                 $0.height.equalTo(1)
             }
             followingCollectionView.reloadData()
-            loadFollowingDummyData()
+            loadFollowingData()
         }
     }
     
@@ -316,22 +334,21 @@ class YourFollowListViewController: UIViewController {
         }
     }
     
-    private func loadFollowingDummyData(isNextPage: Bool = false) {
-        guard !isLoading && (hasMorePages || !isNextPage) else { return }
-        isLoading = true
-        let nextPage = isNextPage ? currentPage + 1 : 1
+    private func loadFollowingData(isNextPage1: Bool = false) {
+        guard !isLoading1 && (hasMorePages1 || !isNextPage1) else { return }
+        isLoading1 = true
+        let nextPage1 = isNextPage1 ? currentPage1 + 1 : 1
         
         let clokeyId = clokeyId // 실제 로그인한 사용자의 ID로 변경해야 함
         let isFollowing = true // true면 팔로잉 리스트를 가져옴
 
         let membersService = MembersService()
 
-        membersService.getFollowPeople(clokeyId: clokeyId, page: nextPage, isFollowing: isFollowing) { [weak self] result in
+        membersService.getFollowPeople(clokeyId: clokeyId, page: nextPage1, isFollowing: isFollowing) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let response):
                 let newResult: [YourFollowingUserModel] = response.members.compactMap { item -> YourFollowingUserModel? in
-//                    let profileImageURL = URL(string: item.profileImage)
                     return YourFollowingUserModel(
                         userId: item.clokeyId,
                         nickname: item.nickname,
@@ -340,15 +357,15 @@ class YourFollowListViewController: UIViewController {
                     )
                 }
                 
-                if isNextPage {
+                if isNextPage1 {
                     self.followingusers.append(contentsOf: newResult)
-                    self.currentPage = nextPage
+                    self.currentPage1 = nextPage1
                 } else {
                     self.followingusers = newResult
-                    self.currentPage = 1
+                    self.currentPage1 = 1
                 }
 
-                self.hasMorePages = !newResult.isEmpty
+                self.hasMorePages1 = !newResult.isEmpty
                 
                 DispatchQueue.main.async {
                     self.followingCollectionView.reloadData()
@@ -362,7 +379,7 @@ class YourFollowListViewController: UIViewController {
     
     private func updateFollowingCollectionViewHeight() {
         followingCollectionView.layoutIfNeeded()
-        let contentHeight = followingCollectionView.contentSize.height
+        let contentHeight = max(followingCollectionView.contentSize.height, 1)
         print("Content Height: \(contentHeight)") // 디버깅용 출력
         
         followingCollectionView.snp.updateConstraints { make in

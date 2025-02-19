@@ -17,7 +17,7 @@ public enum MembersEndpoint {
     case checkIdAvailability(checkId: String)
     case getUserProfile(clokey_id: String?)
     //    case getUser
-    case followUser(data: FollowRequestDTO)
+    case followUser(clokeyId: String)
     case unfollowUser(data: UnFollowRequestDTO)
     case getAgreedTerms
     case optionalTermAgree(data: OptionalTermAgreeRequestDTO)
@@ -50,10 +50,8 @@ extension MembersEndpoint: TargetType {
             return "/users/\(clokeyId)/check"
         case .getUserProfile:
             return "/users"
-            //        case .getUser:
-            //            return "/users"
-        case .followUser:
-            return "/users/follow"
+        case .followUser(let clokeyId):
+            return "/users/follow/\(clokeyId)"
         case .unfollowUser:
             return "/users/follow"
         case .getAgreedTerms:
@@ -72,7 +70,7 @@ extension MembersEndpoint: TargetType {
             return .post
         case .updateProfile:
             return .patch
-        case .checkIdAvailability, .getUserProfile,/*.getUser,*/ .getTerms, .getAgreedTerms, .getFollowPeople:
+        case .checkIdAvailability, .getUserProfile, .getTerms, .getAgreedTerms, .getFollowPeople:
             return .get
         case .unfollowUser:
             return .delete
@@ -132,8 +130,8 @@ extension MembersEndpoint: TargetType {
             return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
             //        case .getUser:
             //            return .requestPlain
-        case .followUser(let data):
-            return .requestJSONEncodable(data)
+        case .followUser(let clokeyId):
+            return .requestPlain
         case .unfollowUser(let data):
             return .requestJSONEncodable(data)
         case .getAgreedTerms:

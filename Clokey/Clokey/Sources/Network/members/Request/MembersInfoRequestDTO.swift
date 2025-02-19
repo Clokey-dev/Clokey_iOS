@@ -15,10 +15,10 @@ public struct MembersInfoRequestDTO: Codable {
 }
 
 // 팔로우
-public struct FollowRequestDTO: Codable {
-    public let myClokeyId: String
-    public let yourClokeyId: String
-}
+//public struct FollowRequestDTO: Codable {
+//    public let myClokeyId: String
+//    public let yourClokeyId: String
+//}
 
 // 언팔로우
 public struct UnFollowRequestDTO: Codable {
