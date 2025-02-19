@@ -95,9 +95,9 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     
     // 댓글 새로고침
     private func updateComments(_ newComments: [Comment]) {
-       comments = newComments
-       commentView.comments = comments
-   }
+        comments = newComments
+        commentView.comments = comments
+    }
     
     // 댓글 정렬 메서드 추가
     private func organizeComments() {

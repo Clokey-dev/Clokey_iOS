@@ -27,7 +27,7 @@ class CommentCell: UITableViewCell {
     private let profileImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-        $0.layer.cornerRadius = 17.5
+        $0.layer.cornerRadius = 20
         $0.backgroundColor = .lightGray
     }
 
