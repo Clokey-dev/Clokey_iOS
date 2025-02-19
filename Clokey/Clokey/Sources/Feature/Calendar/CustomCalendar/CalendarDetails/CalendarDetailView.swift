@@ -23,6 +23,18 @@ class CalendarDetailView: UIView {
     
     //
     private var viewModel: CalendarDetailViewModel?
+    
+
+    var shouldHidePlusButton: Bool = false {
+        didSet {
+            plusButton.isHidden = shouldHidePlusButton
+        }
+    }
+    var shouldHidelockCheckImageView: Bool = false {
+        didSet {
+            lockCheckImageView.isHidden = shouldHidelockCheckImageView
+        }
+    }
 
     
     // MARK: - UI Components
@@ -255,6 +267,9 @@ class CalendarDetailView: UIView {
         contentContainerView.addSubview(moreButton)
 
         setupConstraints()
+        
+        plusButton.isHidden = shouldHidePlusButton
+        lockCheckImageView.isHidden = shouldHidelockCheckImageView
     }
 
     

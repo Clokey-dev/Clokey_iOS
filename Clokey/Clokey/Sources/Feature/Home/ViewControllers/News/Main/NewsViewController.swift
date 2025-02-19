@@ -263,10 +263,10 @@ class NewsViewController: UIViewController {
                         self.newsView.followingCalendarProfileName1.text = firstCalendarItem.clokeyId
                         
                         
-                        self.newsView.followingCalendarProfileIcon1.accessibilityIdentifier = firstCalendarItem.clokeyId
-                        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileIconTap))
-                        self.newsView.followingCalendarProfileIcon1.isUserInteractionEnabled = true
-                        self.newsView.followingCalendarProfileIcon1.addGestureRecognizer(tapGesture)
+                        self.newsView.followingCalendarUpdateImageView1.accessibilityIdentifier = "\(firstCalendarItem.historyId)"
+                        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleCalendarImageTap))
+                        self.newsView.followingCalendarUpdateImageView1.isUserInteractionEnabled = true
+                        self.newsView.followingCalendarUpdateImageView1.addGestureRecognizer(tapGesture)
                        
                     }
                     
@@ -421,6 +421,41 @@ class NewsViewController: UIViewController {
         let presentedVC = UpdateFriendCalendarViewController()
         self.navigationController?.pushViewController(presentedVC, animated: true)
     }
+    
+    // MARK: - 세부 기록 띄우는 Action
+    @objc private func handleCalendarImageTap(_ sender: UITapGestureRecognizer) {
+        guard let imageView = sender.view as? UIImageView,
+              let historyIdString = imageView.accessibilityIdentifier,
+              let historyId = Int(historyIdString) else {
+            print("historyId 못찾음")
+            return
+        }
+        
+        fetchHistoryDetail(historyId: historyId)
+    }
+    
+    private func fetchHistoryDetail(historyId: Int) {
+        let historyService = HistoryService()
+
+        historyService.historyDetail(historyId: historyId) { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case .success(let response):
+                print("히스토리 상세 조회 성공: \(response)")
+                
+                let detailVC = FriendsCalendarDetailViewController()
+                detailVC.setDetailData(response) //  상세 데이터 전달
+                self.navigationController?.pushViewController(detailVC, animated: true)
+
+            case .failure(let error):
+                print("히스토리 상세 조회 실패: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    
+    
 }
 
 extension NewsViewController: UIPageViewControllerDataSource {
@@ -463,6 +498,4 @@ extension NewsViewController: UIPageViewControllerDelegate {
         pageControl.currentPage = index // 페이지 컨트롤 업데이트
     }
 }
-
-
 

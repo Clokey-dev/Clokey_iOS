@@ -61,7 +61,7 @@ class CommentCell: UITableViewCell {
     let mainStackView = UIStackView().then {
         $0.axis = .horizontal
         $0.spacing = 8
-        $0.alignment = .top
+        $0.alignment = .leading
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -94,7 +94,7 @@ class CommentCell: UITableViewCell {
 
         profileImageView.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(20)
-            $0.width.height.equalTo(35)
+            $0.width.height.equalTo(40)
         }
     }
 
