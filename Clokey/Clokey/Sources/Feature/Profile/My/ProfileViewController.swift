@@ -140,7 +140,7 @@ final class ProfileViewController: UIViewController {
                         if let clothId = clothes[0].clothId {
                             self.clothId1 = clothId
                         } else {
-                            print("❌ clothId1 값이 nil 입니다.")
+                            print("clothId1 값이 nil 입니다.")
                         }
                     }
                     
@@ -155,7 +155,7 @@ final class ProfileViewController: UIViewController {
                         if let clothId = clothes[1].clothId {
                             self.clothId2 = clothId
                         } else {
-                            print("❌ clothId1 값이 nil 입니다.")
+                            print("clothId1 값이 nil 입니다.")
                         }
                     }
                     
@@ -169,7 +169,7 @@ final class ProfileViewController: UIViewController {
                         if let clothId = clothes[2].clothId {
                             self.clothId3 = clothId
                         } else {
-                            print("❌ clothId1 값이 nil 입니다.")
+                            print("clothId1 값이 nil 입니다.")
                         }
                     }
                 }

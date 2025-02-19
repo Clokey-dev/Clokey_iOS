@@ -407,5 +407,29 @@ extension MyFollowListViewController: UICollectionViewDataSource, UICollectionVi
             return cell
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == followerCollectionView {
+            let selectedUser = followerusers[indexPath.item]
+            print("팔로워 선택됨: \(selectedUser.nickname)")
+            
+            let followProfileVC = FollowProfileViewController()
+            followProfileVC.followId = selectedUser.userId
+            
+            // MainViewController를 스택의 첫 번째 뷰 컨트롤러로 추가하고,
+            // 그 뒤에 FollowProfileViewController를 세팅합니다.
+            let profileVC = ProfileViewController()
+            navigationController?.setViewControllers([profileVC, followProfileVC], animated: true)
+        } else if collectionView == followingCollectionView {
+            let selectedUser = followingusers[indexPath.item]
+            print("팔로잉 선택됨: \(selectedUser.nickname)")
+            
+            let followProfileVC = FollowProfileViewController()
+            followProfileVC.followId = selectedUser.userId
+            
+            let profileVC = ProfileViewController()
+            navigationController?.setViewControllers([profileVC, followProfileVC], animated: true)
+        }
+    }
 }
 

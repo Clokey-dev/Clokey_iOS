@@ -412,24 +412,27 @@ extension YourFollowListViewController: UICollectionViewDataSource, UICollection
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-            if collectionView == followerCollectionView {
-                let selectedUser = followerusers[indexPath.item]
-                print("팔로워 선택됨: \(selectedUser.nickname)")
-
-                // 예: 프로필 화면으로 이동
-                let followProfileViewController = FollowProfileViewController()
-                followProfileViewController.followId = selectedUser.userId
-                navigationController?.pushViewController(followProfileViewController, animated: true)
-
-            } else if collectionView == followingCollectionView {
-                let selectedUser = followingusers[indexPath.item]
-                print("팔로잉 선택됨: \(selectedUser.nickname)")
-                
-                let followProfileViewController = FollowProfileViewController()
-                followProfileViewController.followId = selectedUser.userId
-                navigationController?.pushViewController(followProfileViewController, animated: true)
-
-            }
+        if collectionView == followerCollectionView {
+            let selectedUser = followerusers[indexPath.item]
+            print("팔로워 선택됨: \(selectedUser.nickname)")
+            
+            let followProfileVC = FollowProfileViewController()
+            followProfileVC.followId = selectedUser.userId
+            
+            // MainViewController를 스택의 첫 번째 뷰 컨트롤러로 추가하고,
+            // 그 뒤에 FollowProfileViewController를 세팅합니다.
+            let mainVC = MainViewController()
+            navigationController?.setViewControllers([mainVC, followProfileVC], animated: true)
+        } else if collectionView == followingCollectionView {
+            let selectedUser = followingusers[indexPath.item]
+            print("팔로잉 선택됨: \(selectedUser.nickname)")
+            
+            let followProfileVC = FollowProfileViewController()
+            followProfileVC.followId = selectedUser.userId
+            
+            let mainVC = MainViewController()
+            navigationController?.setViewControllers([mainVC, followProfileVC], animated: true)
         }
+    }
 }
 
