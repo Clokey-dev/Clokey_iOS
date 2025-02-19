@@ -15,6 +15,8 @@ import UserNotifications
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     
+    var window: UIWindow?
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Firebase 초기화
         FirebaseApp.configure()
@@ -30,6 +32,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             KakaoSDK.initSDK(appKey: appKey)
         }
 
+        // 앱이 종료된 상태에서 푸시 알림을 클릭해 실행된 경우, historyId 저장
+        if let remoteNotification = launchOptions?[.remoteNotification] as? [AnyHashable: Any] {
+            handleNotification(userInfo: remoteNotification)
+        }
+
         return true
     }
 
@@ -37,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
         UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { granted, error in
             if granted {
-                print(" 푸시 알림 권한 허용됨")
+                print("✅ 푸시 알림 권한 허용됨")
             } else {
                 print("❌ 푸시 알림 권한 거부됨")
             }
@@ -59,6 +66,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("❌ APNs 등록 실패: \(error.localizedDescription)")
     }
+
+    // MARK: - 푸시 알림 클릭 시 historyId 저장
+    func handleNotification(userInfo: [AnyHashable: Any]) {
+        guard let historyIdString = userInfo["historyId"] as? String,
+              let historyId = Int(historyIdString) else {
+            print("❌ historyId 없음")
+            return
+        }
+
+        // historyId를 UserDefaults에 저장
+        UserDefaults.standard.set(historyId, forKey: "PendingHistoryId")
+        UserDefaults.standard.synchronize()
+    }
 }
 
 // MARK: - Firebase MessagingDelegate
@@ -66,7 +86,6 @@ extension AppDelegate: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         guard let fcmToken = fcmToken else { return }
         print("📌 FCM Token: \(fcmToken)")
-        // FCM Token을 UserDefaults에 저장
         UserDefaults.standard.set(fcmToken, forKey: "FCMToken")
         UserDefaults.standard.synchronize()
     }
@@ -76,6 +95,15 @@ extension AppDelegate: MessagingDelegate {
 extension AppDelegate {
     // 포그라운드에서 알림 수신
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        let userInfo = notification.request.content.userInfo
+        handleNotification(userInfo: userInfo) // 포그라운드에서도 데이터 활용 가능
         completionHandler([.alert, .badge, .sound])
+    }
+
+    // 백그라운드 & 종료 상태에서 푸시 클릭 시 실행되는 메서드
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        handleNotification(userInfo: userInfo)
+        completionHandler()
     }
 }
