@@ -189,9 +189,17 @@ class RecordOOTDViewController: UIViewController {
                 return image.jpegData(compressionQuality: 1.0) ?? nil
             }
             
+            DispatchQueue.main.async {
+                self.mainView.loadingIndicator.startAnimating()
+            }
+            
             let historyService = HistoryService()
             historyService.historyCreate(data: requestDTO, images: imageDataArray) { [weak self] result in
                 guard let self = self else { return }
+                
+                DispatchQueue.main.async {
+                    self.mainView.loadingIndicator.stopAnimating()
+                }
                 
                 switch result {
                 case .success(let response):
@@ -429,6 +437,12 @@ extension RecordOOTDViewController {
     */
     // 태그한 옷 불러오기
         func loadTaggedClothes(from cloths: [CalendarDetailViewModel.ClothDTO]) {
+        
+        // 로딩 인디케이터
+        DispatchQueue.main.async {
+                self.mainView.loadingIndicator.startAnimating()
+            }
+            
         // 비동기 네트워크 요청 관리를 위한 DispatchGroup 생성
         let dispatchGroup = DispatchGroup()
         var loadedClothes: [(id: Int, image: UIImage, title: String)] = []
@@ -456,6 +470,8 @@ extension RecordOOTDViewController {
             self.mainView.photoTagView.tagCollectionView.reloadData()
             self.mainView.photoTagView.updateTagCollectionViewHeight(!loadedClothes.isEmpty)
             
+            self.mainView.loadingIndicator.stopAnimating()
+
             self.mainView.OOTDButton.setEnabled(!loadedClothes.isEmpty)
         }
     }
