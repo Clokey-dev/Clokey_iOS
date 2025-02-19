@@ -11,17 +11,50 @@ class NotificationViewModel {
             switch result {
             case .success(let response):
                 self?.notifications = response.notificationResults.map { dto in
-                    NotificationItem(
+                    // 서버 응답: dto.redirectType == .historyRedirect or .memberRedirect
+                    //           dto.redirectInfo == "15" or "paeng" 등
+                    let date = Self.formatDate(dto.createdAt)
+                    
+                    // (선택) 좋아요/팔로우 알림 판별 로직
+                    let appNotificationType: NotificationType? = {
+                        // 예: content 안의 문구를 보고 구분
+                        if dto.content.contains("좋아요") {
+                            return .like
+                        } else if dto.content.contains("팔로우") {
+                            return .follower
+                        } else if dto.content.contains("댓글") {
+                            return .recap
+                        } else {
+                            return nil
+                        }
+                    }()
+                    
+                    return NotificationItem(
                         id: Int(dto.notificationId),
-                        type: NotificationType(rawValue: dto.redirectType.rawValue) ?? .like,
                         title: dto.content,
-                        content: "",
-                        createdAt: Self.formatDate(dto.createdAt),
+                        createdAt: date,
                         imageUrl: dto.notificationImageUrl,
-                        isRead: dto.isRead
+                        isRead: dto.isRead,
+                        redirectType: {
+                            switch dto.redirectType {
+                            case .historyRedirect:
+                                return .historyRedirect
+                            case .memberRedirect:
+                                return .memberRedirect
+                            }
+                        }(),
+                        redirectInfo: {
+                            // dto.redirectInfo는 enum RedirectInfo 형태이므로, 내부를 꺼내 문자열로 저장
+                            switch dto.redirectInfo {
+                            case .historyId(let hId):
+                                return String(hId) // "15"
+                            case .clokeyId(let cId):
+                                return cId         // "paeng"
+                            }
+                        }()
+                        
                     )
                 }
-                // 여기서는 NotificationViewController에서만 테이블 뷰를 리로드하게 함
                 NotificationCenter.default.post(name: NSNotification.Name("ReloadNotifications"), object: nil)
             case .failure(let error):
                 print("❌ 알림 목록 조회 실패: \(error.localizedDescription)")
