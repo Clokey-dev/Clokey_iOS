@@ -11,13 +11,16 @@ import Then
 import Kingfisher
 
 class FollowProfileViewController: UIViewController {
-
+    
     // MARK: - Properties
     private let followProfileView = FollowProfileView()
     
-//    private let model = FollowProfileModel.dummy()
+    private let calendarViewController = CalendarViewController()
     
     var followId: String = ""
+    var clokey_Id: String = ""
+    var followerCount: Int = 0
+    var followingCount: Int = 0
     
     // MARK: - Lifecycle
     override func loadView() {
@@ -27,7 +30,7 @@ class FollowProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         followProfileView.scrollView.contentInsetAdjustmentBehavior = .never
-
+        
         loadData()
         setupActions()
     }
@@ -36,7 +39,7 @@ class FollowProfileViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -52,21 +55,25 @@ class FollowProfileViewController: UIViewController {
     
     private func loadData() {
         
-        let clokeyId = followId
+//        let clokeyId = followId
         
         let membersService = MembersService()
         
-        membersService.getUserProfile(clokeyId: clokeyId) { [weak self] result in
+        
+        membersService.getUserProfile(clokey_id: followId) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case .success(let userProfile):
                 DispatchQueue.main.async {
                     self.followProfileView.usernameLabel.text = userProfile.clokeyId
+                    self.clokey_Id = userProfile.clokeyId
                     self.followProfileView.nicknameLabel.text = userProfile.nickname
                     self.followProfileView.writeCountLabel.text = "\(userProfile.recordCount)"
                     self.followProfileView.followerCountButton.setTitle("\(userProfile.followerCount)", for: .normal)
+                    self.followerCount = userProfile.followerCount
                     self.followProfileView.followingCountButton.setTitle("\(userProfile.followingCount)", for: .normal)
+                    self.followingCount = userProfile.followingCount
                     self.followProfileView.descriptionLabel.text = userProfile.bio
                     
                     
@@ -97,8 +104,17 @@ class FollowProfileViewController: UIViewController {
                     } else {
                         self.followProfileView.clothesImageView3.image = UIImage(named: "default_cloth_image")
                     }
-                    if userProfile.isFollowing {
+                    guard let isFollowing = userProfile.isFollowing else {
                         self.followProfileView.followButton.setTitle("팔로우", for: .normal)
+                        self.followProfileView.followButton.backgroundColor = .mainBrown800
+                        self.followProfileView.followButton.setTitleColor(.white, for: .normal)
+                        self.followProfileView.followButton.layer.borderColor = UIColor.mainBrown800.cgColor
+                        self.followProfileView.followButton.layer.borderWidth = 1
+                        return
+                    }
+                    
+                    if isFollowing {
+                        self.followProfileView.followButton.setTitle("팔로잉", for: .normal)
                         self.followProfileView.followButton.backgroundColor = .white
                         self.followProfileView.followButton.setTitleColor(.black, for: .normal)
                         self.followProfileView.followButton.layer.borderColor = UIColor.mainBrown800.cgColor
@@ -128,39 +144,14 @@ class FollowProfileViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-//    @objc private func didTapFollowButton() {
-//        let isCurrentlyFollowing = followProfileView.followButton.backgroundColor == .mainBrown800
-//        
-//        if isCurrentlyFollowing {
-//            followProfileView.followButton.setTitle("팔로우", for: .normal)
-//            followProfileView.followButton.backgroundColor = .white
-//            followProfileView.followButton.setTitleColor(.black, for: .normal)
-//            followProfileView.followButton.layer.borderColor = UIColor.mainBrown800.cgColor
-//            followProfileView.followButton.layer.borderWidth = 1
-//        } else {
-//            followProfileView.followButton.setTitle("팔로잉", for: .normal)
-//            followProfileView.followButton.backgroundColor = .mainBrown800
-//            followProfileView.followButton.setTitleColor(.white, for: .normal)
-//            followProfileView.followButton.layer.borderColor = UIColor.mainBrown800.cgColor
-//            followProfileView.followButton.layer.borderWidth = 1
-//        }
-//    }
     @objc private func didTapFollowButton() {
-        //        guard let clokeyId = ProfileViewModel.shared.userId else {
-        //            print("🚨 사용자 ID 없음")
-        //            return
-        //        }
-                
-        let clokeyId = "qw12"
-        
         let isCurrentlyFollowing = followProfileView.followButton.backgroundColor
         let followService = MembersService()
-        let requestDTO = FollowRequestDTO(myClokeyId: clokeyId, yourClokeyId: followId)
-
+        
         // 팔로우 중이면 -> 언팔 API 호출 / 팔로우 중이 아니면 -> 팔로우 API 호출
-        followService.followUser(data: requestDTO) { [weak self] result in
+        followService.followUser(clokeyId: followId) { [weak self] result in
             guard let self = self else { return }
-
+            
             DispatchQueue.main.async {
                 switch result {
                 case .success:
@@ -185,20 +176,24 @@ class FollowProfileViewController: UIViewController {
             }
         }
     }
-
-   
+    
+    
     @objc private func didTapFollowerButton() {
-        let followListViewController = FollowListViewController()
+        let followListViewController = YourFollowListViewController()
         followListViewController.selectedTab = .follower // 팔로워 탭으로 설정
-        followListViewController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
-        present(followListViewController, animated: true, completion: nil)
+        followListViewController.followerCount = followerCount
+        followListViewController.followingCount = followingCount
+        followListViewController.clokeyId = self.clokey_Id
+        navigationController?.pushViewController(followListViewController, animated: true)
     }
     
     @objc private func didTapFollowingButton() {
-        let followListViewController = FollowListViewController()
-        followListViewController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
+        let followListViewController = YourFollowListViewController()
         followListViewController.selectedTab = .following // 팔로잉 탭으로 설정
-        present(followListViewController, animated: true, completion: nil)
+        followListViewController.followerCount = followerCount
+        followListViewController.followingCount = followingCount
+        followListViewController.clokeyId = self.clokey_Id
+        navigationController?.pushViewController(followListViewController, animated: true)
     }
-
+    
 }

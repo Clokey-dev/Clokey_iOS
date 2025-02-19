@@ -210,13 +210,13 @@ class PopupView: UIView {
             make.centerX.equalToSuperview()
         }
         
-        frontButton.snp.makeConstraints { make in
-            make.size.equalTo(16)
-        }
-        
         categoryButton1.snp.makeConstraints { make in
             make.width.equalTo(43)
             make.height.equalTo(22)
+        }
+        
+        frontButton.snp.makeConstraints { make in
+            make.size.equalTo(16)
         }
         
         

@@ -98,24 +98,24 @@ public final class MembersService: NetworkManager {
     
     /// 회원 조회 GET API
     public func getUserProfile (
-        clokeyId: String,
+        clokey_id: String?,
         completion: @escaping (Result<MembersInfoResponseDTO, NetworkError>) -> Void
     ) {
         request(
-            target: .getUserProfile(clokeyId: clokeyId),
+            target: .getUserProfile(clokey_id: clokey_id),
             decodingType: MembersInfoResponseDTO.self,
             completion: completion
         )
     }
     
+    
     /// 팔로우 POST API
     public func followUser (
-        data: FollowRequestDTO,
+        clokeyId: String,
         completion: @escaping (Result<Void, NetworkError>) -> Void
     ) {
-        request(
-            target: .followUser(data: data),
-            decodingType: EmptyResponse.self,
+        requestStatusCode(
+            target: .followUser(clokeyId: clokeyId),
             completion: { result in
                 switch result {
                 case .success:
@@ -162,6 +162,19 @@ public final class MembersService: NetworkManager {
         request(
             target: .optionalTermAgree(data: data),
             decodingType: GetAgreedTermsResponseDTO.self,
+            completion: completion
+        )
+    }
+    
+    public func getFollowPeople(
+        clokeyId: String,
+        page: Int,
+        isFollowing: Bool,
+        completion: @escaping (Result<GetFollowPeopleResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .getFollowPeople(clokeyId: clokeyId, page: page, isFollowing: isFollowing),
+            decodingType: GetFollowPeopleResponseDTO.self,
             completion: completion
         )
     }

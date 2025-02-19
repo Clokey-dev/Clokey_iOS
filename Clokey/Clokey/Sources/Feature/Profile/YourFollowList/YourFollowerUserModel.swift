@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct FollowerUserModel {
+struct YourFollowerUserModel {
     let userId: String
     let nickname: String
     let profileImageUrl: String
-    var isFollower: Bool
+    var isFollowing: Bool
 }
 
-struct FollowingUserModel {
+struct YourFollowingUserModel {
     let userId: String
     let nickname: String
     let profileImageUrl: String

@@ -49,7 +49,7 @@ public final class ClothesService : NetworkManager {
     }
     
     public func checkPopUpClothes (
-        clothId: Int,
+        clothId: Int64,
         completion: @escaping (Result<checkPopUpClothesResponseDTO, NetworkError>) -> Void
     ) {
         request(

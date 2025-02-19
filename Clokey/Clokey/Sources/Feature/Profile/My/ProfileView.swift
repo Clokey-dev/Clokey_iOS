@@ -384,7 +384,7 @@ final class ProfileView: UIView {
         
         calendarContainerView.snp.makeConstraints {
             $0.top.equalTo(recordLabel.snp.bottom)
-            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(600)
             $0.bottom.equalToSuperview().offset(20)
         }

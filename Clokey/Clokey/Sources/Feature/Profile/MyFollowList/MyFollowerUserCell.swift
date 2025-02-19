@@ -12,8 +12,8 @@ import Then
 import Kingfisher
 
 // MARK: - Like User Cell
-class FollowerUserCell: UICollectionViewCell {
-    static let identifier = "FollowerUserCell"
+class MyFollowerUserCell: UICollectionViewCell {
+    static let identifier = "MyFollowerUserCell"
     
     // MARK: - UI Components
     private let profileImageView = UIImageView().then {
@@ -90,7 +90,7 @@ class FollowerUserCell: UICollectionViewCell {
     }
     
     // MARK: - Configure
-    func configure(with user: FollowerUserModel) {
+    func configure(with user: MyFollowerUserModel) {
         userIdLabel.text = user.userId
         nicknameLabel.text = user.nickname
         
@@ -98,14 +98,14 @@ class FollowerUserCell: UICollectionViewCell {
             profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "profile_placeholder"))
         }
         
-        updateFollowButton(isFollower: user.isFollower)
+        updateFollowButton(isFollower: user.isFollowing)
     }
     
     func updateFollowButton(isFollower: Bool) {
         var configuration = UIButton.Configuration.plain()
         configuration.title = isFollower ? "팔로우" : "팔로잉"
         configuration.baseForegroundColor = isFollower ? .white : .black
-        configuration.background.backgroundColor = isFollower ? .brown : .white
+        configuration.background.backgroundColor = isFollower ? .mainBrown800 : .white
         configuration.cornerStyle = .medium
         
         if isFollower {
@@ -116,7 +116,7 @@ class FollowerUserCell: UICollectionViewCell {
             followButton.layer.borderWidth = 1
             followButton.layer.masksToBounds = true
             followButton.layer.cornerRadius = 10
-            followButton.layer.borderColor = UIColor.systemGray4.cgColor
+            followButton.layer.borderColor = UIColor.mainBrown800.cgColor
         }
         
         followButton.configuration = configuration

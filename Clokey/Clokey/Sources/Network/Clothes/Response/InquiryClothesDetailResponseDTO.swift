@@ -44,15 +44,15 @@ public struct checkEditClothesResponseDTO: Codable {
 // 옷 조회(팝업용)
 public struct checkPopUpClothesResponseDTO: Codable {
     public let id: Int64
-    public let regDate: Date
+    public let regDate: String
     public let dayOfWeek: String
     public let imageUrl: String
     public let name: String
     public let seasons: [String]
     public let wearNum: Int
-    public let visibility: [String]
-    public let brand: String
-    public let clothUrl: String
+    public let visibility: String
+    public let brand: String?
+    public let clothUrl: String?
     public let category: String
 }
 

@@ -11,14 +11,14 @@ import Foundation
 
 // 회원 조회
 public struct MembersInfoRequestDTO: Codable {
-    public let clokeyId: String
+    public let clokey_id: String
 }
 
 // 팔로우
-public struct FollowRequestDTO: Codable {
-    public let myClokeyId: String
-    public let yourClokeyId: String
-}
+//public struct FollowRequestDTO: Codable {
+//    public let myClokeyId: String
+//    public let yourClokeyId: String
+//}
 
 // 언팔로우
 public struct UnFollowRequestDTO: Codable {

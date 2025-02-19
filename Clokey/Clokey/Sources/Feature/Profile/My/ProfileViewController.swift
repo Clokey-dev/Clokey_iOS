@@ -14,6 +14,8 @@ final class ProfileViewController: UIViewController {
     private let mainView = MainView()
     // MARK: - Properties
     private let profileView = ProfileView()
+    private let popUpView = PickPopUpView()
+    private var backgroundView: UIView?// 배경 어둡게 하기 위해 선언
     
     private let model = ProfileModel.dummy()
     
@@ -30,19 +32,24 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         profileView.scrollView.contentInsetAdjustmentBehavior = .never
         
-//        if let userId = ProfileViewModel.shared.userId {
-//            profileView.usernameLabel.text = "@\(userId)"
-//            print("ProfileViewController에서 적용된 아이디: \(userId)")
-//        }
+        definesPresentationContext = true // 현재 컨텍스트에서 새로운 뷰 표시
+        
         calendarViewController.shouldHideUserNameLabel = true
         addCalendarViewController()
         loadData()
         setupActions()
+        
+        setupPopupActions()
+        
+//        profileView.followerCountButton.setTitle("\(followerCount)", for: .normal)
+//        
+//        profileView.followingCountButton.setTitle("\(followingCount)", for: .normal)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        
         loadData()
     }
 
@@ -79,34 +86,28 @@ final class ProfileViewController: UIViewController {
     }
     
     var clokeyId: String = ""
+    var followerCount: Int = 0
+    var followingCount: Int = 0
     
     private func loadData() {
-//        guard let clokeyId = ProfileViewModel.shared.userId else {
-//            print("🚨 사용자 ID 없음")
-//            return
-//        }
-        
-        if var clokeyId = ProfileViewModel.shared.userId {
-//                profileView.usernameLabel.text = "@\(clokeyId)"
-            self.clokeyId = clokeyId
-                print(" ProfileViewController에서 불러온 ID: \(clokeyId)")
-            }
-        
-//        let clokeyId = "qw12"
+        let clokeyId: String = ""
         
         let membersService = MembersService()
         
-        membersService.getUserProfile(clokeyId: clokeyId) { [weak self] result in
+        membersService.getUserProfile(clokey_id: clokeyId) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case .success(let userProfile):
                 DispatchQueue.main.async {
                     self.profileView.usernameLabel.text = userProfile.clokeyId
+                    self.clokeyId = userProfile.clokeyId
                     self.profileView.nicknameLabel.text = userProfile.nickname
                     self.profileView.writeCountLabel.text = "\(userProfile.recordCount)"
                     self.profileView.followerCountButton.setTitle("\(userProfile.followerCount)", for: .normal)
+                    self.followerCount = userProfile.followerCount
                     self.profileView.followingCountButton.setTitle("\(userProfile.followingCount)", for: .normal)
+                    self.followingCount = userProfile.followingCount
                     self.profileView.descriptionLabel.text = userProfile.bio
                     
                     if let profileImageUrl = userProfile.profileImageUrl,
@@ -143,8 +144,6 @@ final class ProfileViewController: UIViewController {
         }
     }
     
-    
-    
     private func setupActions() {
         profileView.settingButton.addTarget(self, action: #selector(didTapSettingButton), for: .touchUpInside)
         
@@ -170,18 +169,296 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc private func didTapFollowerButton() {
-        let followListViewController = FollowListViewController()
-//        followListViewController.updateCollectionView(for: .follower)
+        let followListViewController = MyFollowListViewController()
+        followListViewController.clokeyId = clokeyId
+        followListViewController.followerCount = followerCount
+        followListViewController.followingCount = followingCount
         followListViewController.selectedTab = .follower // 팔로워 탭으로 설정
-        followListViewController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
-        present(followListViewController, animated: true, completion: nil)
+        navigationController?.pushViewController(followListViewController, animated: true)
     }
     
     @objc private func didTapFollowingButton() {
-        let followListViewController = FollowListViewController()
-        followListViewController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
-//        followListViewController.updateCollectionView(for: .following)
+        let followListViewController = MyFollowListViewController()
+        followListViewController.clokeyId = clokeyId
+        followListViewController.followerCount = followerCount
+        followListViewController.followingCount = followingCount
         followListViewController.selectedTab = .following // 팔로잉 탭으로 설정
-        present(followListViewController, animated: true, completion: nil)
+        navigationController?.pushViewController(followListViewController, animated: true)
+    }
+    
+    var clothId1:Int64?
+    var clothId2:Int64?
+    var clothId3:Int64?
+    
+    
+    private func setupPopupActions() {
+        popUpView.deleteButton.addTarget(self, action: #selector(dismissPopup), for: .touchUpInside)
+        
+        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(handleImageTap(_:)))
+        profileView.clothesImageView1.isUserInteractionEnabled = true
+        profileView.clothesImageView1.addGestureRecognizer(tapGesture1)
+        
+        let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(handleImageTap(_:)))
+        profileView.clothesImageView2.isUserInteractionEnabled = true
+        profileView.clothesImageView2.addGestureRecognizer(tapGesture2)
+        
+        let tapGesture3 = UITapGestureRecognizer(target: self, action: #selector(handleImageTap(_:)))
+        profileView.clothesImageView3.isUserInteractionEnabled = true
+        profileView.clothesImageView3.addGestureRecognizer(tapGesture3)
+    }
+    
+    // 팝업 닫기 함수
+    @objc private func dismissPopup() {
+        guard let keyWindow = UIApplication.shared.connectedScenes
+            .compactMap({ ($0 as? UIWindowScene)?.windows.first })
+            .first else { return }
+        
+        //  keyWindow에서 PopUpView 찾기
+        if let popUpView = keyWindow.subviews.first(where: { $0 is PickPopUpView }) {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.backgroundView?.alpha = 0 // 배경도 함께 사라지게 함
+                popUpView.alpha = 0
+            }) { _ in
+                self.backgroundView?.removeFromSuperview() // 배경 제거
+                popUpView.removeFromSuperview()
+                self.backgroundView = nil // 참조 해제
+            }
+        }
+    }
+    
+    
+    @objc private func handleImageTap(_ sender: UITapGestureRecognizer) {
+        guard let tappedImageView = sender.view as? UIImageView else { return }
+        
+        var selectedClothId: Int64?
+        
+        if tappedImageView == profileView.clothesImageView1 {
+            selectedClothId = clothId1
+        } else if tappedImageView == profileView.clothesImageView2 {
+            selectedClothId = clothId2
+        } else if tappedImageView == profileView.clothesImageView3 {
+            selectedClothId = clothId3
+        }
+        
+        guard let clothId = selectedClothId else {
+            print("❌ clothId 값이 없습니다.")
+            return
+        }
+        
+        
+        showPopup(with: tappedImageView.image, clothId: clothId)
+    }
+    
+    private func showPopup(with image: UIImage?, clothId: Int64) {
+        guard let keyWindow = UIApplication.shared.connectedScenes
+            .compactMap({ ($0 as? UIWindowScene)?.windows.first })
+            .first else { return } // keyWindow 설정
+        
+        // 뒷 배경 어둡게
+        let bgView = UIView()
+        bgView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        bgView.alpha = 0
+        keyWindow.addSubview(bgView)
+        bgView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        backgroundView = bgView
+        
+        // 팝업 뷰 생성
+        let popUpView = PickPopUpView()
+        popUpView.alpha = 0
+        popUpView.setImage(image)
+        keyWindow.addSubview(popUpView)
+        
+        popUpView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.width.equalTo(290)
+            make.height.equalTo(448)
+        }
+        
+        // 팝업 애니메이션 효과
+        UIView.animate(withDuration: 0.3) {
+            bgView.alpha = 1
+            popUpView.alpha = 1
+        }
+        
+        // closeButton 클릭 시 팝업 닫기 기능 추가
+        popUpView.deleteButton.addTarget(self, action: #selector(dismissPopup), for: .touchUpInside)
+        
+        let clotehsService = ClothesService()
+        
+        // ✅ checkPopUpClothes API 호출 및 UI 업데이트
+        clotehsService.checkPopUpClothes(clothId: clothId) { [weak self] result in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    // 응답 데이터를 popUpView에 반영
+                    popUpView.nameLabel.text = response.name
+                    if let imageUrl = URL(string: response.imageUrl) {
+                        popUpView.imageView.kf.setImage(with: imageUrl)
+                    } else {
+                        print("유효하지 않은 이미지 URL: \(response.imageUrl)")
+                    }
+                    if response.visibility == "PUBLIC" {
+                        popUpView.publicButton.setImage(UIImage(named: "public_icon"), for: .normal)
+                    } else {
+                        popUpView.publicButton.setImage(UIImage(named: "private_icon"), for: .normal)
+                    }
+                    
+                    
+                    popUpView.categoryButton2.setTitle("\(response.category)", for: .normal)
+                    print(response.category)
+                    
+                    if let categoryName = CategoryModel.getCategoryNameByClothName(response.category) {
+                        print(categoryName) // 출력: "상의"
+                        popUpView.categoryButton1.setTitle("\(categoryName)", for: .normal)
+                    }
+                    
+                    if response.seasons.count > 0 {
+                        if response.seasons[0] == "SPRING" {
+                            //                                configureButton(popUpView.springButton, title: "봄")
+                            popUpView.springButton.setTitleColor(.white, for: .normal)
+                            popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.springButton.layer.cornerRadius = 5
+                            popUpView.springButton.layer.borderWidth = 1
+                        } else if response.seasons[0] == "SUMMER" {
+                            //                                configureButton(popUpView.summerButton, title: "여름")
+                            popUpView.summerButton.setTitleColor(.white, for: .normal)
+                            popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.summerButton.layer.cornerRadius = 5
+                            popUpView.summerButton.layer.borderWidth = 1
+                        } else if response.seasons[0] == "FALL" {
+                            //                                configureButton(popUpView.fallButton, title: "가을")
+                            popUpView.fallButton.setTitleColor(.white, for: .normal)
+                            popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.fallButton.layer.cornerRadius = 5
+                            popUpView.fallButton.layer.borderWidth = 1
+                        } else if response.seasons[0] == "WINTER" {
+                            //                                configureButton(popUpView.winterButton, title: "겨울")
+                            popUpView.winterButton.setTitleColor(.white, for: .normal)
+                            popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.winterButton.layer.cornerRadius = 5
+                            popUpView.winterButton.layer.borderWidth = 1
+                        }
+                    }
+                    
+                    if response.seasons.count > 1 {
+                        if response.seasons[1] == "SPRING" {
+                            //                                configureButton(popUpView.springButton, title: "봄")
+                            popUpView.springButton.setTitleColor(.white, for: .normal)
+                            popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.springButton.layer.cornerRadius = 5
+                            popUpView.springButton.layer.borderWidth = 1
+                        } else if response.seasons[1] == "SUMMER" {
+                            //                                configureButton(popUpView.summerButton, title: "여름")
+                            popUpView.summerButton.setTitleColor(.white, for: .normal)
+                            popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.summerButton.layer.cornerRadius = 5
+                            popUpView.summerButton.layer.borderWidth = 1
+                        } else if response.seasons[1] == "FALL" {
+                            //                                configureButton(popUpView.fallButton, title: "가을")
+                            popUpView.fallButton.setTitleColor(.white, for: .normal)
+                            popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.fallButton.layer.cornerRadius = 5
+                            popUpView.fallButton.layer.borderWidth = 1
+                        } else if response.seasons[1] == "WINTER" {
+                            //                                configureButton(popUpView.winterButton, title: "겨울")
+                            popUpView.winterButton.setTitleColor(.white, for: .normal)
+                            popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.winterButton.layer.cornerRadius = 5
+                            popUpView.winterButton.layer.borderWidth = 1
+                        }
+                    }
+                    
+                    if response.seasons.count > 2 {
+                        if response.seasons[2] == "SPRING" {
+                            //                                configureButton(popUpView.springButton, title: "봄")
+                            popUpView.springButton.setTitleColor(.white, for: .normal)
+                            popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.springButton.layer.cornerRadius = 5
+                            popUpView.springButton.layer.borderWidth = 1
+                        } else if response.seasons[2] == "SUMMER" {
+                            //                                configureButton(popUpView.summerButton, title: "여름")
+                            popUpView.summerButton.setTitleColor(.white, for: .normal)
+                            popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.summerButton.layer.cornerRadius = 5
+                            popUpView.summerButton.layer.borderWidth = 1
+                        } else if response.seasons[2] == "FALL" {
+                            //                                configureButton(popUpView.fallButton, title: "가을")
+                            popUpView.fallButton.setTitleColor(.white, for: .normal)
+                            popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.fallButton.layer.cornerRadius = 5
+                            popUpView.fallButton.layer.borderWidth = 1
+                        } else if response.seasons[2] == "WINTER" {
+                            //                                configureButton(popUpView.winterButton, title: "겨울")
+                            popUpView.winterButton.setTitleColor(.white, for: .normal)
+                            popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.winterButton.layer.cornerRadius = 5
+                            popUpView.winterButton.layer.borderWidth = 1
+                        }
+                    }
+                    
+                    if response.seasons.count > 3 {
+                        if response.seasons[3] == "SPRING" {
+                            //                                configureButton(popUpView.springButton, title: "봄")
+                            popUpView.springButton.setTitleColor(.white, for: .normal)
+                            popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.springButton.layer.cornerRadius = 5
+                            popUpView.springButton.layer.borderWidth = 1
+                        } else if response.seasons[3] == "SUMMER" {
+                            //                                configureButton(popUpView.summerButton, title: "여름")
+                            popUpView.summerButton.setTitleColor(.white, for: .normal)
+                            popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.summerButton.layer.cornerRadius = 5
+                            popUpView.summerButton.layer.borderWidth = 1
+                        } else if response.seasons[3] == "FALL" {
+                            //                                configureButton(popUpView.fallButton, title: "가을")
+                            popUpView.fallButton.setTitleColor(.white, for: .normal)
+                            popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.fallButton.layer.cornerRadius = 5
+                            popUpView.fallButton.layer.borderWidth = 1
+                        } else if response.seasons[3] == "WINTER" {
+                            //                                configureButton(popUpView.winterButton, title: "겨울")
+                            popUpView.winterButton.setTitleColor(.white, for: .normal)
+                            popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.winterButton.layer.cornerRadius = 5
+                            popUpView.winterButton.layer.borderWidth = 1
+                        }
+                    }
+                    
+                    popUpView.wearCountButton.titleLabel?.text = "\(response.wearNum)"
+                    popUpView.brandNameLabel.text = response.brand
+                    popUpView.urlGoButton.titleLabel?.text = "\(String(describing: response.clothUrl))"
+                    
+                    
+                    // 이미지가 있으면 업데이트
+                    if let imageUrl = URL(string: response.imageUrl) {
+                        popUpView.imageView.kf.setImage(with: imageUrl)
+                    }
+                    
+                case .failure(let error):
+                    print("팝업 의류 데이터 로드 실패: \(error.localizedDescription)")
+                }
+            }
+        }
     }
 }

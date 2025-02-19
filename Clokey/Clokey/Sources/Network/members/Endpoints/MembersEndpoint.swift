@@ -15,11 +15,13 @@ public enum MembersEndpoint {
     case getTerms
     case updateProfile(data: ProfileUpdateRequestDTO, imageData1: Data, imageData2: Data)
     case checkIdAvailability(checkId: String)
-    case getUserProfile(clokeyId: String)
-    case followUser(data: FollowRequestDTO)
+    case getUserProfile(clokey_id: String?)
+    //    case getUser
+    case followUser(clokeyId: String)
     case unfollowUser(data: UnFollowRequestDTO)
     case getAgreedTerms
     case optionalTermAgree(data: OptionalTermAgreeRequestDTO)
+    case getFollowPeople(clokeyId: String, page: Int, isFollowing: Bool)
     // 추가적인 API는 여기 케이스로 정의
 }
 
@@ -46,16 +48,18 @@ extension MembersEndpoint: TargetType {
             return "/users/profile"
         case .checkIdAvailability(let clokeyId):
             return "/users/\(clokeyId)/check"
-        case .getUserProfile(let clokeyId):
-            return "/users/\(clokeyId)"
-        case .followUser:
-            return "/users/follow"
+        case .getUserProfile:
+            return "/users"
+        case .followUser(let clokeyId):
+            return "/users/follow/\(clokeyId)"
         case .unfollowUser:
             return "/users/follow"
         case .getAgreedTerms:
             return "/users/terms/optional"
         case .optionalTermAgree:
             return "users/terms/optional"
+        case .getFollowPeople(let clokeyId, _, _):
+            return "/users/\(clokeyId)/follow"
         }
     }
     
@@ -66,7 +70,7 @@ extension MembersEndpoint: TargetType {
             return .post
         case .updateProfile:
             return .patch
-        case .checkIdAvailability, .getUserProfile, .getTerms, .getAgreedTerms:
+        case .checkIdAvailability, .getUserProfile, .getTerms, .getAgreedTerms, .getFollowPeople:
             return .get
         case .unfollowUser:
             return .delete
@@ -114,22 +118,32 @@ extension MembersEndpoint: TargetType {
                     print("📂 Multipart 데이터 추가됨: \(item.name)")
                 }
             }
-
+            
             return .uploadMultipart(multipartData)
-//        case .checkIdAvailability(let checkId):
-//            return .requestParameters(parameters: ["id": checkId], encoding: URLEncoding.queryString)
         case .checkIdAvailability(_):
             return .requestPlain
-        case .getUserProfile(_):
+        case .getUserProfile(let clokey_id):
+            var parameters: [String: Any] = [:]
+            if let clokey_id = clokey_id, !clokey_id.isEmpty {
+                parameters["clokey_id"] = clokey_id
+            }
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
+            //        case .getUser:
+            //            return .requestPlain
+        case .followUser(let clokeyId):
             return .requestPlain
-        case .followUser(let data):
-            return .requestJSONEncodable(data)
         case .unfollowUser(let data):
             return .requestJSONEncodable(data)
         case .getAgreedTerms:
             return .requestPlain
         case .optionalTermAgree(let data):
             return .requestJSONEncodable(data)
+        case .getFollowPeople(_, let page, let isFollowing):
+            var parameters: [String: Any] = [
+                "page": page,
+                "isFollowing": isFollowing
+            ]
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
         }
     }
     

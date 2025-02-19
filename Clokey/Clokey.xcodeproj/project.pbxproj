@@ -214,6 +214,11 @@
 		A62A429F2D4D2ADE00672D3F /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429C2D4D2ADE00672D3F /* HeaderView.swift */; };
 		A62A42A02D4D2ADE00672D3F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429B2D4D2ADE00672D3F /* MainViewController.swift */; };
 		A62A42A12D4D2ADE00672D3F /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429D2D4D2ADE00672D3F /* TabBarView.swift */; };
+		A646C42B2D65007100993FA5 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A646C42A2D65007100993FA5 /* Config.xcconfig */; };
+		A646C4312D65ACB300993FA5 /* YourFollowerUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646C42E2D65ACB300993FA5 /* YourFollowerUserModel.swift */; };
+		A646C4322D65ACB300993FA5 /* YourFollowerUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646C42D2D65ACB300993FA5 /* YourFollowerUserCell.swift */; };
+		A646C4332D65ACB300993FA5 /* YourFollowingUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646C42F2D65ACB300993FA5 /* YourFollowingUserCell.swift */; };
+		A646C4342D65ACB300993FA5 /* YourFollowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646C4302D65ACB300993FA5 /* YourFollowListViewController.swift */; };
 		A648ACDA2D5CECA50094C126 /* CategoriesEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A648ACD92D5CECA50094C126 /* CategoriesEndPoint.swift */; };
 		A648ACDC2D5CECAC0094C126 /* CategoriesRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A648ACDB2D5CECAC0094C126 /* CategoriesRequestDTO.swift */; };
 		A648ACDE2D5CECF00094C126 /* CategoriesResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A648ACDD2D5CECF00094C126 /* CategoriesResponseDTO.swift */; };
@@ -224,10 +229,10 @@
 		A67661892D5B367B006AAB63 /* CustomBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661852D5B367B006AAB63 /* CustomBottomSheetViewController.swift */; };
 		A676618A2D5B367B006AAB63 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661862D5B367B006AAB63 /* EditProfileView.swift */; };
 		A676618B2D5B367B006AAB63 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661872D5B367B006AAB63 /* EditProfileViewController.swift */; };
-		A67661912D5B367B006AAB63 /* FollowerUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676618C2D5B367B006AAB63 /* FollowerUserCell.swift */; };
-		A67661922D5B367B006AAB63 /* FollowerUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676618D2D5B367B006AAB63 /* FollowerUserModel.swift */; };
-		A67661932D5B367B006AAB63 /* FollowingUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676618E2D5B367B006AAB63 /* FollowingUserCell.swift */; };
-		A67661942D5B367B006AAB63 /* FollowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676618F2D5B367B006AAB63 /* FollowListViewController.swift */; };
+		A67661912D5B367B006AAB63 /* MyFollowerUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676618C2D5B367B006AAB63 /* MyFollowerUserCell.swift */; };
+		A67661922D5B367B006AAB63 /* MyFollowerUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676618D2D5B367B006AAB63 /* MyFollowerUserModel.swift */; };
+		A67661932D5B367B006AAB63 /* MyFollowingUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676618E2D5B367B006AAB63 /* MyFollowingUserCell.swift */; };
+		A67661942D5B367B006AAB63 /* MyFollowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676618F2D5B367B006AAB63 /* MyFollowListViewController.swift */; };
 		A676619A2D5B367B006AAB63 /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661952D5B367B006AAB63 /* DeleteAccountView.swift */; };
 		A676619B2D5B367B006AAB63 /* DeleteAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661962D5B367B006AAB63 /* DeleteAccountViewController.swift */; };
 		A676619C2D5B367B006AAB63 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661972D5B367B006AAB63 /* SettingView.swift */; };
@@ -423,6 +428,11 @@
 		A62A429B2D4D2ADE00672D3F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		A62A429C2D4D2ADE00672D3F /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		A62A429D2D4D2ADE00672D3F /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
+		A646C42A2D65007100993FA5 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		A646C42D2D65ACB300993FA5 /* YourFollowerUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFollowerUserCell.swift; sourceTree = "<group>"; };
+		A646C42E2D65ACB300993FA5 /* YourFollowerUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFollowerUserModel.swift; sourceTree = "<group>"; };
+		A646C42F2D65ACB300993FA5 /* YourFollowingUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFollowingUserCell.swift; sourceTree = "<group>"; };
+		A646C4302D65ACB300993FA5 /* YourFollowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFollowListViewController.swift; sourceTree = "<group>"; };
 		A648ACD92D5CECA50094C126 /* CategoriesEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesEndPoint.swift; sourceTree = "<group>"; };
 		A648ACDB2D5CECAC0094C126 /* CategoriesRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesRequestDTO.swift; sourceTree = "<group>"; };
 		A648ACDD2D5CECF00094C126 /* CategoriesResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesResponseDTO.swift; sourceTree = "<group>"; };
@@ -433,10 +443,10 @@
 		A67661852D5B367B006AAB63 /* CustomBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomSheetViewController.swift; sourceTree = "<group>"; };
 		A67661862D5B367B006AAB63 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		A67661872D5B367B006AAB63 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
-		A676618C2D5B367B006AAB63 /* FollowerUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowerUserCell.swift; sourceTree = "<group>"; };
-		A676618D2D5B367B006AAB63 /* FollowerUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowerUserModel.swift; sourceTree = "<group>"; };
-		A676618E2D5B367B006AAB63 /* FollowingUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingUserCell.swift; sourceTree = "<group>"; };
-		A676618F2D5B367B006AAB63 /* FollowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowListViewController.swift; sourceTree = "<group>"; };
+		A676618C2D5B367B006AAB63 /* MyFollowerUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFollowerUserCell.swift; sourceTree = "<group>"; };
+		A676618D2D5B367B006AAB63 /* MyFollowerUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFollowerUserModel.swift; sourceTree = "<group>"; };
+		A676618E2D5B367B006AAB63 /* MyFollowingUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFollowingUserCell.swift; sourceTree = "<group>"; };
+		A676618F2D5B367B006AAB63 /* MyFollowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFollowListViewController.swift; sourceTree = "<group>"; };
 		A67661952D5B367B006AAB63 /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		A67661962D5B367B006AAB63 /* DeleteAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountViewController.swift; sourceTree = "<group>"; };
 		A67661972D5B367B006AAB63 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
@@ -532,7 +542,8 @@
 			isa = PBXGroup;
 			children = (
 				A67661AC2D5B3760006AAB63 /* PrivateStackView.swift */,
-				A67661902D5B367B006AAB63 /* FollowList */,
+				A646C42C2D65AC8600993FA5 /* YourFollowList */,
+				A67661902D5B367B006AAB63 /* MyFollowList */,
 				A67661882D5B367B006AAB63 /* EditProfile */,
 				A67661992D5B367B006AAB63 /* Settings */,
 				A67661A12D5B367B006AAB63 /* Your */,
@@ -876,6 +887,7 @@
 		07649BE22D4DDAE600B6B2B2 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
+				07CB2E9B2D64F36C00B3F9B7 /* Config.xcconfig */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1210,7 +1222,6 @@
 				07F859B32D62021700DD5BF8 /* Lottie */,
 				07E1CB2F2D364BD100F86BB8 /* Fonts */,
 				076FAB322D2E6E0200FF3979 /* Assets.xcassets */,
-				489FCD6D2D65B7230030A185 /* Config.xcconfig */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1565,13 +1576,24 @@
 		A62A42FE2D4D30F700672D3F /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */,
 				0744FFBD2D5B1D6900E60282 /* ViewControllers */,
 				0744FFA72D5B1D6900E60282 /* Views */,
 				0744FF922D5B1D6900E60282 /* Models */,
-				A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */,
 				07649C282D4DDD5D00B6B2B2 /* Cells */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		A646C42C2D65AC8600993FA5 /* YourFollowList */ = {
+			isa = PBXGroup;
+			children = (
+				A646C42D2D65ACB300993FA5 /* YourFollowerUserCell.swift */,
+				A646C42E2D65ACB300993FA5 /* YourFollowerUserModel.swift */,
+				A646C42F2D65ACB300993FA5 /* YourFollowingUserCell.swift */,
+				A646C4302D65ACB300993FA5 /* YourFollowListViewController.swift */,
+			);
+			path = YourFollowList;
 			sourceTree = "<group>";
 		};
 		A648ACD42D5CEC4D0094C126 /* categories */ = {
@@ -1627,15 +1649,15 @@
 			path = EditProfile;
 			sourceTree = "<group>";
 		};
-		A67661902D5B367B006AAB63 /* FollowList */ = {
+		A67661902D5B367B006AAB63 /* MyFollowList */ = {
 			isa = PBXGroup;
 			children = (
-				A676618C2D5B367B006AAB63 /* FollowerUserCell.swift */,
-				A676618D2D5B367B006AAB63 /* FollowerUserModel.swift */,
-				A676618E2D5B367B006AAB63 /* FollowingUserCell.swift */,
-				A676618F2D5B367B006AAB63 /* FollowListViewController.swift */,
+				A676618C2D5B367B006AAB63 /* MyFollowerUserCell.swift */,
+				A676618D2D5B367B006AAB63 /* MyFollowerUserModel.swift */,
+				A676618E2D5B367B006AAB63 /* MyFollowingUserCell.swift */,
+				A676618F2D5B367B006AAB63 /* MyFollowListViewController.swift */,
 			);
-			path = FollowList;
+			path = MyFollowList;
 			sourceTree = "<group>";
 		};
 		A67661992D5B367B006AAB63 /* Settings */ = {
@@ -1784,7 +1806,6 @@
 				07E1CB412D364BDA00F86BB8 /* Pretendard-Regular.otf in Resources */,
 				076FAB422D2E6E0200FF3979 /* Assets.xcassets in Resources */,
 				07F859B42D62021700DD5BF8 /* Onboarding_no.json in Resources */,
-				489FCD6E2D65B7230030A185 /* Config.xcconfig in Resources */,
 				07F859B52D62021700DD5BF8 /* Onboarding_yes.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1801,6 +1822,10 @@
 				077DC91F2D62092700C02FA4 /* TokenRefreshPlugin.swift in Sources */,
 				076FAB4E2D2EBB3A00FF3979 /* KakaoAuthService.swift in Sources */,
 				0709165D2D58BEE1008DC9EE /* ClothesEndpoint.swift in Sources */,
+				A646C4312D65ACB300993FA5 /* YourFollowerUserModel.swift in Sources */,
+				A646C4322D65ACB300993FA5 /* YourFollowerUserCell.swift in Sources */,
+				A646C4332D65ACB300993FA5 /* YourFollowingUserCell.swift in Sources */,
+				A646C4342D65ACB300993FA5 /* YourFollowListViewController.swift in Sources */,
 				0709165E2D58BEE1008DC9EE /* AddClothesRequestDTO.swift in Sources */,
 				0709165F2D58BEE1008DC9EE /* InquiryClothesDetailResponseDTO.swift in Sources */,
 				070916602D58BEE1008DC9EE /* ClothesService.swift in Sources */,
@@ -1855,10 +1880,10 @@
 				07ECCB452D4E34DF00AFF486 /* TagClothView.swift in Sources */,
 				07ECCB462D4E34DF00AFF486 /* CustomGalleryViewController.swift in Sources */,
 				07ECCB472D4E34DF00AFF486 /* CalendarCell.swift in Sources */,
-				A67661912D5B367B006AAB63 /* FollowerUserCell.swift in Sources */,
-				A67661922D5B367B006AAB63 /* FollowerUserModel.swift in Sources */,
-				A67661932D5B367B006AAB63 /* FollowingUserCell.swift in Sources */,
-				A67661942D5B367B006AAB63 /* FollowListViewController.swift in Sources */,
+				A67661912D5B367B006AAB63 /* MyFollowerUserCell.swift in Sources */,
+				A67661922D5B367B006AAB63 /* MyFollowerUserModel.swift in Sources */,
+				A67661932D5B367B006AAB63 /* MyFollowingUserCell.swift in Sources */,
+				A67661942D5B367B006AAB63 /* MyFollowListViewController.swift in Sources */,
 				07ECCB482D4E34DF00AFF486 /* ImageCollectionViewCell.swift in Sources */,
 				07ECCB492D4E34DF00AFF486 /* ContentInputView.swift in Sources */,
 				07ECCB4A2D4E34DF00AFF486 /* PhotoTagView.swift in Sources */,
@@ -1993,7 +2018,6 @@
 /* Begin XCBuildConfiguration section */
 		07F093242D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 489FCD6D2D65B7230030A185 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -2030,7 +2054,6 @@
 		};
 		07F093252D24183A0075659F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 489FCD6D2D65B7230030A185 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -2067,7 +2090,6 @@
 		};
 		07F093262D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 489FCD6D2D65B7230030A185 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -2131,7 +2153,6 @@
 		};
 		07F093272D24183A0075659F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 489FCD6D2D65B7230030A185 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

@@ -23,7 +23,7 @@ public struct MembersInfoResponseDTO: Codable {
     public let clothImage1: String?
     public let clothImage2: String?
     public let clothImage3: String?
-    public let isFollowing: Bool
+    public let isFollowing: Bool?
 }
 
 public struct GetAgreedTermsResponseDTO: Codable {
@@ -36,6 +36,21 @@ public struct GetAgreedTermsResponseDTO: Codable {
         public let termId: Int
         public let title: String
         public let agreed: Bool
+    }
+}
+
+public struct GetFollowPeopleResponseDTO: Codable {
+    let members: [Members]
+    let totalPage: Int
+    let totalElements: Int
+    let isFirst: Bool
+    let isLast: Bool
+
+    struct Members: Codable {
+        let nickname: String
+        let clokeyId: String
+        let profileImage: String
+        let isFollowed: Bool
     }
 }
 
