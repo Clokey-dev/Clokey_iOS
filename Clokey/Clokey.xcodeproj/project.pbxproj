@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		070258BE2D31085900065369 /* ClosetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258BD2D31085900065369 /* ClosetView.swift */; };
-		070258C02D31086A00065369 /* ClosetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070258BF2D31086A00065369 /* ClosetViewController.swift */; };
 		070916512D58BEE1008DC9EE /* HomeEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070916492D58BEE1008DC9EE /* HomeEndPoint.swift */; };
 		070916522D58BEE1008DC9EE /* OneYearAgoHistoriesResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0709164C2D58BEE1008DC9EE /* OneYearAgoHistoriesResponseDTO.swift */; };
 		070916532D58BEE1008DC9EE /* HomeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0709164E2D58BEE1008DC9EE /* HomeService.swift */; };
@@ -208,13 +206,44 @@
 		07F859B42D62021700DD5BF8 /* Onboarding_no.json in Resources */ = {isa = PBXBuildFile; fileRef = 07F859B12D62021700DD5BF8 /* Onboarding_no.json */; };
 		07F859B52D62021700DD5BF8 /* Onboarding_yes.json in Resources */ = {isa = PBXBuildFile; fileRef = 07F859B22D62021700DD5BF8 /* Onboarding_yes.json */; };
 		07F859B82D62024300DD5BF8 /* LottieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F859B62D62024300DD5BF8 /* LottieViewController.swift */; };
+		1EF33C472D665F0100142954 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1EF33C462D665F0100142954 /* Config.xcconfig */; };
+		1EF33C692D665FFB00142954 /* ArrangeClosetBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C482D665FFB00142954 /* ArrangeClosetBannerView.swift */; };
+		1EF33C6A2D665FFB00142954 /* DisplayAllViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C5C2D665FFB00142954 /* DisplayAllViewController.swift */; };
+		1EF33C6B2D665FFB00142954 /* SmartSummationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C4C2D665FFB00142954 /* SmartSummationModel.swift */; };
+		1EF33C6C2D665FFB00142954 /* SmartSummationBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C4B2D665FFB00142954 /* SmartSummationBannerView.swift */; };
+		1EF33C6D2D665FFB00142954 /* DrawerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C652D665FFB00142954 /* DrawerViewController.swift */; };
+		1EF33C6E2D665FFB00142954 /* PopUpDropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C582D665FFB00142954 /* PopUpDropdownView.swift */; };
+		1EF33C6F2D665FFB00142954 /* PopUpDropdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C592D665FFB00142954 /* PopUpDropdownViewController.swift */; };
+		1EF33C702D665FFB00142954 /* DrawerInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C622D665FFB00142954 /* DrawerInfoViewController.swift */; };
+		1EF33C712D665FFB00142954 /* SmartSummationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C4D2D665FFB00142954 /* SmartSummationView.swift */; };
+		1EF33C722D665FFB00142954 /* DrawerInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C612D665FFB00142954 /* DrawerInfoView.swift */; };
+		1EF33C732D665FFB00142954 /* DrawerEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C5F2D665FFB00142954 /* DrawerEditView.swift */; };
+		1EF33C742D665FFB00142954 /* ClosetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C512D665FFB00142954 /* ClosetModel.swift */; };
+		1EF33C752D665FFB00142954 /* DisplayAllView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C5B2D665FFB00142954 /* DisplayAllView.swift */; };
+		1EF33C762D665FFB00142954 /* DrawerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C632D665FFB00142954 /* DrawerModel.swift */; };
+		1EF33C772D665FFB00142954 /* SmartSummationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C4E2D665FFB00142954 /* SmartSummationViewController.swift */; };
+		1EF33C782D665FFB00142954 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C542D665FFB00142954 /* EmptyStateView.swift */; };
+		1EF33C792D665FFB00142954 /* ClosetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C522D665FFB00142954 /* ClosetView.swift */; };
+		1EF33C7A2D665FFB00142954 /* ClosetPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C562D665FFB00142954 /* ClosetPopUpView.swift */; };
+		1EF33C7B2D665FFB00142954 /* DrawerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C5E2D665FFB00142954 /* DrawerCollectionViewCell.swift */; };
+		1EF33C7C2D665FFB00142954 /* ClosetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C502D665FFB00142954 /* ClosetCollectionViewCell.swift */; };
+		1EF33C7D2D665FFB00142954 /* ArrangeClosetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C4A2D665FFB00142954 /* ArrangeClosetViewController.swift */; };
+		1EF33C7E2D665FFB00142954 /* DrawerEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C602D665FFB00142954 /* DrawerEditViewController.swift */; };
+		1EF33C7F2D665FFB00142954 /* ClosetPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C572D665FFB00142954 /* ClosetPopUpViewController.swift */; };
+		1EF33C802D665FFB00142954 /* FolderDropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C662D665FFB00142954 /* FolderDropdownView.swift */; };
+		1EF33C812D665FFB00142954 /* ArrangeClosetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C492D665FFB00142954 /* ArrangeClosetView.swift */; };
+		1EF33C822D665FFB00142954 /* FolderDropdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C672D665FFB00142954 /* FolderDropdownViewController.swift */; };
+		1EF33C832D665FFB00142954 /* DrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C642D665FFB00142954 /* DrawerView.swift */; };
+		1EF33C842D665FFB00142954 /* ClosetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C532D665FFB00142954 /* ClosetViewController.swift */; };
+		1EF33C8E2D66613500142954 /* FolderEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C852D66613500142954 /* FolderEndpoint.swift */; };
+		1EF33C8F2D66613500142954 /* FolderResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C892D66613500142954 /* FolderResponseDTO.swift */; };
+		1EF33C902D66613500142954 /* FolderRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C872D66613500142954 /* FolderRequestDTO.swift */; };
+		1EF33C912D66613500142954 /* FolderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C8B2D66613500142954 /* FolderService.swift */; };
 		489FCD6C2D64936B0030A185 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 489FCD6B2D64936B0030A185 /* RxGesture */; };
-		489FCD6E2D65B7230030A185 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 489FCD6D2D65B7230030A185 /* Config.xcconfig */; };
 		A62A429E2D4D2ADE00672D3F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429A2D4D2ADE00672D3F /* MainView.swift */; };
 		A62A429F2D4D2ADE00672D3F /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429C2D4D2ADE00672D3F /* HeaderView.swift */; };
 		A62A42A02D4D2ADE00672D3F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429B2D4D2ADE00672D3F /* MainViewController.swift */; };
 		A62A42A12D4D2ADE00672D3F /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62A429D2D4D2ADE00672D3F /* TabBarView.swift */; };
-		A646C42B2D65007100993FA5 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A646C42A2D65007100993FA5 /* Config.xcconfig */; };
 		A646C4312D65ACB300993FA5 /* YourFollowerUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646C42E2D65ACB300993FA5 /* YourFollowerUserModel.swift */; };
 		A646C4322D65ACB300993FA5 /* YourFollowerUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646C42D2D65ACB300993FA5 /* YourFollowerUserCell.swift */; };
 		A646C4332D65ACB300993FA5 /* YourFollowingUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646C42F2D65ACB300993FA5 /* YourFollowingUserCell.swift */; };
@@ -248,8 +277,6 @@
 
 /* Begin PBXFileReference section */
 		070258A12D30DD0E00065369 /* Clokey.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Clokey.entitlements; sourceTree = "<group>"; };
-		070258BD2D31085900065369 /* ClosetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetView.swift; sourceTree = "<group>"; };
-		070258BF2D31086A00065369 /* ClosetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetViewController.swift; sourceTree = "<group>"; };
 		070916492D58BEE1008DC9EE /* HomeEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeEndPoint.swift; sourceTree = "<group>"; };
 		0709164C2D58BEE1008DC9EE /* OneYearAgoHistoriesResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneYearAgoHistoriesResponseDTO.swift; sourceTree = "<group>"; };
 		0709164E2D58BEE1008DC9EE /* HomeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeService.swift; sourceTree = "<group>"; };
@@ -423,12 +450,43 @@
 		07F859B12D62021700DD5BF8 /* Onboarding_no.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Onboarding_no.json; sourceTree = "<group>"; };
 		07F859B22D62021700DD5BF8 /* Onboarding_yes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Onboarding_yes.json; sourceTree = "<group>"; };
 		07F859B62D62024300DD5BF8 /* LottieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieViewController.swift; sourceTree = "<group>"; };
-		489FCD6D2D65B7230030A185 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		1EF33C462D665F0100142954 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		1EF33C482D665FFB00142954 /* ArrangeClosetBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeClosetBannerView.swift; sourceTree = "<group>"; };
+		1EF33C492D665FFB00142954 /* ArrangeClosetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeClosetView.swift; sourceTree = "<group>"; };
+		1EF33C4A2D665FFB00142954 /* ArrangeClosetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeClosetViewController.swift; sourceTree = "<group>"; };
+		1EF33C4B2D665FFB00142954 /* SmartSummationBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartSummationBannerView.swift; sourceTree = "<group>"; };
+		1EF33C4C2D665FFB00142954 /* SmartSummationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartSummationModel.swift; sourceTree = "<group>"; };
+		1EF33C4D2D665FFB00142954 /* SmartSummationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartSummationView.swift; sourceTree = "<group>"; };
+		1EF33C4E2D665FFB00142954 /* SmartSummationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartSummationViewController.swift; sourceTree = "<group>"; };
+		1EF33C502D665FFB00142954 /* ClosetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetCollectionViewCell.swift; sourceTree = "<group>"; };
+		1EF33C512D665FFB00142954 /* ClosetModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetModel.swift; sourceTree = "<group>"; };
+		1EF33C522D665FFB00142954 /* ClosetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetView.swift; sourceTree = "<group>"; };
+		1EF33C532D665FFB00142954 /* ClosetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetViewController.swift; sourceTree = "<group>"; };
+		1EF33C542D665FFB00142954 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
+		1EF33C562D665FFB00142954 /* ClosetPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetPopUpView.swift; sourceTree = "<group>"; };
+		1EF33C572D665FFB00142954 /* ClosetPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetPopUpViewController.swift; sourceTree = "<group>"; };
+		1EF33C582D665FFB00142954 /* PopUpDropdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpDropdownView.swift; sourceTree = "<group>"; };
+		1EF33C592D665FFB00142954 /* PopUpDropdownViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpDropdownViewController.swift; sourceTree = "<group>"; };
+		1EF33C5B2D665FFB00142954 /* DisplayAllView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayAllView.swift; sourceTree = "<group>"; };
+		1EF33C5C2D665FFB00142954 /* DisplayAllViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayAllViewController.swift; sourceTree = "<group>"; };
+		1EF33C5E2D665FFB00142954 /* DrawerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerCollectionViewCell.swift; sourceTree = "<group>"; };
+		1EF33C5F2D665FFB00142954 /* DrawerEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerEditView.swift; sourceTree = "<group>"; };
+		1EF33C602D665FFB00142954 /* DrawerEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerEditViewController.swift; sourceTree = "<group>"; };
+		1EF33C612D665FFB00142954 /* DrawerInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerInfoView.swift; sourceTree = "<group>"; };
+		1EF33C622D665FFB00142954 /* DrawerInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerInfoViewController.swift; sourceTree = "<group>"; };
+		1EF33C632D665FFB00142954 /* DrawerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerModel.swift; sourceTree = "<group>"; };
+		1EF33C642D665FFB00142954 /* DrawerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerView.swift; sourceTree = "<group>"; };
+		1EF33C652D665FFB00142954 /* DrawerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerViewController.swift; sourceTree = "<group>"; };
+		1EF33C662D665FFB00142954 /* FolderDropdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDropdownView.swift; sourceTree = "<group>"; };
+		1EF33C672D665FFB00142954 /* FolderDropdownViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDropdownViewController.swift; sourceTree = "<group>"; };
+		1EF33C852D66613500142954 /* FolderEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderEndpoint.swift; sourceTree = "<group>"; };
+		1EF33C872D66613500142954 /* FolderRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderRequestDTO.swift; sourceTree = "<group>"; };
+		1EF33C892D66613500142954 /* FolderResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderResponseDTO.swift; sourceTree = "<group>"; };
+		1EF33C8B2D66613500142954 /* FolderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderService.swift; sourceTree = "<group>"; };
 		A62A429A2D4D2ADE00672D3F /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		A62A429B2D4D2ADE00672D3F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		A62A429C2D4D2ADE00672D3F /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		A62A429D2D4D2ADE00672D3F /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
-		A646C42A2D65007100993FA5 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A646C42D2D65ACB300993FA5 /* YourFollowerUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFollowerUserCell.swift; sourceTree = "<group>"; };
 		A646C42E2D65ACB300993FA5 /* YourFollowerUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFollowerUserModel.swift; sourceTree = "<group>"; };
 		A646C42F2D65ACB300993FA5 /* YourFollowingUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFollowingUserCell.swift; sourceTree = "<group>"; };
@@ -532,8 +590,10 @@
 		070258A82D31074100065369 /* Closet */ = {
 			isa = PBXGroup;
 			children = (
-				070258BD2D31085900065369 /* ClosetView.swift */,
-				070258BF2D31086A00065369 /* ClosetViewController.swift */,
+				1EF33C552D665FFB00142954 /* ClosetMain */,
+				1EF33C5A2D665FFB00142954 /* ClosetPopUp */,
+				1EF33C5D2D665FFB00142954 /* DisplayAll */,
+				1EF33C682D665FFB00142954 /* Drawer */,
 			);
 			path = Closet;
 			sourceTree = "<group>";
@@ -887,7 +947,6 @@
 		07649BE22D4DDAE600B6B2B2 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				07CB2E9B2D64F36C00B3F9B7 /* Config.xcconfig */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -947,45 +1006,6 @@
 				07649EB42D4DE58900B6B2B2 /* NetworkError.swift */,
 			);
 			path = Common;
-			sourceTree = "<group>";
-		};
-		07649EB62D4DE58900B6B2B2 /* Endpoints */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Endpoints;
-			sourceTree = "<group>";
-		};
-		07649EB72D4DE58900B6B2B2 /* Request */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Request;
-			sourceTree = "<group>";
-		};
-		07649EB82D4DE58900B6B2B2 /* Response */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Response;
-			sourceTree = "<group>";
-		};
-		07649EB92D4DE58900B6B2B2 /* Service */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Service;
-			sourceTree = "<group>";
-		};
-		07649EBA2D4DE58900B6B2B2 /* folder */ = {
-			isa = PBXGroup;
-			children = (
-				07649EB62D4DE58900B6B2B2 /* Endpoints */,
-				07649EB72D4DE58900B6B2B2 /* Request */,
-				07649EB82D4DE58900B6B2B2 /* Response */,
-				07649EB92D4DE58900B6B2B2 /* Service */,
-			);
-			path = folder;
 			sourceTree = "<group>";
 		};
 		07649EBC2D4DE58900B6B2B2 /* Endpoints */ = {
@@ -1222,6 +1242,7 @@
 				07F859B32D62021700DD5BF8 /* Lottie */,
 				07E1CB2F2D364BD100F86BB8 /* Fonts */,
 				076FAB322D2E6E0200FF3979 /* Assets.xcassets */,
+				1EF33C462D665F0100142954 /* Config.xcconfig */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1287,7 +1308,7 @@
 				0709165C2D58BEE1008DC9EE /* Clothes */,
 				07649EB52D4DE58900B6B2B2 /* Common */,
 				A648ACD42D5CEC4D0094C126 /* categories */,
-				07649EBA2D4DE58900B6B2B2 /* folder */,
+				1EF33C8D2D66613500142954 /* folder */,
 				07649EC32D4DE58900B6B2B2 /* history */,
 				07649ED32D4DE58900B6B2B2 /* members */,
 				076973332D63681200AEA5D1 /* notification */,
@@ -1573,6 +1594,113 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
+		1EF33C4F2D665FFB00142954 /* Banner */ = {
+			isa = PBXGroup;
+			children = (
+				1EF33C482D665FFB00142954 /* ArrangeClosetBannerView.swift */,
+				1EF33C492D665FFB00142954 /* ArrangeClosetView.swift */,
+				1EF33C4A2D665FFB00142954 /* ArrangeClosetViewController.swift */,
+				1EF33C4B2D665FFB00142954 /* SmartSummationBannerView.swift */,
+				1EF33C4C2D665FFB00142954 /* SmartSummationModel.swift */,
+				1EF33C4D2D665FFB00142954 /* SmartSummationView.swift */,
+				1EF33C4E2D665FFB00142954 /* SmartSummationViewController.swift */,
+			);
+			path = Banner;
+			sourceTree = "<group>";
+		};
+		1EF33C552D665FFB00142954 /* ClosetMain */ = {
+			isa = PBXGroup;
+			children = (
+				1EF33C4F2D665FFB00142954 /* Banner */,
+				1EF33C502D665FFB00142954 /* ClosetCollectionViewCell.swift */,
+				1EF33C512D665FFB00142954 /* ClosetModel.swift */,
+				1EF33C522D665FFB00142954 /* ClosetView.swift */,
+				1EF33C532D665FFB00142954 /* ClosetViewController.swift */,
+				1EF33C542D665FFB00142954 /* EmptyStateView.swift */,
+			);
+			path = ClosetMain;
+			sourceTree = "<group>";
+		};
+		1EF33C5A2D665FFB00142954 /* ClosetPopUp */ = {
+			isa = PBXGroup;
+			children = (
+				1EF33C562D665FFB00142954 /* ClosetPopUpView.swift */,
+				1EF33C572D665FFB00142954 /* ClosetPopUpViewController.swift */,
+				1EF33C582D665FFB00142954 /* PopUpDropdownView.swift */,
+				1EF33C592D665FFB00142954 /* PopUpDropdownViewController.swift */,
+			);
+			path = ClosetPopUp;
+			sourceTree = "<group>";
+		};
+		1EF33C5D2D665FFB00142954 /* DisplayAll */ = {
+			isa = PBXGroup;
+			children = (
+				1EF33C5B2D665FFB00142954 /* DisplayAllView.swift */,
+				1EF33C5C2D665FFB00142954 /* DisplayAllViewController.swift */,
+			);
+			path = DisplayAll;
+			sourceTree = "<group>";
+		};
+		1EF33C682D665FFB00142954 /* Drawer */ = {
+			isa = PBXGroup;
+			children = (
+				1EF33C5E2D665FFB00142954 /* DrawerCollectionViewCell.swift */,
+				1EF33C5F2D665FFB00142954 /* DrawerEditView.swift */,
+				1EF33C602D665FFB00142954 /* DrawerEditViewController.swift */,
+				1EF33C612D665FFB00142954 /* DrawerInfoView.swift */,
+				1EF33C622D665FFB00142954 /* DrawerInfoViewController.swift */,
+				1EF33C632D665FFB00142954 /* DrawerModel.swift */,
+				1EF33C642D665FFB00142954 /* DrawerView.swift */,
+				1EF33C652D665FFB00142954 /* DrawerViewController.swift */,
+				1EF33C662D665FFB00142954 /* FolderDropdownView.swift */,
+				1EF33C672D665FFB00142954 /* FolderDropdownViewController.swift */,
+			);
+			path = Drawer;
+			sourceTree = "<group>";
+		};
+		1EF33C862D66613500142954 /* Endpoints */ = {
+			isa = PBXGroup;
+			children = (
+				1EF33C852D66613500142954 /* FolderEndpoint.swift */,
+			);
+			path = Endpoints;
+			sourceTree = "<group>";
+		};
+		1EF33C882D66613500142954 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				1EF33C872D66613500142954 /* FolderRequestDTO.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		1EF33C8A2D66613500142954 /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				1EF33C892D66613500142954 /* FolderResponseDTO.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
+		1EF33C8C2D66613500142954 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				1EF33C8B2D66613500142954 /* FolderService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		1EF33C8D2D66613500142954 /* folder */ = {
+			isa = PBXGroup;
+			children = (
+				1EF33C862D66613500142954 /* Endpoints */,
+				1EF33C882D66613500142954 /* Request */,
+				1EF33C8A2D66613500142954 /* Response */,
+				1EF33C8C2D66613500142954 /* Service */,
+			);
+			path = folder;
+			sourceTree = "<group>";
+		};
 		A62A42FE2D4D30F700672D3F /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -1806,6 +1934,7 @@
 				07E1CB412D364BDA00F86BB8 /* Pretendard-Regular.otf in Resources */,
 				076FAB422D2E6E0200FF3979 /* Assets.xcassets in Resources */,
 				07F859B42D62021700DD5BF8 /* Onboarding_no.json in Resources */,
+				1EF33C472D665F0100142954 /* Config.xcconfig in Resources */,
 				07F859B52D62021700DD5BF8 /* Onboarding_yes.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1817,7 +1946,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				070258BE2D31085900065369 /* ClosetView.swift in Sources */,
 				07CF63E52D55DE6900CCF9F4 /* CalendarDetailViewModel.swift in Sources */,
 				077DC91F2D62092700C02FA4 /* TokenRefreshPlugin.swift in Sources */,
 				076FAB4E2D2EBB3A00FF3979 /* KakaoAuthService.swift in Sources */,
@@ -1829,7 +1957,6 @@
 				0709165E2D58BEE1008DC9EE /* AddClothesRequestDTO.swift in Sources */,
 				0709165F2D58BEE1008DC9EE /* InquiryClothesDetailResponseDTO.swift in Sources */,
 				070916602D58BEE1008DC9EE /* ClothesService.swift in Sources */,
-				070258C02D31086A00065369 /* ClosetViewController.swift in Sources */,
 				A6548E532D3F47DE00F79B66 /* WeatherAPI.swift in Sources */,
 				07ECCEB02D4EAEF700AFF486 /* LikeUserCell.swift in Sources */,
 				0769733A2D63687200AEA5D1 /* NotificationEndpoints.swift in Sources */,
@@ -1871,6 +1998,38 @@
 				07ECCB3F2D4E34DF00AFF486 /* UploadModalView.swift in Sources */,
 				07ECCB402D4E34DF00AFF486 /* CalendarDetailViewController.swift in Sources */,
 				07ECCB412D4E34DF00AFF486 /* CalendarDetailView.swift in Sources */,
+				1EF33C692D665FFB00142954 /* ArrangeClosetBannerView.swift in Sources */,
+				1EF33C6A2D665FFB00142954 /* DisplayAllViewController.swift in Sources */,
+				1EF33C6B2D665FFB00142954 /* SmartSummationModel.swift in Sources */,
+				1EF33C6C2D665FFB00142954 /* SmartSummationBannerView.swift in Sources */,
+				1EF33C6D2D665FFB00142954 /* DrawerViewController.swift in Sources */,
+				1EF33C6E2D665FFB00142954 /* PopUpDropdownView.swift in Sources */,
+				1EF33C6F2D665FFB00142954 /* PopUpDropdownViewController.swift in Sources */,
+				1EF33C702D665FFB00142954 /* DrawerInfoViewController.swift in Sources */,
+				1EF33C8E2D66613500142954 /* FolderEndpoint.swift in Sources */,
+				1EF33C8F2D66613500142954 /* FolderResponseDTO.swift in Sources */,
+				1EF33C902D66613500142954 /* FolderRequestDTO.swift in Sources */,
+				1EF33C912D66613500142954 /* FolderService.swift in Sources */,
+				1EF33C712D665FFB00142954 /* SmartSummationView.swift in Sources */,
+				1EF33C722D665FFB00142954 /* DrawerInfoView.swift in Sources */,
+				1EF33C732D665FFB00142954 /* DrawerEditView.swift in Sources */,
+				1EF33C742D665FFB00142954 /* ClosetModel.swift in Sources */,
+				1EF33C752D665FFB00142954 /* DisplayAllView.swift in Sources */,
+				1EF33C762D665FFB00142954 /* DrawerModel.swift in Sources */,
+				1EF33C772D665FFB00142954 /* SmartSummationViewController.swift in Sources */,
+				1EF33C782D665FFB00142954 /* EmptyStateView.swift in Sources */,
+				1EF33C792D665FFB00142954 /* ClosetView.swift in Sources */,
+				1EF33C7A2D665FFB00142954 /* ClosetPopUpView.swift in Sources */,
+				1EF33C7B2D665FFB00142954 /* DrawerCollectionViewCell.swift in Sources */,
+				1EF33C7C2D665FFB00142954 /* ClosetCollectionViewCell.swift in Sources */,
+				1EF33C7D2D665FFB00142954 /* ArrangeClosetViewController.swift in Sources */,
+				1EF33C7E2D665FFB00142954 /* DrawerEditViewController.swift in Sources */,
+				1EF33C7F2D665FFB00142954 /* ClosetPopUpViewController.swift in Sources */,
+				1EF33C802D665FFB00142954 /* FolderDropdownView.swift in Sources */,
+				1EF33C812D665FFB00142954 /* ArrangeClosetView.swift in Sources */,
+				1EF33C822D665FFB00142954 /* FolderDropdownViewController.swift in Sources */,
+				1EF33C832D665FFB00142954 /* DrawerView.swift in Sources */,
+				1EF33C842D665FFB00142954 /* ClosetViewController.swift in Sources */,
 				07ECCB422D4E34DF00AFF486 /* CalendarView.swift in Sources */,
 				07ECCEA32D4E79C000AFF486 /* CalendarImageCell.swift in Sources */,
 				07ECCEA52D4E7AE400AFF486 /* CalendarCommentView.swift in Sources */,
@@ -2018,6 +2177,7 @@
 /* Begin XCBuildConfiguration section */
 		07F093242D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1EF33C462D665F0100142954 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -2054,6 +2214,7 @@
 		};
 		07F093252D24183A0075659F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1EF33C462D665F0100142954 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -2090,6 +2251,7 @@
 		};
 		07F093262D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1EF33C462D665F0100142954 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -2153,6 +2315,7 @@
 		};
 		07F093272D24183A0075659F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1EF33C462D665F0100142954 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
