@@ -3,7 +3,7 @@ import Moya
 import Foundation
 
 extension NetworkManager {
-    // ✅ 1. 필수 데이터 요청
+    //  1. 필수 데이터 요청
     func request<T: Decodable>(
         target: Endpoint,
         decodingType: T.Type,
@@ -21,7 +21,7 @@ extension NetworkManager {
         }
     }
     
-    // ✅ 2. 옵셔널 데이터 요청
+    //  2. 옵셔널 데이터 요청
     func requestOptional<T: Decodable>(
         target: Endpoint,
         decodingType: T.Type,
@@ -39,7 +39,7 @@ extension NetworkManager {
         }
     }
     
-    // ✅ 3. 상태 코드만 확인
+    //  3. 상태 코드만 확인
     func requestStatusCode(
         target: Endpoint,
         completion: @escaping (Result<Void, NetworkError>) -> Void
@@ -64,11 +64,11 @@ extension NetworkManager {
         }
     }
     
-    // ✅ 4. 유효기간 파싱 + 데이터 파싱
+    //  4. 유효기간 파싱 + 데이터 파싱
     func requestWithTime<T: Decodable>(
         target: Endpoint,
         decodingType: T.Type,
-        completion: @escaping (Result<(T, TimeInterval?), NetworkError>) -> Void // ✅ 캐시 유효 시간 포함
+        completion: @escaping (Result<(T, TimeInterval?), NetworkError>) -> Void //  캐시 유효 시간 포함
     ) {
         provider.request(target) { result in
             switch result {
@@ -119,9 +119,9 @@ extension NetworkManager {
 
         } catch let decodingError as DecodingError {
             print("🚨 디코딩 오류 발생: \(decodingError)")
-            return .failure(.decodingError(underlyingError: decodingError)) // ✅ 상세 오류 포함
+            return .failure(.decodingError(underlyingError: decodingError)) //  상세 오류 포함
         } catch {
-            return .failure(.decodingError(underlyingError: error as! DecodingError)) // ✅ 일반 오류도 포함
+            return .failure(.decodingError(underlyingError: error as! DecodingError)) //  일반 오류도 포함
         }
     }
     
@@ -151,19 +151,19 @@ extension NetworkManager {
 
             // 2. 빈 데이터 처리
             if response.data.isEmpty {
-                return .success(nil) // ✅ 빈 데이터 처리 (옵셔널 허용)
+                return .success(nil) //  빈 데이터 처리 (옵셔널 허용)
             }
 
             // 3. 응답 디코딩
             let apiResponse = try JSONDecoder().decode(ApiResponse<T>.self, from: response.data)
 
-            return .success(apiResponse.result) // ✅ result가 옵셔널이라면 nil 반환 가능
+            return .success(apiResponse.result) //  result가 옵셔널이라면 nil 반환 가능
 
         } catch let decodingError as DecodingError {
             print("🚨 디코딩 오류 발생: \(decodingError)")
-            return .failure(.decodingError(underlyingError: decodingError)) // ✅ 상세 오류 포함
+            return .failure(.decodingError(underlyingError: decodingError)) //  상세 오류 포함
         } catch {
-            return .failure(.decodingError(underlyingError: error as! DecodingError)) // ✅ 일반 오류도 포함
+            return .failure(.decodingError(underlyingError: error as! DecodingError)) //  일반 오류도 포함
         }
     }
     
@@ -199,15 +199,15 @@ extension NetworkManager {
 
             // 5. Cache-Control 처리
             let cacheDuration = extractCacheTimeInterval(from: response)
-            print("✅ Cache-Control 유효 시간: \(cacheDuration ?? 0)초")
+            print(" Cache-Control 유효 시간: \(cacheDuration ?? 0)초")
 
-            return .success((result, cacheDuration)) // ✅ 데이터와 캐시 유효 시간 반환
+            return .success((result, cacheDuration)) //  데이터와 캐시 유효 시간 반환
 
         } catch let decodingError as DecodingError {
             print("🚨 디코딩 오류 발생: \(decodingError)")
-            return .failure(.decodingError(underlyingError: decodingError)) // ✅ 상세 오류 포함
+            return .failure(.decodingError(underlyingError: decodingError)) //  상세 오류 포함
         } catch {
-            return .failure(.decodingError(underlyingError: error as! DecodingError)) // ✅ 일반 오류도 포함
+            return .failure(.decodingError(underlyingError: error as! DecodingError)) //  일반 오류도 포함
         }
     }
     

@@ -90,26 +90,26 @@ extension MembersEndpoint: TargetType {
             return .requestPlain
         case .updateProfile(let data, let imageData1, let imageData2):
             var multipartData = [MultipartFormData]()
-            
-            // ✅ JSON 데이터 추가 (profileRequest)
+
+            //  JSON 데이터 추가 (profileRequest)
             do {
                 let jsonData = try JSONEncoder().encode(data)
                 let jsonPart = MultipartFormData(provider: .data(jsonData), name: "profileRequest", mimeType: "application/json")
                 multipartData.append(jsonPart)
-                print("✅ JSON 데이터 추가됨: \(String(data: jsonData, encoding: .utf8) ?? "변환 실패")")
+                print(" JSON 데이터 추가됨: \(String(data: jsonData, encoding: .utf8) ?? "변환 실패")")
             } catch {
                 print("🚨 JSON 인코딩 오류: \(error.localizedDescription)")
             }
-            
-            // ✅ 첫 번째 이미지 파일 추가 (프로필 사진)
+
+            //  첫 번째 이미지 파일 추가 (프로필 사진)
             let imagePart1 = MultipartFormData(provider: .data(imageData1), name: "profileImage", fileName: "profile.jpg", mimeType: "image/jpeg")
             multipartData.append(imagePart1)
             
-            // ✅ 두 번째 이미지 파일 추가 (배경 사진)
+            //  두 번째 이미지 파일 추가 (배경 사진)
             let imagePart2 = MultipartFormData(provider: .data(imageData2), name: "profileBackImage", fileName: "background.jpg", mimeType: "image/jpeg")
             multipartData.append(imagePart2)
-            
-            // 🔹 추가된 데이터 확인
+
+            //  추가된 데이터 확인
             for item in multipartData {
                 switch item.provider {
                 case .data(let data):

@@ -39,11 +39,11 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
         
         addProfileView.bioTextField.addTarget(self, action: #selector(limitBioLength), for: .editingChanged)
         
-        // 🔹 화면 탭하면 키보드 내리기
+        //  화면 탭하면 키보드 내리기
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
         
-        // 🔹 키보드 이벤트 감지
+        //  키보드 이벤트 감지
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
   
@@ -60,7 +60,7 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
     }
     
     @objc internal override func dismissKeyboard() {
-        view.endEditing(true) // 🔥 현재 화면에서 키보드 내리기
+        view.endEditing(true) //  현재 화면에서 키보드 내리기
     }
     
     @objc private func keyboardWillShow(_ notification: Notification) {
@@ -182,7 +182,7 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
     // 텍스트 필드 변경 시 호출되는 메서드
     @objc private func textFieldDidChange(_ textField: UITextField) {
         if textField == addProfileView.idTextField {
-            isIdChecked = false // ✅ 아이디 입력이 바뀌면 다시 중복 확인 필요
+            isIdChecked = false //  아이디 입력이 바뀌면 다시 중복 확인 필요
             addProfileView.idCheckButton.isEnabled = true
             addProfileView.idCheckButton.setTitleColor(.black, for: .normal)
             
@@ -192,7 +192,7 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
             }
         }
         
-        validateForm() // ✅ 다른 필드가 수정될 때도 완료 버튼 상태 업데이트
+        validateForm() //  다른 필드가 수정될 때도 완료 버튼 상태 업데이트
     }
     
     @objc private func validateNickname() {
@@ -239,11 +239,11 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
             addProfileView.idStatusLabel.textColor = .pointOrange800
 //            addProfileView.idStatusLabel.isHidden = false
             isIdChecked = false
-            validateForm() // ✅ 유효성 검사 즉시 실행
+            validateForm() //  유효성 검사 즉시 실행
             return
         }
         
-        // ✅ 중복 확인 로직 (임시 더미 데이터 사용)
+        //  중복 확인 로직 (임시 더미 데이터 사용)
         let membersService = MembersService()
         membersService.checkIdAvailability(checkId: id) { [weak self] result in
             guard let self = self else { return }
@@ -273,7 +273,7 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
         }
     }
     
-    // ✅ 한줄 소개 입력을 20자로 제한하는 함수
+    //  한줄 소개 입력을 20자로 제한하는 함수
     @objc private func limitBioLength() {
         if let text = addProfileView.bioTextField.text, text.count > 20 {
             let index = text.index(text.startIndex, offsetBy: 20)
@@ -292,7 +292,7 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
     }
     //비공개
     @objc private func selectPrivateAccount() {
-        isPublicAccount = false // ✅ 선택됨
+        isPublicAccount = false //  선택됨
         addProfileView.privateButton.backgroundColor = UIColor.mainBrown800
         addProfileView.privateButton.setTitleColor(.white, for: .normal)
         addProfileView.publicButton.backgroundColor = .clear
@@ -302,11 +302,11 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
     
     private func validateForm() {
         let nicknameText = addProfileView.nicknameTextField.text ?? ""
-        let isNicknameValid = !nicknameText.isEmpty && nicknameText.count <= 6 // ✅ 닉네임이 비어있지 않고 6글자 이하인 경우 유효
+        let isNicknameValid = !nicknameText.isEmpty && nicknameText.count <= 6 //  닉네임이 비어있지 않고 6글자 이하인 경우 유효
         let isIdValid = !(addProfileView.idTextField.text?.isEmpty ?? true) && isIdChecked
-        let isAccountSelected = isPublicAccount != nil // ✅ 공개/비공개 중 하나 선택 필수
-//        let isAnyImageSelected = isProfileImageSelected && isBackgroundImageSelected // ✅ 프로필 또는 배경 둘 중 하나만 선택되면 OK
-        let isAnyImageSelected = true // ✅ 사진 선택 여부 상관없이 활성화
+        let isAccountSelected = isPublicAccount != nil //  공개/비공개 중 하나 선택 필수
+//        let isAnyImageSelected = isProfileImageSelected && isBackgroundImageSelected //  프로필 또는 배경 둘 중 하나만 선택되면 OK
+        let isAnyImageSelected = true //  사진 선택 여부 상관없이 활성화
         
         let isFormValid = isNicknameValid && isIdValid && isAccountSelected && isAnyImageSelected
         addProfileView.completeButton.isEnabled = isFormValid
@@ -330,7 +330,7 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
         ProfileViewModel.shared.userId = id
         UserDefaults.standard.set(id, forKey: "userId")
         
-        // ✅ 프로필 이미지와 배경 이미지 크기 조정 및 압축 적용
+        //  프로필 이미지와 배경 이미지 크기 조정 및 압축 적용
         guard let profileImage = addProfileView.profileImageView.image,
               let backgroundImage = addProfileView.backgroundImageView.image else {
             print("🚨 이미지가 선택되지 않음")
@@ -346,7 +346,7 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
             return
         }
         
-        // ✅ ProfileUpdateRequestDTO 생성 및 JSON 데이터 확인
+        //  ProfileUpdateRequestDTO 생성 및 JSON 데이터 확인
         let profileUpdateData = ProfileUpdateRequestDTO(
             nickname: nickname,
             clokeyId: id,
@@ -357,12 +357,12 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
         do {
             let jsonData = try JSONEncoder().encode(profileUpdateData)
             let jsonString = String(data: jsonData, encoding: .utf8) ?? "JSON 변환 실패"
-            print("✅ 전송될 JSON 데이터: \(jsonString)")
+            print(" 전송될 JSON 데이터: \(jsonString)")
         } catch {
             print("🚨 JSON 인코딩 오류: \(error.localizedDescription)")
         }
 
-        // ✅ API 호출
+        //  API 호출
         let membersService = MembersService()
         membersService.updateProfile(
             data: profileUpdateData,
@@ -371,7 +371,7 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
         ) { result in
             switch result {
             case .success(let response):
-                print("✅ 프로필 업데이트 성공: \(response)")
+                print(" 프로필 업데이트 성공: \(response)")
                 DispatchQueue.main.async {
                     if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
                         sceneDelegate.switchToMain()
@@ -415,24 +415,24 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
 extension AddProfileViewController: CustomBottomSheetDelegate {
     func didTapChoosePhoto() {
         if isSelectingProfileImage {
-            isProfileImageSelected = true // ✅ 프로필 사진 선택됨
+            isProfileImageSelected = true //  프로필 사진 선택됨
         } else {
-            isBackgroundImageSelected = true // ✅ 배경 사진 선택됨
+            isBackgroundImageSelected = true //  배경 사진 선택됨
         }
         
         showImagePicker()
-        validateForm() // ✅ 완료 버튼 활성화 여부 체크
+        validateForm() //  완료 버튼 활성화 여부 체크
     }
     
     func didTapDefaultProfile() {
         if isSelectingProfileImage {
-            isProfileImageSelected = true // ✅ 기본 프로필 선택됨
+            isProfileImageSelected = true //  기본 프로필 선택됨
         } else {
-            isBackgroundImageSelected = true // ✅ 기본 배경 선택됨
+            isBackgroundImageSelected = true //  기본 배경 선택됨
         }
         
         setDefaultProfileImage()
-        validateForm() // ✅ 완료 버튼 활성화 여부 체크
+        validateForm() //  완료 버튼 활성화 여부 체크
     }
 }
 

@@ -12,7 +12,7 @@ import Kingfisher
 class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDelegate {
     
     let searchView = SearchView()
-    private let searchManager = SearchManager() // ✅ 검색 기록 관리 객체
+    private let searchManager = SearchManager() //  검색 기록 관리 객체
     private var recentSearches: [String] = []
     private var selectedKeyword: String?
     private var searchHistory: [String] = []
@@ -25,10 +25,10 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
         
         
         searchView.delegate = self
-        // ✅ 검색 기록 변경 시 자동 업데이트
+        //  검색 기록 변경 시 자동 업데이트
         NotificationCenter.default.addObserver(self, selector: #selector(updateSearchHistory), name: NSNotification.Name("SearchHistoryUpdated"), object: nil)
         
-        // ✅ SearchView 추가
+        //  SearchView 추가
         view.addSubview(searchView)
         
         
@@ -36,54 +36,54 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
             make.top.leading.trailing.bottom.equalToSuperview()
         }
         
-        // ✅ Placeholder 변경
+        //  Placeholder 변경
         searchView.updatePlaceholder("옷 유형, 아이디, 해시태그 ...")
         
         searchView.searchField.textField.delegate = self
-        // ✅ Delegate & DataSource 설정 (테이블 뷰 업데이트 안 되는 문제 해결)
+        //  Delegate & DataSource 설정 (테이블 뷰 업데이트 안 되는 문제 해결)
         searchView.recentSearchTableView.delegate = self
         searchView.recentSearchTableView.dataSource = self
         searchView.recentSearchTableView.register(RecentSearchCell.self, forCellReuseIdentifier: RecentSearchCell.identifier)
         
-        // ✅ 검색 기록 전체 삭제 버튼 동작 설정
+        //  검색 기록 전체 삭제 버튼 동작 설정
         searchView.deleteAllButton.addTarget(self, action: #selector(deleteAllSearches), for: .touchUpInside)
         
-        // ✅ 검색 기록 로드
+        //  검색 기록 로드
         loadRecentSearches()
     }
-    // ✅ viewWillAppear에서 검색 기록을 강제 업데이트
-    // ✅ 🔥 viewWillAppear()에서 불필요한 NotificationCenter 등록 정리
+    //  viewWillAppear에서 검색 기록을 강제 업데이트
+    //   viewWillAppear()에서 불필요한 NotificationCenter 등록 정리
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(true, animated: false)
-        searchView.searchField.textField.text = "" // ✅ 검색어 입력 필드 초기화
+        searchView.searchField.textField.text = "" //  검색어 입력 필드 초기화
         
-        // ✅ 🔥 기존 옵저버를 지우고 새로 추가하는 방식은 불필요 -> 한 번만 등록하면 됨
+        //   기존 옵저버를 지우고 새로 추가하는 방식은 불필요 -> 한 번만 등록하면 됨
         loadRecentSearches()
     }
-    // ✅ 검색 기록 불러오기
+    //  검색 기록 불러오기
     func loadRecentSearches() {
         recentSearches = searchManager.fetchRecentSearches()
-        searchHistory = recentSearches // ✅ 🔥 검색 기록을 최신화
-        print("✅ [SearchViewController] 강제 업데이트된 검색 기록: \(recentSearches)")
+        searchHistory = recentSearches //   검색 기록을 최신화
+        print(" [SearchViewController] 강제 업데이트된 검색 기록: \(recentSearches)")
         
         DispatchQueue.main.async {
             self.searchView.recentSearchTableView.reloadData()
             self.searchView.recentSearchTableView.isHidden = self.recentSearches.isEmpty
         }
     }
-    // ✅ 뒤로 가기 버튼 동작
+    //  뒤로 가기 버튼 동작
     func didTapBackButton() {
-        print("✅ SearchViewController에서 뒤로 가기 실행!") // 👉 로그 확인
+        print(" SearchViewController에서 뒤로 가기 실행!") // 👉 로그 확인
         navigationController?.popViewController(animated: true)
     }
-    // ✅ 검색 기록이 변경될 때 자동 반영
+    //  검색 기록이 변경될 때 자동 반영
     @objc private func updateSearchHistory() {
-        print("✅ 검색 기록 업데이트 호출됨!")
+        print(" 검색 기록 업데이트 호출됨!")
         
         recentSearches = searchManager.fetchRecentSearches()
-        searchHistory = recentSearches // ✅ 🔥 최신 검색 기록 반영
+        searchHistory = recentSearches //   최신 검색 기록 반영
         print("🔴 [SearchViewController] 검색 기록 업데이트 후 최종 확인: \(recentSearches)")
         
         DispatchQueue.main.async {
@@ -94,13 +94,13 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
     @objc private func loadSearchHistory() {
         searchHistory = UserDefaults.standard.stringArray(forKey: "searchHistory") ?? []
         
-        print("✅ 최종 검색 기록 확인: \(searchManager.fetchRecentSearches())")
+        print(" 최종 검색 기록 확인: \(searchManager.fetchRecentSearches())")
         DispatchQueue.main.async {
             if self.searchHistory.isEmpty {
                 print("⚠️ 검색 기록 없음 → 테이블 뷰 숨김 처리!")
                 self.searchView.recentSearchTableView.isHidden = true
             } else {
-                print("✅ 검색 기록 있음 → 테이블 뷰 업데이트!")
+                print(" 검색 기록 있음 → 테이블 뷰 업데이트!")
                 self.searchView.recentSearchTableView.isHidden = false
                 self.searchView.recentSearchTableView.reloadData()
             }
@@ -108,33 +108,33 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
         
         
     }
-    // ✅ 검색 기록 저장
+    //  검색 기록 저장
     func saveRecentSearch(_ query: String) {
-        searchManager.addSearchKeyword(query) // ✅ 중복 방지 및 최신화 포함
+        searchManager.addSearchKeyword(query) //  중복 방지 및 최신화 포함
     }
     
-    // ✅ 검색 실행
-    // ✅ 검색 실행 함수 수정
+    //  검색 실행
+    //  검색 실행 함수 수정
     func performSearch(with query: String) {
         guard !query.isEmpty else { return }
         
-        print("✅ [SearchViewController] 검색 실행: \(query) → 검색어 저장!")
+        print(" [SearchViewController] 검색 실행: \(query) → 검색어 저장!")
         
-        searchManager.addSearchKeyword(query) // ✅ 검색어 저장
+        searchManager.addSearchKeyword(query) //  검색어 저장
         
-        // ✅ 🔥 검색 기록 강제 반영
+        //   검색 기록 강제 반영
         searchHistory = searchManager.fetchRecentSearches()
         
-        // ✅ 🔥 UI 업데이트를 위해 테이블 뷰 강제 리로드
+        //   UI 업데이트를 위해 테이블 뷰 강제 리로드
         DispatchQueue.main.async {
             self.searchView.recentSearchTableView.reloadData()
             self.searchView.recentSearchTableView.isHidden = self.searchHistory.isEmpty
         }
         
-        // ✅ 🔥 API 호출해서 users 가져오기
+        //   API 호출해서 users 가져오기
         SearchService().searchMember(
-            by: "id-and-nickname",  // ✅ API 문서에 맞게 수정
-            keyword: query,         // ✅ data → keyword로 변경
+            by: "id-and-nickname",  //
+            keyword: query,         //
             page: 1,
             size: 20
         ) { [weak self] result in
@@ -163,26 +163,26 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
             
         }
     }
-    // ✅ 추천 검색어 클릭 시 실행 searchhistory
+    //  추천 검색어 클릭 시 실행 searchhistory
     func didTapRecommendedKeyword(_ keyword: String) {
-        selectedKeyword = keyword // ✅ 선택한 키워드 저장
-        UserDefaults.standard.set(keyword, forKey: "selectedKeyword") // ✅ 선택된 키워드 저장
+        selectedKeyword = keyword // 
+        UserDefaults.standard.set(keyword, forKey: "selectedKeyword") //  선택된 키워드 저장
         
         searchView.updateSelectedKeywordUI()
         searchView.searchField.textField.text = keyword
-        performSearch(with: keyword)
+        performHashtagSearch(with: keyword)
     }
     
-    // ✅ 검색창에서 "Enter" 키 입력 시 실행 searchmemeberapi 호출
+    //  검색창에서 "Enter" 키 입력 시 실행 searchmemeberapi 호출
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let query = textField.text, !query.isEmpty else { return false }
         
-        textField.resignFirstResponder() // 🔹 키보드 내리기
+        textField.resignFirstResponder() //  키보드 내리기
         
-        // 🔹 검색 기록 저장 (추천 검색어 기능 추가)
-        let searchManager = SearchManager() // ✅ 직접 인스턴스 생성
+        //  검색 기록 저장 (추천 검색어 기능 추가)
+        let searchManager = SearchManager() //  직접 인스턴스 생성
         searchManager.addSearchKeyword(query)
-        // 🔹 API 호출 (검색 실행)
+        //  API 호출 (검색 실행)
         SearchService().searchMember(by: "id-and-nickname", keyword: query, page: 1, size: 20) { (result: Result<SearchMemberResponseDTO, NetworkError>) in
             switch result {
             case .success(let response):
@@ -207,7 +207,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
         return true
     }
     
-    // ✅ 검색 기록 전체 삭제
+    //  검색 기록 전체 삭제
     @objc private func deleteAllSearches() {
         print("🗑️ [SearchViewController] 전체 삭제 버튼 클릭됨!")
         
@@ -216,16 +216,42 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
         
         DispatchQueue.main.async {
             self.searchView.recentSearchTableView.reloadData()
-            self.searchView.recentSearchTableView.isHidden = true // ✅ UI 즉시 업데이트
+            self.searchView.recentSearchTableView.isHidden = true //  UI 즉시 업데이트
+        }
+    }
+    //해시태그 누르면 계정탭 + 계정 api 호출이 아닌, 기록 호출 , 계정탭 선택 
+    private func performHashtagSearch(with query: String) {
+        guard !query.isEmpty else { return }
+        
+        print("🔍 해시태그 검색 실행: \(query)")
+        
+        // 검색어 저장
+        searchManager.addSearchKeyword(query)
+        
+        // 해시태그 검색 API 호출
+        SearchService().searchHistory(by: "hashtag-and-category", keyword: query, page: 1, size: 20) { [weak self] result in
+            switch result {
+            case .success(let response):
+                let images = response.historyPreviews.map { $0.imageUrl }
+                DispatchQueue.main.async {
+                    // 해시태그 탭이 기본 선택되도록 초기화 파라미터 전달 (results는 빈 배열로 처리)
+                    let resultVC = SearchResultViewController(query: query, results: [], initialTabIsHashtag: true)
+                    // 검색 결과 이미지를 미리 할당
+                    resultVC.dummyImages = images
+                    self?.navigationController?.pushViewController(resultVC, animated: true)
+                }
+            case .failure(let error):
+                print("❌ 해시태그 검색 실패: \(error.localizedDescription)")
+            }
         }
     }
     
 }
 
-// ✅ 최근 검색어 목록을 위한 UITableView 구현
+//  최근 검색어 목록을 위한 UITableView 구현
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("✅ [SearchViewController] 테이블 뷰 데이터 개수: \(searchHistory.count)")
+        print(" [SearchViewController] 테이블 뷰 데이터 개수: \(searchHistory.count)")
         return searchHistory.count
         
     }
@@ -234,8 +260,8 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RecentSearchCell", for: indexPath) as! RecentSearchCell
         cell.titleLabel.text = searchHistory[indexPath.row]
         
-        // ✅ 삭제 버튼 클릭 시 동작 추가
-        // ✅ 삭제 버튼 클릭 시 동작 수정
+        //  삭제 버튼 클릭 시 동작 추가
+        //  삭제 버튼 클릭 시 동작 수정
         cell.deleteAction = { [weak self] in
             guard let self = self else { return }
             let keywordToDelete = self.searchHistory[indexPath.row]
@@ -243,7 +269,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
             self.searchManager.removeSearchKeyword(keywordToDelete)
             self.searchManager.removeSearchKeyword(keywordToDelete)
             
-            // ✅ 🔥 삭제 후 즉시 `searchHistory` 갱신
+            //   삭제 후 즉시 `searchHistory` 갱신
             self.searchHistory = self.searchManager.fetchRecentSearches()
             
             DispatchQueue.main.async {
@@ -252,13 +278,13 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         
-        print("✅ [SearchViewController] 테이블 뷰 셀 생성: \(searchHistory[indexPath.row])")
+        print(" [SearchViewController] 테이블 뷰 셀 생성: \(searchHistory[indexPath.row])")
         return cell
     }
     
     
     
-    // ✅ 최근 검색어 클릭 시 검색 실행 searchmember호출
+    //  최근 검색어 클릭 시 검색 실행 searchmember호출
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedQuery = searchHistory[indexPath.row]
         performSearch(with: selectedQuery)
@@ -266,7 +292,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     
-    // ✅ 최근 검색어 셀 정의
+    //  최근 검색어 셀 정의
     class RecentSearchCell: UITableViewCell {
         static let identifier = "RecentSearchCell"
         
@@ -325,7 +351,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         @objc private func didTapDelete() {
             if let text = titleLabel.text {
                 print("🗑️ [RecentSearchCell] 삭제 요청: \(text)")
-                deleteAction?() // ✅ 삭제 요청 보내기
+                deleteAction?() //  삭제 요청 보내기
             }
         }
         

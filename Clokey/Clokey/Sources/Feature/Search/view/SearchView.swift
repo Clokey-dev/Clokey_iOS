@@ -15,7 +15,7 @@ protocol SearchViewDelegate: AnyObject {
 
 class SearchView: UIView {
     
-    private var keywordButtons: [UIButton] = [] // ✅ 추가
+    private var keywordButtons: [UIButton] = [] //  추가
     weak var delegate: SearchViewDelegate?
     private var selectedButton: UIButton?
     private var recentSearches: [String] = []
@@ -91,7 +91,7 @@ class SearchView: UIView {
         return stackView
     }()
     
-    let recommendedKeywords = ["맨투맨", "스웨터", "연말룩", "바람막이", "코듀로이", "베이프", "스투시", "후드집업"]
+    let recommendedKeywords = ["새해룩", "새학기", "개강룩", "새내기", "헌내기", "베이프", "스투시", "후드집업"]
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -126,17 +126,17 @@ class SearchView: UIView {
     
     private func setupConstraints() {
         backButton.snp.makeConstraints { make in
-            make.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(10) // ✅ safeArea 적용 + 10pt 여백 추가
-            make.leading.equalToSuperview().offset(19) // ✅ 왼쪽 19pt
-            make.width.equalTo(10) // ✅ 10x20 사이즈
+            make.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(10) //  safeArea 적용 + 10pt 여백 추가
+            make.leading.equalToSuperview().offset(19) //  왼쪽 19pt
+            make.width.equalTo(10) //  10x20 사이즈
             make.height.equalTo(20)
         }
         
         
         searchTitleLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(backButton.snp.centerY) // ✅ 높이를 `backButton`과 같은 라인에 정렬
-            make.leading.equalTo(backButton.snp.trailing).offset(10) // ✅ 간격 조정
-            make.height.equalTo(backButton.snp.height) // ✅ `backButton`과 같은 높이로 설정
+            make.centerY.equalTo(backButton.snp.centerY) //  높이를 `backButton`과 같은 라인에 정렬
+            make.leading.equalTo(backButton.snp.trailing).offset(20) //  간격 조정
+            make.height.equalTo(backButton.snp.height) //  `backButton`과 같은 높이로 설정
         }
         
         searchField.snp.makeConstraints { make in
@@ -178,13 +178,13 @@ class SearchView: UIView {
         }
     }
     func loadRecentSearches() {
-        // ✅ 🔥 `fetchRecentSearches()` 호출해서 최신 데이터 가져오기
+        //   `fetchRecentSearches()` 호출해서 최신 데이터 가져오기
         recentSearches = searchManager.fetchRecentSearches()
 
-        print("✅ [SearchView] 강제 업데이트된 검색 기록: \(recentSearches)")
+        print(" [SearchView] 강제 업데이트된 검색 기록: \(recentSearches)")
 
         DispatchQueue.main.async {
-            self.recentSearchTableView.reloadData() // ✅ UI 강제 업데이트
+            self.recentSearchTableView.reloadData() //  UI 강제 업데이트
             self.recentSearchTableView.isHidden = self.recentSearches.isEmpty
         }
     }
@@ -206,35 +206,35 @@ class SearchView: UIView {
         }
     }
     @objc private func backButtonTapped() {
-        print("✅ 뒤로 가기 버튼 클릭됨!") // 👉 로그 확인
+        print(" 뒤로 가기 버튼 클릭됨!") // 👉 로그 확인
         delegate?.didTapBackButton()
     }
     @objc private func recommendedKeywordTapped(_ sender: UIButton) {
         guard let keyword = sender.titleLabel?.text else { return }
 
-        // ✅ 선택된 키워드를 저장 (UI 변경 X)
+        //  선택된 키워드를 저장 (UI 변경 X)
         UserDefaults.standard.setValue(keyword, forKey: "selectedKeyword")
         UserDefaults.standard.synchronize()
 
-        // ✅ UI 변경 없이 검색만 실행
+        //  UI 변경 없이 검색만 실행
         delegate?.didTapRecommendedKeyword(keyword)
     }
     
   /*안돼ㅡㅡ  @objc private func recommendedKeywordTapped(_ sender: UIButton) {
         guard let keyword = sender.titleLabel?.text else { return }
         
-        // ✅ 모든 버튼을 기본 색상으로 초기화
+        //  모든 버튼을 기본 색상으로 초기화
         for button in keywordButtons {
             button.backgroundColor = UIColor(red: 255/255, green: 231/255, blue: 210/255, alpha: 1)
             button.setTitleColor(.black, for: .normal)
         }
         
-        // ✅ 현재 선택한 버튼의 색상 변경
+        //  현재 선택한 버튼의 색상 변경
         sender.backgroundColor = UIColor(named: "pointOrange800")
         sender.setTitleColor(.white, for: .normal)
         selectedButton = sender
         
-        // ✅ 선택한 키워드 저장
+        //  선택한 키워드 저장
         UserDefaults.standard.setValue(keyword, forKey: "selectedKeyword")
         UserDefaults.standard.synchronize()
         
@@ -246,35 +246,35 @@ class SearchView: UIView {
         
         for button in keywordButtons {
             if button.titleLabel?.text == savedKeyword {
-                // ✅ 저장된 키워드가 있으면 주황색
+                //  저장된 키워드가 있으면 주황색
                 button.backgroundColor = UIColor(red: 255/255, green: 231/255, blue: 210/255, alpha: 1)
                 button.setTitleColor(.black, for: .normal)
                // button.backgroundColor = UIColor(named: "pointOrange800")
                // button.setTitleColor(.white, for: .normal)
                 selectedButton = button
             } else {
-                // ✅ 선택되지 않은 버튼들은 원래 색상으로 복구
+                //  선택되지 않은 버튼들은 원래 색상으로 복구
                 button.backgroundColor = UIColor(red: 255/255, green: 231/255, blue: 210/255, alpha: 1)
                 button.setTitleColor(.black, for: .normal)
             }
         }
     }
     func updatePlaceholder(_ text: String) {
-            searchField.setPlaceholder(text) // ✅ CustomSearchField의 setPlaceholder 호출
+            searchField.setPlaceholder(text) //  CustomSearchField의 setPlaceholder 호출
         }
     @objc private func updateSearchHistory() {
-        print("✅ 검색 기록 업데이트 호출됨!")
+        print(" 검색 기록 업데이트 호출됨!")
 
-        // ✅ 🔥 UserDefaults에서 최신 데이터 가져오기
+        //   UserDefaults에서 최신 데이터 가져오기
         loadRecentSearches()
     }
     func removeSearchKeyword(_ keyword: String) {
         var searches = searchManager.fetchRecentSearches()
         
-        // 🔥 검색어 삭제
+        //  검색어 삭제
         searches.removeAll { $0 == keyword }
         
-        // 🔥 UserDefaults 갱신
+        //  UserDefaults 갱신
         if searches.isEmpty {
             UserDefaults.standard.removeObject(forKey: "recentSearches")
         } else {
@@ -284,16 +284,16 @@ class SearchView: UIView {
 
         print("🗑️ [SearchView] 삭제 후 검색 기록: \(searches)")
 
-        // 🔥 ✅ UI 업데이트를 위해 `recentSearches` 직접 수정
+        //   UI 업데이트를 위해 `recentSearches` 직접 수정
         self.recentSearches = searches
 
-        // 🔥 ✅ 테이블 뷰 UI 강제 업데이트
+        //   테이블 뷰 UI 강제 업데이트
         DispatchQueue.main.async {
             self.recentSearchTableView.reloadData()
             self.recentSearchTableView.isHidden = self.recentSearches.isEmpty
         }
 
-        // 🔥 ✅ NotificationCenter로 변경 사항 알림 (다른 화면에서도 반영되도록)
+        //   NotificationCenter로 변경 사항 알림 (다른 화면에서도 반영되도록)
         NotificationCenter.default.post(name: NSNotification.Name("SearchHistoryUpdated"), object: nil)
     }
     func clearAllSearches() {
@@ -303,9 +303,9 @@ class SearchView: UIView {
         print("🗑️ [SearchView] 전체 삭제 후 검색 기록 확인: \(checkSaved)")
 
         DispatchQueue.main.async {
-            self.recentSearches.removeAll() // ✅ 내부 데이터까지 제거
+            self.recentSearches.removeAll() //  내부 데이터까지 제거
             self.recentSearchTableView.reloadData()
-            self.recentSearchTableView.isHidden = true // ✅ 즉시 반영
+            self.recentSearchTableView.isHidden = true //  즉시 반영
         }
 
         NotificationCenter.default.post(name: NSNotification.Name("SearchHistoryUpdated"), object: nil)

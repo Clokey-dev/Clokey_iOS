@@ -11,12 +11,12 @@ class AgreementDetailViewController: UIViewController {
     
     // MARK: - Properties
     private let agreementTitle: String
-    private let agreementContent: String // ✅ 내용을 받을 프로퍼티 추가
+    private let agreementContent: String //  내용을 받을 프로퍼티 추가
     
     // MARK: - UI Components
     private lazy var contentTextView: UITextView = { // UILabel → UITextView로 변경 (스크롤 지원)
         let textView = UITextView()
-        textView.text = agreementContent // ✅ 초기화 시 내용 주입
+        textView.text = agreementContent //  초기화 시 내용 주입
         textView.font = .systemFont(ofSize: 16)
         textView.isEditable = false
         textView.textColor = .black
@@ -63,7 +63,7 @@ class AgreementDetailViewController: UIViewController {
         view.addSubview(closeButton)
         
         // 내용 텍스트뷰
-        view.addSubview(contentTextView) // ✅ UILabel 대신 UITextView 사용
+        view.addSubview(contentTextView) //  UILabel 대신 UITextView 사용
         
         // 제약조건
         titleLabel.snp.makeConstraints {
@@ -78,7 +78,7 @@ class AgreementDetailViewController: UIViewController {
         
         contentTextView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(20)
-            $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide).inset(16) // ✅ 하단까지 확장
+            $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide).inset(16) //  하단까지 확장
         }
     }
     

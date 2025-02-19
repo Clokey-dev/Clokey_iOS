@@ -14,12 +14,12 @@
 //    private var userInfo: ProfileRequest?
 //    
 //    // MARK: - Methods
-//    // ✅ 사용자가 프로필을 완료하고 가입 정보를 처리하는 메서드
+//    //  사용자가 프로필을 완료하고 가입 정보를 처리하는 메서드
 //    func handleUserSignUp(profileData: ProfileRequest, completion: @escaping (Bool, String) -> Void) {
-//        // ✅ 일단 사용자 정보 로컬에 저장
+//        //  일단 사용자 정보 로컬에 저장
 //        self.userInfo = profileData
 //        
-//        // ✅ 디버깅용 출력 (JSON 확인)
+//        //  디버깅용 출력 (JSON 확인)
 //        do {
 //            let jsonData = try JSONEncoder().encode(profileData)
 //            if let jsonString = String(data: jsonData, encoding: .utf8) {
@@ -29,7 +29,7 @@
 //            print("🚨 JSON 인코딩 오류:", error.localizedDescription)
 //        }
 //
-//        // ✅ 실제 서버 요청 코드 (현재는 서버 연결 안 하므로 주석 처리)
+//        //  실제 서버 요청 코드 (현재는 서버 연결 안 하므로 주석 처리)
 //        /*
 //        let url = URL(string: "https://yourapi.com/profile")! // 서버 URL 변경 필요
 //        var request = URLRequest(url: url)
@@ -53,7 +53,7 @@
 //            do {
 //                let response = try JSONDecoder().decode(ProfileResponse.self, from: data)
 //                if response.isSuccess {
-//                    print("✅ 프로필 설정 완료:", response.message)
+//                    print(" 프로필 설정 완료:", response.message)
 //                    completion(true, "프로필 설정 완료")
 //                } else {
 //                    print("🚨 서버 오류:", response.message)
@@ -67,13 +67,13 @@
 //        task.resume()
 //        */
 //
-//        // ✅ 서버 요청 없이 성공 처리 (테스트용)
+//        //  서버 요청 없이 성공 처리 (테스트용)
 //        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
 //            completion(true, "프로필 설정 완료")
 //        }
 //    }
 //    
-//    // ✅ 사용자 정보 확인 (디버깅 용도)
+//    //  사용자 정보 확인 (디버깅 용도)
 //    func getUserInfo() -> ProfileRequest? {
 //        return userInfo
 //    }

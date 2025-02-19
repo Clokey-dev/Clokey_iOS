@@ -223,7 +223,7 @@ class AddCategoryView: UIView {
         categoryCollectionView.snp.makeConstraints { make in
 //            make.top.equalTo(titleLabel.snp.bottom).offset(30)
             make.top.equalTo(containerView.snp.bottom).offset(30)
-            make.leading.trailing.equalToSuperview().inset(20) // 🔥 leading은 유지
+            make.leading.trailing.equalToSuperview().inset(20) //  leading은 유지
             make.bottom.equalToSuperview()
         }
     }

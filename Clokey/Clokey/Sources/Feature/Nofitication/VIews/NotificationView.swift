@@ -17,7 +17,7 @@ import SnapKit
 
 class NotificationView: UIView {
     
-    // 🔹 뒤로 가기 버튼
+    //  뒤로 가기 버튼
     let backButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "goback"), for: .normal)
@@ -25,7 +25,7 @@ class NotificationView: UIView {
         return button
     }()
     
-    // 🔹 타이틀 라벨
+    //  타이틀 라벨
     let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "알림"
@@ -34,7 +34,7 @@ class NotificationView: UIView {
         return label
     }()
     
-    // 🔹 테이블 뷰
+    //  테이블 뷰
     let tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(NotificationCell.self, forCellReuseIdentifier: "NotificationCell")
@@ -62,8 +62,8 @@ class NotificationView: UIView {
         backButton.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide).offset(10)
             make.leading.equalToSuperview().offset(20)
-            make.width.equalTo(10) // ✅ width 고정
-            make.height.equalTo(20) // ✅ height 고정
+            make.width.equalTo(10) //  width 고정
+            make.height.equalTo(20) //  height 고정
         }
 
         titleLabel.snp.makeConstraints { make in

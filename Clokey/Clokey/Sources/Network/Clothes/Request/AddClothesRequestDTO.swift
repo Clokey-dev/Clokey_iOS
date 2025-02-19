@@ -19,7 +19,7 @@ import Foundation
 //    public let clothUrl: String
 //    public let brand: String
 //    
-//    // ✅ 이미지 데이터는 Codable에서 제외하고, Form-Data로 보낼 때 따로 처리
+//    //  이미지 데이터는 Codable에서 제외하고, Form-Data로 보낼 때 따로 처리
 //    public var image: Data?
 //
 //    enum CodingKeys: String, CodingKey {
@@ -37,19 +37,19 @@ public struct AddClothesRequestDTO: Codable {
     public let clothUrl: String
     public let brand: String
 
-    // ✅ 이미지 속성 제거 (Form-Data에서 따로 처리)
+    //  이미지 속성 제거 (Form-Data에서 따로 처리)
     
     enum CodingKeys: String, CodingKey {
         case categoryId, name, seasons, tempUpperBound, tempLowerBound, thicknessLevel, visibility, clothUrl, brand
     }
 }
 
-// ✅ JSON을 "metadata" 키로 감싸도록 변환
+//  JSON을 "metadata" 키로 감싸도록 변환
 extension AddClothesRequestDTO {
     func asMultipartMetadata() throws -> [String: Any] {
         let jsonData = try JSONEncoder().encode(self)
         let dictionary = try JSONSerialization.jsonObject(with: jsonData, options: .allowFragments) as? [String: Any]
-        return ["metadata": dictionary ?? [:]] // ✅ "metadata" 키로 감싸서 반환
+        return ["metadata": dictionary ?? [:]] //  "metadata" 키로 감싸서 반환
     }
 }
 

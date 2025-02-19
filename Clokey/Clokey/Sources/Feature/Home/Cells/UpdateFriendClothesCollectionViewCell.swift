@@ -35,7 +35,7 @@ class UpdateFriendClothesCollectionViewCell: UICollectionViewCell {
     }
     
     let imageContainer = UIView().then {
-        $0.backgroundColor = .clear // ✅ 배경색을 투명하게 유지
+        $0.backgroundColor = .clear //  배경색을 투명하게 유지
     }
     
     // Image Views for Kingfisher
@@ -115,7 +115,7 @@ class UpdateFriendClothesCollectionViewCell: UICollectionViewCell {
         imageContainer.snp.makeConstraints { make in
             make.top.equalTo(profileIcon.snp.bottom).offset(12)
             make.leading.equalToSuperview().offset(10)
-            make.width.equalTo(295) // ✅ 고정된 너비 설정
+            make.width.equalTo(295) //  고정된 너비 설정
             make.height.equalTo(116)
         }
 

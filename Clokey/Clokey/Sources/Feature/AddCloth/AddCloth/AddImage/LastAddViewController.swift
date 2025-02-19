@@ -28,7 +28,7 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
         
         setupActions()
         
-        // 🔹 화면 탭하면 키보드 내리기
+        //  화면 탭하면 키보드 내리기
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
     }
@@ -45,7 +45,7 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
     
     
     @objc internal override func dismissKeyboard() {
-        view.endEditing(true) // 🔥 현재 화면에서 키보드 내리기
+        view.endEditing(true) //  현재 화면에서 키보드 내리기
     }
     
     // 버튼 액션 설정
@@ -125,7 +125,7 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
         popupVC.imageUrl = lastAddView.urlTextField.text
         popupVC.brand = lastAddView.brandTextField.text
         
-        // 🔥 선택한 이미지를 전달
+        //  선택한 이미지를 전달
         if let selectedImage = lastAddView.imageView.image,
            let imageData = selectedImage.jpegData(compressionQuality: 0.8) {
             popupVC.cloth = selectedImage
@@ -134,7 +134,7 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
             popupVC.clothImage = nil // 이미지가 없을 경우 nil 전달
         }
         /***/
-        popupVC.modalPresentationStyle = .fullScreen // ✅ 전체 화면 모달
+        popupVC.modalPresentationStyle = .fullScreen //  전체 화면 모달
         navigationController?.pushViewController(popupVC, animated: true)
     }
 }

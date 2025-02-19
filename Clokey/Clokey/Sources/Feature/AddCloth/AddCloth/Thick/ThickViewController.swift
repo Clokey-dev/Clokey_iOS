@@ -12,14 +12,14 @@ class ThickViewController: UIViewController {
     
     // MARK: - UI Components
     
-    /// 🔹 네비게이션 바
+    ///  네비게이션 바
     private let customNavBar: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         return view
     }()
     
-    /// 🔹 뒤로가기 버튼
+    ///  뒤로가기 버튼
     private let backButton: UIButton = {
         let button = UIButton(type: .system)
         let image = UIImage(systemName: "chevron.left")?
@@ -31,7 +31,7 @@ class ThickViewController: UIViewController {
         return button
     }()
     
-    /// 🔹 타이틀 ("옷 추가")
+    ///  타이틀 ("옷 추가")
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "옷 추가"
@@ -40,7 +40,7 @@ class ThickViewController: UIViewController {
         return label
     }()
     
-    /// 🔹 두께감 설정 제목
+    ///  두께감 설정 제목
     private let thicknessTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "두께감을 설정해주세요."
@@ -51,9 +51,9 @@ class ThickViewController: UIViewController {
     }()
     
     
-    /// 🔹 두께감 설명 버튼
-    /// 🔹 두께감 설명 버튼 ( 대신 아이콘 사용)
-    /// 🔹 두께감 설명 버튼 (텍스트만 유지)
+    ///  두께감 설명 버튼
+    ///  두께감 설명 버튼 ( 대신 아이콘 사용)
+    ///  두께감 설명 버튼 (텍스트만 유지)
     private let thicknessInfoButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("두께감의 기준이 궁금해요", for: .normal)
@@ -65,7 +65,7 @@ class ThickViewController: UIViewController {
         return button
     }()
     
-    /// 🔹 질문 아이콘 (별도로 추가)
+    ///  질문 아이콘 (별도로 추가)
     private let questionIcon: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "question_citrcle_icon")
@@ -77,11 +77,11 @@ class ThickViewController: UIViewController {
         
         return imageView
     }()
-    /// 🔹 버튼 + 아이콘을 포함하는 StackView
+    ///  버튼 + 아이콘을 포함하는 StackView
     private let infoStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
-        stack.spacing = 6 // ✅ 아이콘과 텍스트 간격 조정
+        stack.spacing = 6 //  아이콘과 텍스트 간격 조정
         stack.alignment = .center
         return stack
     }()
@@ -127,21 +127,21 @@ class ThickViewController: UIViewController {
         label.layer.masksToBounds = true
         return label
     }()
-    /// 🔹 두께감 슬라이더 (ThickSlider 사용)
+    ///  두께감 슬라이더 (ThickSlider 사용)
     private let thickSlider: ThickSlider = {
         let slider = ThickSlider()
         slider.isContinuous = false // 값 변경을 단계적으로
         return slider
     }()
     
-    /// 🔹 공개 여부 라벨
+    ///  공개 여부 라벨
     private let visibilityLabel: UILabel = {
         let label = UILabel()
         
         let fullText = "옷 공개여부 *"
         let attributedString = NSMutableAttributedString(string: fullText)
         
-        // 🔹 `*` 부분만 빨간색 적용
+        //  `*` 부분만 빨간색 적용
         if let range = fullText.range(of: "*") {
             let nsRange = NSRange(range, in: fullText)
             attributedString.addAttribute(.foregroundColor, value: UIColor.red, range: nsRange)
@@ -155,7 +155,7 @@ class ThickViewController: UIViewController {
     }()
     
     
-    /// 🔹 공개 버튼
+    ///  공개 버튼
     private let publicButton: UIButton = {
         let button = UIButton()
         button.setTitle("공개", for: .normal)
@@ -169,7 +169,7 @@ class ThickViewController: UIViewController {
         return button
     }()
     
-    /// 🔹 비공개 버튼
+    ///  비공개 버튼
     private let privateButton: UIButton = {
         let button = UIButton()
         button.setTitle("비공개", for: .normal)
@@ -183,7 +183,7 @@ class ThickViewController: UIViewController {
         return button
     }()
     
-    /// 🔹 다음 버튼
+    ///  다음 버튼
     private let nextButton: UIButton = {
         let button = UIButton()
         button.setTitle("다음", for: .normal)
@@ -250,7 +250,7 @@ class ThickViewController: UIViewController {
             //                $0.top.equalTo(thickSlider.snp.bottom).offset(24)
             $0.top.equalTo(thicknessTitleLabel.snp.bottom).offset(110)
             $0.leading.equalToSuperview().offset(40)
-            $0.trailing.lessThanOrEqualToSuperview().offset(-20) // ✅ 너무 넓어지지 않도록 설정
+            $0.trailing.lessThanOrEqualToSuperview().offset(-20) //  너무 넓어지지 않도록 설정
         }
         
         
