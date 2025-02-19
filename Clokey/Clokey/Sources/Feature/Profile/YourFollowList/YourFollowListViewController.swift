@@ -14,7 +14,7 @@ enum YourFollowTabType: Int {
     case following = 1
 }
 
-class YourFollowListViewController: UIViewController {
+class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegate {
     var selectedTab: YourFollowTabType = .follower // 기본값: 팔로워
     
     var clokeyId: String = ""
@@ -109,6 +109,8 @@ class YourFollowListViewController: UIViewController {
         setupCollectionViews()
         loadFollowerData()
 //        loadFollowingData()
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         titleLabel.text = clokeyId
         followerButton.setTitle("팔로워(\(followerCount))", for: .normal)
