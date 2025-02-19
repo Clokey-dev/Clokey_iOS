@@ -203,6 +203,8 @@ final class ProfileViewController: UIViewController {
 //        navigationController?.pushViewController(editProfileViewController, animated: true)
     }
     
+    let mainVC = MainViewController()
+    
     @objc private func didTapFollowerButton() {
         let followListViewController = MyFollowListViewController()
         followListViewController.clokeyId = clokeyId
@@ -218,6 +220,7 @@ final class ProfileViewController: UIViewController {
         followListViewController.followerCount = followerCount
         followListViewController.followingCount = followingCount
         followListViewController.selectedTab = .following // 팔로잉 탭으로 설정
+        followListViewController.hidesBottomBarWhenPushed = false
         navigationController?.pushViewController(followListViewController, animated: true)
     }
     

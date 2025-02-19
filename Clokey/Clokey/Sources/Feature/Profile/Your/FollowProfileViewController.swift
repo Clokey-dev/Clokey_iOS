@@ -210,10 +210,8 @@ class FollowProfileViewController: UIViewController {
     }
     
     @objc private func didTapBackButton() {
-        let targetViewController = MainViewController() // 원하는 뷰 컨트롤러 인스턴스 생성
-        navigationController?.setViewControllers([targetViewController], animated: false)
+        navigationController?.popViewController(animated: true)
     }
-   
     
     @objc private func didTapFollowButton() {
         let isCurrentlyFollowing = followProfileView.followButton.backgroundColor
