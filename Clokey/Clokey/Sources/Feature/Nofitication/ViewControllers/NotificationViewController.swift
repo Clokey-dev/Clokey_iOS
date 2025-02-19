@@ -19,14 +19,14 @@ import RxGesture
 
 class NotificationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, NotificationCellDelegate {
     func notificationCell(_ cell: NotificationCell, didTapProfileFor notification: NotificationItem) {
-       
-                // (A) 프로필 탭 시 처리 로직을 여기에 작성합니다.
-                print("프로필 탭: \(notification.title)")
-                // 예시: FollowProfileViewController로 이동
-                let profileVC = FollowProfileViewController()
-                profileVC.followId = notification.redirectInfo  // 또는 적절한 값
-                navigationController?.pushViewController(profileVC, animated: true)
-            
+        
+        // (A) 프로필 탭 시 처리 로직을 여기에 작성합니다.
+        print("프로필 탭: \(notification.title)")
+        // 예시: FollowProfileViewController로 이동
+        let profileVC = FollowProfileViewController()
+        profileVC.followId = notification.redirectInfo  // 또는 적절한 값
+        navigationController?.pushViewController(profileVC, animated: true)
+        
     }
     
     
@@ -74,6 +74,7 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
             navigationController?.popViewController(animated: true)
         }
     }
+    
     
     
     
@@ -127,6 +128,19 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
         
     }
     
+    // MARK: - UIScrollViewDelegate for Pagination
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let frameHeight = scrollView.frame.size.height
+        
+        // 스크롤이 바닥 근처에 도달하면 추가 페이지 요청
+        if offsetY > contentHeight - frameHeight - 100 {
+            if viewModel.hasMorePages {
+                viewModel.fetchNotificationsFromAPI(isNextPage: true)
+            }
+        }
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let unread = viewModel.notifications.filter { !$0.isRead }
@@ -260,52 +274,52 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
             self.handleNotificationFollow(clokeyId: redirectInfo)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-               tableView.isUserInteractionEnabled = true
-           }
-    }
-        
-        func updateEmptyState() {
-            let unreadCount = viewModel.notifications.filter { !$0.isRead }.count
-            let readCount = viewModel.notifications.filter { $0.isRead }.count
-            let totalCount = unreadCount + readCount
-            
-            // 1) backgroundView 라벨 처리
-            if unreadCount == 0 && readCount == 0 {
-                let label = UILabel()
-                label.text = "현재 알람이 없습니다!"
-                label.textAlignment = .center
-                label.textColor = .gray
-                notificationView.tableView.backgroundView = label
-            } else {
-                notificationView.tableView.backgroundView = nil
-            }
-            
-            // 2) 테이블뷰 리로드
-            notificationView.tableView.reloadData()
+            tableView.isUserInteractionEnabled = true
         }
     }
-    /*extension NotificationViewController: NotificationCellDelegate {
-     func notificationCell(_ cell: NotificationCell, didTapProfileFor notification: NotificationItem) {
-     // **(A) 부분 탭 이벤트 처리**
-     switch notification.type {
-     case .like:
-     // 기록 좋아요: (A)를 누르면 → (A)의 프로필로 이동
-     print("Like 알림 (A) 탭 → (A)의 프로필로 이동")
-     // 예: navigationController?.pushViewController(ProfileViewController(userID: ...), animated: true)
-     case .follower:
-     // 팔로우 알림: (A)를 누르면 → (A)의 프로필로 이동
-     print("Follow 알림 (A) 탭 → (A)의 프로필로 이동")
-     case .recap:
-     // 댓글 알림: (A)를 누르면 → (A)의 프로필로 이동
-     // 단, 대댓글인 경우 두 동작이 동일 (게시물로 이동) 처리할 수 있음
-     if notification.title.contains("대댓글") {
-     print("대댓글 답장 알림 (A) 탭 → 해당 게시물로 이동")
-     } else {
-     print("댓글 알림 (A) 탭 → (A)의 프로필로 이동")
-     }
-     default:
-     break
-     }
-     }*/
     
+    func updateEmptyState() {
+        let unreadCount = viewModel.notifications.filter { !$0.isRead }.count
+        let readCount = viewModel.notifications.filter { $0.isRead }.count
+        let totalCount = unreadCount + readCount
+        
+        // 1) backgroundView 라벨 처리
+        if unreadCount == 0 && readCount == 0 {
+            let label = UILabel()
+            label.text = "현재 알람이 없습니다!"
+            label.textAlignment = .center
+            label.textColor = .gray
+            notificationView.tableView.backgroundView = label
+        } else {
+            notificationView.tableView.backgroundView = nil
+        }
+        
+        // 2) 테이블뷰 리로드
+        notificationView.tableView.reloadData()
+    }
+}
+/*extension NotificationViewController: NotificationCellDelegate {
+ func notificationCell(_ cell: NotificationCell, didTapProfileFor notification: NotificationItem) {
+ // **(A) 부분 탭 이벤트 처리**
+ switch notification.type {
+ case .like:
+ // 기록 좋아요: (A)를 누르면 → (A)의 프로필로 이동
+ print("Like 알림 (A) 탭 → (A)의 프로필로 이동")
+ // 예: navigationController?.pushViewController(ProfileViewController(userID: ...), animated: true)
+ case .follower:
+ // 팔로우 알림: (A)를 누르면 → (A)의 프로필로 이동
+ print("Follow 알림 (A) 탭 → (A)의 프로필로 이동")
+ case .recap:
+ // 댓글 알림: (A)를 누르면 → (A)의 프로필로 이동
+ // 단, 대댓글인 경우 두 동작이 동일 (게시물로 이동) 처리할 수 있음
+ if notification.title.contains("대댓글") {
+ print("대댓글 답장 알림 (A) 탭 → 해당 게시물로 이동")
+ } else {
+ print("댓글 알림 (A) 탭 → (A)의 프로필로 이동")
+ }
+ default:
+ break
+ }
+ }*/
+
 
