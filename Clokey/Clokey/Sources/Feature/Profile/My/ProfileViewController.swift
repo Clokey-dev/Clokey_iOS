@@ -36,9 +36,9 @@ final class ProfileViewController: UIViewController {
         
         calendarViewController.shouldHideUserNameLabel = true
         addCalendarViewController()
+        
         loadData()
         setupActions()
-        
         setupPopupActions()
         
 //        profileView.followerCountButton.setTitle("\(followerCount)", for: .normal)
@@ -89,6 +89,10 @@ final class ProfileViewController: UIViewController {
     var followerCount: Int = 0
     var followingCount: Int = 0
     
+    var clothId1:Int64?
+    var clothId2:Int64?
+    var clothId3:Int64?
+    
     private func loadData() {
         let clokeyId: String = ""
         
@@ -120,22 +124,23 @@ final class ProfileViewController: UIViewController {
                         self.profileView.backgroundImageView.kf.setImage(with: profileBackImageUrl)
                     }
                     
-                    if let clothImage1 = userProfile.clothImage1, let clothImageUrl1 = URL(string: clothImage1) {
-                        self.profileView.clothesImageView1.kf.setImage(with: clothImageUrl1)
-                    } else {
-                        self.profileView.clothesImageView1.image = UIImage(named: "default_cloth_image") // 기본 이미지 설정
-                    }
+                    let clothes = userProfile.clothResults
                     
-                    if let clothImage2 = userProfile.clothImage2, let clothImageUrl2 = URL(string: clothImage2) {
-                        self.profileView.clothesImageView2.kf.setImage(with: clothImageUrl2)
-                    } else {
-                        self.profileView.clothesImageView2.image = UIImage(named: "default_cloth_image")
-                    }
+                    self.profileView.clothesImageView2.isHidden = clothes.isEmpty || clothes.count < 2
+                    self.profileView.clothesImageView3.isHidden = clothes.isEmpty || clothes.count < 3
                     
-                    if let clothImage3 = userProfile.clothImage3, let clothImageUrl3 = URL(string: clothImage3) {
-                        self.profileView.clothesImageView3.kf.setImage(with: clothImageUrl3)
-                    } else {
-                        self.profileView.clothesImageView3.image = UIImage(named: "default_cloth_image")
+                    // 이미지 설정 (최대 3개)
+                    if clothes.count > 0 {
+                        self.profileView.clothesImageView1.kf.setImage(with: URL(string: clothes[0].clothImage))
+                        self.clothId1 = clothes[0].clothId
+                    }
+                    if clothes.count > 1 {
+                        self.profileView.clothesImageView2.kf.setImage(with: URL(string: clothes[1].clothImage))
+                        self.clothId2 = clothes[1].clothId
+                    }
+                    if clothes.count > 2 {
+                        self.profileView.clothesImageView3.kf.setImage(with: URL(string: clothes[2].clothImage))
+                        self.clothId3 = clothes[2].clothId
                     }
                 }
             case .failure(let error):
@@ -186,9 +191,7 @@ final class ProfileViewController: UIViewController {
         navigationController?.pushViewController(followListViewController, animated: true)
     }
     
-    var clothId1:Int64?
-    var clothId2:Int64?
-    var clothId3:Int64?
+    
     
     
     private func setupPopupActions() {

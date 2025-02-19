@@ -414,7 +414,7 @@ final class ProfileView: UIView {
     func updateCalendarPrivateState(isPrivate: Bool) {
         if isPrivate {
             // 데이터가 없으면 EmptyStackView 추가하고 관련 요소 숨김
-            recordContainerView.addSubview(privateStackView2)
+            calendarContainerView.addSubview(privateStackView2)
             privateStackView2.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
             }
