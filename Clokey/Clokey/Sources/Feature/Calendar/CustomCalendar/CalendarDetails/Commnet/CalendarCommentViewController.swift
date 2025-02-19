@@ -95,9 +95,9 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     
     // 댓글 새로고침
     private func updateComments(_ newComments: [Comment]) {
-       comments = newComments
-       commentView.comments = comments
-   }
+        comments = newComments
+        commentView.comments = comments
+    }
     
     // 댓글 정렬 메서드 추가
     private func organizeComments() {
@@ -125,7 +125,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
 
         let requestDTO = HistoryCommentWriteRequestDTO(
             content: text,
-            commentId: selectedCommentId // 선택된 댓글이 있으면 대댓글, 없으면 일반 댓글
+            commentId: selectedCommentId
         )
         
         historyService.historyCommentWrite(
@@ -139,17 +139,20 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
                 DispatchQueue.main.async {
                     // UI 초기화
                     self.resetCommentInput()
-                    self.fetchComments() // 댓글 목록 새로고침
+                    
+                    // 첫 페이지부터 다시 불러오기
+                    self.currentPage = 1
+                    self.isLastPage = false
+                    self.comments = []
+                    self.fetchComments(scrollToTop: true)  // 댓글 목록 새로고침 및 스크롤
                 }
 
                 // 댓글 성공 시 notificationComment 전송
                 let commentId = response.commentId
 
                 if self.selectedCommentId == nil {
-                    // 일반 댓글 작성 시
                     self.sendCommentNotification(historyId: self.historyId, commentId: commentId)
                 } else {
-                    // 대댓글 작성 시
                     self.sendReplyNotification(commentId: self.selectedCommentId!, replyId: commentId)
                 }
 
@@ -226,7 +229,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     }
     
     // MARK: - API
-    private func fetchComments() {
+    private func fetchComments(scrollToTop: Bool = false) {
         guard !isFetching && !isLastPage else { return }
         
         isFetching = true
@@ -238,7 +241,6 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
             
             switch result {
             case .success(let response):
-                self.delegate?.didUpdateComment(count: self.comments.count)
                 // Comment 모델로 변환
                 let newComments = response.comments.map { comment in
                     let mainComment = Comment(
@@ -266,24 +268,32 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
                 }.flatMap { $0 }
                 
                 DispatchQueue.main.async {
-                   // 첫 페이지면 교체, 아니면 추가
-                   if self.currentPage == 1 {
-                       self.comments = newComments
-                   } else {
-                       self.comments += newComments
-                   }
-                   
-                   self.organizeComments()  // 댓글 정렬
-                   self.delegate?.didUpdateComment(count: self.comments.count)
-                   self.commentView.comments = self.comments  // View 업데이트
-                   
-                   self.isLastPage = response.isLast
-                   self.currentPage += 1
-               }
+                    // 첫 페이지면 교체, 아니면 추가
+                    if self.currentPage == 1 {
+                        self.comments = newComments
+                    } else {
+                        self.comments += newComments
+                    }
+                    
+                    self.organizeComments()  // 댓글 정렬
+                    self.delegate?.didUpdateComment(count: self.comments.count)
+                    self.commentView.comments = self.comments  // View 업데이트
+                    
+                    if scrollToTop && !self.comments.isEmpty {
+                        // 스크롤을 맨 위로
+                        self.commentView.commentTableView.scrollToRow(
+                            at: IndexPath(row: 0, section: 0),
+                            at: .top,
+                            animated: true
+                        )
+                    }
+                    
+                    self.isLastPage = response.isLast
+                    self.currentPage += 1
+                }
                 
             case .failure(let error):
                 print("댓글 조회 실패: \(error)")
-                // 에러 처리 (필요시 alert 표시)
             }
         }
     }

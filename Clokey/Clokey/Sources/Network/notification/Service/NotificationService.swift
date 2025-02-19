@@ -88,7 +88,6 @@ public final class NotificationService : NetworkManager {
         request(target: .notificationComment(historyId: historyId, commentId: commentId),
                 decodingType: NotificationHistoryCommentResponseDTO.self,
                 completion: completion
-                
         )
     }
     public func notificationReply(

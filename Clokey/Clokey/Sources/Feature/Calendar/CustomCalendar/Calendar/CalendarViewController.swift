@@ -225,6 +225,8 @@ extension CalendarViewController: CalendarViewDelegate {
     }
 
     private func fetchHistoryDetail(historyId: Int) {
+        let historyService = HistoryService()
+
         historyService.historyDetail(historyId: historyId) { [weak self] result in
             guard let self = self else { return }
 
@@ -240,4 +242,5 @@ extension CalendarViewController: CalendarViewDelegate {
             }
         }
     }
+
 }
