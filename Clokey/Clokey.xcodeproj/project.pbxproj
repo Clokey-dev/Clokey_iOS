@@ -537,8 +537,8 @@
 		070258A92D31074500065369 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				A646C42C2D65AC8600993FA5 /* YourFollowList */,
 				A67661AC2D5B3760006AAB63 /* PrivateStackView.swift */,
+				A646C42C2D65AC8600993FA5 /* YourFollowList */,
 				A67661902D5B367B006AAB63 /* MyFollowList */,
 				A67661882D5B367B006AAB63 /* EditProfile */,
 				A67661992D5B367B006AAB63 /* Settings */,

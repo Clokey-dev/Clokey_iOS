@@ -15,7 +15,7 @@ class FollowProfileViewController: UIViewController {
     // MARK: - Properties
     private let followProfileView = FollowProfileView()
     
-    //    private let model = FollowProfileModel.dummy()
+    private let calendarViewController = CalendarViewController()
     
     var followId: String = ""
     var clokey_Id: String = ""
