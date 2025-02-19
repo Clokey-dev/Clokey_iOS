@@ -129,6 +129,11 @@ class RecordOOTDViewController: UIViewController {
         loadImages(from: viewModel.images)
         loadTaggedClothes(from: viewModel.cloths)
     }
+    
+    private func updateOOTDButtonState() {
+        mainView.OOTDButton.isEnabled = !selectedImages.isEmpty && !taggedItems.isEmpty
+    }
+
 
     
     // MARK: - Actions
@@ -241,12 +246,10 @@ extension RecordOOTDViewController: UICollectionViewDataSource {
                 // 컬렉션 뷰 상태 완전 초기화
                 self.mainView.photoTagView.imageCollectionView.reloadData()
                 
-                // 이미지가 모두 삭제되었을 때 컬렉션 뷰 상태 리셋
-                if self.selectedImages.isEmpty {
-                    self.mainView.photoTagView.imageCollectionView.setContentOffset(.zero, animated: true)
-                }
-                
                 self.updateCollectionViewHeight(!self.selectedImages.isEmpty)
+                    
+                // 버튼 상태 업데이트
+                self.updateOOTDButtonState()
             }
             
             return cell
@@ -303,7 +306,7 @@ extension RecordOOTDViewController {
         // 아이템 삭제 시, 컬렉션 뷰 높이 값 수정
         mainView.photoTagView.updateTagCollectionViewHeight(!taggedItems.isEmpty)
         
-        mainView.OOTDButton.setEnabled(!taggedItems.isEmpty)
+        updateOOTDButtonState()
     }
 }
 
@@ -349,6 +352,8 @@ extension RecordOOTDViewController: PhotoEditViewControllerDelegate {
         mainView.photoTagView.imageCollectionView.reloadData()
         updateCollectionViewHeight(!images.isEmpty) // 이미지가 있으면 컬렉션 뷰 높이 설정, 없으면 숨김
         mainView.photoTagView.layoutIfNeeded()
+        
+        updateOOTDButtonState()
     }
 }
 
@@ -410,11 +415,7 @@ extension RecordOOTDViewController: TagClothViewControllerDelegate {
         mainView.photoTagView.updateTagCollectionViewHeight(!tags.isEmpty)
         
         // 기록하기 확인 버튼 활성화/비활성화
-        if !tags.isEmpty {
-            mainView.OOTDButton.setEnabled(true)
-        } else {
-            mainView.OOTDButton.setEnabled(false)
-        }
+        updateOOTDButtonState()
     }
 }
 
