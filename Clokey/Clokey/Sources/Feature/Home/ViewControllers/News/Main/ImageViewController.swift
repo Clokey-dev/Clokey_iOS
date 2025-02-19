@@ -11,6 +11,7 @@ import Kingfisher
 class ImageViewController: UIViewController {
     
     var slideModel: RecommandNewsSlideModel?
+    var didTapSlide: ((RecommandNewsSlideModel) -> Void)?
     
     let imageView = ImageView() // ImageView 인스턴스 생성
     
@@ -19,6 +20,9 @@ class ImageViewController: UIViewController {
         view.backgroundColor = .white
         setupImageView()
         updateUI()
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
+        imageView.imageView.isUserInteractionEnabled = true
+        imageView.imageView.addGestureRecognizer(tapGesture)
     }
 
     private func setupImageView() {
@@ -50,4 +54,9 @@ class ImageViewController: UIViewController {
     func configureView(with model: RecommandNewsSlideModel) {
         self.slideModel = model
     }
+    @objc private func imageViewTapped() {
+        guard let slide = slideModel else { return }
+        didTapSlide?(slide)
+    }
+   
 }

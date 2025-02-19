@@ -38,6 +38,7 @@ final class MainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        checkNotificationExistence()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -95,6 +96,25 @@ final class MainViewController: UIViewController {
                 print("🚨 네비게이션 컨트롤러 없음! SceneDelegate에서 강제 재설정 필요")
             }
         }
+     func checkNotificationExistence() {
+        let notificationService = NotificationService()
+        
+        notificationService.notificationExsit(notificationId: 0) { [weak self] result in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let responseDTO):
+                    // API 응답에 따라 안 읽은 알림 여부를 판단 (예: responseDTO.hasUnread)
+                    let hasUnread = responseDTO.unReadNotificationExist
+                    self.mainView.headerView.updateNotificationIcon(isUnread: hasUnread)
+                case .failure(let error):
+                    print("알림 API 호출 실패: \(error)")
+                    // 실패 시 기본 아이콘 (읽은 상태)로 설정
+                    self.mainView.headerView.updateNotificationIcon(isUnread: false)
+                }
+            }
+        }
+    }
     //
     
 }
@@ -132,18 +152,24 @@ extension MainViewController: TabBarViewDelegate {
         case 0:
             showViewController(homeVC)
             mainView.setHeaderViewHidden(false)
+            checkNotificationExistence()
+            //각 케이스마다 api호출 그리고
         case 1:
             showViewController(calendarVC)
             mainView.setHeaderViewHidden(false)
+            checkNotificationExistence()
         case 2:
             showViewController(addClothVC)
             mainView.setHeaderViewHidden(false)
+            checkNotificationExistence()
         case 3:
             showViewController(closetVC)
             mainView.setHeaderViewHidden(false)
+            checkNotificationExistence()
         case 4:
             showViewController(profileVC)
             mainView.setHeaderViewHidden(true)
+            checkNotificationExistence()
         default:
             break
         }

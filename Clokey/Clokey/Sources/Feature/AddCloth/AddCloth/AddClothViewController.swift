@@ -19,7 +19,7 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
         
         setupAction()
         
-        // 🔹 화면 탭하면 키보드 내리기
+        //  화면 탭하면 키보드 내리기
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
     }
@@ -28,7 +28,7 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         
-        // 🔹 이전 화면에서 다시 돌아올 때 초기화
+        //  이전 화면에서 다시 돌아올 때 초기화
         resetViewState()
     }
 
@@ -220,7 +220,7 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
         addClothesView.nextButton.isEnabled = false
         addClothesView.nextButton.backgroundColor = .mainBrown400
 
-        // 🔹 reclassifyButton 초기화
+        //  reclassifyButton 초기화
         addClothesView.reclassifyButton.isUserInteractionEnabled = false
         addClothesView.reclassifyButton.isHidden = true
         addClothesView.reclassifyButton.alpha = 0.0

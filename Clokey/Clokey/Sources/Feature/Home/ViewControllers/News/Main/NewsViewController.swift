@@ -23,7 +23,7 @@ class NewsViewController: UIViewController {
         $0.numberOfPages = totalImages()
         $0.currentPage = currentIndexValue()
         $0.pageIndicatorTintColor = .lightGray
-        $0.currentPageIndicatorTintColor = .black 
+        $0.currentPageIndicatorTintColor = .black
         $0.translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -38,7 +38,7 @@ class NewsViewController: UIViewController {
         
         setupDummyData()
         setupPageViewController()
-        setupPageControl() 
+        setupPageControl()
         
         setupFriendClothesBottomLabelTap()
         setupFollowingCalendarBottomLabelTap()
@@ -90,7 +90,7 @@ class NewsViewController: UIViewController {
                         self.newsView.hotAccountProfileIcon1.image = nil
                         self.newsView.hotAccountProfileName1.text = ""
                     }
-
+                    
                     if peopleCount >= 2 {
                         self.newsView.hotAccountImageView2.kf.setImage(with: URL(string: peopleItems[1].imageUrl))
                         self.newsView.hotAccountProfileIcon2.kf.setImage(with: URL(string: peopleItems[1].profileImage))
@@ -101,13 +101,13 @@ class NewsViewController: UIViewController {
                         self.newsView.hotAccountProfileIcon2.isUserInteractionEnabled = true
                         self.newsView.hotAccountProfileIcon2.addGestureRecognizer(tapGesture)
                         
-                       
+                        
                     } else {
                         self.newsView.hotAccountImageView2.image = nil
                         self.newsView.hotAccountProfileIcon2.image = nil
                         self.newsView.hotAccountProfileName2.text = ""
                     }
-
+                    
                     if peopleCount >= 3 {
                         self.newsView.hotAccountImageView3.kf.setImage(with: URL(string: peopleItems[2].imageUrl))
                         self.newsView.hotAccountProfileIcon3.kf.setImage(with: URL(string: peopleItems[2].profileImage))
@@ -123,7 +123,7 @@ class NewsViewController: UIViewController {
                         self.newsView.hotAccountProfileIcon3.image = nil
                         self.newsView.hotAccountProfileName3.text = ""
                     }
-
+                    
                     if peopleCount >= 4 {
                         self.newsView.hotAccountImageView4.kf.setImage(with: URL(string: peopleItems[3].imageUrl))
                         self.newsView.hotAccountProfileIcon4.kf.setImage(with: URL(string: peopleItems[3].profileImage))
@@ -178,12 +178,12 @@ class NewsViewController: UIViewController {
                         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileIconTap))
                         self.newsView.profileImageView.isUserInteractionEnabled = true
                         self.newsView.profileImageView.addGestureRecognizer(tapGesture)
-                       
+                        
                     } else {
                         self.newsView.profileImageView.image = UIImage(named: "profile_basic")
                         print("프로필 이미지가 없습니다.")
                     }
-
+                    
                     if let firstClosetItem = closetItems.first {
                         self.newsView.usernameLabel.text = firstClosetItem.clokeyId
                         
@@ -195,21 +195,21 @@ class NewsViewController: UIViewController {
                         self.newsView.dateLabel.text = ""
                         print("Closet 아이템이 없습니다.")
                     }
-
+                    
                     if closetItems.count >= 1, let firstImageUrl = closetItems[0].images.first, let url1 = URL(string: firstImageUrl) {
                         self.newsView.friendClothesImageView1.kf.setImage(with: url1)
                     } else {
                         self.newsView.friendClothesImageView1.image = nil
                         print("첫 번째 옷 이미지가 없습니다.")
                     }
-
+                    
                     if closetItems.count >= 2, let secondImageUrl = closetItems[1].images.first, let url2 = URL(string: secondImageUrl) {
                         self.newsView.friendClothesImageView2.kf.setImage(with: url2)
                     } else {
                         self.newsView.friendClothesImageView2.image = nil
                         print("두 번째 옷 이미지가 없습니다.")
                     }
-
+                    
                     if closetItems.count >= 3, let thirdImageUrl = closetItems[2].images.first, let url3 = URL(string: thirdImageUrl) {
                         self.newsView.friendClothesImageView3.kf.setImage(with: url3)
                     } else {
@@ -259,7 +259,7 @@ class NewsViewController: UIViewController {
                         self.newsView.followingCalendarUpdateSubTitle.text = firstCalendarItem.date
                         
                         self.newsView.followingCalendarProfileIcon1.kf.setImage(with: URL(string: firstCalendarItem.profileImage))
-
+                        
                         self.newsView.followingCalendarProfileName1.text = firstCalendarItem.clokeyId
                         
                         
@@ -267,7 +267,7 @@ class NewsViewController: UIViewController {
                         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleCalendarImageTap))
                         self.newsView.followingCalendarUpdateImageView1.isUserInteractionEnabled = true
                         self.newsView.followingCalendarUpdateImageView1.addGestureRecognizer(tapGesture)
-                       
+                        
                     }
                     
                     
@@ -296,7 +296,7 @@ class NewsViewController: UIViewController {
     
     private func setupDummyData() {
         let homeService = HomeService()
-
+        
         homeService.fetchGetIssuesData { result in
             switch result {
             case .success(let responseDTO):
@@ -305,7 +305,7 @@ class NewsViewController: UIViewController {
                         print("No recommend data available.")
                         return
                     }
-
+                    
                     self.recommandNewsSlides = responseDTO.recommend.map { recommendItem in
                         return RecommandNewsSlideModel(
                             image: recommendItem.imageUrl,
@@ -314,13 +314,13 @@ class NewsViewController: UIViewController {
                             date: recommendItem.date
                         )
                     }
-
+                    
                     if let initialVC = self.createImageViewController(for: self.currentIndexValue()) {
                         self.pageViewController.setViewControllers([initialVC], direction: .forward, animated: false, completion: nil)
                     }
-
+                    
                     self.setupPageControl()
-
+                    
                     print("recommandNewsSlides 업데이트 완료: \(self.recommandNewsSlides.count)개")
                 }
                 
@@ -342,20 +342,20 @@ class NewsViewController: UIViewController {
     private func imageIndex(of name: String) -> Int? {
         return recommandNewsSlides.firstIndex { $0.image == name }
     }
-
+    
     private func updateCurrentIndex(to index: Int) {
         currentIndex = index
     }
-
+    
     func currentIndexValue() -> Int {
         return currentIndex
     }
-
+    
     private func setupPageViewController() {
         pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         pageViewController.dataSource = self
         pageViewController.delegate = self
-
+        
         if let initialVC = createImageViewController(for: currentIndexValue()) {
             pageViewController.setViewControllers([initialVC], direction: .forward, animated: true, completion: nil)
         }
@@ -364,7 +364,7 @@ class NewsViewController: UIViewController {
         addChild(pageViewController)
         newsView.contentView.addSubview(pageViewController.view)
         pageViewController.didMove(toParent: self)
-
+        
         pageViewController.view.snp.makeConstraints { make in
             make.top.equalTo(newsView.recommandTitle.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(20)
@@ -375,7 +375,7 @@ class NewsViewController: UIViewController {
     private func setupPageControl() {
         // 페이지 컨트롤 추가 및 설정
         newsView.contentView.addSubview(pageControl)
-//        pageControl.numberOfPages = totalImages() // 이미지 개수 설정
+        //        pageControl.numberOfPages = totalImages() // 이미지 개수 설정
         pageControl.numberOfPages = recommandNewsSlides.count
         pageControl.currentPage = currentIndexValue()
         
@@ -386,7 +386,7 @@ class NewsViewController: UIViewController {
         }
     }
     
-
+    
     private func createImageViewController(for index: Int) -> ImageViewController? {
         guard index >= 0 && index < recommandNewsSlides.count else { return nil }
         
@@ -394,7 +394,16 @@ class NewsViewController: UIViewController {
         let slideModel = recommandNewsSlides[index]
         
         imageVC.configureView(with: slideModel)
-        imageVC.slideModel = slideModel
+        
+        imageVC.didTapSlide = { [weak self] slide in
+            guard let self = self else { return }
+            let hashtag = slide.hashtag ?? ""
+            let searchQuery = hashtag.hasPrefix("#") ? String(hashtag.dropFirst()) : hashtag
+            
+            // 예: 해시태그 탭이 기본 선택된 SearchResultViewController로 이동
+            let searchResultVC = SearchResultViewController(query: searchQuery, results: [], initialTabIsHashtag: true)
+            self.navigationController?.pushViewController(searchResultVC, animated: true)
+        }
         
         return imageVC
     }
@@ -436,10 +445,10 @@ class NewsViewController: UIViewController {
     
     private func fetchHistoryDetail(historyId: Int) {
         let historyService = HistoryService()
-
+        
         historyService.historyDetail(historyId: historyId) { [weak self] result in
             guard let self = self else { return }
-
+            
             switch result {
             case .success(let response):
                 print("히스토리 상세 조회 성공: \(response)")
@@ -447,13 +456,13 @@ class NewsViewController: UIViewController {
                 let detailVC = FriendsCalendarDetailViewController()
                 detailVC.setDetailData(response) //  상세 데이터 전달
                 self.navigationController?.pushViewController(detailVC, animated: true)
-
+                
             case .failure(let error):
                 print("히스토리 상세 조회 실패: \(error.localizedDescription)")
             }
         }
     }
-
+    
     
     
 }

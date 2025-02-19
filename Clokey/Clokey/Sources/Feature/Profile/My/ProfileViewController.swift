@@ -89,7 +89,7 @@ final class ProfileViewController: UIViewController {
         if var clokeyId = ProfileViewModel.shared.userId {
 //                profileView.usernameLabel.text = "@\(clokeyId)"
             self.clokeyId = clokeyId
-                print("✅ ProfileViewController에서 불러온 ID: \(clokeyId)")
+                print(" ProfileViewController에서 불러온 ID: \(clokeyId)")
             }
         
 //        let clokeyId = "qw12"

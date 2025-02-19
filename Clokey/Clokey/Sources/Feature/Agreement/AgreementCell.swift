@@ -75,7 +75,7 @@ class AgreementCell: UITableViewCell {
         titleLabel.snp.makeConstraints {
               $0.leading.equalTo(checkBox.snp.trailing).offset(16)
               $0.centerY.equalToSuperview()
-              $0.trailing.lessThanOrEqualTo(arrowButton.snp.leading).offset(-8) // ✅ 화살표와 텍스트 겹침 방지
+              $0.trailing.lessThanOrEqualTo(arrowButton.snp.leading).offset(-8) //  화살표와 텍스트 겹침 방지
           }
 
         arrowButton.snp.makeConstraints {
@@ -101,7 +101,7 @@ class AgreementCell: UITableViewCell {
             attributes: [.font: UIFont.systemFont(ofSize: 16), .foregroundColor: UIColor.black]
         ))
 //        titleLabel.attributedText = attributedString
-        titleLabel.setAttributedTitle(attributedString, for: .normal) // ✅ 수정된 부분
+        titleLabel.setAttributedTitle(attributedString, for: .normal) //  수정된 부분
 
 
         checkBox.isSelected = agreement.isChecked

@@ -14,7 +14,7 @@ extension NetworkError: LocalizedError {
             return "🚨 네트워크 오류 발생: \(message)"
         
         case .decodingError(let underlyingError):
-            return "❌ 데이터 디코딩 실패: \(decodingErrorDescription(underlyingError))" // 🔥 상세 오류 메시지
+            return "❌ 데이터 디코딩 실패: \(decodingErrorDescription(underlyingError))" //  상세 오류 메시지
         
         case .serverError(let statusCode, let message):
             return "🔴 서버 오류 (\(statusCode)): \(message)"

@@ -302,7 +302,7 @@ final class EditProfileView: UIView {
         
         addImageButton2.snp.makeConstraints { make in
             make.size.equalTo(24) // 버튼 크기
-            make.trailing.equalTo(profileContainer.snp.trailing).offset(-6) // ✅ 오른쪽 아래 정렬
+            make.trailing.equalTo(profileContainer.snp.trailing).offset(-6) //  오른쪽 아래 정렬
             make.bottom.equalTo(profileContainer.snp.bottom).offset(-6)
         }
         
@@ -377,7 +377,7 @@ final class EditProfileView: UIView {
         
         completeButton.snp.makeConstraints { make in
             make.top.equalTo(privateButton.snp.bottom).offset(80)
-            //            make.bottom.equalTo(contentView.safeAreaLayoutGuide).offset(-20) // ✅ contentView의 끝을 completeButton에 맞춤
+            //            make.bottom.equalTo(contentView.safeAreaLayoutGuide).offset(-20) //  contentView의 끝을 completeButton에 맞춤
             make.centerX.equalToSuperview()
             make.height.equalTo(54)
             make.width.equalTo(353)

@@ -26,7 +26,7 @@ extension SearchEndpoint: TargetType {
     public var path: String {
         switch self {
         case .searchHistory:
-            return "/search/histories"  // ✅ 슬래시 추가
+            return "/search/histories"  //  슬래시 추가
         case .searchMember:
             return "/search/members"
         case .searchClothes:

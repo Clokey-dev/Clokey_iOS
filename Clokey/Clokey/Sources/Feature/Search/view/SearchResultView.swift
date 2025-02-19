@@ -12,51 +12,51 @@ import Then
 
 class SearchResultView: UIView {
     
-    // 🔹 뒤로 가기 버튼
+    //  뒤로 가기 버튼
     let backButton = UIButton().then {
         $0.setImage(UIImage(named: "goback"), for: .normal)
         $0.contentMode = .scaleAspectFit
     }
     
-    // 🔹 검색 제목
+    //  검색 제목
     let searchTitleLabel = UILabel().then {
         $0.text = "검색"
         $0.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         $0.textColor = .black
     }
     
-    // 🔹 검색창
+    //  검색창
     let searchField = CustomSearchField()
     
-    // 🔹 탭 버튼 컨테이너
+    //  탭 버튼 컨테이너
     let segmentedContainerView = UIView()
     
-    // 🔹 계정 버튼
+    //  계정 버튼
     let accountButton = UIButton(type: .system).then {
         $0.setTitle("계정", for: .normal)
         $0.setTitleColor(UIColor(named: "pointOrange800"), for: .normal)
         $0.titleLabel?.font = UIFont.ptdBoldFont(ofSize: 20)
     }
     
-    // 🔹 해시태그 버튼
+    //  해시태그 버튼
     let hashtagButton = UIButton(type: .system).then {
         $0.setTitle("해시태그", for: .normal)
         $0.setTitleColor(.lightGray, for: .normal)
         $0.titleLabel?.font = UIFont.ptdBoldFont(ofSize: 20)
     }
     
-    // 🔹 탭 구분선
+    //  탭 구분선
     let separatorLine = UIView().then {
         $0.backgroundColor = .lightGray
     }
     
-    // 🔹 인디케이터 (애니메이션 포함)
+    //  인디케이터 (애니메이션 포함)
     let indicatorView = UIView().then {
         $0.backgroundColor = UIColor(named: "pointOrange800")
         $0.layer.cornerRadius = 2
     }
     
-    // 🔹 계정 검색 결과 CollectionView
+    //  계정 검색 결과 CollectionView
     let accountsCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).then {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -73,8 +73,8 @@ class SearchResultView: UIView {
    
    
 
-    // 🔹 해시태그 검색 결과 CollectionView (이미지 표시)
-    // 🔹 해시태그 검색 결과 CollectionView (즉시 레이아웃 적용)
+    //  해시태그 검색 결과 CollectionView (이미지 표시)
+    //  해시태그 검색 결과 CollectionView (즉시 레이아웃 적용)
     let hashtagsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -82,7 +82,7 @@ class SearchResultView: UIView {
         layout.minimumInteritemSpacing = 0
         layout.sectionInset = .zero
 
-        // 🔹 가로 너비를 3등분 (여백 없이)
+        //  가로 너비를 3등분 (여백 없이)
         let itemWidth = UIScreen.main.bounds.width / 3
         layout.itemSize = CGSize(width: itemWidth, height: 172)
 
@@ -94,7 +94,7 @@ class SearchResultView: UIView {
     }()
     
     
-    // 🔹 검색 결과 없음 표시
+    //  검색 결과 없음 표시
     let emptyLabel = UILabel().then {
         $0.text = "검색 결과가 없습니다."
         $0.textColor = .gray
@@ -163,19 +163,19 @@ class SearchResultView: UIView {
         }
 
         indicatorView.snp.remakeConstraints { make in
-            make.centerX.equalTo(accountButton.snp.centerX) // 🔹 기본 위치: 계정 버튼 중앙
-            make.bottom.equalTo(segmentedContainerView.snp.bottom).offset(2) // 🔥 15px 아래로 이동
+            make.centerX.equalTo(accountButton.snp.centerX) //  기본 위치: 계정 버튼 중앙
+            make.bottom.equalTo(segmentedContainerView.snp.bottom).offset(2) //  15px 아래로 이동
             make.width.equalTo(88)
             make.height.equalTo(5)
         }
 
         accountsCollectionView.snp.remakeConstraints { make in
-            make.top.equalTo(indicatorView.snp.bottom).offset(10) // ✅ 인디케이터 아래 18px
+            make.top.equalTo(indicatorView.snp.bottom).offset(0) //  인디케이터 아래 18px
             make.leading.trailing.bottom.equalToSuperview()
         }
 
         hashtagsCollectionView.snp.remakeConstraints { make in
-            make.top.equalTo(indicatorView.snp.bottom).offset(10) // ✅ 인디케이터 아래 18px
+            make.top.equalTo(indicatorView.snp.bottom).offset(0) //  인디케이터 아래 18px
             make.leading.trailing.bottom.equalToSuperview()
         }
 

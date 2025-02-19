@@ -25,9 +25,10 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
     private var users: [UserModel]
     private var query: String
     
-    private var dummyImages: [String] = []
+    var dummyImages: [String] = []
     private var filteredUsers: [UserModel] = []
     private var searchHistory: [String] = []
+    private var initialTabIsHashtag: Bool = false
     
     // 서버 연결을 위한 변수들
     private var currentPage = 1
@@ -38,9 +39,10 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
     override func loadView() {
         view = searchView
     }
-    init(query: String, results: [UserModel]) {
+    init(query: String, results: [UserModel],  initialTabIsHashtag: Bool = false) {
         self.query = query
         self.users = results
+        self.initialTabIsHashtag = initialTabIsHashtag
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -52,7 +54,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         super.viewDidLoad()
         view.backgroundColor = .white
         searchView.accountsCollectionView.reloadData()
-        // ✅ 네비게이션 바 스타일 설정
+        //  네비게이션 바 스타일 설정
         
         
         
@@ -78,9 +80,29 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         searchView.searchField.text = query
         filterUsers(with: query)
         addSearchHistory(query)
-        DispatchQueue.main.async {
-            self.updateIndicatorPosition(selectedButton: self.searchView.accountButton)
+        /* DispatchQueue.main.async {
+         self.updateIndicatorPosition(selectedButton: self.searchView.accountButton)
+         }*/
+        if initialTabIsHashtag {
+            // 해시태그 탭 선택 UI 적용
+            searchView.hashtagButton.setTitleColor(UIColor(named: "pointOrange800"), for: .normal)
+            searchView.accountButton.setTitleColor(.lightGray, for: .normal)
+            searchView.accountsCollectionView.isHidden = true
+            searchView.hashtagsCollectionView.isHidden = false
+            
+            DispatchQueue.main.async {
+                self.updateIndicatorPosition(selectedButton: self.searchView.hashtagButton)
+            }
+            // 해시태그 API 호출
+            loadHistoryData(query: query, isNextPage: false)
+        } else {
+            // 계정 탭 기본 선택 (기존 로직)
+            filterUsers(with: query)
+            DispatchQueue.main.async {
+                self.updateIndicatorPosition(selectedButton: self.searchView.accountButton)
+            }
         }
+        
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -91,15 +113,22 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        searchHistory = searchManager.fetchRecentSearches() // 🔥 검색 기록 강제 업데이트
+        searchHistory = searchManager.fetchRecentSearches() //  검색 기록 강제 업데이트
         searchView.accountsCollectionView.reloadData()
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     @objc private func tabSelected(_ sender: UIButton) {
         guard !query.isEmpty else { return }
         let isAccountTab = sender == searchView.accountButton
         
-        // ✅ UI 업데이트
+        //  UI 업데이트
         searchView.accountButton.setTitleColor(isAccountTab ? UIColor(named: "pointOrange800") : .lightGray, for: .normal)
         searchView.hashtagButton.setTitleColor(isAccountTab ? .lightGray : UIColor(named: "pointOrange800"), for: .normal)
         
@@ -110,7 +139,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         updateEmptyLabel()
         
         
-        // ✅ 탭 변경 시 API 호출
+        //  탭 변경 시 API 호출
         currentPage = 1
         hasMorePages = true
         
@@ -187,11 +216,11 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         
         print("🔴 [Before] 기존 검색 기록: \(searchHistory)")
         
-        // 🔥 중복 제거 후 맨 앞에 추가
+        //  중복 제거 후 맨 앞에 추가
         searchHistory.removeAll { $0 == query }
         searchHistory.insert(query, at: 0)
         
-        // 🔥 최대 10개까지만 저장
+        //  최대 10개까지만 저장
         if searchHistory.count > 10 {
             searchHistory = Array(searchHistory.prefix(10))
         }
@@ -200,16 +229,16 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         
         print("🟢 [After] 저장된 검색 기록: \(searchHistory)")
         
-        // 🔥 검색 기록 다시 불러오고 UI 업데이트
+        //  검색 기록 다시 불러오고 UI 업데이트
         loadSearchHistory()
     }
     private func loadMemberData(query: String, isNextPage: Bool = false) {
         guard hasMorePages else { return }
         
         let page = isNextPage ? currentPage + 1 : 1
-        let filter = "id-and-nickname"
         
-        SearchService().searchMember(by :"filter", keyword: query, page: 1, size: 20) { [weak self] result in
+        
+        SearchService().searchMember(by :"id-and-nickname", keyword: query, page: 1, size: 20) { [weak self] result in
             switch result {
             case .success(let response):
                 let users = response.profilePreviews.map { member in
@@ -226,7 +255,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
                     
                     self.users = users
                     self.filteredUsers = users
-                    self.updateEmptyLabel() // ✅ 검색 결과가 있으면 숨기기
+                    self.updateEmptyLabel() //  검색 결과가 있으면 숨기기
                     self.searchView.accountsCollectionView.reloadData()
                 }
                 
@@ -238,7 +267,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
     }
     private func updateEmptyLabel() {
         let isAccountTab = !searchView.accountsCollectionView.isHidden
-
+        
         if isAccountTab {
             searchView.emptyLabel.isHidden = !filteredUsers.isEmpty
         } else {
@@ -258,7 +287,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
                 DispatchQueue.main.async {
                     guard let self = self else { return }
                     
-                    // ✅ 기존 데이터 유지하면서 새 검색 결과만 추가
+                    //  기존 데이터 유지하면서 새 검색 결과만 추가
                     if isNextPage {
                         self.dummyImages.append(contentsOf: newImages)
                         self.currentPage = page
@@ -267,7 +296,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
                         self.currentPage = 1
                     }
                     
-                    // ✅ 새 검색 결과가 없을 때만 emptyLabel 보이도록 수정
+                    //  새 검색 결과가 없을 때만 emptyLabel 보이도록 수정
                     self.searchView.emptyLabel.isHidden = !self.dummyImages.isEmpty
                     self.searchView.hashtagsCollectionView.reloadData()
                 }
@@ -280,14 +309,14 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
     
     @objc private func textFieldDidChange(_ textField: UITextField) {
         guard let query = textField.text, !query.isEmpty else {
-            print("✅ 현재 검색어 없음, 기존 데이터 유지")
+            print(" 현재 검색어 없음, 기존 데이터 유지")
             
-            // ✅ 해시태그 탭이 선택된 경우, 기존 데이터를 유지하도록 수정
+            //  해시태그 탭이 선택된 경우, 기존 데이터를 유지하도록 수정
             if !searchView.hashtagsCollectionView.isHidden {
                 return
             }
             
-            // ✅ 계정 탭이 선택된 경우, 필터 초기화
+            //  계정 탭이 선택된 경우, 필터 초기화
             filteredUsers = users
             DispatchQueue.main.async {
                 self.searchView.emptyLabel.isHidden = true
@@ -296,9 +325,9 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
             return
         }
         
-        print("✅ 현재 입력 중: \(query)")
+        print(" 현재 입력 중: \(query)")
         
-        // ✅ 계정 탭이 선택된 경우, 필터링 수행
+        //  계정 탭이 선택된 경우, 필터링 수행
         if !searchView.accountsCollectionView.isHidden {
             filterUsers(with: query)
         }
@@ -313,22 +342,22 @@ extension SearchResultViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let query = textField.text, !query.isEmpty else { return false }
         
-        print("✅ [SearchResultViewController] 검색 실행: \(query) → 검색어 저장!")
+        print(" [SearchResultViewController] 검색 실행: \(query) → 검색어 저장!")
         
-        // 🔥 검색어 저장 추가
+        //  검색어 저장 추가
         searchManager.addSearchKeyword(query)
         
-        // 🔥 현재 선택된 탭 확인
+        //  현재 선택된 탭 확인
         let isAccountTabSelected = !searchView.accountsCollectionView.isHidden
         
         if isAccountTabSelected {
-            // ✅ 계정 검색 API 호출
+            //  계정 검색 API 호출
             SearchService().searchMember(by: "id-and-nickname", keyword: query, page: 1, size: 20) { (result: Result<SearchMemberResponseDTO, NetworkError>) in
                 switch result {
                 case .success(let response):
                     let users = response.profilePreviews.map { member in
                         UserModel(
-                           
+                            
                             clokeyId: member.clokeyId ?? "없는 사용자",
                             nickname: member.nickname ?? "없는 닉네임",
                             profileImage: member.profileImage ?? "없는 프로필"
@@ -343,10 +372,10 @@ extension SearchResultViewController: UITextFieldDelegate {
                         print("🔍 검색된 유저 수: \(users.count)")
                         print("📌 검색된 유저 목록: \(users)")
                         
-                        // ✅ 검색 결과에 따라 emptyLabel 상태 변경
+                        //  검색 결과에 따라 emptyLabel 상태 변경
                         
                         
-                        // ✅ UI 업데이트
+                        //  UI 업데이트
                         self.searchView.accountsCollectionView.reloadData()
                         self.updateEmptyLabel()
                         
@@ -357,7 +386,7 @@ extension SearchResultViewController: UITextFieldDelegate {
                 }
             }
         } else {
-            // ✅ 해시태그 검색 API 호출
+            //  해시태그 검색 API 호출
             SearchService().searchHistory(by: "hashtag-and-category", keyword: query, page: 1, size: 20) { (result: Result<SearchHistoryCategoryResponseDTO, NetworkError>) in
                 switch result {
                 case .success(let response):
@@ -370,12 +399,12 @@ extension SearchResultViewController: UITextFieldDelegate {
                         print("🔍 검색된 해시태그 수: \(newImages.count)")
                         print("📌 검색된 해시태그 목록: \(newImages)")
                         
-                        // ✅ 검색 결과에 따라 emptyLabel 상태 변경
+                        //  검색 결과에 따라 emptyLabel 상태 변경
                         self.searchView.emptyLabel.isHidden = !newImages.isEmpty
                         
-                        // ✅ UI 업데이트
+                        //  UI 업데이트
                         self.searchView.hashtagsCollectionView.reloadData()
-                        print("✅ Hashtags CollectionView Reloaded!")
+                        print(" Hashtags CollectionView Reloaded!")
                     }
                     
                 case .failure(let error):
@@ -384,7 +413,7 @@ extension SearchResultViewController: UITextFieldDelegate {
             }
         }
         
-        textField.resignFirstResponder() // 🔥 키보드 숨기기
+        textField.resignFirstResponder() //  키보드 숨기기
         return true
     }
 }
@@ -411,10 +440,10 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
                 fatalError("❌ ImageCell을 가져올 수 없음!")
             }
             
-            // ✅ 이미지 URL을 Kingfisher로 로드
+            //  이미지 URL을 Kingfisher로 로드
             let imageUrl = dummyImages[indexPath.item]
             if let url = URL(string: imageUrl) {
-                cell.imageView.kf.setImage(with: url) // ✅ URL에서 이미지 로드
+                cell.imageView.kf.setImage(with: url) //  URL에서 이미지 로드
             }
             
             return cell

@@ -98,9 +98,9 @@ extension ClothesEndpoint: TargetType {
             do {
                 let jsonData = try JSONEncoder().encode(data)
                 
-                // ✅ JSON 확인 로그 추가
+                //  JSON 확인 로그 추가
                 let jsonString = String(data: jsonData, encoding: .utf8) ?? "JSON 변환 실패"
-                print("✅ JSON 데이터: \(jsonString)")
+                print(" JSON 데이터: \(jsonString)")
 
                 let jsonPart = MultipartFormData(provider: .data(jsonData), name: "clothCreateRequest", mimeType: "application/json")
                 multipartData.append(jsonPart)
@@ -109,12 +109,12 @@ extension ClothesEndpoint: TargetType {
                 return .requestPlain
             }
 
-            // ✅ 이미지 파일 추가 (name을 "imageFile"로 변경)
+            //  이미지 파일 추가 (name을 "imageFile"로 변경)
             let fileName = "clothes_image.jpg"
             let imagePart = MultipartFormData(provider: .data(image), name: "imageFile", fileName: fileName, mimeType: "image/jpeg")
 
-            // ✅ 이미지 크기 로그 출력
-            print("✅ 이미지 크기: \(image.count) bytes")
+            //  이미지 크기 로그 출력
+            print(" 이미지 크기: \(image.count) bytes")
 
             multipartData.append(imagePart)
 

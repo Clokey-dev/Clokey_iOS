@@ -69,7 +69,7 @@ class PopupViewController: UIViewController {
     var cloth: UIImage?
     var clothImage: Data? // 전달받은 이미지
     
-    private let popupView = PopupView() // ✅ 뷰 객체만 포함
+    private let popupView = PopupView() //  뷰 객체만 포함
 
     private let titleLabel = UILabel().then {
         $0.text = "옷 추가가 완료되었어요!"

@@ -13,14 +13,14 @@ class WeatherChooseViewController: UIViewController {
     
     // MARK: - UI Components
     
-    /// 🔹 네비게이션 바
+    ///  네비게이션 바
     private let customNavBar: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         return view
     }()
     
-    /// 🔹 뒤로가기 버튼
+    ///  뒤로가기 버튼
     private let backButton: UIButton = {
         let button = UIButton(type: .system)
         let image = UIImage(systemName: "chevron.left")?
@@ -32,7 +32,7 @@ class WeatherChooseViewController: UIViewController {
         return button
     }()
     
-    /// 🔹 타이틀 ("옷 추가")
+    ///  타이틀 ("옷 추가")
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "옷 추가"
@@ -42,10 +42,10 @@ class WeatherChooseViewController: UIViewController {
     }()
     private var temperatureLabels: [UILabel] = []
     
-    /// 🔹 온도 값 배열
+    ///  온도 값 배열
     private let temperatureValues = [-20, -10, 0, 10, 20, 30, 40]
     
-    /// 🔹 질문 타이틀
+    ///  질문 타이틀
    
     private let questionLabel: UILabel = {
         let label = UILabel()

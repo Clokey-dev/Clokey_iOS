@@ -16,28 +16,28 @@ class AgreementViewController: UIViewController {
                 title: "서비스 이용약관",
                 isRequired: true,
                 isChecked: false,
-                content: "서비스 이용약관의 상세 내용입니다..." // ✅ 추가
+                content: "서비스 이용약관의 상세 내용입니다..." //  추가
             ),
             Agreement(
                 termId : 2,
                 title: "개인정보 수집/이용 동의",
                 isRequired: true,
                 isChecked: false,
-                content: "개인정보 처리 방침 상세 내용..." // ✅ 추가
+                content: "개인정보 처리 방침 상세 내용..." //  추가
             ),
             Agreement(
                 termId: 3,
                 title: "위치기반 서비스 이용약관 동의",
                 isRequired: true,
                 isChecked: false,
-                content: "위치기반 서비스 약관 내용..." // ✅ 추가
+                content: "위치기반 서비스 약관 내용..." //  추가
             ),
             Agreement(
                 termId: 4,
                 title: "마케팅 정보수신 동의",
                 isRequired: false,
                 isChecked: false,
-                content: "마케팅 정보 수신 동의 내용..." // ✅ 추가
+                content: "마케팅 정보 수신 동의 내용..." //  추가
             ),
             Agreement(
                 termId: 5,
@@ -203,7 +203,7 @@ class AgreementViewController: UIViewController {
         updateAllAgreeButtonState() // 전체 동의 버튼 상태 업데이트
         updateAgreeButtonState() // 가입 완료 버튼 상태 업데이트
         
-        // ✅ 전체 동의를 눌렀을 때만 서버에 약관 동의 전송
+        //  전체 동의를 눌렀을 때만 서버에 약관 동의 전송
             sendTermsToServer()
     }
 
@@ -212,13 +212,13 @@ class AgreementViewController: UIViewController {
     @objc private func didTapAgreeButton() {
         guard areAllRequiredChecked else { return } // 필수 약관이 체크되지 않았다면 리턴
 
-        print("✅ 약관 동의 완료. 프로필 설정 화면으로 이동")
+        print(" 약관 동의 완료. 프로필 설정 화면으로 이동")
         
-        // ✅ 필수 약관 동의 시 서버로 전송
+        //  필수 약관 동의 시 서버로 전송
             sendTermsToServer()
 
         let addProfileVC = AddProfileViewController()
-        navigationController?.pushViewController(addProfileVC, animated: true) // ✅ 네비게이션 방식으로 변경
+        navigationController?.pushViewController(addProfileVC, animated: true) //  네비게이션 방식으로 변경
     }
     // 전체 동의 버튼 상태 업데이트
     private func updateAllAgreeButtonState() {
@@ -237,13 +237,13 @@ class AgreementViewController: UIViewController {
 //    private func showAgreementDetail(for agreement: Agreement) {
 //        let detailVC = AgreementDetailViewController(
 //            title: agreement.title,
-//            content: agreement.content // ✅ 내용 추가 전달
+//            content: agreement.content //  내용 추가 전달
 //        )
 //        detailVC.modalPresentationStyle = .overFullScreen
 //        present(detailVC, animated: true)
 //    }
     
-    // 🔹 서버에서 약관 데이터를 가져와서 `agreements` 배열 업데이트
+    //  서버에서 약관 데이터를 가져와서 `agreements` 배열 업데이트
     private func showAgreementDetail(for agreement: Agreement) {
         let membersService = MembersService()
         
@@ -253,12 +253,12 @@ class AgreementViewController: UIViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let response):
-                    // 🔹 서버 응답에서 특정 약관을 찾음
+                    //  서버 응답에서 특정 약관을 찾음
                     if let fetchedTerm = response.first(where: { $0.termId == agreement.termId }) {
                         
                         let detailVC = AgreementDetailViewController(
                             title: fetchedTerm.title,
-                            content: fetchedTerm.content // ✅ 서버에서 불러온 내용 전달
+                            content: fetchedTerm.content //  서버에서 불러온 내용 전달
                         )
                         detailVC.modalPresentationStyle = .overFullScreen
                         self.present(detailVC, animated: true)
@@ -284,11 +284,11 @@ class AgreementViewController: UIViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let response):
-                    // ✅ 서버 응답 데이터를 기반으로 약관 동의 처리
+                    //  서버 응답 데이터를 기반으로 약관 동의 처리
                     let failedTerms = response.terms.filter { !$0.agreed } // 동의되지 않은 약관 필터링
 
                     if failedTerms.isEmpty {
-                        print("✅ 약관 동의 데이터가 성공적으로 서버에 전송되었습니다!")
+                        print(" 약관 동의 데이터가 성공적으로 서버에 전송되었습니다!")
                     } else {
                         print("❌ 동의 실패 항목이 있습니다: \(failedTerms.map { $0.termId })")
                     }
@@ -301,7 +301,7 @@ class AgreementViewController: UIViewController {
     
     private func prepareAgreementData() -> AgreementToTermsRequestDTO {
         let terms = agreements
-            .filter { $0.isChecked } // ✅ 체크된 약관만 포함
+            .filter { $0.isChecked } //  체크된 약관만 포함
             .map { agreement in
                 AgreementToTermsRequestDTO.Terms(
                     termId: agreement.termId,
@@ -311,11 +311,11 @@ class AgreementViewController: UIViewController {
 
         let requestData = AgreementToTermsRequestDTO(terms: terms)
 
-        // ✅ JSON 데이터가 올바르게 생성되었는지 확인용 출력
+        //  JSON 데이터가 올바르게 생성되었는지 확인용 출력
         do {
             let jsonData = try JSONEncoder().encode(requestData)
             if let jsonString = String(data: jsonData, encoding: .utf8) {
-                print("📡 준비된 JSON 데이터:\n\(jsonString)") // ✅ JSON 확인
+                print("📡 준비된 JSON 데이터:\n\(jsonString)") //  JSON 확인
             }
         } catch {
             print("🚨 JSON 변환 오류: \(error.localizedDescription)")
@@ -345,19 +345,19 @@ extension AgreementViewController: UITableViewDelegate, UITableViewDataSource {
         cell.onCheckBoxTapped = { [weak self] in
             guard let self = self else { return }
             
-            self.agreements[indexPath.row].isChecked.toggle() // ✅ 상태 변경
+            self.agreements[indexPath.row].isChecked.toggle() //  상태 변경
             self.tableView.reloadRows(at: [indexPath], with: .none)
 
-            // ✅ 체크한 항목을 서버에 즉시 전송
+            //  체크한 항목을 서버에 즉시 전송
             self.sendTermsToServer()
             
-            // ✅ 필수 약관 체크 여부 다시 계산
+            //  필수 약관 체크 여부 다시 계산
             self.updateAgreeButtonState()
         }
         
-        // ✅ 화살표 액션 수정: agreement 전체 전달
+        //  화살표 액션 수정: agreement 전체 전달
         cell.onArrowButtonTapped = { [weak self] in
-            self?.showAgreementDetail(for: agreement) // ✅ 현재 셀의 agreement 전달
+            self?.showAgreementDetail(for: agreement) //  현재 셀의 agreement 전달
         }
         
         return cell
@@ -391,28 +391,28 @@ extension AgreementViewController: UITableViewDelegate, UITableViewDataSource {
 //                title: "서비스 이용약관",
 //                isRequired: true,
 //                isChecked: false,
-//                content: "서비스 이용약관의 상세 내용입니다..." // ✅ 추가
+//                content: "서비스 이용약관의 상세 내용입니다..." //  추가
 //            ),
 //            Agreement(
 //                termId : 2,
 //                title: "개인정보 수집/이용 동의",
 //                isRequired: true,
 //                isChecked: false,
-//                content: "개인정보 처리 방침 상세 내용..." // ✅ 추가
+//                content: "개인정보 처리 방침 상세 내용..." //  추가
 //            ),
 //            Agreement(
 //                termId: 3,
 //                title: "위치기반 서비스 이용약관 동의",
 //                isRequired: true,
 //                isChecked: false,
-//                content: "위치기반 서비스 약관 내용..." // ✅ 추가
+//                content: "위치기반 서비스 약관 내용..." //  추가
 //            ),
 //            Agreement(
 //                termId: 4,
 //                title: "마케팅 정보수신 동의",
 //                isRequired: false,
 //                isChecked: false,
-//                content: "마케팅 정보 수신 동의 내용..." // ✅ 추가
+//                content: "마케팅 정보 수신 동의 내용..." //  추가
 //            )
 //        ]
 //    // 전체 약관 체크 여부 확인
@@ -556,7 +556,7 @@ extension AgreementViewController: UITableViewDelegate, UITableViewDataSource {
 //        updateAllAgreeButtonState() // 전체 동의 버튼 상태 업데이트
 //        updateAgreeButtonState() // 가입 완료 버튼 상태 업데이트
 //
-//        // ✅ 모든 동의 상태를 서버에 전달
+//        //  모든 동의 상태를 서버에 전달
 //            sendTermsToServer()
 //    }
 //
@@ -573,11 +573,11 @@ extension AgreementViewController: UITableViewDelegate, UITableViewDataSource {
 //            DispatchQueue.main.async {
 //                switch result {
 //                case .success(let response):
-//                    // ✅ 서버 응답 데이터를 기반으로 약관 동의 처리
+//                    //  서버 응답 데이터를 기반으로 약관 동의 처리
 //                    let failedTerms = response.terms.filter { !$0.agreed } // 동의되지 않은 약관 필터링
 //
 //                    if failedTerms.isEmpty {
-//                        print("✅ 약관 동의 데이터가 성공적으로 서버에 전송되었습니다!")
+//                        print(" 약관 동의 데이터가 성공적으로 서버에 전송되었습니다!")
 //                    } else {
 //                        print("❌ 동의 실패 항목이 있습니다: \(failedTerms.map { $0.termId })")
 //                    }
@@ -606,14 +606,14 @@ extension AgreementViewController: UITableViewDelegate, UITableViewDataSource {
 //    @objc private func didTapAgreeButton() {
 //        guard areAllRequiredChecked else { return } // 필수 약관이 체크되지 않았다면 리턴
 //
-//        print("✅ 약관 동의 완료. 프로필 설정 화면으로 이동")
-//        sendTermsToAPI() // ✅ 가입 완료 버튼을 눌렀을 때만 실행
+//        print(" 약관 동의 완료. 프로필 설정 화면으로 이동")
+//        sendTermsToAPI() //  가입 완료 버튼을 눌렀을 때만 실행
 //        sendTermsToServer()
 //
 //        let addProfileVC = AddProfileViewController()
-//        navigationController?.pushViewController(addProfileVC, animated: true) // ✅ 네비게이션 방식으로 변경
+//        navigationController?.pushViewController(addProfileVC, animated: true) //  네비게이션 방식으로 변경
 ////        addProfileVC.modalPresentationStyle = .fullScreen
-////        present(addProfileVC, animated: true, completion: nil) // ✅ 프로필 설정 화면 띄우기
+////        present(addProfileVC, animated: true, completion: nil) //  프로필 설정 화면 띄우기
 //    }
 //    // 전체 동의 버튼 상태 업데이트
 //    private func updateAllAgreeButtonState() {
@@ -632,7 +632,7 @@ extension AgreementViewController: UITableViewDelegate, UITableViewDataSource {
 //    private func showAgreementDetail(for agreement: Agreement) {
 //        let detailVC = AgreementDetailViewController(
 //            title: agreement.title,
-//            content: agreement.content // ✅ 내용 추가 전달
+//            content: agreement.content //  내용 추가 전달
 //        )
 //        detailVC.modalPresentationStyle = .overFullScreen
 //        present(detailVC, animated: true)
@@ -659,16 +659,16 @@ extension AgreementViewController: UITableViewDelegate, UITableViewDataSource {
 //        cell.onCheckBoxTapped = { [weak self] in
 //            guard let self = self else { return }
 //
-//            self.agreements[indexPath.row].isChecked.toggle() // ✅ 상태 변경
+//            self.agreements[indexPath.row].isChecked.toggle() //  상태 변경
 //            self.tableView.reloadRows(at: [indexPath], with: .none)
 //
-//            // ✅ 필수 약관 체크 여부 다시 계산
+//            //  필수 약관 체크 여부 다시 계산
 //            self.updateAgreeButtonState()
 //        }
 //
-//        // ✅ 화살표 액션 수정: agreement 전체 전달
+//        //  화살표 액션 수정: agreement 전체 전달
 //        cell.onArrowButtonTapped = { [weak self] in
-//            self?.showAgreementDetail(for: agreement) // ✅ 현재 셀의 agreement 전달
+//            self?.showAgreementDetail(for: agreement) //  현재 셀의 agreement 전달
 //        }
 //
 //        return cell
@@ -689,7 +689,7 @@ extension AgreementViewController: UITableViewDelegate, UITableViewDataSource {
 //
 //        jsonString += "] }"
 //
-//        print("📡 준비된 JSON 문자열:\n\(jsonString)") // ✅ JSON 확인
+//        print("📡 준비된 JSON 문자열:\n\(jsonString)") //  JSON 확인
 //        return jsonString
 //    }
 //
@@ -698,15 +698,15 @@ extension AgreementViewController: UITableViewDelegate, UITableViewDataSource {
 //
 //        if let jsonData = try? JSONSerialization.data(withJSONObject: requestData, options: .prettyPrinted),
 //           let jsonString = String(data: jsonData, encoding: .utf8) {
-//            print("📡 실제 전송될 JSON:\n\(jsonString)") // ✅ JSON 출력
+//            print("📡 실제 전송될 JSON:\n\(jsonString)") //  JSON 출력
 //        } else {
 //            print("🚨 JSON 변환 실패!")
 //        }
 //    }
 //    func sendTermsToAPI() {
-//        print("📡 sendTermsToAPI() 호출됨!") // ✅ 실행 확인
+//        print("📡 sendTermsToAPI() 호출됨!") //  실행 확인
 //
-//        let jsonString = prepareRequestData() // ✅ 이제 Optional이 아니므로 guard let 제거
+//        let jsonString = prepareRequestData() //  이제 Optional이 아니므로 guard let 제거
 //
 //        guard let jsonData = jsonString.data(using: .utf8) else {
 //            print("🚨 JSON 변환 실패!")
@@ -723,7 +723,7 @@ extension AgreementViewController: UITableViewDelegate, UITableViewDataSource {
 //        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 //        request.httpBody = jsonData
 //
-//        print("📡 API 요청을 위한 데이터:", String(data: jsonData, encoding: .utf8) ?? "🚨 JSON 변환 실패!") // ✅ 최종 확인
+//        print("📡 API 요청을 위한 데이터:", String(data: jsonData, encoding: .utf8) ?? "🚨 JSON 변환 실패!") //  최종 확인
 //
 //        let task = URLSession.shared.dataTask(with: request) { data, response, error in
 //            if let error = error {
@@ -738,7 +738,7 @@ extension AgreementViewController: UITableViewDelegate, UITableViewDataSource {
 //
 //            do {
 //                let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-//                print("📩 서버 응답 데이터:", jsonResponse ?? "No Data") // ✅ 서버 응답 확인
+//                print("📩 서버 응답 데이터:", jsonResponse ?? "No Data") //  서버 응답 확인
 //            } catch {
 //                print("🚨 JSON 파싱 오류:", error.localizedDescription)
 //            }

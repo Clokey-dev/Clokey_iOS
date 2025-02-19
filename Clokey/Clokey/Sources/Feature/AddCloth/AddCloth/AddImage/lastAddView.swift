@@ -182,7 +182,7 @@ class LastAddView: UIView {
         
         endButton.snp.makeConstraints {
             $0.bottom.equalTo(safeAreaLayoutGuide).offset(-20)
-            $0.leading.trailing.equalToSuperview().inset(20) // ✅ 좌우 마진 유지
+            $0.leading.trailing.equalToSuperview().inset(20) //  좌우 마진 유지
             $0.height.equalTo(54) // 중앙 정렬
             
         }

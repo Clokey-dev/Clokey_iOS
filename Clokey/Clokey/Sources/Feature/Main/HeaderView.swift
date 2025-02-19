@@ -16,6 +16,10 @@ protocol HeaderViewDelegate: AnyObject {
     func didTapSearchButton()
     // 알림 버튼
     func didTapNotificationButton()
+    
+    
+    
+
 }
 
 final class HeaderView: UIView {
@@ -29,15 +33,16 @@ final class HeaderView: UIView {
     // 로고 라벨
     private let logoLabel: UILabel = {
         let label = UILabel()
-        label.text = "clokey"
-        label.font = .ptdSemiBoldFont(ofSize: 20)
+        label.text = "Clokey"
+        label.font = .ptdBoldFont(ofSize: 22)
+        
         return label
     }()
     
     // 검색 버튼
     private let searchButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
+        button.setImage(UIImage(named: "searchicon"), for: .normal)
         button.tintColor = .black
         return button
     }()
@@ -45,10 +50,12 @@ final class HeaderView: UIView {
     // 알림 버튼
     private let notificationButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "bell"), for: .normal)
+        button.setImage(UIImage(named: "bell"), for: .normal)
         button.tintColor = .black
         return button
     }()
+    
+   
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -88,6 +95,13 @@ final class HeaderView: UIView {
             $0.trailing.equalTo(-16)
             $0.size.equalTo(24)
         }
+        
+      /* notificationUnreadButton.snp.makeConstraints{
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalTo(-16)
+            $0.size.equalTo(24)
+        }*/
+        
     }
     
     // 검색/알림 버튼 이벤트 핸들러
@@ -106,4 +120,18 @@ final class HeaderView: UIView {
     @objc private func notificationButtonTapped() {
         delegate?.didTapNotificationButton()
     }
+    
+    
+    func updateNotificationIcon(isUnread: Bool) {
+            print("updateNotificationIcon 호출됨, isUnread: \(isUnread)")
+            let imageName = isUnread ? "bellUnread" : "bell"
+            if let image = UIImage(named: imageName) {
+                notificationButton.setImage(image, for: .normal)
+            } else {
+                print("이미지 \(imageName)이(가) 존재하지 않습니다.")
+            }
+            // 버튼 내 이미지 뷰가 이미지 크기를 맞추도록 설정
+            notificationButton.imageView?.contentMode = .scaleAspectFit
+        }
+        
 }

@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
         UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { granted, error in
             if granted {
-                print("✅ 푸시 알림 권한 허용됨")
+                print(" 푸시 알림 권한 허용됨")
             } else {
                 print("❌ 푸시 알림 권한 거부됨")
             }

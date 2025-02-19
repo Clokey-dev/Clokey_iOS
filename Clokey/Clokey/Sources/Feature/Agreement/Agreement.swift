@@ -11,6 +11,6 @@ struct Agreement {
     let title: String
     let isRequired: Bool
     var isChecked: Bool
-    let content: String // ✅ 약관 내용 추가
+    let content: String //  약관 내용 추가
 }
 
