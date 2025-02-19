@@ -88,7 +88,7 @@ public enum RedirectInfo: Codable {
     public struct NotificationHistoryCommentResponseDTO: Codable{
         public let content: String
         public let memberProfileUrl: String
-        public let historyId: String
+        public let historyId: Int
     }
     //댓글 답장 알림
     public struct NotificationReplyResponseDTO: Codable {

@@ -23,6 +23,18 @@ class CalendarDetailView: UIView {
     
     //
     private var viewModel: CalendarDetailViewModel?
+    
+
+    var shouldHidePlusButton: Bool = false {
+        didSet {
+            plusButton.isHidden = shouldHidePlusButton
+        }
+    }
+    var shouldHidelockCheckImageView: Bool = false {
+        didSet {
+            lockCheckImageView.isHidden = shouldHidelockCheckImageView
+        }
+    }
 
     
     // MARK: - UI Components
@@ -51,6 +63,9 @@ class CalendarDetailView: UIView {
     private let profileImage = UIImageView().then {
         $0.image = UIImage(named: "profile_test")
         $0.tintColor = .gray
+        $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
+        $0.layer.cornerRadius = 15
     }
     
     private let nameLabel = UILabel().then {
@@ -255,6 +270,9 @@ class CalendarDetailView: UIView {
         contentContainerView.addSubview(moreButton)
 
         setupConstraints()
+        
+        plusButton.isHidden = shouldHidePlusButton
+        lockCheckImageView.isHidden = shouldHidelockCheckImageView
     }
 
     
@@ -291,7 +309,7 @@ class CalendarDetailView: UIView {
         }
         
         profileImage.snp.makeConstraints {
-            $0.width.height.equalTo(24)
+            $0.width.height.equalTo(30)
             $0.centerY.equalToSuperview()
         }
         
@@ -318,7 +336,7 @@ class CalendarDetailView: UIView {
         
         // 이미지 컬렉션 뷰 (슬라이드 가능)
         ImageCollectionView.snp.makeConstraints {
-            $0.top.equalTo(profileHeaderStackView.snp.bottom).offset(10)
+            $0.top.equalTo(profileHeaderStackView.snp.bottom)
             $0.leading.trailing.equalToSuperview()
             
             let screenWidth = UIScreen.main.bounds.width
