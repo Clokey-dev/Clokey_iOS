@@ -133,8 +133,8 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
         
         // ✅ 🔥 API 호출해서 users 가져오기
         SearchService().searchMember(
-            by: "id-and-nickname",  // ✅ API 문서에 맞게 수정
-            keyword: query,         // ✅ data → keyword로 변경
+            by: "id-and-nickname",  //
+            keyword: query,         //
             page: 1,
             size: 20
         ) { [weak self] result in
@@ -165,7 +165,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
     }
     // ✅ 추천 검색어 클릭 시 실행 searchhistory
     func didTapRecommendedKeyword(_ keyword: String) {
-        selectedKeyword = keyword // ✅ 선택한 키워드 저장
+        selectedKeyword = keyword // 
         UserDefaults.standard.set(keyword, forKey: "selectedKeyword") // ✅ 선택된 키워드 저장
         
         searchView.updateSelectedKeywordUI()
