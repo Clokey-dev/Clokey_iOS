@@ -205,6 +205,14 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                         self.followProfileView.followButton.layer.borderColor = UIColor.mainBrown800.cgColor
                         self.followProfileView.followButton.layer.borderWidth = 1
                     }
+                    
+                    if userProfile.visibility == "PRIVATE" {
+                        self.followProfileView.updateClothesPrivateState(isPrivate: true)
+                        self.followProfileView.updateCalendarPrivateState(isPrivate: true)
+                    } else {
+                        self.followProfileView.updateClothesPrivateState(isPrivate: false)
+                        self.followProfileView.updateCalendarPrivateState(isPrivate: false)
+                    }
                 }
             case .failure(let error):
                 print("🚨 프로필 데이터를 불러오는 데 실패함: \(error.localizedDescription)")
@@ -217,6 +225,15 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         followProfileView.followButton.addTarget(self, action: #selector(didTapFollowButton), for: .touchUpInside)
         followProfileView.followerCountButton.addTarget(self, action: #selector(didTapFollowerButton), for: .touchUpInside)
         followProfileView.followingCountButton.addTarget(self, action: #selector(didTapFollowingButton), for: .touchUpInside)
+        
+        followProfileView.bottomButtonLabel.isUserInteractionEnabled = true
+        followProfileView.bottomArrowIcon.isUserInteractionEnabled = true
+
+        let bottomButtonTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapFollowClothButton))
+        followProfileView.bottomButtonLabel.addGestureRecognizer(bottomButtonTapGesture)
+
+        let bottomArrowTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapFollowClothButton))
+        followProfileView.bottomArrowIcon.addGestureRecognizer(bottomArrowTapGesture)
     }
     
     @objc private func didTapBackButton() {
@@ -254,6 +271,12 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                 }
             }
         }
+    }
+    
+    @objc private func didTapFollowClothButton() {
+        let displayAllVC = DisplayAllViewController()
+        displayAllVC.clokeyId = followId
+        navigationController?.pushViewController(displayAllVC, animated: true)
     }
     
     
@@ -325,7 +348,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         }
         
         guard let clothId = selectedClothId else {
-            print("❌ clothId 값이 없습니다.")
+            print("clothId 값이 없습니다.")
             return
         }
         

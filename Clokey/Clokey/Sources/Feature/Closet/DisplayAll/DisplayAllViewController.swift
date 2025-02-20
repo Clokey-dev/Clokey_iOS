@@ -8,6 +8,8 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
     var selectedCoreCategoryId: Int64?
     var selectedSeason: String?
     
+    var clokeyId: String = ""
+    
     // MARK: - Properties
     private let displayAllView = DisplayAllView()
     

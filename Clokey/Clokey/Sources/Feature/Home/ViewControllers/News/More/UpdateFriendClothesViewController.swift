@@ -185,6 +185,8 @@ extension UpdateFriendClothesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedUpdate = updates[indexPath.item]
         print("Selected Update: \(selectedUpdate.name)")
-        
+        let displayAllVC = DisplayAllViewController()
+        displayAllVC.clokeyId = selectedUpdate.name
+        navigationController?.pushViewController(displayAllVC, animated: true)
     }
 }
