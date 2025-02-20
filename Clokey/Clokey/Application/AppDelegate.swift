@@ -103,7 +103,14 @@ extension AppDelegate {
     // 백그라운드 & 종료 상태에서 푸시 클릭 시 실행되는 메서드
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
-        handleNotification(userInfo: userInfo)
+        
+        if let historyId = userInfo["historyId"] as? String {
+            UserDefaults.standard.set(historyId, forKey: "PendingHistoryId")
+            UserDefaults.standard.synchronize()
+        }
+        
         completionHandler()
     }
+
+    
 }

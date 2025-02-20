@@ -9,7 +9,7 @@ import Foundation
 
 struct Comment: Identifiable {
     let id: Int
-    let memberId: Int
+    let clokeyId: String
     let nickName: String
     let imageUrl: String
     let content: String

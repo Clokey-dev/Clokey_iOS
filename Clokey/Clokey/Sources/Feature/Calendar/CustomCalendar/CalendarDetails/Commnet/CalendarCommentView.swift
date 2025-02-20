@@ -230,7 +230,8 @@ extension CalendarCommentView: UITableViewDataSource, UITableViewDelegate {
             name: comment.nickName,
             comment: comment.content,
             isLastReply: comment.parentCommentId == nil,
-            commentId: comment.id
+            commentId: comment.id,
+            clokeyId: comment.clokeyId
         )
         
         cell.delegate = viewController

@@ -153,6 +153,8 @@
 		07E1CB5F2D36A10000F86BB8 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E1CB5D2D36A10000F86BB8 /* CustomButton.swift */; };
 		07E1CB602D36A10000F86BB8 /* CustomButtonTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E1CB5E2D36A10000F86BB8 /* CustomButtonTextField.swift */; };
 		07E1CB662D36A63200F86BB8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E1CB652D36A63200F86BB8 /* ViewController.swift */; };
+		07EADE6A2D6761BB00364FF0 /* NotificationServiceController.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 07EADE632D6761BB00364FF0 /* NotificationServiceController.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		07EADE742D6763DD00364FF0 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EADE712D6763DD00364FF0 /* NotificationService.swift */; };
 		07ECCB3F2D4E34DF00AFF486 /* UploadModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCB3C2D4E34DF00AFF486 /* UploadModalView.swift */; };
 		07ECCB402D4E34DF00AFF486 /* CalendarDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCB342D4E34DF00AFF486 /* CalendarDetailViewController.swift */; };
 		07ECCB412D4E34DF00AFF486 /* CalendarDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCB332D4E34DF00AFF486 /* CalendarDetailView.swift */; };
@@ -276,13 +278,24 @@
 		A67661AD2D5B3760006AAB63 /* PrivateStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661AC2D5B3760006AAB63 /* PrivateStackView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		07EADE682D6761BB00364FF0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 07F093082D2418380075659F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 07EADE622D6761BB00364FF0;
+			remoteInfo = NotificationServiceController;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
-		489FCD832D675CFF0030A185 /* Embed Foundation Extensions */ = {
+		07EADE6B2D6761BB00364FF0 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				07EADE6A2D6761BB00364FF0 /* NotificationServiceController.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -410,6 +423,9 @@
 		07E1CB5D2D36A10000F86BB8 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		07E1CB5E2D36A10000F86BB8 /* CustomButtonTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonTextField.swift; sourceTree = "<group>"; };
 		07E1CB652D36A63200F86BB8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		07EADE632D6761BB00364FF0 /* NotificationServiceController.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationServiceController.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		07EADE702D6763DD00364FF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		07EADE712D6763DD00364FF0 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		07ECCB262D4E34DF00AFF486 /* RecordOOTDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordOOTDView.swift; sourceTree = "<group>"; };
 		07ECCB272D4E34DF00AFF486 /* RecordOOTDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordOOTDViewController.swift; sourceTree = "<group>"; };
 		07ECCB282D4E34DF00AFF486 /* CustomGalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGalleryViewController.swift; sourceTree = "<group>"; };
@@ -534,6 +550,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		07EADE602D6761BB00364FF0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		07F0930D2D2418380075659F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1405,6 +1428,15 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		07EADE722D6763DD00364FF0 /* NotificationServiceController */ = {
+			isa = PBXGroup;
+			children = (
+				07EADE702D6763DD00364FF0 /* Info.plist */,
+				07EADE712D6763DD00364FF0 /* NotificationService.swift */,
+			);
+			path = NotificationServiceController;
+			sourceTree = "<group>";
+		};
 		07ECCB2B2D4E34DF00AFF486 /* Photo */ = {
 			isa = PBXGroup;
 			children = (
@@ -1502,6 +1534,7 @@
 			isa = PBXGroup;
 			children = (
 				076FAB3E2D2E6E0200FF3979 /* Clokey */,
+				07EADE722D6763DD00364FF0 /* NotificationServiceController */,
 				07F093112D2418380075659F /* Products */,
 				07649BE22D4DDAE600B6B2B2 /* Recovered References */,
 			);
@@ -1511,6 +1544,7 @@
 			isa = PBXGroup;
 			children = (
 				07F093102D2418380075659F /* Clokey.app */,
+				07EADE632D6761BB00364FF0 /* NotificationServiceController.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1839,6 +1873,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		07EADE622D6761BB00364FF0 /* NotificationServiceController */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 07EADE6F2D6761BB00364FF0 /* Build configuration list for PBXNativeTarget "NotificationServiceController" */;
+			buildPhases = (
+				07EADE5F2D6761BB00364FF0 /* Sources */,
+				07EADE602D6761BB00364FF0 /* Frameworks */,
+				07EADE612D6761BB00364FF0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NotificationServiceController;
+			packageProductDependencies = (
+			);
+			productName = NotificationServiceController;
+			productReference = 07EADE632D6761BB00364FF0 /* NotificationServiceController.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		07F0930F2D2418380075659F /* Clokey */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 07F093232D24183A0075659F /* Build configuration list for PBXNativeTarget "Clokey" */;
@@ -1846,11 +1899,12 @@
 				07F0930C2D2418380075659F /* Sources */,
 				07F0930D2D2418380075659F /* Frameworks */,
 				07F0930E2D2418380075659F /* Resources */,
-				489FCD832D675CFF0030A185 /* Embed Foundation Extensions */,
+				07EADE6B2D6761BB00364FF0 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				07EADE692D6761BB00364FF0 /* PBXTargetDependency */,
 			);
 			name = Clokey;
 			packageProductDependencies = (
@@ -1898,6 +1952,9 @@
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					07EADE622D6761BB00364FF0 = {
+						CreatedOnToolsVersion = 16.2;
+					};
 					07F0930F2D2418380075659F = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -1930,11 +1987,19 @@
 			projectRoot = "";
 			targets = (
 				07F0930F2D2418380075659F /* Clokey */,
+				07EADE622D6761BB00364FF0 /* NotificationServiceController */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		07EADE612D6761BB00364FF0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		07F0930E2D2418380075659F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1959,6 +2024,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		07EADE5F2D6761BB00364FF0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07EADE742D6763DD00364FF0 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		07F0930C2D2418380075659F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2192,7 +2265,67 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		07EADE692D6761BB00364FF0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 07EADE622D6761BB00364FF0 /* NotificationServiceController */;
+			targetProxy = 07EADE682D6761BB00364FF0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		07EADE6C2D6761BB00364FF0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = BBVZV8T99P;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NotificationServiceController/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NotificationServiceController;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey.NotificationServiceController;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		07EADE6D2D6761BB00364FF0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = BBVZV8T99P;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NotificationServiceController/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NotificationServiceController;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey.NotificationServiceController;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		07F093242D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 07B8824D2D661A89006ABD4F /* Config.xcconfig */;
@@ -2202,11 +2335,9 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
+				DEVELOPMENT_TEAM = BBVZV8T99P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
@@ -2217,7 +2348,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2226,7 +2357,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2242,11 +2372,9 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
+				DEVELOPMENT_TEAM = BBVZV8T99P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
@@ -2257,7 +2385,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2266,7 +2394,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2397,6 +2524,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		07EADE6F2D6761BB00364FF0 /* Build configuration list for PBXNativeTarget "NotificationServiceController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				07EADE6C2D6761BB00364FF0 /* Debug */,
+				07EADE6D2D6761BB00364FF0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		07F0930B2D2418380075659F /* Build configuration list for PBXProject "Clokey" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

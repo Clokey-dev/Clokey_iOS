@@ -14,6 +14,8 @@ import Kingfisher
 protocol CalendarCommentDelegate: AnyObject {
     func didUpdateComment(count: Int)  // 댓글 수 업데이트
     func didDeleteComment()  // 댓글 삭제됨
+    func CalendarCommentViewController(_ viewController: CalendarCommentViewController, didSelectProfileWith clokeyId: String)
+
 }
 
 class CalendarCommentViewController: UIViewController, CommentCellDelegate {
@@ -221,6 +223,11 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         commentView.commentTextField.placeholder = "답글 작성하기"
     }
     
+    // 프로필 이미지로 clokeyId 전달
+    func didTapProfile(with clokeyId: String) {
+        handleProfile(clokeyId: clokeyId)
+    }
+    
     private func findIndexPath(for commentId: Int64) -> IndexPath? {
         if let index = comments.firstIndex(where: { $0.id == commentId }) {
             return IndexPath(row: index, section: 0)
@@ -245,7 +252,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
                 let newComments = response.comments.map { comment in
                     let mainComment = Comment(
                         id: comment.commentId,
-                        memberId: comment.memberId,
+                        clokeyId: comment.clokeyId,
                         nickName: comment.nickName,
                         imageUrl: comment.userImageUrl,
                         content: comment.content,
@@ -256,7 +263,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
                     let replies = comment.replyResults.map { reply in
                         Comment(
                             id: reply.commentId,
-                            memberId: reply.memberId,
+                            clokeyId: comment.clokeyId,
                             nickName: reply.nickName,
                             imageUrl: reply.userImageUrl,
                             content: reply.content,
@@ -309,7 +316,26 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
            fetchComments()
        }
    }
+    
+    // 프로필로 이동
+    func handleProfile(clokeyId: String) {
+        DispatchQueue.main.async {
+            self.navigateToProfile(clokeyId: clokeyId)
+        }
+    }
+    
+    private func navigateToProfile(clokeyId: String) {
+        delegate?.CalendarCommentViewController(self, didSelectProfileWith: clokeyId)
+    }
 }
+
+extension CalendarCommentViewController: LikeUserCellDelegate {
+    func didTapProfileImage(with clokeyId: String) {
+        // 프로파일 이미지 탭 시 handleNotificationFollow 호출
+        handleProfile(clokeyId: clokeyId)
+    }
+}
+
 
 extension CalendarCommentViewController: UITableViewDataSource, UITableViewDelegate {
     
@@ -328,7 +354,8 @@ extension CalendarCommentViewController: UITableViewDataSource, UITableViewDeleg
             name: comment.nickName,
             comment: comment.content,
             isLastReply: comment.parentCommentId == nil, // parentCommentId가 nil인 경우에만 답글 달기 표시
-            commentId: comment.id
+            commentId: comment.id,
+            clokeyId: comment.clokeyId
         )
 
         cell.delegate = self

@@ -14,6 +14,7 @@ import Kingfisher
 protocol LikeListViewControllerDelegate: AnyObject {
     func likeListViewController(_ viewController: LikeListViewController, didSelectProfileWith clokeyId: String)
 }
+
 class LikeListViewController: UIViewController {
     
     // MARK: - Properties
