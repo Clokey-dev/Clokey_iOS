@@ -248,6 +248,8 @@
 		A646C4322D65ACB300993FA5 /* YourFollowerUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646C42D2D65ACB300993FA5 /* YourFollowerUserCell.swift */; };
 		A646C4332D65ACB300993FA5 /* YourFollowingUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646C42F2D65ACB300993FA5 /* YourFollowingUserCell.swift */; };
 		A646C4342D65ACB300993FA5 /* YourFollowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646C4302D65ACB300993FA5 /* YourFollowListViewController.swift */; };
+		A646C4D62D661D8200993FA5 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A646C4D52D661D8200993FA5 /* Config.xcconfig */; };
+		A646C4D82D662DE800993FA5 /* FollowCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646C4D72D662DE800993FA5 /* FollowCalendarViewController.swift */; };
 		A648ACDA2D5CECA50094C126 /* CategoriesEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A648ACD92D5CECA50094C126 /* CategoriesEndPoint.swift */; };
 		A648ACDC2D5CECAC0094C126 /* CategoriesRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A648ACDB2D5CECAC0094C126 /* CategoriesRequestDTO.swift */; };
 		A648ACDE2D5CECF00094C126 /* CategoriesResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A648ACDD2D5CECF00094C126 /* CategoriesResponseDTO.swift */; };
@@ -491,6 +493,8 @@
 		A646C42E2D65ACB300993FA5 /* YourFollowerUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFollowerUserModel.swift; sourceTree = "<group>"; };
 		A646C42F2D65ACB300993FA5 /* YourFollowingUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFollowingUserCell.swift; sourceTree = "<group>"; };
 		A646C4302D65ACB300993FA5 /* YourFollowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFollowListViewController.swift; sourceTree = "<group>"; };
+		A646C4D52D661D8200993FA5 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		A646C4D72D662DE800993FA5 /* FollowCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCalendarViewController.swift; sourceTree = "<group>"; };
 		A648ACD92D5CECA50094C126 /* CategoriesEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesEndPoint.swift; sourceTree = "<group>"; };
 		A648ACDB2D5CECAC0094C126 /* CategoriesRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesRequestDTO.swift; sourceTree = "<group>"; };
 		A648ACDD2D5CECF00094C126 /* CategoriesResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesResponseDTO.swift; sourceTree = "<group>"; };
@@ -1805,6 +1809,7 @@
 				A676619E2D5B367B006AAB63 /* FollowProfileModel.swift */,
 				A676619F2D5B367B006AAB63 /* FollowProfileView.swift */,
 				A67661A02D5B367B006AAB63 /* FollowProfileViewController.swift */,
+				A646C4D72D662DE800993FA5 /* FollowCalendarViewController.swift */,
 			);
 			path = Your;
 			sourceTree = "<group>";
@@ -2169,6 +2174,7 @@
 				076FAB402D2E6E0200FF3979 /* SceneDelegate.swift in Sources */,
 				07CF63FF2D563CAD00CCF9F4 /* RecordTagClothViewController.swift in Sources */,
 				076FAB4A2D2E748B00FF3979 /* LoginView.swift in Sources */,
+				A646C4D82D662DE800993FA5 /* FollowCalendarViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

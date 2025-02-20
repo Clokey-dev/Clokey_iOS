@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class ThickViewController: UIViewController {
+class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - UI Components
     
@@ -204,6 +204,8 @@ class ThickViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad() 
         setupUI()
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
     }
     

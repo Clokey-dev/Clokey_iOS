@@ -182,10 +182,10 @@ class FollowProfileView: UIView {
         $0.textAlignment = .left
     }
     
-    
-    let recordContainerView: UIView = UIView().then {
+    let calendarContainerView = UIView().then {
         $0.backgroundColor = .clear
     }
+    
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -231,7 +231,7 @@ class FollowProfileView: UIView {
         contentView.addSubview(bottomButtonLabel)
         contentView.addSubview(bottomArrowIcon)
         contentView.addSubview(recordLabel)
-        contentView.addSubview(recordContainerView)
+        contentView.addSubview(calendarContainerView)
     }
     
     
@@ -379,12 +379,11 @@ class FollowProfileView: UIView {
             make.leading.equalToSuperview().offset(20)
         }
         
-        recordContainerView.snp.makeConstraints { make in
-            make.top.equalTo(recordLabel.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(520)
-            make.bottom.equalToSuperview().offset(-40) // 스크롤 콘텐츠의 마지막 부분
+        calendarContainerView.snp.makeConstraints {
+            $0.top.equalTo(recordLabel.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(600)
+            $0.bottom.equalToSuperview().offset(20)
         }
     }
     
@@ -411,7 +410,7 @@ class FollowProfileView: UIView {
     func updateCalendarPrivateState(isPrivate: Bool) {
         if isPrivate {
             // 데이터가 없으면 EmptyStackView 추가하고 관련 요소 숨김
-            recordContainerView.addSubview(privateStackView2)
+            calendarContainerView.addSubview(privateStackView2)
             privateStackView2.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
             }

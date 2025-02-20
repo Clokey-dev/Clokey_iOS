@@ -257,9 +257,7 @@ class NewsViewController: UIViewController {
                             self.newsView.followingCalendarUpdateImageView1.kf.setImage(with: URL(string: firstImageUrl))
                         }
                         self.newsView.followingCalendarUpdateSubTitle.text = firstCalendarItem.date
-                        
                         self.newsView.followingCalendarProfileIcon1.kf.setImage(with: URL(string: firstCalendarItem.profileImage))
-                        
                         self.newsView.followingCalendarProfileName1.text = firstCalendarItem.clokeyId
                         
                         
@@ -268,6 +266,10 @@ class NewsViewController: UIViewController {
                         self.newsView.followingCalendarUpdateImageView1.isUserInteractionEnabled = true
                         self.newsView.followingCalendarUpdateImageView1.addGestureRecognizer(tapGesture)
                         
+                        self.newsView.followingCalendarProfileIcon1.accessibilityIdentifier = calendarItems[1].clokeyId
+                        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileIconTap))
+                        self.newsView.followingCalendarProfileIcon1.isUserInteractionEnabled = true
+                        self.newsView.followingCalendarProfileIcon1.addGestureRecognizer(tapGesture1)
                     }
                     
                     
@@ -379,10 +381,31 @@ class NewsViewController: UIViewController {
         pageControl.numberOfPages = recommandNewsSlides.count
         pageControl.currentPage = currentIndexValue()
         
+        pageControl.addTarget(self, action: #selector(pageControlValueChanged(_:)), for: .valueChanged)
+        
         // SnapKit으로 레이아웃 설정
         pageControl.snp.makeConstraints { make in
             make.top.equalTo(newsView.slideContainerView.snp.bottom).offset(10)
             make.centerX.equalToSuperview()
+        }
+    }
+    
+    @objc private func pageControlValueChanged(_ sender: UIPageControl) {
+        let newIndex = sender.currentPage
+        
+        // 현재 표시되고 있는 뷰 컨트롤러에서 현재 인덱스를 가져옵니다.
+        guard let currentVC = pageViewController.viewControllers?.first as? ImageViewController,
+              let currentSlide = currentVC.slideModel,
+              let currentIndex = recommandNewsSlides.firstIndex(where: { $0.title == currentSlide.title }) else {
+            return
+        }
+        
+        // 새로운 인덱스와 현재 인덱스를 비교해 전환 방향을 결정합니다.
+        let direction: UIPageViewController.NavigationDirection = (newIndex >= currentIndex) ? .forward : .reverse
+        
+        if let newVC = createImageViewController(for: newIndex) {
+            pageViewController.setViewControllers([newVC], direction: direction, animated: true, completion: nil)
+            self.currentIndex = newIndex
         }
     }
     

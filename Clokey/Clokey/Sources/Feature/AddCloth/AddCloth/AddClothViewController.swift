@@ -2,7 +2,7 @@ import UIKit
 import SnapKit
 
 
-class AddClothViewController: UIViewController, UITextFieldDelegate {
+class AddClothViewController: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
     private let addClothesView = AddClothesView()
     
     
@@ -16,6 +16,8 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
         
         navigationController?.navigationBar.isHidden = true
         addClothesView.inputField.delegate = self
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         setupAction()
         

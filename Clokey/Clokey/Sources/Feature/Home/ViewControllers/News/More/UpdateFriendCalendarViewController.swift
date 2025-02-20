@@ -10,7 +10,7 @@
 import UIKit
 import Kingfisher
 
-class UpdateFriendCalendarViewController: UIViewController {
+class UpdateFriendCalendarViewController: UIViewController, UIGestureRecognizerDelegate {
     
     private let updateFriendCalendarView = UpdateFriendCalendarView()
     private var modelData: [UpdateFriendCalendarModel] = []
@@ -22,6 +22,8 @@ class UpdateFriendCalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = updateFriendCalendarView
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         setupDelegate()
         loadData()
