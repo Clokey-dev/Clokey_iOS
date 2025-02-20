@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDelegate {
+class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDelegate, UIGestureRecognizerDelegate {
     
     let searchView = SearchView()
     private let searchManager = SearchManager() //  검색 기록 관리 객체
@@ -50,6 +50,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
         
         //  검색 기록 로드
         loadRecentSearches()
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     //  viewWillAppear에서 검색 기록을 강제 업데이트
     //   viewWillAppear()에서 불필요한 NotificationCenter 등록 정리

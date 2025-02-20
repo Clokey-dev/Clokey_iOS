@@ -17,7 +17,7 @@ import RxSwift
 import RxCocoa
 import RxGesture
 
-class NotificationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, NotificationCellDelegate {
+class NotificationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, NotificationCellDelegate, UIGestureRecognizerDelegate {
     func notificationCell(_ cell: NotificationCell, didTapProfileFor notification: NotificationItem) {
         
         // (A) 프로필 탭 시 처리 로직을 여기에 작성합니다.
@@ -52,9 +52,7 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
         notificationView.tableView.alwaysBounceVertical = true
         notificationView.tableView.refreshControl = refreshControl
         //왼쪽에서 오른쪽 스와이프 하면 뒤로가기
-        let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeBack(_:)))
-        swipeGesture.direction = .right
-        view.addGestureRecognizer(swipeGesture)
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

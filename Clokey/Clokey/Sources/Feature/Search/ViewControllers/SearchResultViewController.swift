@@ -18,7 +18,7 @@ import Then
 import Kingfisher
 
 
-class SearchResultViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class SearchResultViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate {
     private let searchView = SearchResultView()
     private let searchManager = SearchManager()
     
@@ -76,8 +76,16 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         
         searchView.accountsCollectionView.isScrollEnabled = true
         searchView.hashtagsCollectionView.isScrollEnabled = true
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         loadSearchHistory()
         
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(handleTabSwipe(_:)))
+        swipeLeft.direction = .left
+        view.addGestureRecognizer(swipeLeft)
+        
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleTabSwipe(_:)))
+        swipeRight.direction = .right
+        view.addGestureRecognizer(swipeRight)
         searchView.searchField.text = query
         filterUsers(with: query)
         addSearchHistory(query)
@@ -184,7 +192,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
     
     private func loadSearchHistory() {
         searchHistory = UserDefaults.standard.stringArray(forKey: "searchHistory") ?? []
-       
+        
     }
     
     private func filterUsers(with query: String) {
@@ -352,14 +360,27 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         // 히스토리 아이디를 이용하여 상세 정보를 조회
         fetchHistoryDetail(historyId: historyId)
     }
-
+    @objc private func handleTabSwipe(_ gesture: UISwipeGestureRecognizer) {
+        if gesture.direction == .left {
+            // 왼쪽 스와이프 → 계정 탭에서 해시태그 탭으로 전환 (계정 탭이 보이면)
+            if !searchView.accountsCollectionView.isHidden {
+                tabSelected(searchView.hashtagButton)
+            }
+        } else if gesture.direction == .right {
+            // 오른쪽 스와이프 → 해시태그 탭에서 계정 탭으로 전환 (해시태그 탭이 보이면)
+            if !searchView.hashtagsCollectionView.isHidden {
+                tabSelected(searchView.accountButton)
+            }
+        }
+    }
+    
 }
 
 extension SearchResultViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let query = textField.text, !query.isEmpty else { return false }
         
-       
+        
         
         //  검색어 저장 추가
         searchManager.addSearchKeyword(query)
@@ -386,7 +407,7 @@ extension SearchResultViewController: UITextFieldDelegate {
                         self.users = users
                         self.filteredUsers = users
                         
-                      
+                        
                         
                         //  검색 결과에 따라 emptyLabel 상태 변경
                         
@@ -412,7 +433,7 @@ extension SearchResultViewController: UITextFieldDelegate {
                         self.query = query
                         self.dummyImages = newImages
                         
-                      
+                        
                         
                         //  검색 결과에 따라 emptyLabel 상태 변경
                         self.searchView.emptyLabel.isHidden = !newImages.isEmpty
@@ -456,7 +477,7 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
             if dummyHistoryIDs.indices.contains(indexPath.item) {
                 let historyId = dummyHistoryIDs[indexPath.item]
                 cell.imageView.accessibilityIdentifier = "\(historyId)"
-               
+                
             } else {
                 print(" dummyHistoryIDs에 \(indexPath.item) 인덱스 없음")
             }
@@ -470,7 +491,7 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
             return cell
         }
         fatalError("알 수 없는 컬렉션뷰")
-    
+        
     }
     // MARK: - UICollectionViewDelegate
     
@@ -538,7 +559,7 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
             
             switch result {
             case .success(let response):
-               
+                
                 
                 let detailVC = FriendsCalendarDetailViewController()
                 detailVC.setDetailData(response) // 상세 데이터 전달
@@ -550,4 +571,4 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
         }
     }
 }
-            
+
