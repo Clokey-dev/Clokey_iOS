@@ -27,18 +27,29 @@ class DrawerInfoView: UIView {
         $0.textAlignment = .left
     }
     
-    let collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        // 셀 크기: 이미지와 이름 레이블의 높이를 고려 (필요에 따라 조정)
-        layout.itemSize = CGSize(width: 111, height: 167)
-        layout.minimumLineSpacing = 20
-        layout.minimumInteritemSpacing = 10
+    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
+        $0.scrollDirection = .vertical
+        $0.minimumInteritemSpacing = 10
+        $0.minimumLineSpacing = 20
+        $0.estimatedItemSize = .zero  // 셀 크기 자동 조정 비활성화
         
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .clear
-        return collectionView
-    }()
-    
+        // 한 줄에 3개 배치
+        let totalMargin: CGFloat = 40  // 좌우 inset 20씩
+        let interitemSpacing: CGFloat = 10 * 2  // 아이템 간 간격
+        let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing
+        let itemWidth = availableWidth / 3  // 3등분
+
+        // 4:3 비율 유지
+        let imageHeight = itemWidth * (4.0/3.0)
+        let labelHeight: CGFloat = 20
+        let itemHeight = imageHeight + 5 + labelHeight
+
+        $0.itemSize = CGSize(width: itemWidth, height: itemHeight) // 셀 크기 고정
+    }).then {
+        $0.backgroundColor = .clear
+        $0.isScrollEnabled = true  // 스크롤 활성화
+        $0.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: CustomCollectionViewCell.identifier)
+    }
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()

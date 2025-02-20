@@ -21,7 +21,10 @@ final class MainViewController: UIViewController {
     private lazy var closetVC = ClosetViewController()
     private lazy var profileVC = ProfileViewController()
     private lazy var notificationVC = NotificationViewController()
-    private lazy var followProfileVC = FollowProfileViewController()
+    private lazy var followProfileVC: FollowProfileViewController = {
+        return FollowProfileViewController(followId: "기본값")
+    }()
+    
     
     // MARK: - Lifecycle
     override func loadView() {
@@ -53,13 +56,55 @@ final class MainViewController: UIViewController {
         
         let shouldNavigateToCloset = UserDefaults.standard.bool(forKey: "navigateToCloset")
         
+//        if shouldNavigateToCloset {
+//            showViewController(closetVC)
+//            if let tabBarItems = mainView.tabBarView.tabBar.items, tabBarItems.count > 3 {
+//                mainView.tabBarView.tabBar.selectedItem = tabBarItems[3]
+//            }
+//            UserDefaults.standard.set(false, forKey: "navigateToCloset")
+//        }
         if shouldNavigateToCloset {
-                showViewController(closetVC)
-            if let tabBarItems = mainView.tabBarView.tabBar.items, tabBarItems.count > 3 {
-                mainView.tabBarView.tabBar.selectedItem = tabBarItems[3]
+            // 전환할 뷰 컨트롤러 배열 (원하는 순서에 맞게 구성)
+            let viewControllers: [UIViewController] = [calendarVC, closetVC]
+            // 탭바 아이템 배열 (실제 탭바에 설정된 순서)
+            let tabBarItems = mainView.tabBarView.tabBar.items ?? []
+            
+            // 현재 전환할 인덱스
+            var currentIndex = 0
+            
+            func animateTransition() {
+                // 배열의 모든 인덱스를 순회할 때까지
+                if currentIndex < viewControllers.count {
+                    UIView.transition(with: mainView.contentView,
+                                      duration: 0.1, // 각 전환의 지속시간 (0.5초)
+                                      options: .transitionCrossDissolve,
+                                      animations: { [weak self] in
+                        guard let self = self else { return }
+                        // 해당 인덱스의 뷰 컨트롤러 표시
+                        self.showViewController(viewControllers[currentIndex])
+                        // 탭바 선택 아이템도 해당 인덱스로 변경 (아이템이 충분할 경우)
+                        if currentIndex < tabBarItems.count {
+                            self.mainView.tabBarView.tabBar.selectedItem = tabBarItems[currentIndex+2]
+                        }
+                    },
+                                      completion: { _ in
+                        // 다음 인덱스로 이동
+                        currentIndex += 1
+                        // 약간의 딜레이 후 재귀적으로 다음 전환 실행
+                        if currentIndex < viewControllers.count {
+                            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                                animateTransition()
+                            }
+                        }
+                    })
+                }
             }
-                UserDefaults.standard.set(false, forKey: "navigateToCloset")
-            }
+            
+            // 애니메이션 전환 시작
+            animateTransition()
+            // 한 번 실행한 후 다시 실행되지 않도록 설정
+            UserDefaults.standard.set(false, forKey: "navigateToCloset")
+        }
     }
     
     // MARK: - Setup

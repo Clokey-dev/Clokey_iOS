@@ -468,12 +468,12 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     if recommendedClothes.count > 1 {
                         self.pickView.weatherImageView2.kf.setImage(with: URL(string: recommendedClothes[1].imageUrl))
                         self.pickView.weatherImageName2.text = recommendedClothes[1].clothName
-                        self.clothId2 = recommendedClothes[0].clothId
+                        self.clothId2 = recommendedClothes[1].clothId
                     }
                     if recommendedClothes.count > 2 {
                         self.pickView.weatherImageView3.kf.setImage(with: URL(string: recommendedClothes[2].imageUrl))
                         self.pickView.weatherImageName3.text = recommendedClothes[2].clothName
-                        self.clothId3 = recommendedClothes[0].clothId
+                        self.clothId3 = recommendedClothes[2].clothId
                     }
                     
                 case .failure(let error):
@@ -717,8 +717,9 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                             }
                         }
                     } else {
-                        self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님의 기록이 없어요!"
+                        self.pickView.recapSubtitleLabel1.text = "1년 전 오늘의 기록이 없어요!"
                         self.pickView.recapNotMe(hidden: false)
+                        self.pickView.recapSubtitleLabel2.text = "\(nickName)님의 1년 전 오늘을 확인해보세요!"
                         
                         if imageUrls.isEmpty {
                             print("📷 사진이 없습니다")

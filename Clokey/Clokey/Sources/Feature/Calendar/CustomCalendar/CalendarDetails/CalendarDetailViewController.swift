@@ -155,7 +155,7 @@ class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegat
     
     // 댓글에서 프로필 화면으로
     func showProfile(for clokeyId: String) {
-        let followProfileVC = FollowProfileViewController()
+        let followProfileVC = FollowProfileViewController(followId: clokeyId)
         followProfileVC.followId = clokeyId
         navigationController?.pushViewController(followProfileVC, animated: true)
     }

@@ -517,6 +517,20 @@ extension CalendarDetailView: UICollectionViewDataSource, UICollectionViewDelega
     
 }
 
+extension CalendarDetailView {
+    func addProfileTapAction(target: Any, action: Selector) {
+        // 프로필 이미지에 탭 제스처 추가
+        profileImage.isUserInteractionEnabled = true
+        let imageTapGesture = UITapGestureRecognizer(target: target, action: action)
+        profileImage.addGestureRecognizer(imageTapGesture)
+        
+        // 이름 라벨에 탭 제스처 추가
+        nameLabel.isUserInteractionEnabled = true
+        let nameTapGesture = UITapGestureRecognizer(target: target, action: action)
+        nameLabel.addGestureRecognizer(nameTapGesture)
+    }
+}
+
 // 회원 조회 API 업데이트
 extension CalendarDetailView {
     func configure(with viewModel: CalendarDetailViewModel) {

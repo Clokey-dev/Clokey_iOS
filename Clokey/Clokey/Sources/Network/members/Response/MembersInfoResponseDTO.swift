@@ -54,6 +54,7 @@ public struct GetFollowPeopleResponseDTO: Codable {
         let clokeyId: String
         let profileImage: String
         let isFollowed: Bool
+        let isMe: Bool
     }
 }
 

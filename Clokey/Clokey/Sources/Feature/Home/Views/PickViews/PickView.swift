@@ -86,7 +86,7 @@ class PickView: UIView {
     let weatherImageView1: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .white
         $0.layer.cornerRadius = 5 // 원하는 반경 설정
         $0.layer.masksToBounds = true // cornerRadius 적용 보장
     }
@@ -102,7 +102,7 @@ class PickView: UIView {
     let weatherImageView2: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .white
         $0.layer.cornerRadius = 5 // 원하는 반경 설정
         $0.layer.masksToBounds = true // cornerRadius 적용 보장
     }
@@ -118,7 +118,7 @@ class PickView: UIView {
     let weatherImageView3: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .white
         $0.layer.cornerRadius = 5 // 원하는 반경 설정
         $0.layer.masksToBounds = true // cornerRadius 적용 보장
     }
@@ -296,6 +296,7 @@ class PickView: UIView {
         weatherImageName1.snp.makeConstraints { make in
             make.top.equalTo(weatherImageView1.snp.bottom).offset(5)
             make.leading.equalTo(weatherImageView1.snp.leading).offset(2)
+            make.width.equalTo(weatherImageView1).offset(-2)
         }
 
         weatherImageView2.snp.makeConstraints { make in
@@ -308,6 +309,7 @@ class PickView: UIView {
         weatherImageName2.snp.makeConstraints { make in
             make.top.equalTo(weatherImageView2.snp.bottom).offset(5)
             make.leading.equalTo(weatherImageView2.snp.leading)
+            make.width.equalTo(weatherImageView2).offset(-2)
         }
 
         weatherImageView3.snp.makeConstraints { make in
@@ -321,6 +323,7 @@ class PickView: UIView {
         weatherImageName3.snp.makeConstraints { make in
             make.top.equalTo(weatherImageView3.snp.bottom).offset(5)
             make.leading.equalTo(weatherImageView3.snp.leading)
+            make.width.equalTo(weatherImageView3).offset(-2)
         }
         
         bottomButtonLabel.snp.makeConstraints { make in

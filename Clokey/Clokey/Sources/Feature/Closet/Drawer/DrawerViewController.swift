@@ -27,8 +27,8 @@ class DrawerViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         // 제약 조건 추가
         NSLayoutConstraint.activate([
-            button.widthAnchor.constraint(equalToConstant: 16),
-            button.heightAnchor.constraint(equalToConstant: 3.61)
+            button.widthAnchor.constraint(equalToConstant: 24),
+            button.heightAnchor.constraint(equalToConstant: 24)
         ])
         
         button.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)

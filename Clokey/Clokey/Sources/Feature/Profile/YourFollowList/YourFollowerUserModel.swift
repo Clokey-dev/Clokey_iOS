@@ -12,6 +12,7 @@ struct YourFollowerUserModel {
     let nickname: String
     let profileImageUrl: String
     var isFollowing: Bool
+    let isMe: Bool
 }
 
 struct YourFollowingUserModel {
@@ -19,4 +20,5 @@ struct YourFollowingUserModel {
     let nickname: String
     let profileImageUrl: String
     var isFollowing: Bool
+    let isMe: Bool
 }
