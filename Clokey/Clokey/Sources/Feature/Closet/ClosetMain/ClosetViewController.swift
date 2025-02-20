@@ -53,13 +53,26 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
         
         // Delegate 설정 (CustomTotalSegmentViewDelegate 등)
         closetView.customTotalSegmentView.delegate = self
+        
+        NotificationCenter.default.addObserver(self,
+                                              selector: #selector(handleClothDeleted),
+                                              name: Notification.Name("clothDeleted"),
+                                              object: nil)
+    }
+    
+    // NotificationCenter 콜백
+    @objc private func handleClothDeleted() {
+        // 옷이 삭제된 뒤, 바로 ClosetViewController 데이터를 다시 불러옴
+        loadClothesData(categoryId: currentMainCategoryId)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        loadInitialData()
         navigationController?.setNavigationBarHidden(true, animated: animated)
         // 새로 추가된 폴더가 있을 경우 최신 데이터를 불러옵니다.
         loadDrawers()
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {

@@ -17,7 +17,7 @@ class AddCategoryView: UIView {
 
     let titleLabel = UILabel().then {
         $0.text = "카테고리"
-        $0.font = UIFont.systemFont(ofSize: 20)
+        $0.font = UIFont.ptdSemiBoldFont(ofSize: 20)
         $0.textColor = .black
     }
     

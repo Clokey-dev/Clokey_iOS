@@ -25,8 +25,6 @@ class ClosetPopupView: UIView {
     let imageView = UIImageView().then {
         $0.image = UIImage(named: "top")
         $0.contentMode = .scaleAspectFit
-        $0.clipsToBounds = true            // 영역을 벗어나는 부분은 잘라냄
-
     }
 
     let categoryStackView = UIStackView().then {
