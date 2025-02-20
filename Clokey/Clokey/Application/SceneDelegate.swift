@@ -129,6 +129,7 @@ extension SceneDelegate: Coordinator {
             UserDefaults.standard.removeObject(forKey: "PendingHistoryId") // 사용 후 삭제
             fetchHistoryDetail(historyId: historyId)
         }
+        
         // 자동으로 clokeyId가 있는 경우 FollowProfileViewController로 이동
         if let clokeyId = UserDefaults.standard.string(forKey: "PendingClokeyId") {
             UserDefaults.standard.removeObject(forKey: "PendingClokeyId")

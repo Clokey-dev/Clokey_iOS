@@ -43,17 +43,11 @@ final class PopUpViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupActions()
-        
-        // 초기 팝업 표시 시, clothPreviews 배열이 비어있지 않다면 첫 아이템의 ID로 설정
-        if !clothPreviews.isEmpty {
-            currentIndex = 0
-            clothId = Int64(clothPreviews[currentIndex].id)
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // 팝업이 재진입할 때 버튼 상태를 업데이트
+        print("Popup view did appear, currentIndex: \(currentIndex)")
         updateArrowButtonStates()
         UIView.animate(withDuration: 0.3) {
             self.dimmingView.alpha = 1
@@ -124,14 +118,25 @@ final class PopUpViewController: UIViewController {
     }
     
     private func updateArrowButtonStates() {
-        let isLeftEnabled = currentIndex > 0
-        popupView.leftArrowButton.isUserInteractionEnabled = isLeftEnabled
-        popupView.leftArrowButton.tintColor = isLeftEnabled ? UIColor(named: "mainBrown800") : UIColor(named: "mainBrown600")
+        // 왼쪽 화살표 업데이트: currentIndex가 0이면 비활성화, 아니면 활성화
+        if currentIndex == 0 {
+            popupView.leftArrowButton.isUserInteractionEnabled = false
+            popupView.leftArrowButton.tintColor = UIColor(named: "mainBrown50")
+        } else {
+            popupView.leftArrowButton.isUserInteractionEnabled = true
+            popupView.leftArrowButton.tintColor = UIColor(named: "mainBrown800")
+        }
         
-        let isRightEnabled = currentIndex < clothPreviews.count - 1
-        popupView.rightArrowButton.isUserInteractionEnabled = isRightEnabled
-        popupView.rightArrowButton.tintColor = isRightEnabled ? UIColor(named: "mainBrown800") : UIColor(named: "mainBrown600")
+        // 오른쪽 화살표 업데이트: currentIndex가 마지막이면 비활성화, 아니면 활성화
+        if currentIndex == clothPreviews.count - 1 {
+            popupView.rightArrowButton.isUserInteractionEnabled = false
+            popupView.rightArrowButton.tintColor = UIColor(named: "mainBrown600")
+        } else {
+            popupView.rightArrowButton.isUserInteractionEnabled = true
+            popupView.rightArrowButton.tintColor = UIColor(named: "mainBrown800")
+        }
     }
+
     
     private func dismissPopup() {
         UIView.animate(withDuration: 0.3, animations: {
@@ -144,6 +149,7 @@ final class PopUpViewController: UIViewController {
     
     // MARK: - API 연동: 옷 상세 정보 조회
     private func fetchPopUpClothesDetail() {
+        print("Fetching popup clothes detail, currentIndex: \(currentIndex)")
         guard let clothId = clothId else {
             print("clothId가 설정되지 않았습니다.")
             return

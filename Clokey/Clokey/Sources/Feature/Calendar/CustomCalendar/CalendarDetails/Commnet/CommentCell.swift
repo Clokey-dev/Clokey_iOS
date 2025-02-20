@@ -13,10 +13,13 @@ import Kingfisher
 
 protocol CommentCellDelegate: AnyObject {
     func didTapReplyButton(commentId: Int64)
+    func didTapProfile(with clokeyId: String)
 }
 
 class CommentCell: UITableViewCell {
     static let identifier = "CommentCell"
+    
+    private var storedClokeyId: String?  // 추가
     
     weak var delegate: CommentCellDelegate? // 델리게이트 선언
 
@@ -29,6 +32,7 @@ class CommentCell: UITableViewCell {
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 20
         $0.backgroundColor = .lightGray
+        $0.isUserInteractionEnabled = true
     }
 
     private let nameLabel = UILabel().then {
@@ -96,9 +100,12 @@ class CommentCell: UITableViewCell {
             $0.leading.equalToSuperview().offset(20)
             $0.width.height.equalTo(40)
         }
+        
+        let cellTapGesture = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
+        profileImageView.addGestureRecognizer(cellTapGesture)
     }
 
-    func configure(profileImage: String, name: String, comment: String, isLastReply: Bool, commentId: Int) {
+    func configure(profileImage: String, name: String, comment: String, isLastReply: Bool, commentId: Int, clokeyId: String) {
         if let url = URL(string: profileImage) {
             profileImageView.kf.setImage(
                 with: url,
@@ -117,6 +124,8 @@ class CommentCell: UITableViewCell {
         commentLabel.text = comment
         replyButton.isHidden = !isLastReply
         self.tag = Int(commentId)
+        self.storedClokeyId = clokeyId
+
     }
     
     func setSelected(_ selected: Bool) {
@@ -139,5 +148,12 @@ class CommentCell: UITableViewCell {
 
     @objc private func didTapReply() {
         delegate?.didTapReplyButton(commentId: Int64(self.tag)) 
+    }
+    
+    @objc private func cellTapped() {
+        if let clokeyId = storedClokeyId {
+            delegate?.didTapProfile(with: clokeyId)
+        }
+        print("프로필 선택되었어요.")
     }
 }

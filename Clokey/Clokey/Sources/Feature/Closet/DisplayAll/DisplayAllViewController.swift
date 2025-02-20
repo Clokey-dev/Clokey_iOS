@@ -63,6 +63,7 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
         super.viewDidLoad()
         configureInitialSetup()
         setupKeyboardDismissGestures() // 키보드 제스처 설정
+        setupSortDropdownDismissGesture() // sort dropdown dismiss 제스처 등록
         
         // Delegate 설정
         displayAllView.customTotalSegmentView.delegate = self
@@ -139,6 +140,23 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
         displayAllView.searchField.textField.addTarget(self,
                                                        action: #selector(searchFieldDidChange(_:)),
                                                        for: .editingChanged)
+    }
+    
+    // MARK: - Sort Dropdown Dismiss Gesture
+    private func setupSortDropdownDismissGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleSortDropdownBackgroundTap(_:)))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func handleSortDropdownBackgroundTap(_ gesture: UITapGestureRecognizer) {
+        // displayAllView.customSortDropdownView가 존재하고 superview에 추가되어 있다면
+        if let sortDropdown = displayAllView.customSortDropdownView, sortDropdown.superview != nil {
+            let location = gesture.location(in: view)
+            if !sortDropdown.frame.contains(location) {
+                sortDropdown.removeFromSuperview()
+            }
+        }
     }
     
     // MARK: - 데이터 로드 및 업데이트

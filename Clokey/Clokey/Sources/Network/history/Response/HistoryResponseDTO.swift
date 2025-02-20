@@ -63,7 +63,7 @@ public struct HistoryCommentsResponseDTO: Codable {
 public struct CommentDTO: Codable {
     public let commentId: Int
     public let nickName: String
-    public let memberId: Int
+    public let clokeyId: String
     public let userImageUrl: String
     public let content: String
     public let replyResults: [ReplyDTO]
@@ -72,7 +72,7 @@ public struct CommentDTO: Codable {
 public struct ReplyDTO: Codable {
     public let commentId: Int
     public let nickName: String
-    public let memberId: Int
+    public let clokeyId: String
     public let userImageUrl: String
     public let content: String
 }
