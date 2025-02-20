@@ -2,7 +2,7 @@
 //  ProfileViewController.swift
 //  Clokey
 //
-//  Created by 황상환 on 1/10/25.
+//  Created by 한금준 on 1/10/25.
 //
 
 import UIKit
@@ -18,6 +18,14 @@ final class ProfileViewController: UIViewController {
     private var backgroundView: UIView?// 배경 어둡게 하기 위해 선언
     
     private let model = ProfileModel.dummy()
+    
+    var clokeyId: String = ""
+    var followerCount: Int = 0
+    var followingCount: Int = 0
+    
+    var clothId1:Int64?
+    var clothId2:Int64?
+    var clothId3:Int64?
     
     // calendarview
     private let calendarViewController = CalendarViewController()
@@ -40,10 +48,6 @@ final class ProfileViewController: UIViewController {
         loadData()
         setupActions()
         setupPopupActions()
-        
-//        profileView.followerCountButton.setTitle("\(followerCount)", for: .normal)
-//        
-//        profileView.followingCountButton.setTitle("\(followingCount)", for: .normal)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,7 +56,7 @@ final class ProfileViewController: UIViewController {
         
         loadData()
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -73,11 +77,11 @@ final class ProfileViewController: UIViewController {
         calendarViewController.view.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-
+        
         // 자식 뷰컨트롤러 등록 완료
         calendarViewController.didMove(toParent: self)
     }
-
+    
     deinit {
         // 제거 시 메모리 정리
         calendarViewController.willMove(toParent: nil)
@@ -85,13 +89,12 @@ final class ProfileViewController: UIViewController {
         calendarViewController.removeFromParent()
     }
     
-    var clokeyId: String = ""
-    var followerCount: Int = 0
-    var followingCount: Int = 0
     
-    var clothId1:Int64?
-    var clothId2:Int64?
-    var clothId3:Int64?
+    var nickname: String = ""
+    var profileImage: String = ""
+    var backgroundImage: String = ""
+    var bio: String = ""
+    var visibility: String = ""
     
     private func loadData() {
         let clokeyId: String = ""
@@ -106,22 +109,29 @@ final class ProfileViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.profileView.usernameLabel.text = userProfile.clokeyId
                     self.clokeyId = userProfile.clokeyId
+                    
                     self.profileView.nicknameLabel.text = userProfile.nickname
+                    self.nickname = userProfile.nickname
+                    
                     self.profileView.writeCountLabel.text = "\(userProfile.recordCount)"
                     self.profileView.followerCountButton.setTitle("\(userProfile.followerCount)", for: .normal)
                     self.followerCount = userProfile.followerCount
                     self.profileView.followingCountButton.setTitle("\(userProfile.followingCount)", for: .normal)
                     self.followingCount = userProfile.followingCount
                     self.profileView.descriptionLabel.text = userProfile.bio
+                    self.bio = userProfile.bio
+                    self.visibility = userProfile.visibility
                     
                     if let profileImageUrl = userProfile.profileImageUrl,
                        let url = URL(string: profileImageUrl) {
+                        self.profileImage = profileImageUrl
                         self.profileView.profileImageView.kf.setImage(with: url)
                     } else {
                         self.profileView.profileImageView.image = UIImage(named: "default_background_image") // 기본 이미지 설정
                     }
                     if let profileBackImageUrl = URL(string: userProfile.profileBackImageUrl) {
                         self.profileView.backgroundImageView.kf.setImage(with: profileBackImageUrl)
+                        self.backgroundImage = userProfile.profileBackImageUrl
                     }
                     
                     let clothes = userProfile.clothResults
@@ -136,7 +146,7 @@ final class ProfileViewController: UIViewController {
                         } else {
                             self.profileView.clothesImageView1.image = UIImage(named: "default_cloth_image") // 기본 이미지 설정
                         }
-
+                        
                         if let clothId = clothes[0].clothId {
                             self.clothId1 = clothId
                         } else {
@@ -151,7 +161,7 @@ final class ProfileViewController: UIViewController {
                         } else {
                             self.profileView.clothesImageView2.image = UIImage(named: "default_cloth_image") // 기본 이미지 설정
                         }
-
+                        
                         if let clothId = clothes[1].clothId {
                             self.clothId2 = clothId
                         } else {
@@ -165,7 +175,7 @@ final class ProfileViewController: UIViewController {
                         } else {
                             self.profileView.clothesImageView3.image = UIImage(named: "default_cloth_image") // 기본 이미지 설정
                         }
-
+                        
                         if let clothId = clothes[2].clothId {
                             self.clothId3 = clothId
                         } else {
@@ -174,7 +184,7 @@ final class ProfileViewController: UIViewController {
                     }
                 }
             case .failure(let error):
-                print("🚨 프로필 데이터를 불러오는 데 실패함: \(error.localizedDescription)")
+                print("프로필 데이터를 불러오는 데 실패함: \(error.localizedDescription)")
             }
         }
     }
@@ -188,7 +198,7 @@ final class ProfileViewController: UIViewController {
         
         profileView.followingCountButton.addTarget(self, action: #selector(didTapFollowingButton), for: .touchUpInside)
     }
-
+    
     @objc private func didTapSettingButton() {
         let settingViewController = SettingViewController()
         settingViewController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
@@ -197,13 +207,15 @@ final class ProfileViewController: UIViewController {
     
     @objc private func didTapEditButton() {
         let editProfileViewController = EditProfileViewController()
-        editProfileViewController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
-        present(editProfileViewController, animated: true, completion: nil)
+        editProfileViewController.clokeyId = clokeyId
+        editProfileViewController.nickname = nickname
+        editProfileViewController.profileImage = profileImage
+        editProfileViewController.backgroundImage = backgroundImage
+        editProfileViewController.bio = bio
+        editProfileViewController.visibility = visibility
         
-//        navigationController?.pushViewController(editProfileViewController, animated: true)
+        navigationController?.pushViewController(editProfileViewController, animated: true)
     }
-    
-    let mainVC = MainViewController()
     
     @objc private func didTapFollowerButton() {
         let followListViewController = MyFollowListViewController()
@@ -223,9 +235,6 @@ final class ProfileViewController: UIViewController {
         followListViewController.hidesBottomBarWhenPushed = false
         navigationController?.pushViewController(followListViewController, animated: true)
     }
-    
-    
-    
     
     private func setupPopupActions() {
         popUpView.deleteButton.addTarget(self, action: #selector(dismissPopup), for: .touchUpInside)
@@ -277,7 +286,7 @@ final class ProfileViewController: UIViewController {
         }
         
         guard let clothId = selectedClothId else {
-            print("❌ clothId 값이 없습니다.")
+            print("clothId 값이 없습니다.")
             return
         }
         
@@ -324,7 +333,7 @@ final class ProfileViewController: UIViewController {
         
         let clotehsService = ClothesService()
         
-        // ✅ checkPopUpClothes API 호출 및 UI 업데이트
+        // checkPopUpClothes API 호출 및 UI 업데이트
         clotehsService.checkPopUpClothes(clothId: clothId) { [weak self] result in
             guard let self = self else { return }
             
