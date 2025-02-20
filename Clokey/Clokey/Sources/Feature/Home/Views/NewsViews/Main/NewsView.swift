@@ -157,7 +157,7 @@ class NewsView: UIView {
     let followingCalendarUpdateImageView1: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .white
     }
     
     let followingCalendarProfileIcon1: UIImageView = UIImageView().then {
@@ -175,7 +175,7 @@ class NewsView: UIView {
     let followingCalendarUpdateImageView2: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .white
     }
     
     let followingCalendarProfileIcon2: UIImageView = UIImageView().then {
@@ -224,7 +224,7 @@ class NewsView: UIView {
     let hotAccountImageView1: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .white
     }
     
     let hotAccountProfileIcon1: UIImageView = UIImageView().then {
@@ -242,7 +242,7 @@ class NewsView: UIView {
     let hotAccountImageView2: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .white
     }
     
     let hotAccountProfileIcon2: UIImageView = UIImageView().then {
@@ -260,7 +260,7 @@ class NewsView: UIView {
     let hotAccountImageView3: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .white
     }
     
     let hotAccountProfileIcon3: UIImageView = UIImageView().then {
@@ -278,7 +278,7 @@ class NewsView: UIView {
     let hotAccountImageView4: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .white
     }
     
     let hotAccountProfileIcon4: UIImageView = UIImageView().then {
