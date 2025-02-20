@@ -11,5 +11,6 @@ struct UserModel {
     let nickname: String
     let profileImage: String
     
+    
 }
 

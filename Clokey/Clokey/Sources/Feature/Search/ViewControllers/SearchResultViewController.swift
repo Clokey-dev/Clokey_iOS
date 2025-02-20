@@ -17,7 +17,6 @@ import SnapKit
 import Then
 import Kingfisher
 
-
 class SearchResultViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate {
     private let searchView = SearchResultView()
     private let searchManager = SearchManager()
@@ -117,7 +116,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
+        navigationController?.setNavigationBarHidden(true, animated: false)
         searchView.hashtagsCollectionView.reloadData()
         searchView.accountsCollectionView.reloadData()
     }
@@ -126,13 +125,13 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         
         searchHistory = searchManager.fetchRecentSearches() //  검색 기록 강제 업데이트
         searchView.accountsCollectionView.reloadData()
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     @objc private func tabSelected(_ sender: UIButton) {
@@ -301,7 +300,6 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
                 dummyImages.removeAll()
                 dummyHistoryIDs.removeAll()
             }
-
 
         SearchService().searchHistory(by: "hashtag-and-category", keyword: query, page: page, size: pageSize) { [weak self] result in
             DispatchQueue.main.async {
@@ -584,16 +582,16 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
                 print("historyId 못찾음")
                 return
             }
-            print("선택된 historyId: \(historyId)") // 확인용 출력
+            print("선택된 historyId: \(historyId)")
             fetchHistoryDetail(historyId: historyId)
-        } else if collectionView == searchView.accountsCollectionView {
+        } // SearchResultViewController 내 didSelectItemAt
+        else if collectionView == searchView.accountsCollectionView {
             let user = filteredUsers[indexPath.item]
-            let followProfileVC = FollowProfileViewController()
-            followProfileVC.followId = user.clokeyId
+            // 커스텀 이니셜라이저를 사용하여 인스턴스 생성
+            let followProfileVC = FollowProfileViewController(followId: user.clokeyId)
             navigationController?.pushViewController(followProfileVC, animated: true)
         }
     }
-    
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView,

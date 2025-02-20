@@ -58,6 +58,9 @@ class FriendsCalendarDetailViewController: UIViewController {
         let likeTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapLikeLabel))
         calendarDetailView.likeLabel.isUserInteractionEnabled = true
         calendarDetailView.likeLabel.addGestureRecognizer(likeTapGesture)
+        
+        // 사용자 프로필 탭 제스쳐 추가
+        calendarDetailView.addProfileTapAction(target: self, action: #selector(didTapProfile))
 
     }
 
@@ -155,6 +158,15 @@ class FriendsCalendarDetailViewController: UIViewController {
     @objc private func didTapBackButton() {
         navigationController?.popViewController(animated: true)
     }
+    @objc private func didTapProfile() {
+        guard let clokeyId = viewModel?.clokeyId, !clokeyId.isEmpty else {
+            print("클로키 아이디가 없습니다.")
+            return
+        }
+        let followProfileVC = FollowProfileViewController(followId: clokeyId)
+        navigationController?.pushViewController(followProfileVC, animated: true)
+    }
+//
     
     // MARK: - Method
     
