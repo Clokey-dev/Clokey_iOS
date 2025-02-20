@@ -136,6 +136,7 @@ class MyFollowListViewController: UIViewController, UIGestureRecognizerDelegate 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
+
     }
     
     // MARK: - Setup

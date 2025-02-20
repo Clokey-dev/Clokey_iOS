@@ -147,7 +147,7 @@ class MyFollowerUserCell: UICollectionViewCell {
         nicknameLabel.text = user.nickname
         
         if let url = URL(string: user.profileImageUrl) {
-            profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "profile_placeholder"))
+            profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "profile_basic"))
         }
         
         isFollowing = user.isFollowing
