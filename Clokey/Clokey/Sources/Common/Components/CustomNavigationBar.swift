@@ -52,6 +52,27 @@ class NavigationBarManager {
     }
 }
 
+extension NavigationBarManager {
+    func setupWhiteNavigationBar(for navigationController: UINavigationController?) {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .white
+        appearance.shadowColor = .clear // 네비게이션 바 하단 그림자 제거
+        
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        
+        // iOS 15 이상에서 사용되는 설정
+        if #available(iOS 15.0, *) {
+            navigationController?.navigationBar.compactScrollEdgeAppearance = appearance
+        }
+        
+        // 기본 네비게이션 바 설정도 함께 적용
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.tintColor = .mainBrown800
+    }
+}
 // 사용 예시
 //
 //import UIKit
