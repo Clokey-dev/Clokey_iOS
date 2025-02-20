@@ -115,6 +115,7 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
                                font: .ptdBoldFont(ofSize: 20),
                                textColor: .black)
     }
+
     
     @objc private func backButtonTapped() {
         navigationController?.popViewController(animated: true)
