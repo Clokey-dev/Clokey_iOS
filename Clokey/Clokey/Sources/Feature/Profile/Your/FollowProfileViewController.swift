@@ -17,6 +17,8 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     private let popUpView = PickPopUpView()
     private var backgroundView: UIView?// 배경 어둡게 하기 위해 선언
     
+    private let refreshControl = UIRefreshControl()
+    
     private let followCalendarViewController = FollowCalendarViewController()
     
     var followId: String = ""
@@ -48,6 +50,9 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         definesPresentationContext = true // 현재 컨텍스트에서 새로운 뷰 표시
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        
+        followProfileView.scrollView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
         
         followCalendarViewController.shouldHideUserNameLabel = true
         addCalendarViewController()
@@ -207,6 +212,14 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                         self.followProfileView.followButton.layer.borderColor = UIColor.mainBrown800.cgColor
                         self.followProfileView.followButton.layer.borderWidth = 1
                     }
+                    
+                    if userProfile.visibility == "PRIVATE" {
+                        self.followProfileView.updateClothesPrivateState(isPrivate: true)
+                        self.followProfileView.updateCalendarPrivateState(isPrivate: true)
+                    } else {
+                        self.followProfileView.updateClothesPrivateState(isPrivate: false)
+                        self.followProfileView.updateCalendarPrivateState(isPrivate: false)
+                    }
                 }
             case .failure(let error):
                 print("🚨 프로필 데이터를 불러오는 데 실패함: \(error.localizedDescription)")
@@ -219,6 +232,15 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         followProfileView.followButton.addTarget(self, action: #selector(didTapFollowButton), for: .touchUpInside)
         followProfileView.followerCountButton.addTarget(self, action: #selector(didTapFollowerButton), for: .touchUpInside)
         followProfileView.followingCountButton.addTarget(self, action: #selector(didTapFollowingButton), for: .touchUpInside)
+        
+        followProfileView.bottomButtonLabel.isUserInteractionEnabled = true
+        followProfileView.bottomArrowIcon.isUserInteractionEnabled = true
+
+        let bottomButtonTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapFollowClothButton))
+        followProfileView.bottomButtonLabel.addGestureRecognizer(bottomButtonTapGesture)
+
+        let bottomArrowTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapFollowClothButton))
+        followProfileView.bottomArrowIcon.addGestureRecognizer(bottomArrowTapGesture)
     }
     
     @objc private func didTapBackButton() {
@@ -273,6 +295,12 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                 print("🚨 팔로우 알림 전송 실패: \(error.localizedDescription)")
             }
         }
+    }
+    
+    @objc private func didTapFollowClothButton() {
+        let displayAllVC = DisplayAllViewController()
+        displayAllVC.clokeyId = followId
+        navigationController?.pushViewController(displayAllVC, animated: true)
     }
     
     
@@ -344,7 +372,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         }
         
         guard let clothId = selectedClothId else {
-            print("❌ clothId 값이 없습니다.")
+            print("clothId 값이 없습니다.")
             return
         }
         
@@ -584,6 +612,16 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
             } else {
                 print("Failed to open URL: \(url)")
             }
+        }
+    }
+    
+    @objc private func didPullToRefresh() {
+        
+        loadData()
+        
+        // 풀투리프레시 종료 (약간의 딜레이 후)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.refreshControl.endRefreshing()
         }
     }
     

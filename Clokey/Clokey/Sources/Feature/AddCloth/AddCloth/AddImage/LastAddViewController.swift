@@ -33,6 +33,10 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
         //  화면 탭하면 키보드 내리기
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
+        
+        //  키보드 이벤트 감지
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -48,6 +52,28 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
     
     @objc internal override func dismissKeyboard() {
         view.endEditing(true) //  현재 화면에서 키보드 내리기
+    }
+    
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        
+        let keyboardHeight = keyboardFrame.height
+        let bottomInset = keyboardHeight - view.safeAreaInsets.bottom
+        
+        if let activeTextField = view.findFirstResponder() as? UITextField {
+            let textFieldFrame = activeTextField.convert(activeTextField.bounds, to: view)
+            let visibleHeight = view.frame.height - keyboardHeight
+            
+            if textFieldFrame.maxY > visibleHeight {
+                let offset = textFieldFrame.maxY - visibleHeight
+                view.frame.origin.y = -offset - 10 // 여유 공간 추가
+            }
+        }
+    }
+    
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        view.frame.origin.y = 0 // 원래 위치로 복구
     }
     
     // 버튼 액션 설정

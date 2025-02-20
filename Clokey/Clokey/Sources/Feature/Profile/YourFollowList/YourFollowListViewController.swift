@@ -33,6 +33,8 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
     private var isLoading1 = false
     private var hasMorePages1 = true
     
+    private let refreshControl = UIRefreshControl()
+    
     // MARK: - UI Components
     private let navigationBar = UIView().then {
         $0.backgroundColor = .white
@@ -69,6 +71,14 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
     let indicatorView = UIView().then {
         $0.backgroundColor = .orange
         $0.layer.cornerRadius = 2
+    }
+    
+    private let scrollView = UIScrollView().then {
+        $0.alwaysBounceVertical = true // 내용이 짧아도 당김 효과
+    }
+
+    private let contentView = UIView().then {
+        $0.backgroundColor = .white
     }
     
     let containerView = UIView().then {
@@ -110,6 +120,9 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
         loadFollowerData()
 //        loadFollowingData()
         
+        scrollView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
+        
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         titleLabel.text = clokeyId
@@ -150,7 +163,10 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
         view.addSubview(followingButton)
         view.addSubview(separatorLine)
         view.addSubview(indicatorView)
-        view.addSubview(containerView)
+//        view.addSubview(containerView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+     contentView.addSubview(containerView)
         
         containerView.addSubview(followerCollectionView) // 초기 상태는 팔로워 컬렉션 뷰
         
@@ -198,6 +214,17 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
             make.height.equalTo(3)
         }
         
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(indicatorView.snp.bottom).offset(0)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        // contentView는 scrollView 내부의 컨텐츠 영역으로, 스크롤뷰의 모든 폭을 채우도록 설정
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalToSuperview()
+        }
+        
         containerView.snp.makeConstraints {
             $0.top.equalTo(indicatorView.snp.bottom).offset(8)
             $0.leading.trailing.bottom.equalToSuperview()
@@ -219,8 +246,11 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
     private func setupCollectionViews() {
         followerCollectionView.dataSource = self
         followerCollectionView.delegate = self
+//        followerCollectionView.refreshControl = refreshControl
+        
         followingCollectionView.dataSource = self
         followingCollectionView.delegate = self
+//        followingCollectionView.refreshControl = refreshControl
     }
     
     // MARK: - Button Actions
@@ -392,6 +422,16 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
         
         followingCollectionView.snp.updateConstraints { make in
             make.height.equalTo(contentHeight)
+        }
+    }
+    
+    @objc private func didPullToRefresh() {
+        loadFollowerData()
+        loadFollowingData()
+        
+        // 풀투리프레시 종료 (약간의 딜레이 후)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.refreshControl.endRefreshing()
         }
     }
 }

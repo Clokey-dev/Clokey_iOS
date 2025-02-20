@@ -8,6 +8,9 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
     var selectedCoreCategoryId: Int64?
     var selectedSeason: String?
     
+    // 다른 View에서 전달받은 데이터: clokeyId
+    var clokeyId: String = ""
+    
     // MARK: - Properties
     private let displayAllView = DisplayAllView()
     
@@ -60,12 +63,13 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
         super.viewDidLoad()
         configureInitialSetup()
         setupKeyboardDismissGestures() // 키보드 제스처 설정
+        setupSortDropdownDismissGesture() // sort dropdown dismiss 제스처 등록
         
         // Delegate 설정
         displayAllView.customTotalSegmentView.delegate = self
         displayAllView.sortDropdownDelegate = self
         
-        // 스마트요약에서 전달받은 값이 있다면 viewDidLoad 시점에 UI 업데이트 호출
+        // 스마트요약에서 전달받은 값이 있다면 UI 업데이트 호출
         if let base = selectedBaseCategoryName,
            let core = selectedCoreCategoryName,
            let coreId = selectedCoreCategoryId {
@@ -101,11 +105,16 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
     private func setupNavigationBar() {
         let navBarManager = NavigationBarManager()
         navBarManager.addBackButton(to: navigationItem, target: self, action: #selector(backButtonTapped))
+        
+        // clokeyId가 비어있으면 "내 옷장", 그렇지 않으면 "\(clokeyId)의 옷장"으로 설정
+        let titleText = clokeyId.isEmpty ? "내 옷장" : "\(clokeyId)의 옷장"
+        
         navBarManager.setTitle(to: navigationItem,
-                               title: "내 옷장",
+                               title: titleText,
                                font: .ptdBoldFont(ofSize: 20),
                                textColor: .black)
     }
+
     
     @objc private func backButtonTapped() {
         navigationController?.popViewController(animated: true)
@@ -131,6 +140,23 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
         displayAllView.searchField.textField.addTarget(self,
                                                        action: #selector(searchFieldDidChange(_:)),
                                                        for: .editingChanged)
+    }
+    
+    // MARK: - Sort Dropdown Dismiss Gesture
+    private func setupSortDropdownDismissGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleSortDropdownBackgroundTap(_:)))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func handleSortDropdownBackgroundTap(_ gesture: UITapGestureRecognizer) {
+        // displayAllView.customSortDropdownView가 존재하고 superview에 추가되어 있다면
+        if let sortDropdown = displayAllView.customSortDropdownView, sortDropdown.superview != nil {
+            let location = gesture.location(in: view)
+            if !sortDropdown.frame.contains(location) {
+                sortDropdown.removeFromSuperview()
+            }
+        }
     }
     
     // MARK: - 데이터 로드 및 업데이트
@@ -180,8 +206,11 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
         isLoading = true
         let page = isNextPage ? currentPage + 1 : 1
         
+        // clokeyId가 비어있지 않다면 해당 값을 API 호출에 전달
+        let clokeyIdForAPI: String? = clokeyId.isEmpty ? nil : clokeyId
+        
         clothesService.getClothes(
-            clokeyId: nil,
+            clokeyId: clokeyIdForAPI,
             categoryId: categoryId,
             season: season,
             sort: currentSort.rawValue,

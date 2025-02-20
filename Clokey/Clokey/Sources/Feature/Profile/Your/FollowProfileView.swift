@@ -283,7 +283,7 @@ class FollowProfileView: UIView {
         }
         
         profileDetailContainer.snp.makeConstraints { make in
-            make.top.equalTo(nicknameLabel.snp.bottom).offset(4)
+            make.top.equalTo(nicknameLabel.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
             make.height.equalTo(24)
         }
@@ -320,7 +320,7 @@ class FollowProfileView: UIView {
         }
         
         descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(profileDetailContainer.snp.bottom).offset(4)
+            make.top.equalTo(profileDetailContainer.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
         }
         
@@ -390,7 +390,7 @@ class FollowProfileView: UIView {
     /// 데이터 상태에 따라 EmptyStackView 표시/숨김
     func updateClothesPrivateState(isPrivate: Bool) {
         if isPrivate {
-            // 데이터가 없으면 EmptyStackView 추가하고 관련 요소 숨김
+           
             clothesImageContainerView.addSubview(privateStackView1)
             privateStackView1.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
@@ -409,7 +409,7 @@ class FollowProfileView: UIView {
     
     func updateCalendarPrivateState(isPrivate: Bool) {
         if isPrivate {
-            // 데이터가 없으면 EmptyStackView 추가하고 관련 요소 숨김
+            
             calendarContainerView.addSubview(privateStackView2)
             privateStackView2.snp.makeConstraints { make in
                 make.edges.equalToSuperview()

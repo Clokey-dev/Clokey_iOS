@@ -12,6 +12,7 @@ import UIKit
 class NewsView: UIView {
     private let emptyStackView1 = EmptyStackView()
     private let emptyStackView2 = EmptyStackView()
+    private let emptyStackView3 = EmptyStackView()
     
     // MARK: - UI Elements
     let scrollView: UIScrollView = UIScrollView().then {
@@ -698,5 +699,37 @@ class NewsView: UIView {
                 make.height.equalTo(24)
             }
         }
+    }
+    
+    func updateHotEmptyState(isEmpty: Bool) {
+        if isEmpty {
+            // 데이터가 없으면 EmptyStackView 추가하고 관련 요소 숨김
+            hotAccountContainerView.addSubview(emptyStackView3)
+            emptyStackView3.emptyClothesMessageTitle.text = "현재 HOT 게시물이 없어요!"
+            emptyStackView3.emptyClothesMessageSubTitle.text = "다른 사용자들을 팔로우하고\n어떤 옷들이 있는지 옷장을 구경해보세요"
+            
+            hotAccountContainerView.snp.remakeConstraints { make in
+                make.top.equalTo(hotAccountTitle.snp.bottom).offset(26)
+                make.leading.trailing.equalToSuperview().inset(20)
+                make.height.equalTo(524)
+                make.bottom.equalToSuperview().offset(-40)
+            }
+            
+            emptyStackView3.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+
+        } else {
+            // 데이터가 있으면 EmptyStackView 제거하고 관련 요소 표시
+            emptyStackView3.removeFromSuperview()
+            
+            hotAccountContainerView.snp.remakeConstraints { make in
+                make.top.equalTo(hotAccountTitle.snp.bottom).offset(14)
+                make.leading.trailing.equalToSuperview().inset(20)
+                make.height.equalTo(524)
+                make.bottom.equalToSuperview().offset(-40)
+            }
+        }
+        
     }
 }
