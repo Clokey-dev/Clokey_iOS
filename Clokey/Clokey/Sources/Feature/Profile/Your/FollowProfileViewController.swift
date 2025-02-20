@@ -17,6 +17,8 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     private let popUpView = PickPopUpView()
     private var backgroundView: UIView?// 배경 어둡게 하기 위해 선언
     
+    private let refreshControl = UIRefreshControl()
+    
     private let followCalendarViewController = FollowCalendarViewController()
     
     var followId: String = ""
@@ -48,6 +50,9 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         definesPresentationContext = true // 현재 컨텍스트에서 새로운 뷰 표시
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        
+        followProfileView.scrollView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
         
         followCalendarViewController.shouldHideUserNameLabel = true
         addCalendarViewController()
@@ -588,6 +593,16 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
             } else {
                 print("Failed to open URL: \(url)")
             }
+        }
+    }
+    
+    @objc private func didPullToRefresh() {
+        
+        loadData()
+        
+        // 풀투리프레시 종료 (약간의 딜레이 후)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.refreshControl.endRefreshing()
         }
     }
     

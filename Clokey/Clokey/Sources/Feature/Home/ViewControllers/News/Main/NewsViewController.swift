@@ -81,6 +81,10 @@ class NewsViewController: UIViewController {
                     
                     print("Hot People 데이터 개수: \(peopleCount)")
                     
+                    if peopleCount == 0 {
+                        self.newsView.updateHotEmptyState(isEmpty: true)
+                    }
+                    
                     if peopleCount >= 1 {
                         let person = peopleItems[0]
                         
@@ -136,53 +140,53 @@ class NewsViewController: UIViewController {
                     
                     if peopleCount >= 3 {
                         let person = peopleItems[2]
-                        self.newsView.hotAccountImageView2.kf.setImage(with: URL(string: person.imageUrl))
-                        self.newsView.hotAccountImageView2.accessibilityIdentifier = "\(person.historyId)"
-                        self.newsView.hotAccountImageView2.isUserInteractionEnabled = true
-                        let imageTapGesture2 = UITapGestureRecognizer(target: self, action: #selector(self.handleHotAccountImageTap))
-                        self.newsView.hotAccountImageView2.addGestureRecognizer(imageTapGesture2)
+                        self.newsView.hotAccountImageView3.kf.setImage(with: URL(string: person.imageUrl))
+                        self.newsView.hotAccountImageView3.accessibilityIdentifier = "\(person.historyId)"
+                        self.newsView.hotAccountImageView3.isUserInteractionEnabled = true
+                        let imageTapGesture3 = UITapGestureRecognizer(target: self, action: #selector(self.handleHotAccountImageTap))
+                        self.newsView.hotAccountImageView3.addGestureRecognizer(imageTapGesture3)
                         
-                        self.newsView.hotAccountProfileIcon2.kf.setImage(with: URL(string: person.profileImage))
-                        self.newsView.hotAccountProfileIcon2.accessibilityIdentifier = person.clokeyId
-                        self.newsView.hotAccountProfileIcon2.isUserInteractionEnabled = true
-                        let iconTapGesture2 = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileTap))
-                        self.newsView.hotAccountProfileIcon2.addGestureRecognizer(iconTapGesture2)
+                        self.newsView.hotAccountProfileIcon3.kf.setImage(with: URL(string: person.profileImage))
+                        self.newsView.hotAccountProfileIcon3.accessibilityIdentifier = person.clokeyId
+                        self.newsView.hotAccountProfileIcon3.isUserInteractionEnabled = true
+                        let iconTapGesture3 = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileTap))
+                        self.newsView.hotAccountProfileIcon3.addGestureRecognizer(iconTapGesture3)
                         
-                        self.newsView.hotAccountProfileName2.text = person.clokeyId
-                        self.newsView.hotAccountProfileName2.accessibilityIdentifier = person.clokeyId
-                        self.newsView.hotAccountProfileName2.isUserInteractionEnabled = true
-                        let nameTapGesture2 = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileTap))
-                        self.newsView.hotAccountProfileName2.addGestureRecognizer(nameTapGesture2)
+                        self.newsView.hotAccountProfileName3.text = person.clokeyId
+                        self.newsView.hotAccountProfileName3.accessibilityIdentifier = person.clokeyId
+                        self.newsView.hotAccountProfileName3.isUserInteractionEnabled = true
+                        let nameTapGesture3 = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileTap))
+                        self.newsView.hotAccountProfileName3.addGestureRecognizer(nameTapGesture3)
                     } else {
-                        self.newsView.hotAccountImageView2.image = nil
-                        self.newsView.hotAccountProfileIcon2.image = nil
-                        self.newsView.hotAccountProfileName2.text = ""
+                        self.newsView.hotAccountImageView3.image = nil
+                        self.newsView.hotAccountProfileIcon3.image = nil
+                        self.newsView.hotAccountProfileName3.text = ""
                     }
                     
                     
                     if peopleCount >= 4 {
                         let person = peopleItems[3]
-                        self.newsView.hotAccountImageView2.kf.setImage(with: URL(string: person.imageUrl))
-                        self.newsView.hotAccountImageView2.accessibilityIdentifier = "\(person.historyId)"
-                        self.newsView.hotAccountImageView2.isUserInteractionEnabled = true
-                        let imageTapGesture2 = UITapGestureRecognizer(target: self, action: #selector(self.handleHotAccountImageTap))
-                        self.newsView.hotAccountImageView2.addGestureRecognizer(imageTapGesture2)
+                        self.newsView.hotAccountImageView4.kf.setImage(with: URL(string: person.imageUrl))
+                        self.newsView.hotAccountImageView4.accessibilityIdentifier = "\(person.historyId)"
+                        self.newsView.hotAccountImageView4.isUserInteractionEnabled = true
+                        let imageTapGesture4 = UITapGestureRecognizer(target: self, action: #selector(self.handleHotAccountImageTap))
+                        self.newsView.hotAccountImageView4.addGestureRecognizer(imageTapGesture4)
                         
-                        self.newsView.hotAccountProfileIcon2.kf.setImage(with: URL(string: person.profileImage))
-                        self.newsView.hotAccountProfileIcon2.accessibilityIdentifier = person.clokeyId
-                        self.newsView.hotAccountProfileIcon2.isUserInteractionEnabled = true
-                        let iconTapGesture2 = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileTap))
-                        self.newsView.hotAccountProfileIcon2.addGestureRecognizer(iconTapGesture2)
+                        self.newsView.hotAccountProfileIcon4.kf.setImage(with: URL(string: person.profileImage))
+                        self.newsView.hotAccountProfileIcon4.accessibilityIdentifier = person.clokeyId
+                        self.newsView.hotAccountProfileIcon4.isUserInteractionEnabled = true
+                        let iconTapGesture4 = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileTap))
+                        self.newsView.hotAccountProfileIcon4.addGestureRecognizer(iconTapGesture4)
                         
-                        self.newsView.hotAccountProfileName2.text = person.clokeyId
-                        self.newsView.hotAccountProfileName2.accessibilityIdentifier = person.clokeyId
-                        self.newsView.hotAccountProfileName2.isUserInteractionEnabled = true
-                        let nameTapGesture2 = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileTap))
-                        self.newsView.hotAccountProfileName2.addGestureRecognizer(nameTapGesture2)
+                        self.newsView.hotAccountProfileName4.text = person.clokeyId
+                        self.newsView.hotAccountProfileName4.accessibilityIdentifier = person.clokeyId
+                        self.newsView.hotAccountProfileName4.isUserInteractionEnabled = true
+                        let nameTapGesture4 = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileTap))
+                        self.newsView.hotAccountProfileName4.addGestureRecognizer(nameTapGesture4)
                     } else {
-                        self.newsView.hotAccountImageView2.image = nil
-                        self.newsView.hotAccountProfileIcon2.image = nil
-                        self.newsView.hotAccountProfileName2.text = ""
+                        self.newsView.hotAccountImageView4.image = nil
+                        self.newsView.hotAccountProfileIcon4.image = nil
+                        self.newsView.hotAccountProfileName4.text = ""
                     }
                     
                 }
@@ -604,6 +608,13 @@ class NewsViewController: UIViewController {
                         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleCalendarImageTap))
                         self.newsView.followingCalendarUpdateImageView1.isUserInteractionEnabled = true
                         self.newsView.followingCalendarUpdateImageView1.addGestureRecognizer(tapGesture)
+                        
+                        // 두 번째 요소(calendarItems[1])를 사용하지 않고 첫 번째 요소의 값을 사용하거나,
+                        // 두 번째 요소가 있을 때만 처리하도록 변경합니다.
+                        self.newsView.followingCalendarProfileIcon1.accessibilityIdentifier = firstCalendarItem.clokeyId
+                        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileIconTap))
+                        self.newsView.followingCalendarProfileIcon1.isUserInteractionEnabled = true
+                        self.newsView.followingCalendarProfileIcon1.addGestureRecognizer(tapGesture1)
                        
                     }
                     
@@ -624,12 +635,7 @@ class NewsViewController: UIViewController {
                         self.newsView.followingCalendarUpdateImageView2.isUserInteractionEnabled = true
                         self.newsView.followingCalendarUpdateImageView2.addGestureRecognizer(tapGesture)
                         
-                        // 두 번째 요소(calendarItems[1])를 사용하지 않고 첫 번째 요소의 값을 사용하거나,
-                        // 두 번째 요소가 있을 때만 처리하도록 변경합니다.
-//                        self.newsView.followingCalendarProfileIcon1.accessibilityIdentifier = firstCalendarItem.clokeyId
-//                        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileIconTap))
-//                        self.newsView.followingCalendarProfileIcon1.isUserInteractionEnabled = true
-//                        self.newsView.followingCalendarProfileIcon1.addGestureRecognizer(tapGesture1)
+
                     }
 
                     if calendarItems.count > 1, let secondImageUrl = calendarItems[1].imageUrl {

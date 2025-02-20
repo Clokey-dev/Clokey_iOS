@@ -293,7 +293,7 @@ final class ProfileView: UIView {
         }
         
         profileDetailContainer.snp.makeConstraints { make in
-            make.top.equalTo(nicknameLabel.snp.bottom).offset(4)
+            make.top.equalTo(nicknameLabel.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
             make.height.equalTo(24)
         }
@@ -330,7 +330,7 @@ final class ProfileView: UIView {
         }
         
         descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(profileDetailContainer.snp.bottom).offset(4)
+            make.top.equalTo(profileDetailContainer.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
         }
         
