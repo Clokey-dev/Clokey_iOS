@@ -634,10 +634,10 @@ class NewsViewController: UIViewController {
                         
                         // 두 번째 요소(calendarItems[1])를 사용하지 않고 첫 번째 요소의 값을 사용하거나,
                         // 두 번째 요소가 있을 때만 처리하도록 변경합니다.
-                        self.newsView.followingCalendarProfileIcon1.accessibilityIdentifier = firstCalendarItem.clokeyId
-                        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileIconTap))
-                        self.newsView.followingCalendarProfileIcon1.isUserInteractionEnabled = true
-                        self.newsView.followingCalendarProfileIcon1.addGestureRecognizer(tapGesture1)
+//                        self.newsView.followingCalendarProfileIcon1.accessibilityIdentifier = firstCalendarItem.clokeyId
+//                        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileIconTap))
+//                        self.newsView.followingCalendarProfileIcon1.isUserInteractionEnabled = true
+//                        self.newsView.followingCalendarProfileIcon1.addGestureRecognizer(tapGesture1)
                     }
 
                     if calendarItems.count > 1, let secondImageUrl = calendarItems[1].imageUrl {
