@@ -30,6 +30,14 @@ final class HomeViewController: UIViewController {
         
         setupActions()
         selectTab(.pick)
+        
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(handleTabSwipe(_:)))
+        swipeLeft.direction = .left
+        view.addGestureRecognizer(swipeLeft)
+        
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleTabSwipe(_:)))
+        swipeRight.direction = .right
+        view.addGestureRecognizer(swipeRight)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -110,4 +118,17 @@ final class HomeViewController: UIViewController {
         selectedVC.didMove(toParent: self)
     }
 
+    @objc private func handleTabSwipe(_ gesture: UISwipeGestureRecognizer) {
+        if gesture.direction == .left {
+            // pick 탭이 현재 선택된 상태면 news 탭으로 전환
+            if selectedTab == .pick {
+                selectTab(.news)
+            }
+        } else if gesture.direction == .right {
+            // news 탭이 현재 선택된 상태면 pick 탭으로 전환
+            if selectedTab == .news {
+                selectTab(.pick)
+            }
+        }
+    }
 }

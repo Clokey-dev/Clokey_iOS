@@ -18,6 +18,8 @@ class NewsViewController: UIViewController {
     private let newsView = NewsView()
     private var recommandNewsSlides: [RecommandNewsSlideModel] = []
     private var currentIndex: Int = 0
+    //새로고침 기능 구현을 위한 RefreshControl추가 
+    private let refreshControl = UIRefreshControl()
     
     private lazy var pageControl: UIPageControl = UIPageControl().then {
         $0.numberOfPages = totalImages()
@@ -35,6 +37,9 @@ class NewsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         definesPresentationContext = true
+        //새로고침 기능
+        newsView.scrollView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
         
         setupDummyData()
         setupPageViewController()
@@ -495,7 +500,8 @@ class NewsViewController: UIViewController {
         // 게시물 상세 페이지로 이동 (예: FriendsCalendarDetailViewController 사용)
         fetchHistoryDetail(historyId: historyId)
     }
-
+    
+    
     // 프로필 페이지로 이동하는 액션 (clokeyID를 이용)
     @objc private func handleProfileTap(_ sender: UITapGestureRecognizer) {
         // sender.view의 accessibilityIdentifier에 clokeyID가 저장되어 있다고 가정합니다.
@@ -508,6 +514,21 @@ class NewsViewController: UIViewController {
         // FollowProfileViewController에서는 clokeyID를 followId (또는 clokey_Id)로 사용합니다.
         followProfileVC.followId = clokeyID
         self.navigationController?.pushViewController(followProfileVC, animated: true)
+    }
+    //새로고침 기능 함수
+    @objc private func didPullToRefresh() {
+        // API 호출: Hot Data, Friend Clothes, Friend Calendar 다시 가져오기
+        fetchHotData()
+        fetchFriendClothes()
+        fetchFriendCalendar()
+        
+        // (필요시) Dummy Data도 갱신
+        setupDummyData()
+        
+        // 풀투리프레시 종료 (약간의 딜레이 후)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.refreshControl.endRefreshing()
+        }
     }
     private func fetchHistoryDetail(historyId: Int) {
         let historyService = HistoryService()
