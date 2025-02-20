@@ -393,9 +393,9 @@ class NewsViewController: UIViewController {
                         print("유효하지 않은 이미지 URL: \(response.imageUrl)")
                     }
                     if response.visibility == "PUBLIC" {
-                        popUpView.publicButton.setImage(UIImage(named: "public_icon"), for: .normal)
+                        popUpView.publicButton.setImage(UIImage(named: "lock_off"), for: .normal)
                     } else {
-                        popUpView.publicButton.setImage(UIImage(named: "private_icon"), for: .normal)
+                        popUpView.publicButton.setImage(UIImage(named: "lock_on"), for: .normal)
                     }
                     
                     
@@ -535,10 +535,14 @@ class NewsViewController: UIViewController {
                         }
                     }
                     
-                    popUpView.wearCountButton.titleLabel?.text = "\(response.wearNum)"
-                    popUpView.brandNameLabel.text = response.brand
-                    popUpView.urlGoButton.titleLabel?.text = "\(String(describing: response.clothUrl))"
+//                    popUpView.wearCountButton.titleLabel?.text = "\(response.wearNum)"
+                    popUpView.wearCountButton.setTitle("\(response.wearNum)회", for: .normal)
+                    popUpView.brandNameLabel.text = (response.brand?.isEmpty ?? true) ? "지정 없음" : response.brand
                     self.url = response.clothUrl ?? ""
+                    
+                    if response.clothUrl == nil {
+                        popUpView.urlGoButton.titleLabel?.text = "지정 안됨"
+                    }
                     
                     
                     // 이미지가 있으면 업데이트
@@ -570,16 +574,6 @@ class NewsViewController: UIViewController {
             }
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     func fetchFriendCalendar() {

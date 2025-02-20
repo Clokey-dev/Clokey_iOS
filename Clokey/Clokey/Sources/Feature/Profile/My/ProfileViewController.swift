@@ -27,6 +27,8 @@ final class ProfileViewController: UIViewController {
     var clothId2:Int64?
     var clothId3:Int64?
     
+    var url: String = ""
+    
     // calendarview
     private let calendarViewController = CalendarViewController()
     
@@ -197,6 +199,15 @@ final class ProfileViewController: UIViewController {
         profileView.followerCountButton.addTarget(self, action: #selector(didTapFollowerButton), for: .touchUpInside)
         
         profileView.followingCountButton.addTarget(self, action: #selector(didTapFollowingButton), for: .touchUpInside)
+        
+        profileView.bottomButtonLabel.isUserInteractionEnabled = true
+        profileView.bottomArrowIcon.isUserInteractionEnabled = true
+
+        let bottomButtonTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapMyClosetButton))
+        profileView.bottomButtonLabel.addGestureRecognizer(bottomButtonTapGesture)
+
+        let bottomArrowTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapMyClosetButton))
+        profileView.bottomArrowIcon.addGestureRecognizer(bottomArrowTapGesture)
     }
     
     @objc private func didTapSettingButton() {
@@ -215,6 +226,12 @@ final class ProfileViewController: UIViewController {
         editProfileViewController.visibility = visibility
         
         navigationController?.pushViewController(editProfileViewController, animated: true)
+    }
+    
+    @objc private func didTapMyClosetButton() {
+        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+            sceneDelegate.navigateToMyCloset()
+        }
     }
     
     @objc private func didTapFollowerButton() {
@@ -348,9 +365,9 @@ final class ProfileViewController: UIViewController {
                         print("유효하지 않은 이미지 URL: \(response.imageUrl)")
                     }
                     if response.visibility == "PUBLIC" {
-                        popUpView.publicButton.setImage(UIImage(named: "public_icon"), for: .normal)
+                        popUpView.publicButton.setImage(UIImage(named: "lock_off"), for: .normal)
                     } else {
-                        popUpView.publicButton.setImage(UIImage(named: "private_icon"), for: .normal)
+                        popUpView.publicButton.setImage(UIImage(named: "lock_on"), for: .normal)
                     }
                     
                     
@@ -490,9 +507,13 @@ final class ProfileViewController: UIViewController {
                         }
                     }
                     
-                    popUpView.wearCountButton.titleLabel?.text = "\(response.wearNum)"
-                    popUpView.brandNameLabel.text = response.brand
-                    popUpView.urlGoButton.titleLabel?.text = "\(String(describing: response.clothUrl))"
+                    popUpView.wearCountButton.setTitle("\(response.wearNum)회", for: .normal)
+                    popUpView.brandNameLabel.text = (response.brand?.isEmpty ?? true) ? "지정 없음" : response.brand
+                    self.url = response.clothUrl ?? ""
+                    
+                    if response.clothUrl == nil {
+                        popUpView.urlGoButton.titleLabel?.text = "지정 안됨"
+                    }
                     
                     
                     // 이미지가 있으면 업데이트
@@ -503,6 +524,22 @@ final class ProfileViewController: UIViewController {
                 case .failure(let error):
                     print("팝업 의류 데이터 로드 실패: \(error.localizedDescription)")
                 }
+            }
+        }
+    }
+    
+    @objc private func urlGoButtonTapped() {
+        guard let url = URL(string: url) else {
+            print("Invalid URL")
+            return
+        }
+        
+        // URL 열기
+        UIApplication.shared.open(url, options: [:]) { success in
+            if success {
+                print("Opened URL: \(url)")
+            } else {
+                print("Failed to open URL: \(url)")
             }
         }
     }
