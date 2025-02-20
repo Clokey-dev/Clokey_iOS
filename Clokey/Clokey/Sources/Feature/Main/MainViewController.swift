@@ -50,6 +50,16 @@ final class MainViewController: UIViewController {
         additionalSafeAreaInsets.top = 0
         view.setNeedsLayout()
         view.layoutIfNeeded()
+        
+        let shouldNavigateToCloset = UserDefaults.standard.bool(forKey: "navigateToCloset")
+        
+        if shouldNavigateToCloset {
+                showViewController(closetVC)
+            if let tabBarItems = mainView.tabBarView.tabBar.items, tabBarItems.count > 3 {
+                mainView.tabBarView.tabBar.selectedItem = tabBarItems[3]
+            }
+                UserDefaults.standard.set(false, forKey: "navigateToCloset")
+            }
     }
     
     // MARK: - Setup

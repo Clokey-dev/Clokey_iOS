@@ -188,12 +188,11 @@ extension SceneDelegate: Coordinator {
     }
     
     //#
-//    func navigateToAddCloth() {
-//        let addCloth = AddClothViewController()
-//        let navigationController = UINavigationController(rootViewController: addCloth)
-//        window?.rootViewController = navigationController
-//        window?.makeKeyAndVisible()
-//    }
+    func navigateToMyCloset() {
+        UserDefaults.standard.set(true, forKey: "navigateToCloset")
+        UserDefaults.standard.synchronize()
+        switchToMain()
+    }
     //#
     
     func navigateToAddProfile() {
