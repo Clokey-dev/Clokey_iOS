@@ -10,7 +10,7 @@ import SnapKit
 import Then
 import Kingfisher
 
-class FollowProfileViewController: UIViewController {
+class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Properties
     private let followProfileView = FollowProfileView()
@@ -46,6 +46,8 @@ class FollowProfileViewController: UIViewController {
         followProfileView.scrollView.contentInsetAdjustmentBehavior = .never
         
         definesPresentationContext = true // 현재 컨텍스트에서 새로운 뷰 표시
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         followCalendarViewController.shouldHideUserNameLabel = true
         addCalendarViewController()
@@ -385,9 +387,9 @@ class FollowProfileViewController: UIViewController {
                         print("유효하지 않은 이미지 URL: \(response.imageUrl)")
                     }
                     if response.visibility == "PUBLIC" {
-                        popUpView.publicButton.setImage(UIImage(named: "public_icon"), for: .normal)
+                        popUpView.publicButton.setImage(UIImage(named: "lock_off"), for: .normal)
                     } else {
-                        popUpView.publicButton.setImage(UIImage(named: "private_icon"), for: .normal)
+                        popUpView.publicButton.setImage(UIImage(named: "lock_on"), for: .normal)
                     }
                     
                     
@@ -527,9 +529,14 @@ class FollowProfileViewController: UIViewController {
                         }
                     }
                     
-                    popUpView.wearCountButton.titleLabel?.text = "\(response.wearNum)"
-                    popUpView.brandNameLabel.text = response.brand
-                    popUpView.urlGoButton.titleLabel?.text = "\(String(describing: response.clothUrl))"
+//                    popUpView.wearCountButton.titleLabel?.text = "\(response.wearNum)"
+                    popUpView.wearCountButton.setTitle("\(response.wearNum)회", for: .normal)
+                    popUpView.brandNameLabel.text = (response.brand?.isEmpty ?? true) ? "지정 없음" : response.brand
+                    self.url = response.clothUrl ?? ""
+                    
+                    if response.clothUrl == nil {
+                        popUpView.urlGoButton.titleLabel?.text = "지정 안됨"
+                    }
                     
                     
                     // 이미지가 있으면 업데이트
@@ -540,6 +547,23 @@ class FollowProfileViewController: UIViewController {
                 case .failure(let error):
                     print("팝업 의류 데이터 로드 실패: \(error.localizedDescription)")
                 }
+            }
+        }
+    }
+    
+    var url: String = ""
+    @objc private func urlGoButtonTapped() {
+        guard let url = URL(string: url) else {
+            print("Invalid URL")
+            return
+        }
+        
+        // URL 열기
+        UIApplication.shared.open(url, options: [:]) { success in
+            if success {
+                print("Opened URL: \(url)")
+            } else {
+                print("Failed to open URL: \(url)")
             }
         }
     }

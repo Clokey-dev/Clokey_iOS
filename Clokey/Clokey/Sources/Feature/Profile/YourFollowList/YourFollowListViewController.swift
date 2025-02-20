@@ -128,6 +128,9 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        
+        loadFollowerData()
+        loadFollowingData()
     }
 
     override func viewDidAppear(_ animated: Bool) {

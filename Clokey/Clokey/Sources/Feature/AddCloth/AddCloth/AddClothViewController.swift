@@ -42,7 +42,7 @@ class AddClothViewController: UIViewController, UITextFieldDelegate, UIGestureRe
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     @objc internal override func dismissKeyboard() {

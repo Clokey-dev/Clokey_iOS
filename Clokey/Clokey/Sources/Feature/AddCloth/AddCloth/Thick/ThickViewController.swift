@@ -74,6 +74,8 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
         //  Hugging Priority 설정 → 버튼보다 먼저 크기를 유지하게 함
         imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
+//        imageView.addTarget(self, action: #selector(didTapInfoButton), for: .touchUpInside)
+        imageView.isUserInteractionEnabled = true
         
         return imageView
     }()
@@ -207,6 +209,9 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapInfoButton))
+        questionIcon.addGestureRecognizer(tapGesture)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -217,7 +222,7 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     // MARK: - UI Setup

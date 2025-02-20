@@ -31,7 +31,10 @@ class SmartSummationView: UIView {
     }
     
     let dateLabel = UILabel().then {
-        $0.text = "2025년 01월 18일 기준"
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.dateFormat = "yyyy년 MM월 dd일 기준"
+        $0.text = dateFormatter.string(from: Date())
         $0.font = UIFont.ptdRegularFont(ofSize: 14)
         $0.textColor = .darkGray
         $0.textAlignment = .center
@@ -39,12 +42,20 @@ class SmartSummationView: UIView {
     
     let categoryButton1 = UIButton().then {
         $0.setTitle("상의", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
+        $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.backgroundColor = UIColor.mainBrown800
         $0.layer.cornerRadius = 10
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+        if #available(iOS 15.0, *) {
+            var config = UIButton.Configuration.plain()
+            config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
+            $0.configuration = config
+        } else {
+            $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+        }
+        $0.sizeToFit()
     }
 
     let TitleLabel1 = UILabel().then {
@@ -55,12 +66,20 @@ class SmartSummationView: UIView {
     
     let categoryButton2 = UIButton().then {
         $0.setTitle("후드/맨투맨", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
+        $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.backgroundColor = UIColor.mainBrown800
         $0.layer.cornerRadius = 10
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+        if #available(iOS 15.0, *) {
+            var config = UIButton.Configuration.plain()
+            config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
+            $0.configuration = config
+        } else {
+            $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+        }
+        $0.sizeToFit()
     }
     let TitleLabel2 = UILabel().then {
         $0.text = "를(을) 즐겨입었어요!"
@@ -74,20 +93,35 @@ class SmartSummationView: UIView {
         $0.textColor = .black
     }
     
-    let freCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
-        $0.estimatedItemSize = .init(width: 111, height: 167)
-        $0.minimumInteritemSpacing = 10
-    }).then {
-        $0.backgroundColor = .clear
-        $0.isScrollEnabled = false // 스크롤뷰 내에서 개별 스크롤 방지
-        $0.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: CustomCollectionViewCell.identifier)
-    }
+    let freCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumInteritemSpacing = 10
+        layout.minimumLineSpacing = 20
+        layout.sectionInset = .zero  // 섹션 인셋 0으로 설정해 왼쪽부터 배치
+        layout.estimatedItemSize = .zero
+        // 한 줄에 3개씩 배치하려면:
+        let totalMargin: CGFloat = 40   // 좌우 inset 20씩
+        let interitemSpacing: CGFloat = 10 * 2 // 아이템 간 간격 10씩 2칸
+        let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing
+        let itemWidth = availableWidth / 3
+        // 높이는 167로 고정하거나, 원하는 비율(예: 4:3 이미지, 레이블 높이 등)로 설정 가능
+        layout.itemSize = CGSize(width: itemWidth, height: 167)
+        
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.backgroundColor = .clear
+        cv.isScrollEnabled = false
+        cv.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: CustomCollectionViewCell.identifier)
+        return cv
+    }()
     
     let seeAllButton = UIButton().then {
         $0.setTitle("후드/맨투먄 전체보기", for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
         $0.contentHorizontalAlignment = .left//text 왼쪽 정렬
+        $0.sizeToFit()
+
     }
         
     let frontIconView = UIImageView().then{
@@ -97,13 +131,21 @@ class SmartSummationView: UIView {
     }
     
     let categoryButton3 = UIButton().then {
-        $0.setTitle("후드/맨투맨", for: .normal)
+        $0.setTitle("상의", for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 16)
-        $0.backgroundColor = UIColor.mainBrown800
+        $0.backgroundColor = UIColor.mainBrown200
         $0.layer.cornerRadius = 10
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+        $0.layer.borderColor = UIColor(named: "mainBrown200")?.cgColor
+        if #available(iOS 15.0, *) {
+            var config = UIButton.Configuration.plain()
+            config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
+            $0.configuration = config
+        } else {
+            $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+        }
+        $0.sizeToFit()
     }
 
     let TitleLabel3 = UILabel().then {
@@ -116,10 +158,18 @@ class SmartSummationView: UIView {
         $0.setTitle("후드/맨투맨", for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 16)
-        $0.backgroundColor = UIColor.mainBrown800
+        $0.backgroundColor = UIColor.mainBrown200
         $0.layer.cornerRadius = 10
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+        $0.layer.borderColor = UIColor(named: "mainBrown200")?.cgColor
+        if #available(iOS 15.0, *) {
+            var config = UIButton.Configuration.plain()
+            config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
+            $0.configuration = config
+        } else {
+            $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+        }
+        $0.sizeToFit()
     }
     let TitleLabel4 = UILabel().then {
         $0.text = "를(을) 안입었어요."
@@ -133,20 +183,34 @@ class SmartSummationView: UIView {
         $0.textColor = .black
     }
     
-    let infreCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout().then {
-        $0.estimatedItemSize = .init(width: 111, height: 167)
-        $0.minimumInteritemSpacing = 10
-    }).then {
-        $0.backgroundColor = .clear
-        $0.isScrollEnabled = false // 스크롤뷰 내에서 개별 스크롤 방지
-        $0.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: CustomCollectionViewCell.identifier)
-    }
+    let infreCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumInteritemSpacing = 10
+        layout.minimumLineSpacing = 20
+        layout.sectionInset = .zero  // 섹션 인셋 0으로 설정해 왼쪽부터 배치
+        layout.estimatedItemSize = .zero
+        // 한 줄에 3개씩 배치하려면:
+        let totalMargin: CGFloat = 40   // 좌우 inset 20씩
+        let interitemSpacing: CGFloat = 10 * 2 // 아이템 간 간격 10씩 2칸
+        let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing
+        let itemWidth = availableWidth / 3
+        // 높이는 167로 고정하거나, 원하는 비율(예: 4:3 이미지, 레이블 높이 등)로 설정 가능
+        layout.itemSize = CGSize(width: itemWidth, height: 167)
+        
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.backgroundColor = .clear
+        cv.isScrollEnabled = false
+        cv.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: CustomCollectionViewCell.identifier)
+        return cv
+    }()
     
     let seeAllButton2 = UIButton().then {
         $0.setTitle("셔츠 전체보기", for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
         $0.contentHorizontalAlignment = .left//text 왼쪽 정렬
+        $0.sizeToFit()
     }
         
     let frontIconView2 = UIImageView().then{
@@ -222,7 +286,7 @@ class SmartSummationView: UIView {
         }
         
         bannerDescription.snp.makeConstraints {
-            $0.leading.equalTo(bannerImage).offset(5)
+            $0.leading.equalTo(bannerImage.snp.trailing).offset(5)
             $0.trailing.equalTo(bannerView.snp.trailing).offset(-33)
             $0.centerY.equalToSuperview()
         }
@@ -237,24 +301,22 @@ class SmartSummationView: UIView {
         categoryButton1.snp.makeConstraints {
             $0.top.equalTo(dateLabel.snp.bottom).offset(19)
             $0.leading.equalTo(bannerView.snp.leading)
-            $0.width.equalTo(56)
             $0.height.equalTo(29)
         }
         
         TitleLabel1.snp.makeConstraints {
-            $0.top.equalTo(dateLabel.snp.bottom).offset(21)
+            $0.top.equalTo(dateLabel.snp.bottom).offset(25)
             $0.leading.equalTo(categoryButton1.snp.trailing).offset(8)
         }
         
         categoryButton2.snp.makeConstraints {
             $0.top.equalTo(dateLabel.snp.bottom).offset(19)
             $0.leading.equalTo(TitleLabel1.snp.trailing).offset(12)
-            $0.width.equalTo(56)
             $0.height.equalTo(29)
         }
         
         TitleLabel2.snp.makeConstraints {
-            $0.top.equalTo(dateLabel.snp.bottom).offset(21)
+            $0.top.equalTo(dateLabel.snp.bottom).offset(25)
             $0.leading.equalTo(categoryButton2.snp.trailing).offset(8)        }
         
         // 자주 입은 옷 섹션
@@ -265,7 +327,7 @@ class SmartSummationView: UIView {
         
         freCollectionView.snp.makeConstraints {
             $0.top.equalTo(frequentTitleLabel.snp.bottom).offset(10)
-            $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(167)
             $0.width.equalTo(373)
         }
@@ -274,7 +336,6 @@ class SmartSummationView: UIView {
         seeAllButton.snp.makeConstraints {
             $0.top.equalTo(freCollectionView.snp.bottom).offset(8)
             $0.trailing.equalTo(bannerView.snp.trailing)
-            $0.width.equalTo(60)//
             $0.height.equalTo(44)
         }
         
@@ -288,7 +349,6 @@ class SmartSummationView: UIView {
         categoryButton3.snp.makeConstraints {
             $0.top.equalTo(freCollectionView.snp.bottom).offset(59)
             $0.leading.equalTo(bannerView.snp.leading)
-            $0.width.equalTo(56)
             $0.height.equalTo(29)
         }
         
@@ -300,7 +360,6 @@ class SmartSummationView: UIView {
         categoryButton4.snp.makeConstraints {
             $0.top.equalTo(freCollectionView.snp.bottom).offset(59)
             $0.leading.equalTo(TitleLabel3.snp.trailing).offset(12)
-            $0.width.equalTo(56)
             $0.height.equalTo(29)
         }
         
@@ -317,7 +376,7 @@ class SmartSummationView: UIView {
         
         infreCollectionView.snp.makeConstraints {
             $0.top.equalTo(infrequentTitleLabel.snp.bottom).offset(10)
-            $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(167)
             $0.width.equalTo(373)
         }
@@ -326,7 +385,6 @@ class SmartSummationView: UIView {
         seeAllButton2.snp.makeConstraints {
             $0.top.equalTo(infreCollectionView.snp.bottom).offset(8)
             $0.trailing.equalTo(bannerView.snp.trailing)
-            $0.width.equalTo(60)//
             $0.height.equalTo(44)
         }
         

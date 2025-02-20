@@ -9,7 +9,7 @@ import UIKit
 import TOCropViewController
 import Moya
 
-final class EditProfileViewController: UIViewController, TOCropViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+final class EditProfileViewController: UIViewController, TOCropViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
     
     private let editProfileView = EditProfileView()
     private var isSelectingProfileImage = false
@@ -33,6 +33,8 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         editProfileView.isUserInteractionEnabled = true
         editProfileView.addImageButton1.isUserInteractionEnabled = true

@@ -95,13 +95,7 @@ public struct ClothSearchResponseDTO: Codable {
 }
 
 public struct SmartSummationResponseDTO: Codable {
-    public let isSuccess: Bool
-    public let code: String
-    public let message: String
-    public let result: SmartSummaryResultDTO
-}
-
-public struct SmartSummaryResultDTO: Codable {
+    public let nickname: String
     public let frequentResult: SummaryClothPreviewDTO
     public let infrequentResult: SummaryClothPreviewDTO
 }
@@ -109,6 +103,9 @@ public struct SmartSummaryResultDTO: Codable {
 public struct SummaryClothPreviewDTO: Codable {
     public let baseCategoryName: String  // 예: 상의, 하의, 아우터 등
     public let coreCategoryName: String  // 예: 셔츠/블라우스, 코트 등
-    public let usage: Int                // 착용 횟수 또는 평균값
+    public let coreCategoryId: Int64
+    public let usage: Int                // 일주일간 착용 횟수
     public let clothPreviews: [ClothPreviewDTO] // 옷 목록 (최대 3개)
 }
+
+
