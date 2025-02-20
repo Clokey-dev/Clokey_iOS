@@ -19,6 +19,8 @@ final class ProfileViewController: UIViewController {
     
     private let model = ProfileModel.dummy()
     
+    private let refreshControl = UIRefreshControl()
+    
     var clokeyId: String = ""
     var followerCount: Int = 0
     var followingCount: Int = 0
@@ -43,6 +45,9 @@ final class ProfileViewController: UIViewController {
         profileView.scrollView.contentInsetAdjustmentBehavior = .never
         
         definesPresentationContext = true // 현재 컨텍스트에서 새로운 뷰 표시
+        
+        profileView.scrollView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
         
         calendarViewController.shouldHideUserNameLabel = true
         addCalendarViewController()
@@ -541,6 +546,16 @@ final class ProfileViewController: UIViewController {
             } else {
                 print("Failed to open URL: \(url)")
             }
+        }
+    }
+    
+    @objc private func didPullToRefresh() {
+        
+        loadData()
+        
+        // 풀투리프레시 종료 (약간의 딜레이 후)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.refreshControl.endRefreshing()
         }
     }
 }
