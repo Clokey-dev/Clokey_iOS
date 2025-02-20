@@ -167,7 +167,6 @@ class CalendarViewController: UIViewController {
             }
         }
     }
-
     
     // MARK: - Calendar Methods
     private func updateCalendar() {

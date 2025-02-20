@@ -8,7 +8,7 @@
 import UIKit
 import Kingfisher
 
-class RecordOOTDViewController: UIViewController {
+class RecordOOTDViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Properties
 
@@ -45,6 +45,7 @@ class RecordOOTDViewController: UIViewController {
         updateCollectionViewHeight(false)
         
         mainView.contentInputView.delegate = self
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     // MARK: - Setup

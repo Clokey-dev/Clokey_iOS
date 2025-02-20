@@ -11,6 +11,9 @@ import SnapKit
 import Then
 import Kingfisher
 
+protocol LikeListViewControllerDelegate: AnyObject {
+    func likeListViewController(_ viewController: LikeListViewController, didSelectProfileWith clokeyId: String)
+}
 class LikeListViewController: UIViewController {
     
     // MARK: - Properties
@@ -18,6 +21,8 @@ class LikeListViewController: UIViewController {
     
     private let historyId: Int
     private let historyService = HistoryService()
+    
+    weak var delegate: LikeListViewControllerDelegate?
     
     // MARK: - Initializer
     init(historyId: Int) {
@@ -129,8 +134,6 @@ class LikeListViewController: UIViewController {
             }
         }
     }
-
-
     
     // MARK: - Actions
     @objc private func closeButtonTapped() {
@@ -159,6 +162,7 @@ extension LikeListViewController: UICollectionViewDataSource, UICollectionViewDe
         cell.configure(with: users[indexPath.item])
         cell.followButton.tag = indexPath.item
         cell.followButton.addTarget(self, action: #selector(followButtonTapped(_:)), for: .touchUpInside)
+        cell.delegate = self
         return cell
     }
     
@@ -169,7 +173,22 @@ extension LikeListViewController: UICollectionViewDataSource, UICollectionViewDe
         if let cell = collectionView.cellForItem(at: IndexPath(item: index, section: 0)) as? LikeUserCell {
             cell.updateFollowButton(isFollowing: users[index].isFollowing)
         }
-        
-        // TODO: API 호출
+    }
+    
+    func handleProfile(clokeyId: String) {
+        DispatchQueue.main.async {
+            self.navigateToProfile(clokeyId: clokeyId)
+        }
+    }
+    
+    private func navigateToProfile(clokeyId: String) {
+        delegate?.likeListViewController(self, didSelectProfileWith: clokeyId)
+    }
+}
+
+extension LikeListViewController: LikeUserCellDelegate {
+    func didTapProfileImage(with clokeyId: String) {
+        // 프로파일 이미지 탭 시 handleNotificationFollow 호출
+        handleProfile(clokeyId: clokeyId)
     }
 }

@@ -14,7 +14,7 @@ protocol PhotoEditViewControllerDelegate: AnyObject {
     func photoEditViewController(_ viewController: PhotoEditViewController, didFinishEditing images: [UIImage])
 }
 
-class PhotoEditViewController: UIViewController {
+class PhotoEditViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Properties
     
@@ -82,6 +82,7 @@ class PhotoEditViewController: UIViewController {
         
         // 터치 이벤트가 스크롤 동작으로 인해 취소되지 않도록 설정
         thumbnailCollectionView.canCancelContentTouches = false
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
     }
     
