@@ -41,13 +41,40 @@ class PopUpDropdownViewController: UIViewController, PopUpDropdownViewDelegate, 
         return true
     }
     
-    // MARK: - FolderDropdownViewDelegate 구현
-    
+    // MARK: - PopUpDropdownViewDelegate 구현
     func didSelectEditCloth() {
-            }
-
-    func didSelectDeleteCloth() {
-        
+        // 수정 동작 구현 (필요 시)
     }
 
+    func didSelectDeleteCloth() {
+        // presentingViewController가 PopUpViewController인지 확인
+        guard let popUpVC = presentingViewController as? PopUpViewController,
+              let clothId = popUpVC.clothId else {
+            return
+        }
+        
+        // deleteClothes API 호출 (ClothService의 deleteClothes는 Int 타입의 cloth_id를 받음)
+        popUpVC.clothesService.deleteClothes(cloth_id: Int(clothId)) { [weak self] result in
+            switch result {
+            case .success(let success):
+                if success {
+                    DispatchQueue.main.async {
+                        // 먼저 드롭다운을 닫고, 그 후 팝업도 닫음
+                        self?.dismiss(animated: true) {
+                            popUpVC.dismiss(animated: true, completion: nil)
+                        }
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        print("옷 삭제 실패: 삭제 결과가 false")
+                    }
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    print("옷 삭제 실패: \(error)")
+                    // 필요 시 Alert 등으로 사용자에게 알림
+                }
+            }
+        }
+    }
 }

@@ -8,7 +8,7 @@ class AddCategoryHeaderView: UICollectionReusableView {
 
     let categoryLabel = UILabel().then {
         $0.textColor = .black
-        $0.font = UIFont.ptdRegularFont(ofSize: 20)
+        $0.font = UIFont.ptdSemiBoldFont(ofSize: 20)
     }
 
     let divideLine = UIView().then {
