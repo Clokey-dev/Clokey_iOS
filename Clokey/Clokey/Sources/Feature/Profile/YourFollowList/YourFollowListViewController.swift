@@ -136,6 +136,7 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
+        
     }
     
     // MARK: - Setup
@@ -305,7 +306,8 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
                         userId: item.clokeyId,
                         nickname: item.nickname,
                         profileImageUrl: item.profileImage,
-                        isFollowing: item.isFollowed
+                        isFollowing: item.isFollowed,
+                        isMe: item.isMe
                     )
                 }
                 
@@ -358,7 +360,8 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
                         userId: item.clokeyId,
                         nickname: item.nickname,
                         profileImageUrl: item.profileImage,
-                        isFollowing: item.isFollowed
+                        isFollowing: item.isFollowed,
+                        isMe: item.isMe
                     )
                 }
                 
