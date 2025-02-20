@@ -23,7 +23,7 @@ class SearchManager {
             recentSearches = storedSearches
         }
 
-        print(" [SearchManager] fetchRecentSearches() 호출됨, 강제 최신화된 데이터: \(recentSearches)")
+       
         return recentSearches
     }
 

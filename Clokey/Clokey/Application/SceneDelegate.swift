@@ -52,8 +52,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = lottieVC
         window?.makeKeyAndVisible()
     }
-
-
     
     // 카카오 로그인 처리를 위한 URL 처리
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
@@ -112,8 +110,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
 
-
-
     // 씬이 포그라운드에서 백그라운드로 전환될 때 호출 (홈버튼 눌러서 나갈 때)
     func sceneDidEnterBackground(_ scene: UIScene) {
      
@@ -127,6 +123,60 @@ extension SceneDelegate: Coordinator {
         let navigationController = UINavigationController(rootViewController: mainVC)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
+        
+        // 자동으로 historyId를 이용해 FriendsCalendarDetailViewController 띄우기
+        if let historyId = UserDefaults.standard.value(forKey: "PendingHistoryId") as? Int {
+            UserDefaults.standard.removeObject(forKey: "PendingHistoryId") // 사용 후 삭제
+            fetchHistoryDetail(historyId: historyId)
+        }
+        // 자동으로 clokeyId가 있는 경우 FollowProfileViewController로 이동
+        if let clokeyId = UserDefaults.standard.string(forKey: "PendingClokeyId") {
+            UserDefaults.standard.removeObject(forKey: "PendingClokeyId")
+            navigateToFollowProfile(clokeyId: clokeyId)
+        }
+    }
+    
+    private func fetchHistoryDetail(historyId: Int) {
+       let historyService = HistoryService()
+
+       historyService.historyDetail(historyId: historyId) { [weak self] result in
+           guard let self = self else { return }
+
+           switch result {
+           case .success(let response):
+               print("히스토리 상세 조회 성공: \(response)")
+               
+               DispatchQueue.main.async {
+                   let detailVC = FriendsCalendarDetailViewController()
+                   detailVC.setDetailData(response)
+
+                   if let navController = self.window?.rootViewController as? UINavigationController {
+                       navController.pushViewController(detailVC, animated: true)
+                   }
+               }
+           case .failure(let error):
+               print("히스토리 상세 조회 실패: \(error.localizedDescription)")
+           }
+       }
+   }
+    
+    func handleNotificationFollow(clokeyId: String) {
+        DispatchQueue.main.async {
+            self.navigateToFollowProfile(clokeyId: clokeyId)
+        }
+    }
+    
+    private func navigateToFollowProfile(clokeyId: String) {
+        DispatchQueue.main.async {
+            guard let navController = self.window?.rootViewController as? UINavigationController else {
+                print("네비게이션 컨트롤러가 없음")
+                return
+            }
+            
+            let followProfileVC = FollowProfileViewController()
+            followProfileVC.followId = clokeyId
+            navController.pushViewController(followProfileVC, animated: true)
+        }
     }
     
     // 화면 전환 메서드 -> AgreementViewController

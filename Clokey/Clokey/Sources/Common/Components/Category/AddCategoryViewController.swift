@@ -4,7 +4,7 @@ protocol AddCategoryViewControllerDelegate: AnyObject {
     func didSelectCategory(_ categoryId: Int64, season: String?)
 }
 
-class AddCategoryViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class AddCategoryViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate {
     
     private let addCategoryView = AddCategoryView()
     private var categories: [AddCategoryModel] = []
@@ -36,6 +36,7 @@ class AddCategoryViewController: UIViewController, UICollectionViewDataSource, U
         
         updateCompleteButtonState() // 완료 버튼 초기 상태 설정
         setupSeasonTapGestures()
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {

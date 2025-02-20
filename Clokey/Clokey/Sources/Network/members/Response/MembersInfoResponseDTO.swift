@@ -20,10 +20,13 @@ public struct MembersInfoResponseDTO: Codable {
     public let bio: String
     public let profileBackImageUrl: String
     public let visibility: String
-    public let clothImage1: String?
-    public let clothImage2: String?
-    public let clothImage3: String?
+    public let clothResults: [ClothResult]
     public let isFollowing: Bool?
+    
+    public struct ClothResult: Codable {
+        public let clothId: Int64?
+        public let clothImage: String?
+    }
 }
 
 public struct GetAgreedTermsResponseDTO: Codable {

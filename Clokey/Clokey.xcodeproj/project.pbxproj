@@ -131,6 +131,7 @@
 		077DC91C2D62085100C02FA4 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077DC91B2D62085100C02FA4 /* TokenManager.swift */; };
 		077DC91D2D62085100C02FA4 /* JWTHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077DC91A2D62085100C02FA4 /* JWTHelper.swift */; };
 		077DC91F2D62092700C02FA4 /* TokenRefreshPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077DC91E2D62092700C02FA4 /* TokenRefreshPlugin.swift */; };
+		07B8824E2D661A89006ABD4F /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 07B8824D2D661A89006ABD4F /* Config.xcconfig */; };
 		07CB2EA02D65169F00B3F9B7 /* FriendsCalendarDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CB2E9F2D65169F00B3F9B7 /* FriendsCalendarDetailViewController.swift */; };
 		07CF63E52D55DE6900CCF9F4 /* CalendarDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF63E42D55DE6900CCF9F4 /* CalendarDetailViewModel.swift */; };
 		07CF63FF2D563CAD00CCF9F4 /* RecordTagClothViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF63FE2D563CAD00CCF9F4 /* RecordTagClothViewController.swift */; };
@@ -206,7 +207,6 @@
 		07F859B42D62021700DD5BF8 /* Onboarding_no.json in Resources */ = {isa = PBXBuildFile; fileRef = 07F859B12D62021700DD5BF8 /* Onboarding_no.json */; };
 		07F859B52D62021700DD5BF8 /* Onboarding_yes.json in Resources */ = {isa = PBXBuildFile; fileRef = 07F859B22D62021700DD5BF8 /* Onboarding_yes.json */; };
 		07F859B82D62024300DD5BF8 /* LottieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F859B62D62024300DD5BF8 /* LottieViewController.swift */; };
-		1EF33C472D665F0100142954 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1EF33C462D665F0100142954 /* Config.xcconfig */; };
 		1EF33C692D665FFB00142954 /* ArrangeClosetBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C482D665FFB00142954 /* ArrangeClosetBannerView.swift */; };
 		1EF33C6A2D665FFB00142954 /* DisplayAllViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C5C2D665FFB00142954 /* DisplayAllViewController.swift */; };
 		1EF33C6B2D665FFB00142954 /* SmartSummationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C4C2D665FFB00142954 /* SmartSummationModel.swift */; };
@@ -248,6 +248,7 @@
 		A646C4322D65ACB300993FA5 /* YourFollowerUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646C42D2D65ACB300993FA5 /* YourFollowerUserCell.swift */; };
 		A646C4332D65ACB300993FA5 /* YourFollowingUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646C42F2D65ACB300993FA5 /* YourFollowingUserCell.swift */; };
 		A646C4342D65ACB300993FA5 /* YourFollowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646C4302D65ACB300993FA5 /* YourFollowListViewController.swift */; };
+		A646C4D82D662DE800993FA5 /* FollowCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A646C4D72D662DE800993FA5 /* FollowCalendarViewController.swift */; };
 		A648ACDA2D5CECA50094C126 /* CategoriesEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A648ACD92D5CECA50094C126 /* CategoriesEndPoint.swift */; };
 		A648ACDC2D5CECAC0094C126 /* CategoriesRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A648ACDB2D5CECAC0094C126 /* CategoriesRequestDTO.swift */; };
 		A648ACDE2D5CECF00094C126 /* CategoriesResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A648ACDD2D5CECF00094C126 /* CategoriesResponseDTO.swift */; };
@@ -374,6 +375,7 @@
 		077DC91A2D62085100C02FA4 /* JWTHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWTHelper.swift; sourceTree = "<group>"; };
 		077DC91B2D62085100C02FA4 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		077DC91E2D62092700C02FA4 /* TokenRefreshPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenRefreshPlugin.swift; sourceTree = "<group>"; };
+		07B8824D2D661A89006ABD4F /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		07CB2E9F2D65169F00B3F9B7 /* FriendsCalendarDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsCalendarDetailViewController.swift; sourceTree = "<group>"; };
 		07CF63E42D55DE6900CCF9F4 /* CalendarDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDetailViewModel.swift; sourceTree = "<group>"; };
 		07CF63FE2D563CAD00CCF9F4 /* RecordTagClothViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordTagClothViewController.swift; sourceTree = "<group>"; };
@@ -450,7 +452,6 @@
 		07F859B12D62021700DD5BF8 /* Onboarding_no.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Onboarding_no.json; sourceTree = "<group>"; };
 		07F859B22D62021700DD5BF8 /* Onboarding_yes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Onboarding_yes.json; sourceTree = "<group>"; };
 		07F859B62D62024300DD5BF8 /* LottieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieViewController.swift; sourceTree = "<group>"; };
-		1EF33C462D665F0100142954 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		1EF33C482D665FFB00142954 /* ArrangeClosetBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeClosetBannerView.swift; sourceTree = "<group>"; };
 		1EF33C492D665FFB00142954 /* ArrangeClosetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeClosetView.swift; sourceTree = "<group>"; };
 		1EF33C4A2D665FFB00142954 /* ArrangeClosetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeClosetViewController.swift; sourceTree = "<group>"; };
@@ -491,6 +492,7 @@
 		A646C42E2D65ACB300993FA5 /* YourFollowerUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFollowerUserModel.swift; sourceTree = "<group>"; };
 		A646C42F2D65ACB300993FA5 /* YourFollowingUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFollowingUserCell.swift; sourceTree = "<group>"; };
 		A646C4302D65ACB300993FA5 /* YourFollowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourFollowListViewController.swift; sourceTree = "<group>"; };
+		A646C4D72D662DE800993FA5 /* FollowCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCalendarViewController.swift; sourceTree = "<group>"; };
 		A648ACD92D5CECA50094C126 /* CategoriesEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesEndPoint.swift; sourceTree = "<group>"; };
 		A648ACDB2D5CECAC0094C126 /* CategoriesRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesRequestDTO.swift; sourceTree = "<group>"; };
 		A648ACDD2D5CECF00094C126 /* CategoriesResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesResponseDTO.swift; sourceTree = "<group>"; };
@@ -1242,7 +1244,7 @@
 				07F859B32D62021700DD5BF8 /* Lottie */,
 				07E1CB2F2D364BD100F86BB8 /* Fonts */,
 				076FAB322D2E6E0200FF3979 /* Assets.xcassets */,
-				1EF33C462D665F0100142954 /* Config.xcconfig */,
+				07B8824D2D661A89006ABD4F /* Config.xcconfig */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1805,6 +1807,7 @@
 				A676619E2D5B367B006AAB63 /* FollowProfileModel.swift */,
 				A676619F2D5B367B006AAB63 /* FollowProfileView.swift */,
 				A67661A02D5B367B006AAB63 /* FollowProfileViewController.swift */,
+				A646C4D72D662DE800993FA5 /* FollowCalendarViewController.swift */,
 			);
 			path = Your;
 			sourceTree = "<group>";
@@ -1877,7 +1880,7 @@
 		07F093082D2418380075659F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = 1;
+				BuildIndependentTargetsInParallel = NO;
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
@@ -1934,7 +1937,7 @@
 				07E1CB412D364BDA00F86BB8 /* Pretendard-Regular.otf in Resources */,
 				076FAB422D2E6E0200FF3979 /* Assets.xcassets in Resources */,
 				07F859B42D62021700DD5BF8 /* Onboarding_no.json in Resources */,
-				1EF33C472D665F0100142954 /* Config.xcconfig in Resources */,
+				07B8824E2D661A89006ABD4F /* Config.xcconfig in Resources */,
 				07F859B52D62021700DD5BF8 /* Onboarding_yes.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2169,6 +2172,7 @@
 				076FAB402D2E6E0200FF3979 /* SceneDelegate.swift in Sources */,
 				07CF63FF2D563CAD00CCF9F4 /* RecordTagClothViewController.swift in Sources */,
 				076FAB4A2D2E748B00FF3979 /* LoginView.swift in Sources */,
+				A646C4D82D662DE800993FA5 /* FollowCalendarViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2177,17 +2181,15 @@
 /* Begin XCBuildConfiguration section */
 		07F093242D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1EF33C462D665F0100142954 /* Config.xcconfig */;
+			baseConfigurationReference = 07B8824D2D661A89006ABD4F /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
+				DEVELOPMENT_TEAM = BBVZV8T99P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱 사용 중 위치 접근 권한이 필요합니다.";
@@ -2205,7 +2207,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2214,17 +2215,15 @@
 		};
 		07F093252D24183A0075659F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1EF33C462D665F0100142954 /* Config.xcconfig */;
+			baseConfigurationReference = 07B8824D2D661A89006ABD4F /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
+				DEVELOPMENT_TEAM = BBVZV8T99P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱 사용 중 위치 접근 권한이 필요합니다.";
@@ -2242,7 +2241,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2251,7 +2249,7 @@
 		};
 		07F093262D24183A0075659F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1EF33C462D665F0100142954 /* Config.xcconfig */;
+			baseConfigurationReference = 07B8824D2D661A89006ABD4F /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -2315,7 +2313,7 @@
 		};
 		07F093272D24183A0075659F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1EF33C462D665F0100142954 /* Config.xcconfig */;
+			baseConfigurationReference = 07B8824D2D661A89006ABD4F /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

@@ -27,6 +27,8 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     let locationManager = CLLocationManager()
     
     private let model = PickImageModel.dummy()
+    //새로고침 기능 추가
+    private let refreshControl = UIRefreshControl()
     
     override func loadView() {
         self.view = pickView
@@ -35,6 +37,9 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         definesPresentationContext = true // 현재 컨텍스트에서 새로운 뷰 표시
+        // 새로고침 기능 추가 
+        pickView.scrollView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
         
         
         setupActions()
@@ -637,6 +642,21 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     print("데이터 로드 실패: \(error.localizedDescription)")
                 }
             }
+        }
+    }
+    //새로고침 함수
+    @objc private func didPullToRefresh() {
+        // 필요에 따라 여러 API 호출을 재실행합니다.
+        fetchWeatherData()
+        fetchVisualCrossingWeatherData(for: "Seoul")
+        updateYesterdayWeatherUI()
+        loadRecapData()
+        
+        // 만약 다른 업데이트 작업이 필요하다면 추가
+        
+        // 약간의 지연 후 refreshControl 종료
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.refreshControl.endRefreshing()
         }
     }
 }

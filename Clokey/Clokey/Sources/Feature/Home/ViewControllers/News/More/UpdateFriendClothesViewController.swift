@@ -10,7 +10,7 @@ import Then
 import SnapKit
 import Kingfisher
 
-class UpdateFriendClothesViewController: UIViewController {
+class UpdateFriendClothesViewController: UIViewController, UIGestureRecognizerDelegate {
     
     private let updateFriendClothesView = UpdateFriendClothesView()
     
@@ -25,6 +25,8 @@ class UpdateFriendClothesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = updateFriendClothesView
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         setupDelegate()
         loadData()

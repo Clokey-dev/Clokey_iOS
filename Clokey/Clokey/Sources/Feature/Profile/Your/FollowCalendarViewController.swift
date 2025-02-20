@@ -1,8 +1,8 @@
 //
-//  CalendarViewController.swift
-//  StudyUIKit
+//  FollowCalendarViewController.swift
+//  Clokey
 //
-//  Created by 황상환 on 1/3/25.
+//  Created by 한금준 on 2/20/25.
 //
 
 import UIKit
@@ -11,7 +11,7 @@ import Then
 import RxSwift
 import RxCocoa
 
-class CalendarViewController: UIViewController {
+class FollowCalendarViewController: UIViewController {
     // MARK: - Properties
     private var currentMonth: Date = Date()
     private var dates: [Date] = []
@@ -22,6 +22,8 @@ class CalendarViewController: UIViewController {
     private let historyService = HistoryService()
     // 각 날짜 historyId 저장
     private var historyIdMap: [String: Int] = [:]
+    
+    var followId: String = ""
     
     // MARK: - UI Components
     
@@ -61,7 +63,7 @@ class CalendarViewController: UIViewController {
     
     // 로딩 인디케이터
     private let loadingIndicator = UIActivityIndicatorView(style: .large).then {
-        $0.color = UIColor(named: "pointOrange800")
+        $0.color = UIColor(named: "mainOrange800")
         $0.hidesWhenStopped = true
         $0.backgroundColor = .clear
     }
@@ -84,7 +86,7 @@ class CalendarViewController: UIViewController {
             userNameLabel.isHidden = true
             userNameLabel.snp.removeConstraints()
             monthControlStack.snp.remakeConstraints {
-                $0.top.equalTo(view.safeAreaLayoutGuide).offset(16) 
+                $0.top.equalTo(view.safeAreaLayoutGuide).offset(16)
                 $0.leading.equalToSuperview().offset(25)
                 $0.trailing.equalToSuperview().offset(-25)
             }
@@ -93,7 +95,7 @@ class CalendarViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchHistoryData()
+        fetchHistoryData(clokeyId: followId)
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
 
@@ -167,6 +169,7 @@ class CalendarViewController: UIViewController {
             }
         }
     }
+
     
     // MARK: - Calendar Methods
     private func updateCalendar() {
@@ -185,12 +188,12 @@ class CalendarViewController: UIViewController {
         if let newMonth = Calendar.current.date(byAdding: .month, value: value, to: currentMonth) {
             currentMonth = newMonth
             updateCalendar()
-            fetchHistoryData()
+            fetchHistoryData(clokeyId: followId)
         }
     }
     
     // MARK: - API
-    private func fetchHistoryData() {
+    private func fetchHistoryData(clokeyId: String) {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM"
         let monthString = formatter.string(from: currentMonth)
@@ -200,7 +203,7 @@ class CalendarViewController: UIViewController {
             self.loadingIndicator.startAnimating()
         }
         
-        historyService.historyMonth(clokeyId: nil, month: monthString) { [weak self] result in
+        historyService.historyMonth(clokeyId: clokeyId, month: monthString) { [weak self] result in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
@@ -226,24 +229,14 @@ class CalendarViewController: UIViewController {
 
 }
 
-// MARK: - CalendarViewDelegate
-extension CalendarViewController: CalendarViewDelegate {
+//// MARK: - CalendarViewDelegate
+extension FollowCalendarViewController: CalendarViewDelegate {
     func calendarView(_ calendarView: CalendarView, didSelectHistoryId historyId: Int) {
         fetchHistoryDetail(historyId: historyId)
     }
 
     func calendarView(_ calendarView: CalendarView, didSelectDate date: Date) {
-        // 이걸 써야 뷰 업데이트가 됨.
-        // Modal이 dismiss되면
-        // 1. Calendar → Modal 강한 참조 끊김
-        // 2. Modal → Calendar 약한 참조는 이미 weak
-        // 3. 둘 다 메모리에서 정상적으로 해제됨
-        let modalVC = UploadModalViewController()
-        modalVC.sourceViewController = self
-        modalVC.modalPresentationStyle = .overFullScreen
-        modalVC.modalTransitionStyle = .crossDissolve
-        modalVC.setDate(date)
-        present(modalVC, animated: false)
+
     }
 
     private func fetchHistoryDetail(historyId: Int) {
@@ -255,7 +248,7 @@ extension CalendarViewController: CalendarViewDelegate {
             switch result {
             case .success(let response):
                 print("히스토리 상세 조회 성공: \(response)")
-                let detailVC = CalendarDetailViewController()
+                let detailVC = FriendsCalendarDetailViewController()
                 detailVC.setDetailData(response) //  상세 데이터 전달
                 self.navigationController?.pushViewController(detailVC, animated: true)
 
@@ -266,3 +259,4 @@ extension CalendarViewController: CalendarViewDelegate {
     }
 
 }
+

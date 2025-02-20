@@ -116,7 +116,6 @@ final class MainViewController: UIViewController {
         }
     }
     //
-    
 }
 
 // MARK: - HeaderViewDelegate

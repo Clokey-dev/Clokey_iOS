@@ -33,6 +33,13 @@ class RecordOOTDView: UIView {
     // 커스텀 완료 버튼
     let OOTDButton = CustomButton(title: "완료", isEnabled: false)
     
+    // 로딩 인디케이터
+    let loadingIndicator = UIActivityIndicatorView(style: .large).then {
+        $0.color = UIColor(named: "pointOrange800")
+        $0.hidesWhenStopped = true
+        $0.backgroundColor = .clear
+    }
+    
     // MARK: - Init
     
     override init(frame: CGRect) {
@@ -53,6 +60,7 @@ class RecordOOTDView: UIView {
         
         addSubview(scrollView)
         addSubview(OOTDButton)  // 스크롤뷰와 별개로 추가
+        addSubview(loadingIndicator)
         
         scrollView.addSubview(contentView)
         
@@ -94,6 +102,10 @@ class RecordOOTDView: UIView {
             $0.top.equalTo(photoTagView.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
+        }
+        
+        loadingIndicator.snp.makeConstraints {
+            $0.center.equalToSuperview()
         }
     }
     

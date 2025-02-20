@@ -189,12 +189,21 @@ class NewsView: UIView {
         $0.text = "티라미수케이크"
     }
     
+    let followingCalendarBottomButton: UIStackView = UIStackView().then {
+        $0.axis = .horizontal
+        $0.spacing = 1 // "더보기"와 아이콘 사이 간격
+        $0.alignment = .center
+        $0.isUserInteractionEnabled = true
+    }
+    
+    // "더보기" 라벨
     let followingCalendarBottomButtonLabel: UILabel = UILabel().then {
         $0.text = "더보기"
         $0.textColor = .black
         $0.font = UIFont.ptdMediumFont(ofSize: 12)
     }
-    
+
+    // ">" 아이콘
     let followingCalendarBottomArrowIcon: UIImageView = UIImageView().then {
         $0.image = UIImage(systemName: "chevron.right")
         $0.tintColor = .mainBrown800
@@ -330,8 +339,9 @@ class NewsView: UIView {
         followingCalendarUpdateContainerView.addSubview(followingCalendarUpdateImageView2)
         followingCalendarUpdateContainerView.addSubview(followingCalendarProfileIcon2)
         followingCalendarUpdateContainerView.addSubview(followingCalendarProfileName2)
-        contentView.addSubview(followingCalendarBottomButtonLabel)
-        contentView.addSubview(followingCalendarBottomArrowIcon)
+        contentView.addSubview(followingCalendarBottomButton)
+        followingCalendarBottomButton.addArrangedSubview(followingCalendarBottomButtonLabel)
+        followingCalendarBottomButton.addArrangedSubview(followingCalendarBottomArrowIcon)
         
         contentView.addSubview(hotAccountTitle)
         contentView.addSubview(hotAccountContainerView)
@@ -494,10 +504,16 @@ class NewsView: UIView {
         
         followingCalendarBottomButtonLabel.snp.makeConstraints { make in
             make.top.equalTo(followingCalendarProfileName2.snp.bottom)
-            make.trailing.equalToSuperview().inset(36)
+            make.trailing.equalToSuperview().inset(20)
             make.height.equalTo(16)
         }
         
+        followingCalendarBottomButton.snp.makeConstraints { make in
+            make.top.equalTo(followingCalendarProfileName2.snp.bottom)
+            make.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(16)
+        }
+
         followingCalendarBottomArrowIcon.snp.makeConstraints { make in
             make.centerY.equalTo(followingCalendarBottomButtonLabel.snp.centerY)
             make.trailing.equalToSuperview().inset(20)

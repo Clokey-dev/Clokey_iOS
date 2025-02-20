@@ -12,8 +12,10 @@ protocol RecordOOTDViewControllerDelegate: AnyObject {
     func didUpdateHistory()
 }
 
-class CalendarDetailViewController: UIViewController {
+class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegate {
 
+    
+    var historyId: Int?
     // MARK: - Properties
     private let calendarDetailView = CalendarDetailView()
     private var viewModel: CalendarDetailViewModel?
@@ -33,7 +35,18 @@ class CalendarDetailViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupNavigationBar()
+        if let id = historyId {
+                   // 예: historyService.historyDetail(historyId: id) { ... } 또는 viewModel 초기화
+                   print("받은 historyId: \(id)")
+               }
         updateView()
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .white
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+
         
         calendarDetailView.likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
 
@@ -56,7 +69,16 @@ class CalendarDetailViewController: UIViewController {
         let likeTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapLikeLabel))
         calendarDetailView.likeLabel.isUserInteractionEnabled = true
         calendarDetailView.likeLabel.addGestureRecognizer(likeTapGesture)
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
 
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+        navigationController?.navigationBar.barTintColor = .white
     }
 
     // MARK: - Setup
@@ -79,7 +101,8 @@ class CalendarDetailViewController: UIViewController {
     
     private func setupNavigationBar() {
         navigationController?.navigationBar.isHidden = false
-        
+        navigationController?.navigationBar.barTintColor = .white
+
         navBarManager.addBackButton(
             to: navigationItem,
             target: self,
@@ -125,6 +148,13 @@ class CalendarDetailViewController: UIViewController {
         present(commentVC, animated: true)
     }
     
+    // 댓글에서 프로필 화면으로
+    func showProfile(for clokeyId: String) {
+        let followProfileVC = FollowProfileViewController()
+        followProfileVC.followId = clokeyId
+        navigationController?.pushViewController(followProfileVC, animated: true)
+    }
+    
     // 편집뷰
     @objc private func didTapPlusButton() {
         guard let viewModel = viewModel else { return }
@@ -142,8 +172,9 @@ class CalendarDetailViewController: UIViewController {
         let historyId = Int(viewModel.historyId)
         
         let likeListVC = LikeListViewController(historyId: historyId)
-        likeListVC.modalPresentationStyle = .pageSheet
+        likeListVC.delegate = self // delegate 설정
         
+        likeListVC.modalPresentationStyle = .pageSheet
         if let sheet = likeListVC.sheetPresentationController {
             sheet.detents = [.medium(), .large()]
             sheet.preferredCornerRadius = 20
@@ -151,6 +182,15 @@ class CalendarDetailViewController: UIViewController {
         
         present(likeListVC, animated: true)
     }
+
+    // 프로토콜 구현
+  
+
+//    extension CalendarDetailViewController: LikeListViewControllerDelegate {
+//        func likeListViewController(_ viewController: LikeListViewController, didSelectProfileWith clokeyId: String) {
+//            showProfile(for: clokeyId)
+//        }
+//    }
     
     @objc private func didTapMoreButton() {
         calendarDetailView.expandContent()
@@ -226,7 +266,14 @@ class CalendarDetailViewController: UIViewController {
     }
 }
 
-
+extension CalendarDetailViewController: LikeListViewControllerDelegate {
+    func likeListViewController(_ viewController: LikeListViewController, didSelectProfileWith clokeyId: String) {
+        // 모달을 닫고 프로필 화면으로 이동
+        viewController.dismiss(animated: true) { [weak self] in
+            self?.showProfile(for: clokeyId)
+        }
+    }
+}
 
 extension CalendarDetailViewController: RecordOOTDViewControllerDelegate {
     func didUpdateHistory() {
