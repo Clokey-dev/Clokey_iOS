@@ -460,6 +460,11 @@ extension ContentInputView: UITextViewDelegate {
         // 델리게이트 호출 추가
         delegate?.contentInputView(self, didUpdateText: textView.text)
     }
+    
+    // 텍스트 줄바꿈
+    func textViewDidChange(_ textView: UITextView) {
+        delegate?.contentInputView(self, didUpdateText: textView.text)
+    }
 }
 
 // MARK: - ToggleButton

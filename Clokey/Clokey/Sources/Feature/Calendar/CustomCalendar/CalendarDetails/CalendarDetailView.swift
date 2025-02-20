@@ -171,7 +171,7 @@ class CalendarDetailView: UIView {
     let contentLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16)
         $0.textColor = .black
-        $0.numberOfLines = 1
+        $0.numberOfLines = 3
     }
 
     // "더보기" 버튼
@@ -467,29 +467,40 @@ class CalendarDetailView: UIView {
     }
     
     private func updateContentLabel() {
-        guard let text = viewModel?.content else { return }
-        
-        if text.count > 20 {
-            let index = text.index(text.startIndex, offsetBy: 20)
-            let truncatedText = String(text[..<index]) + "..."
-            contentLabel.text = truncatedText
-            moreButton.isHidden = false
-
-            moreButton.snp.remakeConstraints {
-                $0.leading.equalTo(contentLabel.snp.trailing).offset(4)
-                $0.centerY.equalTo(contentLabel)
-                $0.height.equalTo(24)
-            }
-        } else {
-            contentLabel.text = text
+        guard let text = viewModel?.content, !text.isEmpty else {
+            contentLabel.text = ""
             moreButton.isHidden = true
+            return
         }
+
+        let maxLines: CGFloat = 3
+        let maxHeight = contentLabel.font.lineHeight * maxLines
         
-        layoutIfNeeded()
+        // 줄바꿈, 띄어쓰기 포함하여 정확한 줄 개수 계산
+        let textBoundingRect = (text as NSString).boundingRect(
+            with: CGSize(width: contentLabel.frame.width, height: CGFloat.greatestFiniteMagnitude),
+            options: [.usesLineFragmentOrigin, .usesFontLeading],
+            attributes: [.font: contentLabel.font!],
+            context: nil
+        )
+        
+        // 3줄 이상일 때만 "더보기" 버튼 표시
+        let totalLines = ceil(textBoundingRect.height / contentLabel.font.lineHeight)
+        moreButton.isHidden = totalLines <= maxLines
+
+        // "더보기" 버튼을 오른쪽 끝에 고정
+        moreButton.snp.remakeConstraints {
+            $0.trailing.equalToSuperview() // 우측 정렬
+            $0.centerY.equalTo(contentLabel)
+            $0.height.equalTo(24)
+        }
+
+        contentLabel.attributedText = NSAttributedString(string: text, attributes: [
+            .font: UIFont.systemFont(ofSize: 16),
+            .foregroundColor: UIColor.black
+        ])
+        contentLabel.numberOfLines = Int(maxLines) // 기본 3줄
     }
-
-
-
 }
 
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
@@ -605,25 +616,13 @@ func convertDateToFormattedString(_ date: Date) -> String {
 extension CalendarDetailView {
     func expandContent() {
         guard let fullText = viewModel?.content else { return }
-        
-        // 애니메이션과 함께 전체 텍스트 표시
+
         UIView.animate(withDuration: 0.3) {
-            self.contentLabel.snp.remakeConstraints {
-                $0.top.equalToSuperview()
-                $0.leading.trailing.equalToSuperview()
-            }
-            
             self.contentLabel.numberOfLines = 0
             self.contentLabel.text = fullText
             self.moreButton.isHidden = true
             self.scrollView.isScrollEnabled = true
-            
             self.layoutIfNeeded()
-        }
-        
-        // 해시태그 간격 조정
-        hashtagsLabel.snp.updateConstraints {
-            $0.top.equalTo(contentLabel.snp.bottom).offset(10)
         }
     }
 }
