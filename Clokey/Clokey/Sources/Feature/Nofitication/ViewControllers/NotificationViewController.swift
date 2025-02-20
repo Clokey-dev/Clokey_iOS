@@ -23,7 +23,7 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
         // (A) 프로필 탭 시 처리 로직을 여기에 작성합니다.
         print("프로필 탭: \(notification.title)")
         // 예시: FollowProfileViewController로 이동
-        let profileVC = FollowProfileViewController()
+        let profileVC = FollowProfileViewController(followId: "")
         profileVC.followId = notification.redirectInfo  // 또는 적절한 값
         navigationController?.pushViewController(profileVC, animated: true)
         
@@ -232,7 +232,7 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
                 return
             }
             
-            let followProfileVC = FollowProfileViewController()
+            let followProfileVC = FollowProfileViewController(followId: clokeyId)
             // FollowProfileViewController에서는 followId 혹은 clokey_Id를 사용하므로,
             // userID 대신 followId(또는 clokey_Id)에 값을 할당합니다.
             followProfileVC.followId = clokeyId

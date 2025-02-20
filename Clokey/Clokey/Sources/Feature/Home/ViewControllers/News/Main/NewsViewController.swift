@@ -60,14 +60,12 @@ class NewsViewController: UIViewController {
     var followId: String = ""
     
     @objc private func handleProfileIconTap(_ sender: UITapGestureRecognizer) {
-        guard let imageView = sender.view as? UIImageView,
+        guard let imageView = sender.view,
               let clokeyId = imageView.accessibilityIdentifier else {
-            print("🚨 클로키 ID를 찾을 수 없음")
+            print("clokeyId를 찾을 수 없음")
             return
         }
-        
-        let followProfileVC = FollowProfileViewController()
-        followProfileVC.followId = clokeyId
+        let followProfileVC = FollowProfileViewController(followId: clokeyId)
         self.navigationController?.pushViewController(followProfileVC, animated: true)
     }
     
@@ -628,10 +626,10 @@ class NewsViewController: UIViewController {
                         
                         // 두 번째 요소(calendarItems[1])를 사용하지 않고 첫 번째 요소의 값을 사용하거나,
                         // 두 번째 요소가 있을 때만 처리하도록 변경합니다.
-                        self.newsView.followingCalendarProfileIcon1.accessibilityIdentifier = secondCalendarItem.clokeyId
-                        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileIconTap))
-                        self.newsView.followingCalendarProfileIcon1.isUserInteractionEnabled = true
-                        self.newsView.followingCalendarProfileIcon1.addGestureRecognizer(tapGesture1)
+//                        self.newsView.followingCalendarProfileIcon1.accessibilityIdentifier = firstCalendarItem.clokeyId
+//                        let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileIconTap))
+//                        self.newsView.followingCalendarProfileIcon1.isUserInteractionEnabled = true
+//                        self.newsView.followingCalendarProfileIcon1.addGestureRecognizer(tapGesture1)
                     }
 
                     if calendarItems.count > 1, let secondImageUrl = calendarItems[1].imageUrl {
@@ -843,15 +841,12 @@ class NewsViewController: UIViewController {
     
     // 프로필 페이지로 이동하는 액션 (clokeyID를 이용)
     @objc private func handleProfileTap(_ sender: UITapGestureRecognizer) {
-        // sender.view의 accessibilityIdentifier에 clokeyID가 저장되어 있다고 가정합니다.
-        guard let view = sender.view,
-              let clokeyID = view.accessibilityIdentifier else {
-            print("clokeyID를 찾을 수 없음")
+        guard let imageView = sender.view,
+              let clokeyId = imageView.accessibilityIdentifier else {
+            print("clokeyId를 찾을 수 없음")
             return
         }
-        let followProfileVC = FollowProfileViewController()
-        // FollowProfileViewController에서는 clokeyID를 followId (또는 clokey_Id)로 사용합니다.
-        followProfileVC.followId = clokeyID
+        let followProfileVC = FollowProfileViewController(followId: clokeyId)
         self.navigationController?.pushViewController(followProfileVC, animated: true)
     }
     //새로고침 기능 함수
