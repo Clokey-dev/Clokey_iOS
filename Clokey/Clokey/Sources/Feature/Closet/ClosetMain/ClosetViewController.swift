@@ -342,7 +342,9 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
             popUpVC.modalTransitionStyle = .crossDissolve
             present(popUpVC, animated: true)
         } else if collectionView == closetView.drawerCollectionView {
-            // drawerCollectionView의 경우
+            let selectedItem = drawerItems[indexPath.item]
+            let drawerVC = DrawerViewController(drawerItem: selectedItem)
+            navigationController?.pushViewController(drawerVC, animated: true)
         }
     }
 

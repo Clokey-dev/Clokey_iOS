@@ -2,6 +2,12 @@ import UIKit
 import SnapKit
 
 class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+    // 스마트요약에서 넘어온 데이터들
+    var selectedBaseCategoryName: String?
+    var selectedCoreCategoryName: String?
+    var selectedCoreCategoryId: Int64?
+    var selectedSeason: String?
+    
     // MARK: - Properties
     private let displayAllView = DisplayAllView()
     
@@ -58,6 +64,16 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
         // Delegate 설정
         displayAllView.customTotalSegmentView.delegate = self
         displayAllView.sortDropdownDelegate = self
+        
+        // 스마트요약에서 전달받은 값이 있다면 viewDidLoad 시점에 UI 업데이트 호출
+        if let base = selectedBaseCategoryName,
+           let core = selectedCoreCategoryName,
+           let coreId = selectedCoreCategoryId {
+            didSelectCategory(baseCategoryName: base,
+                              coreCategoryName: core,
+                              coreCategoryId: coreId,
+                              season: selectedSeason)
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -74,8 +90,10 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
         setupSearchField()        // 검색 필드 설정
         
         // 초기 카테고리 데이터 로드 (전체 카테고리, 인덱스 0)
-        DispatchQueue.main.async {
-            self.updateContent(for: 0)
+        if currentMainCategoryId == 0 && currentSubCategoryId == nil {
+            DispatchQueue.main.async {
+                self.updateContent(for: 0)
+            }
         }
     }
     
@@ -280,7 +298,6 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
             present(popUpVC, animated: true)
         }
     }
-
     
     // MARK: - Segment Control & SearchField Actions
     @objc private func segmentChanged(_ sender: UISegmentedControl) {
@@ -409,6 +426,47 @@ extension DisplayAllViewController: AddCategoryViewControllerDelegate {
             }
         }
         loadClothesData(categoryId: Int(categoryId), isNextPage: false, season: season ?? "ALL")
+        currentSearchText = ""
+        displayAllView.searchField.textField.text = ""
+    }
+}
+
+extension DisplayAllViewController: SmartSummationViewControllerDelegate {
+    func didSelectCategory(baseCategoryName: String, coreCategoryName: String, coreCategoryId: Int64, season: String?) {
+        // 전달받은 값을 사용해 UI 업데이트
+        var targetMainIndex: Int = 0
+        if baseCategoryName == "상의" {
+            targetMainIndex = 1
+        } else if baseCategoryName == "하의" {
+            targetMainIndex = 2
+        } else if baseCategoryName == "아우터" {
+            targetMainIndex = 3
+        } else if baseCategoryName == "악세서리" {
+            targetMainIndex = 4
+        }
+        
+        // UI 업데이트: 세그먼트 컨트롤, 인디케이터, 버튼 등
+        displayAllView.customTotalSegmentView.segmentedControl.selectedSegmentIndex = targetMainIndex
+        displayAllView.customTotalSegmentView.updateIndicatorPosition(for: targetMainIndex)
+        currentMainCategoryId = targetMainIndex
+        displayAllView.customTotalSegmentView.toggleCategoryButtons(isHidden: false)
+        
+        if let categoryModel = CustomCategoryModel.getCategories(for: targetMainIndex) {
+            displayAllView.customTotalSegmentView.updateCategories(for: categoryModel.buttons)
+            // 하위 카테고리 중 coreCategoryId와 일치하는 버튼 강조
+            for (buttonIndex, button) in categoryModel.buttons.enumerated() {
+                if button.categoryId == coreCategoryId,
+                   let buttonView = displayAllView.customTotalSegmentView.categoryButtonStackView.arrangedSubviews[buttonIndex] as? UIButton {
+                    displayAllView.customTotalSegmentView.selectedCategoryButton = buttonView
+                    displayAllView.customTotalSegmentView.updateButtonAppearance()
+                    break
+                }
+            }
+        }
+        
+        // 컨텐츠 업데이트 호출 (예: updateContent(for:) 또는 loadClothesData)
+        updateContent(for: targetMainIndex)
+        loadClothesData(categoryId: Int(coreCategoryId), isNextPage: false, season: season ?? "ALL")
         currentSearchText = ""
         displayAllView.searchField.textField.text = ""
     }

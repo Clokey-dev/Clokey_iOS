@@ -16,7 +16,6 @@ final class ClosetView: UIView {
     // 새롭게 FlowLayout을 생성하여 셀 크기 고정 및 왼쪽 정렬
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 10
         layout.minimumLineSpacing = 20
         layout.sectionInset = .zero  // 섹션 인셋 0으로 설정해 왼쪽부터 배치
@@ -89,11 +88,18 @@ final class ClosetView: UIView {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 7
         layout.minimumLineSpacing = 12
-        layout.sectionInset = .zero
+        // 좌우 margin 20씩(총 40)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         layout.estimatedItemSize = .zero
-        
-        // 한 줄에 2개: (173 + 7) + 173 = 353
-        layout.itemSize = CGSize(width: 173, height: 77)
+
+        let horizontalSpacing = layout.minimumInteritemSpacing // 7 포인트
+        let totalMargin: CGFloat = 20 + 20  // 좌우 margin 합계 40 포인트
+        // availableWidth는 전체 너비에서 섹션 인셋과 아이템 간 간격을 뺀 값
+        let availableWidth = UIScreen.main.bounds.width - totalMargin - horizontalSpacing
+        let itemWidth = availableWidth / 2  // 두 개로 나누어 배치
+
+        // 높이는 77로 고정 (필요 시 조절)
+        layout.itemSize = CGSize(width: itemWidth, height: 77)
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .clear
@@ -102,6 +108,7 @@ final class ClosetView: UIView {
         cv.register(DrawerCollectionViewCell.self, forCellWithReuseIdentifier: DrawerCollectionViewCell.identifier)
         return cv
     }()
+
 
     
     // MARK: - Init
@@ -204,9 +211,9 @@ final class ClosetView: UIView {
         
         drawerCollectionView.snp.makeConstraints { make in
             make.top.equalTo(drawerTitle.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.leading.trailing.equalToSuperview()
+            
             make.height.equalTo(255)
-            make.width.equalTo(353)
         }
     }
 }
