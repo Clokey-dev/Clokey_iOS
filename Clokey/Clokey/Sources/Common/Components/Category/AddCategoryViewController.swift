@@ -222,7 +222,7 @@ class AddCategoryViewController: UIViewController, UICollectionViewDataSource, U
         if selectedIndexPath != nil {
             // 활성화 상태
             addCategoryView.completeButton.isEnabled = true
-            addCategoryView.completeButton.setTitleColor(UIColor.mainBrown800, for: .normal)
+            addCategoryView.completeButton.setTitleColor(UIColor.pointOrange800, for: .normal)
         } else {
             // 비활성화 상태
             addCategoryView.completeButton.isEnabled = false
