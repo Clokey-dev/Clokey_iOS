@@ -156,7 +156,7 @@ final class ClosetView: UIView {
         }
         
         customTotalSegmentView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(34)
+            make.top.equalToSuperview().offset(25)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(90)
         }

@@ -74,8 +74,8 @@ class DisplayAllView: UIView {
     // 외부에서 드롭다운 delegate를 설정할 수 있도록
     weak var sortDropdownDelegate: SortDropdownViewDelegate?
     
-    // 드롭다운 뷰
-    var dropdownView: CustomSortDropdownView?
+    // 드롭다운 뷰 (이름 변경)
+    var customSortDropdownView: CustomSortDropdownView?
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -143,7 +143,7 @@ class DisplayAllView: UIView {
     
     // MARK: - 드롭다운 관련 기능
     @objc private func toggleDropdown() {
-        if dropdownView == nil {
+        if customSortDropdownView == nil {
             showDropdown()
         } else {
             hideDropdown()
@@ -154,7 +154,7 @@ class DisplayAllView: UIView {
         let dropdown = CustomSortDropdownView(selectedOption: sortButtonLabel.text ?? "착용순")
         // 외부에서 할당된 delegate를 사용
         dropdown.delegate = sortDropdownDelegate
-        dropdownView = dropdown
+        customSortDropdownView = dropdown
         
         addSubview(dropdown)
         dropdown.snp.makeConstraints {
@@ -166,7 +166,7 @@ class DisplayAllView: UIView {
     }
     
     private func hideDropdown() {
-        dropdownView?.removeFromSuperview()
-        dropdownView = nil
+        customSortDropdownView?.removeFromSuperview()
+        customSortDropdownView = nil
     }
 }

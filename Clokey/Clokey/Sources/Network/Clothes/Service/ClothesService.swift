@@ -103,14 +103,21 @@ public final class ClothesService : NetworkManager {
     
     public func deleteClothes (
         cloth_id: Int,
-        completion: @escaping (Result<Bool, NetworkError>) -> Void
+        completion: @escaping (Result<Void, NetworkError>) -> Void
     ){
-        request(
+        requestStatusCode(
             target: .deleteClothes(cloth_id: cloth_id),
-            decodingType: Bool.self,
-            completion: completion)
-    }
-    
+            completion: { result in
+                switch result {
+                case .success:
+                    completion(.success(())) // 성공 처리
+                case .failure(let error):
+                    completion(.failure(error)) // 실패 처리
+                }
+            }
+        )
+    }   
+
     // 내 옷장 조회 GET API
     public func getClothes(
         clokeyId: String?,  
