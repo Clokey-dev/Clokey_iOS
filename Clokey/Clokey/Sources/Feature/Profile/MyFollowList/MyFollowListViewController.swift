@@ -14,7 +14,7 @@ enum MyFollowTabType: Int {
     case following = 1
 }
 
-class MyFollowListViewController: UIViewController {
+class MyFollowListViewController: UIViewController, UIGestureRecognizerDelegate {
     var selectedTab: MyFollowTabType = .follower // 기본값: 팔로워
     
     var clokeyId: String = ""
@@ -109,6 +109,8 @@ class MyFollowListViewController: UIViewController {
         setupCollectionViews()
         loadFollowerData()
 //        loadFollowingData()
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         titleLabel.text = clokeyId
         followerButton.setTitle("팔로워(\(followerCount))", for: .normal)
@@ -405,6 +407,23 @@ extension MyFollowListViewController: UICollectionViewDataSource, UICollectionVi
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyFollowingUserCell.identifier, for: indexPath) as! MyFollowingUserCell
             cell.configure(with: followingusers[indexPath.item])
             return cell
+        }
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == followerCollectionView {
+            let selectedUser = followerusers[indexPath.item]
+            print("팔로워 선택됨: \(selectedUser.nickname)")
+            
+            let followProfileViewController = FollowProfileViewController()
+            followProfileViewController.followId = selectedUser.userId
+            navigationController?.pushViewController(followProfileViewController, animated: false)
+        } else if collectionView == followingCollectionView {
+            let selectedUser = followingusers[indexPath.item]
+            print("팔로잉 선택됨: \(selectedUser.nickname)")
+            
+            let followProfileViewController = FollowProfileViewController()
+            followProfileViewController.followId = selectedUser.userId
+            navigationController?.pushViewController(followProfileViewController, animated: false)
         }
     }
 }

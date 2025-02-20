@@ -20,18 +20,57 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
     private var isProfileImageSelected = false  //  프로필 사진 선택 여부
     private var isBackgroundImageSelected = false //  배경 사진 선택 여부
     
+    var clokeyId: String = ""
+    var nickname: String = ""
+    var profileImage: String = ""
+    var backgroundImage: String = ""
+    var bio: String = ""
+    var visibility: String = ""
+    
     override func loadView() {
         view = editProfileView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         editProfileView.isUserInteractionEnabled = true
         editProfileView.addImageButton1.isUserInteractionEnabled = true
         editProfileView.addImageButton2.isUserInteractionEnabled = true
         
         editProfileView.addImageButton1.addTarget(self, action: #selector(didTapAddImageButton(_:)), for: .touchUpInside)
         editProfileView.addImageButton2.addTarget(self, action: #selector(didTapAddImageButton(_:)), for: .touchUpInside)
+        
+        // 기존 데이터 UI에 반영
+        editProfileView.idTextField.text = clokeyId
+        editProfileView.nicknameTextField.text = nickname
+        editProfileView.bioTextField.text = bio
+        
+        // 공개/비공개 상태 설정
+        if visibility == "PUBLIC" {
+            isPublicAccount = true
+            editProfileView.publicButton.backgroundColor = UIColor.mainBrown800
+            editProfileView.publicButton.setTitleColor(.white, for: .normal)
+            editProfileView.privateButton.backgroundColor = .clear
+            editProfileView.privateButton.setTitleColor(.black, for: .normal)
+        } else if visibility == "PRIVATE" {
+            isPublicAccount = false
+            editProfileView.privateButton.backgroundColor = UIColor.mainBrown800
+            editProfileView.privateButton.setTitleColor(.white, for: .normal)
+            editProfileView.publicButton.backgroundColor = .clear
+            editProfileView.publicButton.setTitleColor(.black, for: .normal)
+        }
+        
+        // 프로필 이미지 및 배경 이미지 설정
+        if let profileImageUrl = URL(string: profileImage) {
+            editProfileView.profileImageView.kf.setImage(with: profileImageUrl)
+        }
+        
+        if let backgroundImageUrl = URL(string: backgroundImage) {
+            editProfileView.backgroundImageView.kf.setImage(with: backgroundImageUrl)
+        }
+        
+        
         
         validateForm() // 초기 상태에서 유효성 검사 실행
         addActions()
@@ -173,9 +212,8 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
         editProfileView.completeButton.addTarget(self, action: #selector(didTapCompleteButton), for: .touchUpInside)
     }
     
-    
     @objc private func didTapBackButton() {
-        self.dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
     }
     
     // 텍스트 필드 변경 시 호출되는 메서드
@@ -196,8 +234,6 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
     
     @objc private func validateNickname() {
         guard let text = editProfileView.nicknameTextField.text, !text.isEmpty else {
-//            addProfileView.nicknameStatusLabel.text = ""
-//            addProfileView.nicknameStatusLabel.isHidden = true // 입력 없으면 숨김
             editProfileView.nickNameError(hidden: true)
             return
         }
@@ -207,15 +243,13 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
         if text.count > 6 {
             editProfileView.nicknameStatusLabel.text = "6글자 이내로 입력해주세요."
             editProfileView.nicknameStatusLabel.textColor = .pointOrange800
-//            addProfileView.nicknameStatusLabel.isHidden = false // 🚀 오류 메시지 보이게 설정
             
         } else {
             editProfileView.nicknameStatusLabel.text = "사용 가능한 닉네임입니다."
             editProfileView.nicknameStatusLabel.textColor = .pointOrange800
-//            addProfileView.nicknameStatusLabel.isHidden = false // 🚀 유효한 경우에도 표시
         }
         
-        validateForm() // 🚀 폼 유효성 검사 실행
+        validateForm()
     }
     
     
@@ -236,7 +270,6 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
             
             editProfileView.idStatusLabel.text = "잘못 입력했습니다. 소문자와 숫자만 입력하세요."
             editProfileView.idStatusLabel.textColor = .pointOrange800
-//            addProfileView.idStatusLabel.isHidden = false
             isIdChecked = false
             validateForm() //  유효성 검사 즉시 실행
             return
@@ -251,11 +284,9 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-//                    self.addProfileView.idError(hidden: false)
                     self.editProfileView.idStatusLabel.text = "사용 가능한 아이디입니다."
                     self.editProfileView.idStatusLabel.textColor = .pointOrange800
                     self.isIdChecked = true
-//                    self.addProfileView.idStatusLabel.isHidden = false
                     self.editProfileView.idCheckButton.setTitleColor(.gray, for: .normal)
                     self.validateForm()
                     
@@ -264,7 +295,6 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
                     self.editProfileView.idStatusLabel.text = "중복된 아이디입니다."
                     self.editProfileView.idStatusLabel.textColor = .pointOrange800
                     self.isIdChecked = false
-//                    self.addProfileView.idStatusLabel.isHidden = false
                     self.editProfileView.idCheckButton.setTitleColor(.gray, for: .normal)
                     self.validateForm()
                 }
@@ -300,19 +330,24 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
     }
     
     private func validateForm() {
+        // 닉네임: 비어있지 않고 6글자 이하
         let nicknameText = editProfileView.nicknameTextField.text ?? ""
-        let isNicknameValid = !nicknameText.isEmpty && nicknameText.count <= 6 //  닉네임이 비어있지 않고 6글자 이하인 경우 유효
-        let isIdValid = !(editProfileView.idTextField.text?.isEmpty ?? true) && isIdChecked
-        let isAccountSelected = isPublicAccount != nil //  공개/비공개 중 하나 선택 필수
-//        let isAnyImageSelected = isProfileImageSelected && isBackgroundImageSelected //  프로필 또는 배경 둘 중 하나만 선택되면 OK
-        let isAnyImageSelected = true //  사진 선택 여부 상관없이 활성화
+        let isNicknameValid = !nicknameText.isEmpty && nicknameText.count <= 6
+        
+        // 아이디: 비어있지 않고, 기존 값과 같거나(수정하지 않은 경우) 중복 확인이 완료된 경우(수정한 경우) 유효함
+        let currentId = editProfileView.idTextField.text ?? ""
+        let isIdValid = !currentId.isEmpty && (currentId == clokeyId || isIdChecked)
+        
+        // 공개/비공개가 선택되어 있어야 함
+        let isAccountSelected = isPublicAccount != nil
+        
+        // 이미지는 pre-filled 되어 있으므로 무조건 true
+        let isAnyImageSelected = true
         
         let isFormValid = isNicknameValid && isIdValid && isAccountSelected && isAnyImageSelected
         editProfileView.completeButton.isEnabled = isFormValid
         editProfileView.completeButton.backgroundColor = isFormValid ? UIColor.mainBrown800 : UIColor.mainBrown400
     }
-    
-    var nickName: String?
     
     @objc private func didTapCompleteButton() {
         guard let nickname = editProfileView.nicknameTextField.text, !nickname.isEmpty,
@@ -333,7 +368,7 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
         //  프로필 이미지와 배경 이미지 크기 조정 및 압축 적용
         guard let profileImage = editProfileView.profileImageView.image,
               let backgroundImage = editProfileView.backgroundImageView.image else {
-            print("🚨 이미지가 선택되지 않음")
+            print("이미지가 선택되지 않음")
             return
         }
         
@@ -373,15 +408,14 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
             case .success(let response):
                 print(" 프로필 업데이트 성공: \(response)")
                 DispatchQueue.main.async {
-                    self.dismiss(animated: true, completion: nil)
-//                    self.navigationController?.popViewController(animated: true)
+                    self.navigationController?.popViewController(animated: true)
                 }
             case .failure(let error):
                 if let response = (error as? MoyaError)?.response {
                     let responseBody = String(data: response.data, encoding: .utf8) ?? "응답 데이터 없음"
-                    print("🚨 프로필 업데이트 실패 - 상태 코드: \(response.statusCode), 응답: \(responseBody)")
+                    print("프로필 업데이트 실패 - 상태 코드: \(response.statusCode), 응답: \(responseBody)")
                 } else {
-                    print("🚨 프로필 업데이트 실패 - 네트워크 오류: \(error.localizedDescription)")
+                    print("프로필 업데이트 실패 - 네트워크 오류: \(error.localizedDescription)")
                 }
             }
         }
@@ -432,19 +466,3 @@ extension EditProfileViewController: CustomBottomSheetDelegate {
         validateForm() //  완료 버튼 활성화 여부 체크
     }
 }
-
-//extension UIView {
-//    func findFirstResponder() -> UIResponder? {
-//        if self.isFirstResponder {
-//            return self
-//        }
-//        
-//        for subview in subviews {
-//            if let responder = subview.findFirstResponder() {
-//                return responder
-//            }
-//        }
-//        
-//        return nil
-//    }
-//}

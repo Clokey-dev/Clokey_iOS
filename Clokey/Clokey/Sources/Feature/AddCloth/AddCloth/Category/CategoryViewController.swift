@@ -1,7 +1,7 @@
 
 import UIKit
 
-class CategoryViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class CategoryViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate {
     
     private let addCategoryView = AddCategoryView()
     private var categories: [AddCategoryModel] = []
@@ -21,6 +21,8 @@ class CategoryViewController: UIViewController, UICollectionViewDataSource, UICo
         ].compactMap { $0 }  // nil 값 제거
         
         addCategoryView.toggleContainerView(hidden: true)
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         setupCollectionView()
         setupActions()
