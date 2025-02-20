@@ -297,6 +297,11 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         
         isFetchingData = true  // API 요청 중 상태 설정
         let page = isNextPage ? currentPage + 1 : 1
+        if !isNextPage {
+                dummyImages.removeAll()
+                dummyHistoryIDs.removeAll()
+            }
+
 
         SearchService().searchHistory(by: "hashtag-and-category", keyword: query, page: page, size: pageSize) { [weak self] result in
             DispatchQueue.main.async {
@@ -450,7 +455,8 @@ extension SearchResultViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let query = textField.text, !query.isEmpty else { return false }
         
-        
+        dummyImages.removeAll()
+           dummyHistoryIDs.removeAll()
         
         //  검색어 저장 추가
         searchManager.addSearchKeyword(query)
@@ -500,10 +506,12 @@ extension SearchResultViewController: UITextFieldDelegate {
                 switch result {
                 case .success(let response):
                     let newImages = response.historyPreviews.map { $0.imageUrl }
+                    let newHistoryIDs: [Int] = response.historyPreviews.map { Int($0.id) }
                     
                     DispatchQueue.main.async {
                         self.query = query
                         self.dummyImages = newImages
+                        self.dummyHistoryIDs = newHistoryIDs
                         
                         
                         
@@ -567,6 +575,7 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
     }
     // MARK: - UICollectionViewDelegate
     
+    // collectionView의 didSelectItemAt에서 historyId를 추출하여 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == searchView.hashtagsCollectionView {
             guard let cell = collectionView.cellForItem(at: indexPath) as? ImageCell,
@@ -575,6 +584,7 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
                 print("historyId 못찾음")
                 return
             }
+            print("선택된 historyId: \(historyId)") // 확인용 출력
             fetchHistoryDetail(historyId: historyId)
         } else if collectionView == searchView.accountsCollectionView {
             let user = filteredUsers[indexPath.item]
@@ -631,8 +641,7 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
             
             switch result {
             case .success(let response):
-                
-                
+                // 상세 정보 페이지로 이동
                 let detailVC = FriendsCalendarDetailViewController()
                 detailVC.setDetailData(response) // 상세 데이터 전달
                 self.navigationController?.pushViewController(detailVC, animated: true)
