@@ -21,6 +21,9 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
     private var isProfileImageSelected = false
     private var isBackgroundImageSelected = false
     
+    // 로딩 인디케이터
+    
+    
     override func loadView() {
         view = addProfileView
     }

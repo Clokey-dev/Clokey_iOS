@@ -124,6 +124,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         
         
         showPopup(with: tappedImageView.image, clothId: clothId)
+        popUpView.urlGoButton.addTarget(self, action: #selector(urlGoButtonTapped), for: .touchUpInside)
     }
     
     private func showPopup(with image: UIImage?, clothId: Int64) {
@@ -325,6 +326,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     popUpView.wearCountButton.titleLabel?.text = "\(response.wearNum)"
                     popUpView.brandNameLabel.text = response.brand
                     popUpView.urlGoButton.titleLabel?.text = "\(String(describing: response.clothUrl))"
+                    self.url = response.clothUrl ?? ""
                     
                     
                     // 이미지가 있으면 업데이트
@@ -335,6 +337,24 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                 case .failure(let error):
                     print("팝업 의류 데이터 로드 실패: \(error.localizedDescription)")
                 }
+            }
+        }
+    }
+    
+    var url: String = ""
+    
+    @objc private func urlGoButtonTapped() {
+        guard let url = URL(string: url) else {
+            print("Invalid URL")
+            return
+        }
+        
+        // URL 열기
+        UIApplication.shared.open(url, options: [:]) { success in
+            if success {
+                print("Opened URL: \(url)")
+            } else {
+                print("Failed to open URL: \(url)")
             }
         }
     }
