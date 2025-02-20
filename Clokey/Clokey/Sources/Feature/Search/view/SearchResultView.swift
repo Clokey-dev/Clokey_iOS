@@ -21,7 +21,7 @@ class SearchResultView: UIView {
     //  검색 제목
     let searchTitleLabel = UILabel().then {
         $0.text = "검색"
-        $0.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        $0.font = UIFont.ptdBoldFont(ofSize: 20)
         $0.textColor = .black
     }
     

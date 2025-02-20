@@ -156,7 +156,7 @@ class ThickSlider: UISlider {
         for i in 0..<stepCount {
             let label = UILabel()
             label.text = "\(i)"
-            label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+            label.font = UIFont.ptdMediumFont(ofSize: 14)
             label.textColor = .black
             label.textAlignment = .center
             addSubview(label)

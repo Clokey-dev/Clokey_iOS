@@ -54,7 +54,7 @@ class AgreementDetailViewController: UIViewController {
         // 제목 레이블
         let titleLabel = UILabel()
         titleLabel.text = agreementTitle
-        titleLabel.font = .boldSystemFont(ofSize: 18)
+        titleLabel.font = .ptdBoldFont(ofSize: 18)
         titleLabel.textAlignment = .center
         titleLabel.textColor = .black
         view.addSubview(titleLabel)

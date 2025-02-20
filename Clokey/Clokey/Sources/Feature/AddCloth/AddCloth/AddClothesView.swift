@@ -65,7 +65,7 @@ class AddClothesView: UIView {
         let btn = UIButton()
         btn.setTitle("입력", for: .normal)
         btn.setTitleColor(.black, for: .normal)
-        btn.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        btn.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 16)
         
         //  버튼 스타일 수정
         btn.backgroundColor = .clear  //  기본 배경 투명

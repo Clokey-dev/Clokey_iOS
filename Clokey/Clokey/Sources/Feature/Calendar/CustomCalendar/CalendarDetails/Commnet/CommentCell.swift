@@ -36,7 +36,7 @@ class CommentCell: UITableViewCell {
     }
 
     private let nameLabel = UILabel().then {
-        $0.font = .boldSystemFont(ofSize: 14)
+        $0.font = .ptdBoldFont(ofSize: 14)
         $0.textColor = .black
     }
 

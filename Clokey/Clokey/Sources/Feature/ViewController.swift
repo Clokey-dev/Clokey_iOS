@@ -52,7 +52,7 @@ class ViewController: UIViewController {
         navBarManager.setTitle(
             to: navigationItem,
             title: "커스텀 네비게이션 바",
-            font: .systemFont(ofSize: 18, weight: .semibold), textColor: .black
+            font: .ptdSemiBoldFont(ofSize: 18), textColor: .black
         )
         
         view.addSubview(searchField)
