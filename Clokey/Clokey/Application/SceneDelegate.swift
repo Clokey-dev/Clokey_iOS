@@ -137,6 +137,15 @@ extension SceneDelegate: Coordinator {
         window?.makeKeyAndVisible()
     }
     
+    //#
+//    func navigateToAddCloth() {
+//        let addCloth = AddClothViewController()
+//        let navigationController = UINavigationController(rootViewController: addCloth)
+//        window?.rootViewController = navigationController
+//        window?.makeKeyAndVisible()
+//    }
+    //#
+    
     func navigateToAddProfile() {
         let addProfileVC = AddProfileViewController()
         let navigationController = UINavigationController(rootViewController: addProfileVC)

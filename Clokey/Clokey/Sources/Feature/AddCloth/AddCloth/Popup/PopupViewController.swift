@@ -244,6 +244,7 @@ class PopupViewController: UIViewController {
         let addClothVC = AddClothViewController()
         navigationController?.pushViewController(addClothVC, animated: true)
         
+        
         guard let categoryId = categoryId,
               let clothName = clothName,
               let maxTemp = maxTemp,

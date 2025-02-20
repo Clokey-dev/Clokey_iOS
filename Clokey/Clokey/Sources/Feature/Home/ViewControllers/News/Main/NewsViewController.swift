@@ -266,7 +266,7 @@ class NewsViewController: UIViewController {
                         self.newsView.followingCalendarUpdateImageView1.isUserInteractionEnabled = true
                         self.newsView.followingCalendarUpdateImageView1.addGestureRecognizer(tapGesture)
                         
-                        self.newsView.followingCalendarProfileIcon1.accessibilityIdentifier = calendarItems[1].clokeyId
+                        self.newsView.followingCalendarProfileIcon1.accessibilityIdentifier = firstCalendarItem.clokeyId
                         let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileIconTap))
                         self.newsView.followingCalendarProfileIcon1.isUserInteractionEnabled = true
                         self.newsView.followingCalendarProfileIcon1.addGestureRecognizer(tapGesture1)
