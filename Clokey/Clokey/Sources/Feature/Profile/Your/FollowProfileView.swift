@@ -70,28 +70,28 @@ class FollowProfileView: UIView {
     
     let writeLabel = UILabel().then {
         $0.text = "게시글"
-        $0.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.font = UIFont.ptdRegularFont(ofSize: 15)
         $0.textColor = .black
         $0.textAlignment = .center
     }
     
     let writeCountLabel = UILabel().then {
         $0.text = "000"
-        $0.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.font = UIFont.ptdRegularFont(ofSize: 15)
         $0.textColor = .black
         $0.textAlignment = .center
     }
     
     let followerLabel = UILabel().then {
         $0.text = "팔로워"
-        $0.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.font = UIFont.ptdRegularFont(ofSize: 15)
         $0.textColor = .black
         $0.textAlignment = .center
     }
     
     let followerCountButton = UIButton().then {
         $0.setTitle("000", for: .normal)
-        $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 15)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.textAlignment = .center
         //        $0.addTarget(self, action: #selector(followingCountTapped), for: .touchUpInside)
@@ -99,14 +99,14 @@ class FollowProfileView: UIView {
     
     let followingLabel = UILabel().then {
         $0.text = "팔로잉"
-        $0.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.font = UIFont.ptdRegularFont(ofSize: 15)
         $0.textColor = .black
         $0.textAlignment = .center
     }
     
     let followingCountButton = UIButton().then {
         $0.setTitle("000", for: .normal)
-        $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 15)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.textAlignment = .center
         //        $0.addTarget(self, action: #selector(followingCountTapped), for: .touchUpInside)
@@ -114,7 +114,7 @@ class FollowProfileView: UIView {
     
     let descriptionLabel = UILabel().then {
         $0.text = "한줄소개란입니다아아아아아아아아"
-        $0.font = UIFont.ptdRegularFont(ofSize: 14)
+        $0.font = UIFont.ptdRegularFont(ofSize: 18)
         $0.textColor = .black
         $0.textAlignment = .center
         $0.numberOfLines = 2
@@ -304,17 +304,17 @@ class FollowProfileView: UIView {
         }
         
         followerCountButton.snp.makeConstraints { make in
-            make.leading.equalTo(followerLabel.snp.trailing).offset(8)
+            make.leading.equalTo(followerLabel.snp.trailing).offset(0)
             make.centerY.equalTo(followerLabel)
         }
         
         followingLabel.snp.makeConstraints { make in
-            make.leading.equalTo(followerCountButton.snp.trailing).offset(20)
+            make.leading.equalTo(followerCountButton.snp.trailing).offset(12)
             make.centerY.equalTo(followerCountButton)
         }
         
         followingCountButton.snp.makeConstraints { make in
-            make.leading.equalTo(followingLabel.snp.trailing).offset(8)
+            make.leading.equalTo(followingLabel.snp.trailing).offset(0)
             make.centerY.equalTo(followingLabel)
             make.trailing.equalToSuperview()
         }

@@ -187,6 +187,14 @@ extension SceneDelegate: Coordinator {
         window?.makeKeyAndVisible()
     }
     
+    //#
+    func navigateToMyCloset() {
+        UserDefaults.standard.set(true, forKey: "navigateToCloset")
+        UserDefaults.standard.synchronize()
+        switchToMain()
+    }
+    //#
+    
     func navigateToAddProfile() {
         let addProfileVC = AddProfileViewController()
         let navigationController = UINavigationController(rootViewController: addProfileVC)

@@ -64,6 +64,19 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+        
+        fetchWeatherRecommendations()
+        loadRecapData()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
     var clothId1:Int64?
     var clothId2:Int64?
     var clothId3:Int64?
@@ -124,6 +137,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         
         
         showPopup(with: tappedImageView.image, clothId: clothId)
+        popUpView.urlGoButton.addTarget(self, action: #selector(urlGoButtonTapped), for: .touchUpInside)
     }
     
     private func showPopup(with image: UIImage?, clothId: Int64) {
@@ -180,9 +194,9 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                         print("유효하지 않은 이미지 URL: \(response.imageUrl)")
                     }
                     if response.visibility == "PUBLIC" {
-                        popUpView.publicButton.setImage(UIImage(named: "public_icon"), for: .normal)
+                        popUpView.publicButton.setImage(UIImage(named: "lock_off"), for: .normal)
                     } else {
-                        popUpView.publicButton.setImage(UIImage(named: "private_icon"), for: .normal)
+                        popUpView.publicButton.setImage(UIImage(named: "lock_on"), for: .normal)
                     }
                     
                     
@@ -322,9 +336,14 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                         }
                     }
                     
-                    popUpView.wearCountButton.titleLabel?.text = "\(response.wearNum)"
-                    popUpView.brandNameLabel.text = response.brand
-                    popUpView.urlGoButton.titleLabel?.text = "\(String(describing: response.clothUrl))"
+//                    popUpView.wearCountButton.titleLabel?.text = "\(response.wearNum)"
+                    popUpView.wearCountButton.setTitle("\(response.wearNum)회", for: .normal)
+                    popUpView.brandNameLabel.text = (response.brand?.isEmpty ?? true) ? "지정 없음" : response.brand
+                    self.url = response.clothUrl ?? ""
+                    if response.clothUrl == nil {
+                        popUpView.urlGoButton.titleLabel?.text = "지정 안됨"
+                    }
+                    
                     
                     
                     // 이미지가 있으면 업데이트
@@ -335,6 +354,24 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                 case .failure(let error):
                     print("팝업 의류 데이터 로드 실패: \(error.localizedDescription)")
                 }
+            }
+        }
+    }
+    
+    var url: String = ""
+    
+    @objc private func urlGoButtonTapped() {
+        guard let url = URL(string: url) else {
+            print("Invalid URL")
+            return
+        }
+        
+        // URL 열기
+        UIApplication.shared.open(url, options: [:]) { success in
+            if success {
+                print("Opened URL: \(url)")
+            } else {
+                print("Failed to open URL: \(url)")
             }
         }
     }
@@ -585,12 +622,9 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     @objc private func handleBottomLabelTap() {
-        // Create an instance of the destination view controller
-        let closetViewController = ClosetViewController()
-        closetViewController.modalPresentationStyle = .fullScreen // Present it as a full-screen modal
-        
-        // Navigate without keeping the TabBar
-        self.present(closetViewController, animated: true, completion: nil)
+        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+            sceneDelegate.navigateToMyCloset()
+        }
     }
     
     // Recap 데이터를 로드하고 PickView에 전달

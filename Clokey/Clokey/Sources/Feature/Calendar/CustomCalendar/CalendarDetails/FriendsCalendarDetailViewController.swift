@@ -30,9 +30,14 @@ class FriendsCalendarDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .white
         setupUI()
         setupNavigationBar()
         updateView()
+        navBarManager.setupWhiteNavigationBar(for: navigationController)
+
         
         calendarDetailView.likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         

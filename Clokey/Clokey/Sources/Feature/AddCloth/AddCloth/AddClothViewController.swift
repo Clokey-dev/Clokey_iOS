@@ -21,6 +21,12 @@ class AddClothViewController: UIViewController, UITextFieldDelegate, UIGestureRe
         
         setupAction()
         
+        view.addSubview(loadingIndicator)
+        
+        loadingIndicator.snp.makeConstraints {
+                    $0.center.equalToSuperview()
+                }
+        
         //  화면 탭하면 키보드 내리기
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
@@ -36,7 +42,7 @@ class AddClothViewController: UIViewController, UITextFieldDelegate, UIGestureRe
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     @objc internal override func dismissKeyboard() {
@@ -79,6 +85,12 @@ class AddClothViewController: UIViewController, UITextFieldDelegate, UIGestureRe
     var cate1: String?
     var cate3: String?
     var cate3Id: Int64?
+    
+    private let loadingIndicator = UIActivityIndicatorView(style: .large).then {
+        $0.color = UIColor(named: "pointOrange800")
+        $0.hidesWhenStopped = true
+        $0.backgroundColor = .clear
+    }
     //
     // MARK: - Action Handlers
     
@@ -87,12 +99,21 @@ class AddClothViewController: UIViewController, UITextFieldDelegate, UIGestureRe
             print(" 입력 필드가 비어 있음")
             return
         }
+        
+        // 로딩 시작 (UI 스레드에서 실행)
+                DispatchQueue.main.async {
+                    self.loadingIndicator.startAnimating()
+                }
 
         let categoriesService = CategoriesService()
         
         categoriesService.getRecommendCategory(name: text) { [weak self] result in
-            DispatchQueue.main.async {
+//            DispatchQueue.main.async {
                 guard let self = self else { return }
+                
+                DispatchQueue.main.async {
+                    self.loadingIndicator.stopAnimating() // 로딩 완료되면 중지
+                }
                 
                 switch result {
                 case .success(let response):
@@ -106,18 +127,20 @@ class AddClothViewController: UIViewController, UITextFieldDelegate, UIGestureRe
                     } else {
                         //  UI 업데이트
                         self.updateCategoryTags(category1Name: category1Name, category3Name: category3Name, category3Id: category3Id)
+                        
                     }
                     
                 case .failure(let error):
                     print("카테고리 추천 데이터 로드 실패: \(error.localizedDescription)")
                 }
-            }
+//            }
         }
     }
     
     private func updateCategoryTags(category1Name: String, category3Name: String, category3Id: Int64) {
         //  기존 태그 제거
         addClothesView.categoryTagsContainer.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        
         
         // 새로운 카테고리 태그 생성
         let category1 = makeCategoryTag(title: category1Name)
@@ -191,7 +214,11 @@ class AddClothViewController: UIViewController, UITextFieldDelegate, UIGestureRe
     
     //
     @objc private func handleBack() {
-        navigationController?.popViewController(animated: true)
+//        navigationController?.popViewController(animated: true)
+        
+        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+            sceneDelegate.switchToMain()
+        }
         resetViewState() // 화면을 초기 상태로 되돌리는 함수 호출
     }
     //
