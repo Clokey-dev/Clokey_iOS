@@ -11,7 +11,7 @@ import Then
 import RxSwift
 import RxCocoa
 
-class FriendsCalendarDetailViewController: UIViewController {
+class FriendsCalendarDetailViewController: UIViewController, UIGestureRecognizerDelegate {
 
     // MARK: - Properties
     private let calendarDetailView = CalendarDetailView()
@@ -58,7 +58,11 @@ class FriendsCalendarDetailViewController: UIViewController {
         let likeTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapLikeLabel))
         calendarDetailView.likeLabel.isUserInteractionEnabled = true
         calendarDetailView.likeLabel.addGestureRecognizer(likeTapGesture)
+        
+        // 사용자 프로필 탭 제스쳐 추가
+        calendarDetailView.addProfileTapAction(target: self, action: #selector(didTapProfile))
 
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
 
     // MARK: - Setup
@@ -121,10 +125,13 @@ class FriendsCalendarDetailViewController: UIViewController {
         guard let viewModel = viewModel else { return }
         let historyId = Int(viewModel.historyId)
         
-        let commentVC = CalendarCommentViewController(historyId: historyId)
-        commentVC.modalPresentationStyle = .pageSheet
+        let commentVC = Clokey.CalendarCommentViewController(historyId: historyId)
+        commentVC.delegate = self
+        commentVC.modalPresentationStyle = UIModalPresentationStyle.pageSheet
+        
         if let sheet = commentVC.sheetPresentationController {
-            sheet.detents = [.medium(), .large()]
+            sheet.detents = [UISheetPresentationController.Detent.medium(),
+                            UISheetPresentationController.Detent.large()]
             sheet.preferredCornerRadius = 20
         }
         
@@ -137,6 +144,7 @@ class FriendsCalendarDetailViewController: UIViewController {
         let historyId = Int(viewModel.historyId)
         
         let likeListVC = LikeListViewController(historyId: historyId)
+        likeListVC.delegate = self  // delegate 설정 추가
         likeListVC.modalPresentationStyle = .pageSheet
         
         if let sheet = likeListVC.sheetPresentationController {
@@ -155,6 +163,15 @@ class FriendsCalendarDetailViewController: UIViewController {
     @objc private func didTapBackButton() {
         navigationController?.popViewController(animated: true)
     }
+    @objc private func didTapProfile() {
+        guard let clokeyId = viewModel?.clokeyId, !clokeyId.isEmpty else {
+            print("클로키 아이디가 없습니다.")
+            return
+        }
+        let followProfileVC = FollowProfileViewController(followId: clokeyId)
+        navigationController?.pushViewController(followProfileVC, animated: true)
+    }
+//
     
     // MARK: - Method
     
@@ -218,5 +235,37 @@ class FriendsCalendarDetailViewController: UIViewController {
                 print("좋아요 알림 전송 실패: \(error.localizedDescription)")
             }
         }
+    }
+    
+    // 댓글에서 프로필 화면으로
+    func showProfile(for clokeyId: String) {
+        let followProfileVC = FollowProfileViewController(followId: clokeyId)
+        navigationController?.pushViewController(followProfileVC, animated: true)
+    }
+}
+
+extension FriendsCalendarDetailViewController: LikeListViewControllerDelegate {
+    func likeListViewController(_ viewController: LikeListViewController, didSelectProfileWith clokeyId: String) {
+        // 모달을 닫고 프로필 화면으로 이동
+        viewController.dismiss(animated: true) { [weak self] in
+            self?.showProfile(for: clokeyId)
+        }
+    }
+}
+
+extension FriendsCalendarDetailViewController: CalendarCommentDelegate {
+    func CalendarCommentViewController(_ viewController: CalendarCommentViewController, didSelectProfileWith clokeyId: String) {
+        // 모달을 닫고 프로필 화면으로 이동
+        viewController.dismiss(animated: true) { [weak self] in
+            self?.showProfile(for: clokeyId)
+        }
+    }
+    
+    func didUpdateComment(count: Int) {
+        // 댓글 수 업데이트 구현
+    }
+    
+    func didDeleteComment() {
+        // 댓글 삭제 처리 구현
     }
 }

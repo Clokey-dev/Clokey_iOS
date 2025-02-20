@@ -129,13 +129,14 @@ extension SceneDelegate: Coordinator {
             UserDefaults.standard.removeObject(forKey: "PendingHistoryId") // 사용 후 삭제
             fetchHistoryDetail(historyId: historyId)
         }
+        
         // 자동으로 clokeyId가 있는 경우 FollowProfileViewController로 이동
         if let clokeyId = UserDefaults.standard.string(forKey: "PendingClokeyId") {
             UserDefaults.standard.removeObject(forKey: "PendingClokeyId")
             navigateToFollowProfile(clokeyId: clokeyId)
         }
     }
-    
+    //기록 띄울떄
     private func fetchHistoryDetail(historyId: Int) {
        let historyService = HistoryService()
 
@@ -159,7 +160,7 @@ extension SceneDelegate: Coordinator {
            }
        }
    }
-    
+    //프로필 띄울때
     func handleNotificationFollow(clokeyId: String) {
         DispatchQueue.main.async {
             self.navigateToFollowProfile(clokeyId: clokeyId)
@@ -173,7 +174,7 @@ extension SceneDelegate: Coordinator {
                 return
             }
             
-            let followProfileVC = FollowProfileViewController()
+            let followProfileVC = FollowProfileViewController(followId: clokeyId)
             followProfileVC.followId = clokeyId
             navController.pushViewController(followProfileVC, animated: true)
         }

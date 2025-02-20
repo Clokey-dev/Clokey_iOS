@@ -140,10 +140,13 @@ class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegat
         guard let viewModel = viewModel else { return }
         let historyId = Int(viewModel.historyId)
         
-        let commentVC = CalendarCommentViewController(historyId: historyId)
-        commentVC.modalPresentationStyle = .pageSheet
+        let commentVC = Clokey.CalendarCommentViewController(historyId: historyId)
+        commentVC.delegate = self
+        commentVC.modalPresentationStyle = UIModalPresentationStyle.pageSheet
+        
         if let sheet = commentVC.sheetPresentationController {
-            sheet.detents = [.medium(), .large()]
+            sheet.detents = [UISheetPresentationController.Detent.medium(),
+                            UISheetPresentationController.Detent.large()]
             sheet.preferredCornerRadius = 20
         }
         
@@ -152,7 +155,7 @@ class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegat
     
     // 댓글에서 프로필 화면으로
     func showProfile(for clokeyId: String) {
-        let followProfileVC = FollowProfileViewController()
+        let followProfileVC = FollowProfileViewController(followId: clokeyId)
         followProfileVC.followId = clokeyId
         navigationController?.pushViewController(followProfileVC, animated: true)
     }
@@ -269,11 +272,29 @@ class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegat
 }
 
 extension CalendarDetailViewController: LikeListViewControllerDelegate {
+    
     func likeListViewController(_ viewController: LikeListViewController, didSelectProfileWith clokeyId: String) {
         // 모달을 닫고 프로필 화면으로 이동
         viewController.dismiss(animated: true) { [weak self] in
             self?.showProfile(for: clokeyId)
         }
+    }
+}
+
+extension CalendarDetailViewController: CalendarCommentDelegate {
+    func CalendarCommentViewController(_ viewController: CalendarCommentViewController, didSelectProfileWith clokeyId: String) {
+        // 모달을 닫고 프로필 화면으로 이동
+        viewController.dismiss(animated: true) { [weak self] in
+            self?.showProfile(for: clokeyId)
+        }
+    }
+    
+    func didUpdateComment(count: Int) {
+        // 기존 구현 유지
+    }
+    
+    func didDeleteComment() {
+        // 기존 구현 유지
     }
 }
 

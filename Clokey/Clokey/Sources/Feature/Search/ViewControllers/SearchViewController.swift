@@ -63,6 +63,10 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
         //   기존 옵저버를 지우고 새로 추가하는 방식은 불필요 -> 한 번만 등록하면 됨
         loadRecentSearches()
     }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
     //  검색 기록 불러오기
     func loadRecentSearches() {
         recentSearches = searchManager.fetchRecentSearches()

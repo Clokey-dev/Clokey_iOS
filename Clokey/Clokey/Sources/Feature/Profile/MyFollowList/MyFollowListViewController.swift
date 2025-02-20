@@ -136,6 +136,7 @@ class MyFollowListViewController: UIViewController, UIGestureRecognizerDelegate 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
+
     }
     
     // MARK: - Setup
@@ -417,16 +418,14 @@ extension MyFollowListViewController: UICollectionViewDataSource, UICollectionVi
             let selectedUser = followerusers[indexPath.item]
             print("팔로워 선택됨: \(selectedUser.nickname)")
             
-            let followProfileViewController = FollowProfileViewController()
-            followProfileViewController.followId = selectedUser.userId
-            navigationController?.pushViewController(followProfileViewController, animated: false)
+            let followProfileVC = FollowProfileViewController(followId: selectedUser.userId)
+            navigationController?.pushViewController(followProfileVC, animated: false)
         } else if collectionView == followingCollectionView {
             let selectedUser = followingusers[indexPath.item]
             print("팔로잉 선택됨: \(selectedUser.nickname)")
             
-            let followProfileViewController = FollowProfileViewController()
-            followProfileViewController.followId = selectedUser.userId
-            navigationController?.pushViewController(followProfileViewController, animated: false)
+            let followProfileVC = FollowProfileViewController(followId: selectedUser.userId)
+            navigationController?.pushViewController(followProfileVC, animated: false)
         }
     }
 }
