@@ -8,7 +8,7 @@ final class PopUpViewController: UIViewController {
     /// API 호출 시 사용할 옷 아이템의 ID (checkPopUpClothes API 사용)
     var clothId: Int64? {
         didSet {
-            // clothId가 변경될 때마다 API 호출하도록 할 수도 있습니다.
+            // clothId가 변경될 때마다 API 호출
             fetchPopUpClothesDetail()
         }
     }
@@ -18,7 +18,8 @@ final class PopUpViewController: UIViewController {
     /// 현재 선택된 아이템 인덱스
     var currentIndex: Int = 0
     
-    private let clothesService = ClothesService()
+    // clothesService의 접근 수준은 PopUpDropdownViewController에서 접근 가능하도록 internal(let)로 선언
+    let clothesService = ClothesService()
     
     /// 현재 버튼에 할당된 옷 URL (유효한 경우)
     private var currentClothUrl: String?
@@ -52,6 +53,8 @@ final class PopUpViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // 팝업이 재진입할 때 버튼 상태를 업데이트
+        updateArrowButtonStates()
         UIView.animate(withDuration: 0.3) {
             self.dimmingView.alpha = 1
             self.popupView.alpha = 1
@@ -104,6 +107,7 @@ final class PopUpViewController: UIViewController {
         } else {
             print("첫 번째 항목입니다.")
         }
+        updateArrowButtonStates()
     }
     
     @objc private func rightArrowButtonTapped() {
@@ -116,6 +120,17 @@ final class PopUpViewController: UIViewController {
         } else {
             print("마지막 항목입니다.")
         }
+        updateArrowButtonStates()
+    }
+    
+    private func updateArrowButtonStates() {
+        let isLeftEnabled = currentIndex > 0
+        popupView.leftArrowButton.isUserInteractionEnabled = isLeftEnabled
+        popupView.leftArrowButton.tintColor = isLeftEnabled ? UIColor(named: "mainBrown800") : UIColor(named: "mainBrown600")
+        
+        let isRightEnabled = currentIndex < clothPreviews.count - 1
+        popupView.rightArrowButton.isUserInteractionEnabled = isRightEnabled
+        popupView.rightArrowButton.tintColor = isRightEnabled ? UIColor(named: "mainBrown800") : UIColor(named: "mainBrown600")
     }
     
     private func dismissPopup() {
@@ -151,9 +166,9 @@ final class PopUpViewController: UIViewController {
         
         // Visibility: PUBLIC이면 lock_on, 그 외에는 lock_off 이미지
         if detail.visibility == "PUBLIC" {
-            popupView.publicButton.setImage(UIImage(named: "lock_on"), for: .normal)
-        } else {
             popupView.publicButton.setImage(UIImage(named: "lock_off"), for: .normal)
+        } else {
+            popupView.publicButton.setImage(UIImage(named: "lock_on"), for: .normal)
         }
         
         // 이미지
@@ -163,7 +178,7 @@ final class PopUpViewController: UIViewController {
             popupView.imageView.image = UIImage(named: "placeholderImage")
         }
         
-        // 계절 버튼 업데이트: 해당 계절이면 mainBrown600/white, 아니면 mainBrown50/black, border 추가
+        // 계절 버튼 업데이트
         if detail.seasons.contains("SPRING") {
             popupView.springButton.backgroundColor = UIColor(named: "mainBrown600")
             popupView.springButton.setTitleColor(.white, for: .normal)
@@ -214,7 +229,7 @@ final class PopUpViewController: UIViewController {
         // Brand
         popupView.brandNameLabel.text = (detail.brand?.isEmpty ?? true) ? "설정하지 않음" : detail.brand
         
-        // clothUrl 처리: detail.clothUrl이 "string" 또는 빈 값이면 "설정하지 않음", 유효한 URL이면 "바로가기"로 표시 후 클릭 시 해당 URL로 이동
+        // clothUrl 처리: detail.clothUrl이 nil 또는 빈 값이면 "설정하지 않음", 유효한 URL이면 "바로가기"로 표시 후 클릭 시 해당 URL로 이동
         if let urlString = detail.clothUrl, !urlString.isEmpty, let _ = URL(string: urlString) {
             let title = "바로가기"
             let attributes: [NSAttributedString.Key: Any] = [
@@ -237,7 +252,6 @@ final class PopUpViewController: UIViewController {
             currentClothUrl = nil
             popupView.urlGoButton.removeTarget(nil, action: nil, for: .allEvents)
         }
-
         
         // Category
         popupView.categoryButton2.setTitle(detail.category, for: .normal)

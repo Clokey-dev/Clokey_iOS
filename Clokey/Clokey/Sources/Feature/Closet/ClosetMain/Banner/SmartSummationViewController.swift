@@ -1,5 +1,9 @@
 import UIKit
 
+protocol SmartSummationViewControllerDelegate: AnyObject {
+    func didSelectCategory(baseCategoryName: String, coreCategoryName: String, coreCategoryId: Int64, season: String?)
+}
+
 class SmartSummationViewController: UIViewController {
     
     // MARK: - UI & Service
@@ -9,6 +13,10 @@ class SmartSummationViewController: UIViewController {
     // MARK: - Data
     private var frequentClothes: [ClothPreviewDTO] = []
     private var infrequentClothes: [ClothPreviewDTO] = []
+    
+    // coreCategoryId 외에 전체 정보를 저장 (frequentResult, infrequentResult)
+    private var frequentResult: SummaryClothPreviewDTO?
+    private var infrequentResult: SummaryClothPreviewDTO?
     
     private enum SortOption: String {
         case wear = "WEAR"
@@ -30,16 +38,61 @@ class SmartSummationViewController: UIViewController {
     private var currentSort: SortOption = .wear
 
     override func loadView() {
-        // SmartSummationView를 루트 뷰로 설정
         self.view = summationView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
+        setupActions()
         setupCollectionViews()
         fetchSmartSummationData()
     }
     
+    private func setupUI() {
+        let navBarManager = NavigationBarManager()
+        navBarManager.addBackButton(to: navigationItem, target: self, action: #selector(backButtonTapped))
+        navBarManager.setTitle(to: navigationItem, title: "스마트 요약", font: .ptdBoldFont(ofSize: 20), textColor: .black)
+    }
+    
+    private func setupActions() {
+        summationView.seeAllButton.addTarget(self, action: #selector(seeAllButton1Tapped), for: .touchUpInside)
+        summationView.seeAllButton2.addTarget(self, action: #selector(seeAllButton2Tapped), for: .touchUpInside)
+    }
+    
+    @objc private func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    // seeAllButton1 (자주 착용한 옷)
+    @objc private func seeAllButton1Tapped() {
+        guard let result = self.frequentResult else { return }
+        let displayAllVC = DisplayAllViewController()
+        displayAllVC.loadViewIfNeeded() // viewDidLoad가 호출되도록 함
+        displayAllVC.didSelectCategory(
+             baseCategoryName: result.baseCategoryName,
+             coreCategoryName: result.coreCategoryName,
+             coreCategoryId: result.coreCategoryId,
+             season: "ALL"
+        )
+        navigationController?.pushViewController(displayAllVC, animated: true)
+    }
+
+    
+    // seeAllButton2 (잘 안 착용한 옷)
+    @objc private func seeAllButton2Tapped() {
+        guard let result = self.frequentResult else { return }
+        let displayAllVC = DisplayAllViewController()
+        displayAllVC.loadViewIfNeeded() // viewDidLoad가 호출되도록 함
+        displayAllVC.didSelectCategory(
+             baseCategoryName: result.baseCategoryName,
+             coreCategoryName: result.coreCategoryName,
+             coreCategoryId: result.coreCategoryId,
+             season: "ALL"
+        )
+        navigationController?.pushViewController(displayAllVC, animated: true)
+    }
+
     // MARK: - CollectionView Setup
     private func setupCollectionViews() {
         summationView.freCollectionView.dataSource = self
@@ -49,38 +102,37 @@ class SmartSummationViewController: UIViewController {
         summationView.infreCollectionView.delegate = self
     }
     
-    
     // MARK: - API Data Fetching
     private func fetchSmartSummationData() {
         clothesService.getSmartSummationClothes { [weak self] result in
             guard let self = self else { return }
-            
             switch result {
             case .success(let response):
-                if response.isSuccess {
-                    let frequent = response.result.frequentResult
-                    let infrequent = response.result.infrequentResult
+                let frequent = response.frequentResult
+                let infrequent = response.infrequentResult
+                let nickname = response.nickname
+                
+                // 저장
+                self.frequentResult = frequent
+                self.infrequentResult = infrequent
+                
+                DispatchQueue.main.async {
+                    self.summationView.bannerDescription.text =
+                        "지난 7일 간 \(nickname)님의 옷 데이터를 모았어요!\n자주 착용한 옷과 착용하지 않은 옷입니다!"
                     
-                    DispatchQueue.main.async {
-                        // 업데이트: 자주 입은 옷 섹션
-                        self.summationView.categoryButton1.setTitle(frequent.baseCategoryName, for: .normal)
-                        self.summationView.categoryButton2.setTitle(frequent.coreCategoryName, for: .normal)
-                        self.summationView.frequentTitleLabel.text = " - 일주일간 평균 \(frequent.usage)회 착용"
-                        
-                        // 최대 3개 셀만 사용
-                        self.frequentClothes = Array(frequent.clothPreviews.prefix(3))
-                        self.summationView.freCollectionView.reloadData()
-                        
-                        // 업데이트: 잘 안 입은 옷 섹션
-                        self.summationView.categoryButton3.setTitle(infrequent.baseCategoryName, for: .normal)
-                        self.summationView.categoryButton4.setTitle(infrequent.coreCategoryName, for: .normal)
-                        self.summationView.infrequentTitleLabel.text = " - 일주일간 평균 \(infrequent.usage)회 착용"
-                        
-                        self.infrequentClothes = Array(infrequent.clothPreviews.prefix(3))
-                        self.summationView.infreCollectionView.reloadData()
-                    }
-                } else {
-                    print("스마트 요약 API 응답 실패: isSuccess false")
+                    self.summationView.categoryButton1.setTitle(frequent.baseCategoryName, for: .normal)
+                    self.summationView.categoryButton2.setTitle(frequent.coreCategoryName, for: .normal)
+                    self.summationView.frequentTitleLabel.text = " - 일주일간 평균 \(frequent.usage)회 착용"
+                    self.frequentClothes = Array(frequent.clothPreviews.prefix(3))
+                    self.summationView.seeAllButton.setTitle("\(frequent.coreCategoryName) 전체보기", for: .normal)
+                    self.summationView.freCollectionView.reloadData()
+                    
+                    self.summationView.categoryButton3.setTitle(infrequent.baseCategoryName, for: .normal)
+                    self.summationView.categoryButton4.setTitle(infrequent.coreCategoryName, for: .normal)
+                    self.summationView.infrequentTitleLabel.text = " - 일주일간 평균 \(infrequent.usage)회 착용"
+                    self.infrequentClothes = Array(infrequent.clothPreviews.prefix(3))
+                    self.summationView.seeAllButton2.setTitle("\(infrequent.coreCategoryName) 전체보기", for: .normal)
+                    self.summationView.infreCollectionView.reloadData()
                 }
             case .failure(let error):
                 print("스마트 요약 API 호출 실패: \(error.localizedDescription)")
@@ -89,30 +141,18 @@ class SmartSummationViewController: UIViewController {
     }
 }
 
-// MARK: - UICollectionViewDataSource & DelegateFlowLayout
 extension SmartSummationViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
-    // 두 컬렉션 뷰 모두 섹션은 1개
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == summationView.freCollectionView {
-            return frequentClothes.count
-        } else {
-            return infrequentClothes.count
-        }
+        return (collectionView == summationView.freCollectionView) ? frequentClothes.count : infrequentClothes.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        // 팀에서 사용하는 CustomCollectionViewCell을 그대로 사용
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCollectionViewCell.identifier,
                                                             for: indexPath) as? CustomCollectionViewCell else {
             return UICollectionViewCell()
         }
         
-        let cloth: ClothPreviewDTO = (collectionView == summationView.freCollectionView)
-            ? frequentClothes[indexPath.item]
-            : infrequentClothes[indexPath.item]
-        
-        // 직접 셀의 프로퍼티에 값을 할당하여 구성
+        let cloth = (collectionView == summationView.freCollectionView) ? frequentClothes[indexPath.item] : infrequentClothes[indexPath.item]
         if let url = URL(string: cloth.imageUrl) {
             cell.productImageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholderImage"))
         } else {
@@ -121,15 +161,12 @@ extension SmartSummationViewController: UICollectionViewDataSource, UICollection
         cell.countLabel.text = "\(cloth.wearNum)회"
         cell.nameLabel.text = cloth.name
         cell.numberLabel.text = "\(indexPath.item + 1)"
-        
         return cell
     }
     
-    // 셀 크기 설정 (FlowLayout)
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        // 디자인에 맞춰 111 x 167 크기로 반환
         return CGSize(width: 111, height: 167)
     }
 }

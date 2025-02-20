@@ -33,8 +33,16 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         view = followProfileView
     }
     
+    init(followId: String) {
+            self.followId = followId
+            super.init(nibName: nil, bundle: nil)
+        }
+    required init?(coder: NSCoder) {
+           fatalError("init(coder:) has not been implemented")
+       }
     override func viewDidLoad() {
         super.viewDidLoad()
+        followCalendarViewController.followId = self.followId
         followProfileView.scrollView.contentInsetAdjustmentBehavior = .never
         
         definesPresentationContext = true // 현재 컨텍스트에서 새로운 뷰 표시

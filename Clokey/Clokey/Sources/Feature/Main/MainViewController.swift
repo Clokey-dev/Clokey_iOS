@@ -21,7 +21,10 @@ final class MainViewController: UIViewController {
     private lazy var closetVC = ClosetViewController()
     private lazy var profileVC = ProfileViewController()
     private lazy var notificationVC = NotificationViewController()
-    private lazy var followProfileVC = FollowProfileViewController()
+    private lazy var followProfileVC: FollowProfileViewController = {
+        return FollowProfileViewController(followId: "기본값")
+    }()
+    
     
     // MARK: - Lifecycle
     override func loadView() {

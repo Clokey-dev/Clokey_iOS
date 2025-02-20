@@ -17,7 +17,6 @@ import SnapKit
 import Then
 import Kingfisher
 
-
 class SearchResultViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate {
     private let searchView = SearchResultView()
     private let searchManager = SearchManager()
@@ -117,7 +116,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
+        navigationController?.setNavigationBarHidden(true, animated: false)
         searchView.hashtagsCollectionView.reloadData()
         searchView.accountsCollectionView.reloadData()
     }
@@ -126,13 +125,13 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         
         searchHistory = searchManager.fetchRecentSearches() //  검색 기록 강제 업데이트
         searchView.accountsCollectionView.reloadData()
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     @objc private func tabSelected(_ sender: UIButton) {
@@ -297,6 +296,10 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         
         isFetchingData = true  // API 요청 중 상태 설정
         let page = isNextPage ? currentPage + 1 : 1
+        if !isNextPage {
+                dummyImages.removeAll()
+                dummyHistoryIDs.removeAll()
+            }
 
         SearchService().searchHistory(by: "hashtag-and-category", keyword: query, page: page, size: pageSize) { [weak self] result in
             DispatchQueue.main.async {
@@ -450,7 +453,8 @@ extension SearchResultViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let query = textField.text, !query.isEmpty else { return false }
         
-        
+        dummyImages.removeAll()
+           dummyHistoryIDs.removeAll()
         
         //  검색어 저장 추가
         searchManager.addSearchKeyword(query)
@@ -500,10 +504,12 @@ extension SearchResultViewController: UITextFieldDelegate {
                 switch result {
                 case .success(let response):
                     let newImages = response.historyPreviews.map { $0.imageUrl }
+                    let newHistoryIDs: [Int] = response.historyPreviews.map { Int($0.id) }
                     
                     DispatchQueue.main.async {
                         self.query = query
                         self.dummyImages = newImages
+                        self.dummyHistoryIDs = newHistoryIDs
                         
                         
                         
@@ -567,6 +573,7 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
     }
     // MARK: - UICollectionViewDelegate
     
+    // collectionView의 didSelectItemAt에서 historyId를 추출하여 처리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == searchView.hashtagsCollectionView {
             guard let cell = collectionView.cellForItem(at: indexPath) as? ImageCell,
@@ -575,15 +582,16 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
                 print("historyId 못찾음")
                 return
             }
+            print("선택된 historyId: \(historyId)")
             fetchHistoryDetail(historyId: historyId)
-        } else if collectionView == searchView.accountsCollectionView {
+        } // SearchResultViewController 내 didSelectItemAt
+        else if collectionView == searchView.accountsCollectionView {
             let user = filteredUsers[indexPath.item]
-            let followProfileVC = FollowProfileViewController()
-            followProfileVC.followId = user.clokeyId
+            // 커스텀 이니셜라이저를 사용하여 인스턴스 생성
+            let followProfileVC = FollowProfileViewController(followId: user.clokeyId)
             navigationController?.pushViewController(followProfileVC, animated: true)
         }
     }
-    
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView,
@@ -631,8 +639,7 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
             
             switch result {
             case .success(let response):
-                
-                
+                // 상세 정보 페이지로 이동
                 let detailVC = FriendsCalendarDetailViewController()
                 detailVC.setDetailData(response) // 상세 데이터 전달
                 self.navigationController?.pushViewController(detailVC, animated: true)
