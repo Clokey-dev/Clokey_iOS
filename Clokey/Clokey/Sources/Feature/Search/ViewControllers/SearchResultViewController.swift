@@ -31,6 +31,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
     private var searchHistory: [String] = []
     private var initialTabIsHashtag: Bool = false
     
+    private var isFetchingData = false
     // 서버 연결을 위한 변수들
     private var currentPage = 1
     private let pageSize = 20
@@ -57,6 +58,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         searchView.accountsCollectionView.reloadData()
         //  네비게이션 바 스타일 설정
         
+        setupRefreshControl()
         
         
         navigationController?.navigationBar.isTranslucent = false
@@ -164,13 +166,20 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         let contentHeight = scrollView.contentSize.height
         let frameHeight = scrollView.frame.size.height
         
-        if offsetY > contentHeight - frameHeight - 100 {
-            guard let query = searchView.searchField.text, !query.isEmpty else { return }
+        // 컬렉션뷰가 스크롤 가능한 경우에만 무한 스크롤 API 호출
+        if contentHeight > frameHeight,
+           offsetY > contentHeight - frameHeight - 100,
+           let query = searchView.searchField.text, !query.isEmpty {
             
-            loadMemberData(query: query, isNextPage: true)
+            if scrollView == searchView.accountsCollectionView {
+                guard !isFetchingData else { return }
+                loadMemberData(query: query, isNextPage: true)
+            } else if scrollView == searchView.hashtagsCollectionView {
+                guard !isFetchingData else { return }
+                loadHistoryData(query: query, isNextPage: true)
+            }
         }
     }
-    
     private func addSearchHistory(_ query: String) {
         var searchHistory = UserDefaults.standard.stringArray(forKey: "searchHistory") ?? []
         searchHistory.removeAll { $0 == query }
@@ -283,20 +292,22 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         }
     }
     private func loadHistoryData(query: String, isNextPage: Bool = false) {
-        guard hasMorePages else { return }
+        // 중복 요청 방지
+        guard !isFetchingData, hasMorePages else { return }
         
+        isFetchingData = true  // API 요청 중 상태 설정
         let page = isNextPage ? currentPage + 1 : 1
-        
+
         SearchService().searchHistory(by: "hashtag-and-category", keyword: query, page: page, size: pageSize) { [weak self] result in
-            switch result {
-            case .success(let response):
-                // HistoryPreviewDTO에서 imageUrl과 id 값을 추출합니다.
-                let newImages = response.historyPreviews.map { $0.imageUrl }
-                let newHistoryIDs: [Int] = response.historyPreviews.map { Int($0.id) }
-                
-                DispatchQueue.main.async {
-                    guard let self = self else { return }
-                    
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.isFetchingData = false  // API 요청 완료 상태로 변경
+
+                switch result {
+                case .success(let response):
+                    let newImages = response.historyPreviews.map { $0.imageUrl }
+                    let newHistoryIDs: [Int] = response.historyPreviews.map { Int($0.id) }
+
                     if isNextPage {
                         self.dummyImages.append(contentsOf: newImages)
                         self.dummyHistoryIDs.append(contentsOf: newHistoryIDs)
@@ -306,19 +317,16 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
                         self.dummyHistoryIDs = newHistoryIDs
                         self.currentPage = 1
                     }
-                    
-                    self.searchView.emptyLabel.isHidden = !self.dummyImages.isEmpty
+
                     self.searchView.hashtagsCollectionView.reloadData()
-                    
-                    
+                    self.updateEmptyLabel()
+
+                case .failure(let error):
+                    print("❌ 해시태그 검색 실패: \(error.localizedDescription)")
                 }
-                
-            case .failure(let error):
-                print("❌ 해시태그 검색 실패: \(error.localizedDescription)")
             }
         }
     }
-    
     @objc private func textFieldDidChange(_ textField: UITextField) {
         guard let query = textField.text, !query.isEmpty else {
             print(" 현재 검색어 없음, 기존 데이터 유지")
@@ -373,6 +381,68 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
             }
         }
     }
+    private func setupRefreshControl() {
+        let refreshControlAccount = UIRefreshControl()
+        refreshControlAccount.addTarget(self, action: #selector(refreshAccounts), for: .valueChanged)
+        searchView.accountsCollectionView.refreshControl = refreshControlAccount
+        
+        let refreshControlHashtag = UIRefreshControl()
+        refreshControlHashtag.addTarget(self, action: #selector(refreshHashtags), for: .valueChanged)
+        searchView.hashtagsCollectionView.refreshControl = refreshControlHashtag
+    }
+    @objc private func refreshAccounts() {
+       
+        guard !query.isEmpty else {
+            searchView.accountsCollectionView.refreshControl?.endRefreshing()
+            return
+        }
+
+        loadMemberData(query: query, isNextPage: false)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.searchView.accountsCollectionView.refreshControl?.endRefreshing()
+        }
+    }
+
+    //  해시태그 목록 새로고침
+    @objc private func refreshHashtags() {
+        
+
+        // 중복 요청 방지
+        guard !isFetchingData else {
+            searchView.hashtagsCollectionView.refreshControl?.endRefreshing()
+            return
+        }
+        
+        guard !query.isEmpty else {
+            searchView.hashtagsCollectionView.refreshControl?.endRefreshing()
+            return
+        }
+
+        // 기존 데이터 초기화
+        dummyImages.removeAll()
+        dummyHistoryIDs.removeAll()
+        searchView.hashtagsCollectionView.reloadData()
+        
+        // isFetchingData 플래그를 loadHistoryData 내부에서 관리하도록 호출
+        loadHistoryData(query: query, isNextPage: false)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.searchView.hashtagsCollectionView.refreshControl?.endRefreshing()
+            self.updateEmptyLabel()
+        }
+    
+    
+    }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+
+        // API가 진행 중이면 터치 이벤트 무시
+        if isFetchingData {
+            print("⚠️ API 요청 중이므로 터치 이벤트 무시")
+            return
+        }
+    }
     
 }
 
@@ -390,6 +460,8 @@ extension SearchResultViewController: UITextFieldDelegate {
         
         if isAccountTabSelected {
             //  계정 검색 API 호출
+            
+               
             SearchService().searchMember(by: "id-and-nickname", keyword: query, page: 1, size: 20) { (result: Result<SearchMemberResponseDTO, NetworkError>) in
                 switch result {
                 case .success(let response):
