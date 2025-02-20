@@ -34,6 +34,13 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
         addProfileView.addImageButton1.isUserInteractionEnabled = true
         addProfileView.addImageButton2.isUserInteractionEnabled = true
         
+//        if addProfileView.profileImageView.image == nil {
+//            addProfileView.profileImageView.image = UIImage(named: "profile_basic")
+//        }
+//        if addProfileView.backgroundImageView.image == nil {
+//            addProfileView.backgroundImageView.image = UIImage(named: "background_basic")
+//        }
+        
         addProfileView.addImageButton1.addTarget(self, action: #selector(didTapAddImageButton(_:)), for: .touchUpInside)
         addProfileView.addImageButton2.addTarget(self, action: #selector(didTapAddImageButton(_:)), for: .touchUpInside)
         
@@ -333,12 +340,9 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
         ProfileViewModel.shared.userId = id
         UserDefaults.standard.set(id, forKey: "userId")
         
-        //  프로필 이미지와 배경 이미지 크기 조정 및 압축 적용
-        guard let profileImage = addProfileView.profileImageView.image,
-              let backgroundImage = addProfileView.backgroundImageView.image else {
-            print("🚨 이미지가 선택되지 않음")
-            return
-        }
+        // 프로필 및 배경 이미지가 선택되지 않은 경우 기본 이미지 할당
+        let profileImage = addProfileView.profileImageView.image ?? UIImage(named: "profile_basic")!
+        let backgroundImage = addProfileView.backgroundImageView.image ?? UIImage(named: "background_basic")!
         
         let resizedProfile = resizeImage(image: profileImage, targetSize: CGSize(width: 800, height: 800))
         let resizedBack = resizeImage(image: backgroundImage, targetSize: CGSize(width: 800, height: 800))

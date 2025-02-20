@@ -34,7 +34,7 @@ final class AddProfileView: UIView {
     }
     
     var backgroundImageView = UIImageView().then {
-        $0.image = UIImage(named: "profile_background")
+        $0.image = UIImage(named: "background_basic")
         $0.backgroundColor = UIColor(red: 255/255, green: 248/255, blue: 235/255, alpha: 1)
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
