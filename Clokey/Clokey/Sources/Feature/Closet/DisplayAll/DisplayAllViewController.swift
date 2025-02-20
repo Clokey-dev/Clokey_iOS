@@ -269,11 +269,18 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let popupVC = PopUpViewController()
-        popupVC.modalPresentationStyle = .overCurrentContext
-        popupVC.modalTransitionStyle = .crossDissolve
-        present(popupVC, animated: true, completion: nil)
+        if collectionView == displayAllView.collectionView {
+            let popUpVC = PopUpViewController()
+            // closetItems를 ClothPreview 모델 배열로 변환해서 전달
+            popUpVC.clothPreviews = clothItems.map { ClothPreview(id: $0.id, name: $0.name, wearNum: $0.count, imageUrl: $0.image) }
+            popUpVC.currentIndex = indexPath.item
+            popUpVC.clothId = Int64(popUpVC.clothPreviews[indexPath.item].id)
+            popUpVC.modalPresentationStyle = .overCurrentContext
+            popUpVC.modalTransitionStyle = .crossDissolve
+            present(popUpVC, animated: true)
+        }
     }
+
     
     // MARK: - Segment Control & SearchField Actions
     @objc private func segmentChanged(_ sender: UISegmentedControl) {

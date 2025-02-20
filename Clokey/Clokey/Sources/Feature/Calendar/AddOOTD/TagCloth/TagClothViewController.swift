@@ -13,7 +13,7 @@ protocol TagClothViewControllerDelegate: AnyObject {
     func didSelectTags(_ tags: [(id: Int, image: UIImage, title: String)])
 }
 
-class TagClothViewController: UIViewController {
+class TagClothViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Types
     
@@ -96,6 +96,7 @@ class TagClothViewController: UIViewController {
         setupKeyboardDismissGestures() // 키보드 제스처 설정
         tagClothView.customTotalSegmentView.delegate = self
         tagClothView.delegate = self
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     override func viewDidLayoutSubviews() {
@@ -120,6 +121,8 @@ class TagClothViewController: UIViewController {
     // 네비게이션 설정
     private func setupNavigationBar() {
         navigationItem.rightBarButtonItem = confirmButton
+        navigationController?.navigationBar.barTintColor = .white
+
         let navBarManager = NavigationBarManager()
         navBarManager.addBackButton(
             to: navigationItem,

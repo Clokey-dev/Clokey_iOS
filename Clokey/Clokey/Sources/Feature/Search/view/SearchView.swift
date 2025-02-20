@@ -91,7 +91,7 @@ class SearchView: UIView {
         return stackView
     }()
     
-    let recommendedKeywords = ["새해룩", "새학기", "개강룩", "새내기", "헌내기", "베이프", "스투시", "후드집업"]
+    let recommendedKeywords = [ "새학기", "개강룩", "OOTD", "느좋녀", "느좋남", "아디다스", "스투시", "나이키", "스트릿"]
     
     override init(frame: CGRect) {
         super.init(frame: frame)

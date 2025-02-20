@@ -92,6 +92,7 @@ public struct HistoryLikeListResponseDTO: Codable {
         public let nickname: String
         public let imageUrl: String
         public let followStatus: Bool
+        public let me: Bool
     }
 }
 

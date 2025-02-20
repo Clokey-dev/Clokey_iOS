@@ -77,4 +77,13 @@ class NotificationView: UIView {
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
+    
+}
+extension UIButton {
+    open override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        // 터치 영역을 확장할 여분의 크기 (예: 상하좌우 10pt씩 확장)
+        let margin: CGFloat = 10
+        let largerArea = bounds.insetBy(dx: -margin, dy: -margin)
+        return largerArea.contains(point)
+    }
 }

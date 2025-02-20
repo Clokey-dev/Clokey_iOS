@@ -333,17 +333,19 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
     // MARK: - UICollectionView Delegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == closetView.collectionView {
-            let product = closetItems[indexPath.item]
             let popUpVC = PopUpViewController()
+            // closetItems를 ClothPreview 모델 배열로 변환해서 전달 (클래스 이름은 실제 모델에 맞게 변경)
+            popUpVC.clothPreviews = closetItems.map { ClothPreview(id: $0.id, name: $0.name, wearNum: $0.count, imageUrl: $0.image) }
+            popUpVC.currentIndex = indexPath.item
+            popUpVC.clothId = Int64(popUpVC.clothPreviews[indexPath.item].id)
             popUpVC.modalPresentationStyle = .overCurrentContext
             popUpVC.modalTransitionStyle = .crossDissolve
             present(popUpVC, animated: true)
         } else if collectionView == closetView.drawerCollectionView {
-            let selectedItem = drawerItems[indexPath.item]
-            let drawerVC = DrawerViewController(drawerItem: selectedItem)
-            navigationController?.pushViewController(drawerVC, animated: true)
+            // drawerCollectionView의 경우
         }
     }
+
 }
 
 // MARK: - CustomTotalSegmentViewDelegate

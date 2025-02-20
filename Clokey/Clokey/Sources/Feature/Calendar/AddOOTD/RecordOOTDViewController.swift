@@ -8,7 +8,7 @@
 import UIKit
 import Kingfisher
 
-class RecordOOTDViewController: UIViewController {
+class RecordOOTDViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Properties
 
@@ -45,6 +45,7 @@ class RecordOOTDViewController: UIViewController {
         updateCollectionViewHeight(false)
         
         mainView.contentInputView.delegate = self
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     // MARK: - Setup
@@ -129,6 +130,11 @@ class RecordOOTDViewController: UIViewController {
         loadImages(from: viewModel.images)
         loadTaggedClothes(from: viewModel.cloths)
     }
+    
+    private func updateOOTDButtonState() {
+        mainView.OOTDButton.isEnabled = !selectedImages.isEmpty && !taggedItems.isEmpty
+    }
+
 
     
     // MARK: - Actions
@@ -184,9 +190,17 @@ class RecordOOTDViewController: UIViewController {
                 return image.jpegData(compressionQuality: 1.0) ?? nil
             }
             
+            DispatchQueue.main.async {
+                self.mainView.loadingIndicator.startAnimating()
+            }
+            
             let historyService = HistoryService()
             historyService.historyCreate(data: requestDTO, images: imageDataArray) { [weak self] result in
                 guard let self = self else { return }
+                
+                DispatchQueue.main.async {
+                    self.mainView.loadingIndicator.stopAnimating()
+                }
                 
                 switch result {
                 case .success(let response):
@@ -241,12 +255,10 @@ extension RecordOOTDViewController: UICollectionViewDataSource {
                 // 컬렉션 뷰 상태 완전 초기화
                 self.mainView.photoTagView.imageCollectionView.reloadData()
                 
-                // 이미지가 모두 삭제되었을 때 컬렉션 뷰 상태 리셋
-                if self.selectedImages.isEmpty {
-                    self.mainView.photoTagView.imageCollectionView.setContentOffset(.zero, animated: true)
-                }
-                
                 self.updateCollectionViewHeight(!self.selectedImages.isEmpty)
+                    
+                // 버튼 상태 업데이트
+                self.updateOOTDButtonState()
             }
             
             return cell
@@ -303,7 +315,7 @@ extension RecordOOTDViewController {
         // 아이템 삭제 시, 컬렉션 뷰 높이 값 수정
         mainView.photoTagView.updateTagCollectionViewHeight(!taggedItems.isEmpty)
         
-        mainView.OOTDButton.setEnabled(!taggedItems.isEmpty)
+        updateOOTDButtonState()
     }
 }
 
@@ -349,6 +361,8 @@ extension RecordOOTDViewController: PhotoEditViewControllerDelegate {
         mainView.photoTagView.imageCollectionView.reloadData()
         updateCollectionViewHeight(!images.isEmpty) // 이미지가 있으면 컬렉션 뷰 높이 설정, 없으면 숨김
         mainView.photoTagView.layoutIfNeeded()
+        
+        updateOOTDButtonState()
     }
 }
 
@@ -410,11 +424,7 @@ extension RecordOOTDViewController: TagClothViewControllerDelegate {
         mainView.photoTagView.updateTagCollectionViewHeight(!tags.isEmpty)
         
         // 기록하기 확인 버튼 활성화/비활성화
-        if !tags.isEmpty {
-            mainView.OOTDButton.setEnabled(true)
-        } else {
-            mainView.OOTDButton.setEnabled(false)
-        }
+        updateOOTDButtonState()
     }
 }
 
@@ -428,6 +438,12 @@ extension RecordOOTDViewController {
     */
     // 태그한 옷 불러오기
         func loadTaggedClothes(from cloths: [CalendarDetailViewModel.ClothDTO]) {
+        
+        // 로딩 인디케이터
+        DispatchQueue.main.async {
+                self.mainView.loadingIndicator.startAnimating()
+            }
+            
         // 비동기 네트워크 요청 관리를 위한 DispatchGroup 생성
         let dispatchGroup = DispatchGroup()
         var loadedClothes: [(id: Int, image: UIImage, title: String)] = []
@@ -455,6 +471,8 @@ extension RecordOOTDViewController {
             self.mainView.photoTagView.tagCollectionView.reloadData()
             self.mainView.photoTagView.updateTagCollectionViewHeight(!loadedClothes.isEmpty)
             
+            self.mainView.loadingIndicator.stopAnimating()
+
             self.mainView.OOTDButton.setEnabled(!loadedClothes.isEmpty)
         }
     }

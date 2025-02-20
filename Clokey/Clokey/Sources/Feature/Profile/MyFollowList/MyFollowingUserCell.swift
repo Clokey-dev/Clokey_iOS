@@ -15,6 +15,8 @@ import Kingfisher
 class MyFollowingUserCell: UICollectionViewCell {
     static let identifier = "MyFollowingUserCell"
     
+    private var isFollowing: Bool = false
+    
     // MARK: - UI Components
     private let profileImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
@@ -41,7 +43,7 @@ class MyFollowingUserCell: UICollectionViewCell {
     
     let followButton = {
         var configuration = UIButton.Configuration.plain()
-        configuration.title = "팔로잉"
+        configuration.title = "팔로우"
         configuration.baseForegroundColor = .white
         configuration.background.backgroundColor = .black
         configuration.cornerStyle = .medium
@@ -53,6 +55,7 @@ class MyFollowingUserCell: UICollectionViewCell {
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupActions()
         setupUI()
     }
     
@@ -89,6 +92,55 @@ class MyFollowingUserCell: UICollectionViewCell {
         }
     }
     
+    // MARK: - Follow/UnFollow
+    private func setupActions() {
+        followButton.addTarget(self, action: #selector(followButtonTapped), for: .touchUpInside)
+    }
+    
+    // 팔로우 버튼
+    @objc private func followButtonTapped() {
+        guard let clokeyId = userIdLabel.text else { return }
+
+        followUser(clokeyId: clokeyId)
+    }
+    
+    // 팔로우/언팔로우
+    private func followUser(clokeyId: String) {
+        let membersService = MembersService()
+        
+        let wasFollowing = isFollowing
+        
+        membersService.followUser(clokeyId: clokeyId) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success:
+                self.isFollowing.toggle()
+                DispatchQueue.main.async {
+                    self.updateFollowButton(isFollower: self.isFollowing)
+                }
+                // 팔로우 걸때만
+                if !wasFollowing && self.isFollowing {
+                    self.sendFollowNotification(clokeyId: clokeyId)
+                }
+            case .failure(let error):
+                print("팔로우 실패: \(error.localizedDescription)")
+            }
+        }
+    }
+    // 팔로우 걸 때 알림
+    private func sendFollowNotification(clokeyId: String) {
+        let notificationService = NotificationService()
+        
+        notificationService.notificationFollow(clokeyId: clokeyId) { result in
+            switch result {
+            case .success:
+                print("팔로우 알림 성공")
+            case .failure(let error):
+                print("팔로우 알림 실패: \(error.localizedDescription)")
+            }
+        }
+    }
+
     // MARK: - Configure
     func configure(with user: MyFollowingUserModel) {
         userIdLabel.text = user.userId
@@ -98,17 +150,18 @@ class MyFollowingUserCell: UICollectionViewCell {
             profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "profile_placeholder"))
         }
         
-        updateFollowButton(isFollowing: user.isFollowing)
+        isFollowing = user.isFollowing
+        updateFollowButton(isFollower: isFollowing)
     }
     
-    func updateFollowButton(isFollowing: Bool) {
+    func updateFollowButton(isFollower: Bool) {
         var configuration = UIButton.Configuration.plain()
-        configuration.title = isFollowing ? "팔로잉" : "팔로우"
-        configuration.baseForegroundColor = isFollowing ? .black : .white
-        configuration.background.backgroundColor = isFollowing ? .white : .mainBrown800
+        configuration.title = isFollower ? "팔로잉" : "팔로우"
+        configuration.baseForegroundColor = isFollower ? .black : .white
+        configuration.background.backgroundColor = isFollower ? .white : .mainBrown800
         configuration.cornerStyle = .medium
         
-        if isFollowing {
+        if isFollower {
             followButton.layer.borderWidth = 1
             followButton.layer.masksToBounds = true
             followButton.layer.cornerRadius = 10
