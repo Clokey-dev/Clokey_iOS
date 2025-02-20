@@ -379,7 +379,7 @@ class ContentInputView: UIView, UITextFieldDelegate {
         let fieldBottom = fieldFrame.origin.y + fieldFrame.size.height
 
         // 겹치는 부분 계산
-        let overlap = fieldBottom - keyboardY + 10 // 여유공간
+        let overlap = fieldBottom - keyboardY + 50 // 여유공간
         let offset = overlap > 0 ? -overlap : 0
 
         // 키보드 애니메이션 적용

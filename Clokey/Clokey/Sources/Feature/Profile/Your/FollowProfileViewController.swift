@@ -274,7 +274,9 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                         self.followProfileView.followButton.layer.borderWidth = 1
                         
                         // 팔로우할 때만 알림 보내기
-                        self.sendFollowNotification(clokeyId: self.followId)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                            self.sendFollowNotification(clokeyId: self.followId)
+                        }
                     }
                 case .failure(let error):
                     print("🚨 팔로우/언팔로우 요청 실패: \(error.localizedDescription)")
