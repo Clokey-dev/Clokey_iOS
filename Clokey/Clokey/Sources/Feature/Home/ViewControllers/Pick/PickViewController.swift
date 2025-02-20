@@ -20,6 +20,9 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     var maxTemp: Int?
     var minTemp: Int?
     
+    private var recapHistoryId1: Int?
+    private var recapHistoryId2: Int?
+    
     // 팝업 뷰
     private let popUpView = PickPopUpView()
     private let pickView = PickView()
@@ -95,6 +98,36 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         let tapGesture3 = UITapGestureRecognizer(target: self, action: #selector(handleImageTap(_:)))
         pickView.weatherImageView3.isUserInteractionEnabled = true
         pickView.weatherImageView3.addGestureRecognizer(tapGesture3)
+        
+        // Recap 이미지 탭 제스처 추가
+        let recapTapGesture1 = UITapGestureRecognizer(target: self, action: #selector(handleRecapImageTap(_:)))
+        pickView.recapImageView1.isUserInteractionEnabled = true
+        pickView.recapImageView1.addGestureRecognizer(recapTapGesture1)
+        
+        let recapTapGesture2 = UITapGestureRecognizer(target: self, action: #selector(handleRecapImageTap(_:)))
+        pickView.recapImageView2.isUserInteractionEnabled = true
+        pickView.recapImageView2.addGestureRecognizer(recapTapGesture2)
+    }
+    
+    private func fetchHistoryDetail(historyId: Int) {
+        let historyService = HistoryService()
+        
+        historyService.historyDetail(historyId: historyId) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let response):
+                print("히스토리 상세 조회 성공: \(response)")
+                
+                DispatchQueue.main.async {
+                    let detailVC = FriendsCalendarDetailViewController()
+                    detailVC.setDetailData(response)
+                    self.navigationController?.pushViewController(detailVC, animated: true)
+                }
+            case .failure(let error):
+                print("히스토리 상세 조회 실패: \(error.localizedDescription)")
+            }
+        }
     }
     
     // 팝업 닫기 함수
@@ -115,6 +148,23 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
             }
         }
     }
+    
+    @objc private func handleRecapImageTap(_ sender: UITapGestureRecognizer) {
+        guard let tappedImageView = sender.view as? UIImageView else { return }
+        
+        var historyId: Int?
+        
+        if tappedImageView == pickView.recapImageView1 {
+            historyId = recapHistoryId1
+        } else if tappedImageView == pickView.recapImageView2 {
+            historyId = recapHistoryId2
+        }
+        
+        if let id = historyId {
+            fetchHistoryDetail(historyId: id)
+        }
+    }
+
     
     
     @objc private func handleImageTap(_ sender: UITapGestureRecognizer) {
@@ -639,6 +689,15 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                 case .success(let historyResult):
                     let imageUrls = historyResult.imageUrls
                     let nickName = historyResult.nickName
+                    let historyId = historyResult.historyId
+                    
+                    if imageUrls.count > 0 {
+                        self.recapHistoryId1 = Int(historyId!) // 첫 번째 이미지에 대한 historyId
+                    }
+                    // 두 번째 이미지는 같은 historyId를 사용하거나 필요에 따라 다르게 처리
+                    if imageUrls.count > 1 {
+                        self.recapHistoryId2 = Int(historyId!) // 두 번째 이미지에 대한 historyId
+                    }
                     
                     if historyResult.isMine {
                         if imageUrls.isEmpty {
@@ -678,6 +737,8 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
             }
         }
     }
+    
+    
     //새로고침 함수
     @objc private func didPullToRefresh() {
         // 필요에 따라 여러 API 호출을 재실행합니다.

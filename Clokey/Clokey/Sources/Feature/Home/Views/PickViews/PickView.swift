@@ -175,7 +175,7 @@ class PickView: UIView {
     let recapImageView1: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .white
         $0.layer.cornerRadius = 5 // 원하는 반경 설정
         $0.layer.masksToBounds = true // cornerRadius 적용 보장
     }
@@ -184,7 +184,7 @@ class PickView: UIView {
     let recapImageView2: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .white
         $0.layer.cornerRadius = 5 // 원하는 반경 설정
         $0.layer.masksToBounds = true // cornerRadius 적용 보장
     }

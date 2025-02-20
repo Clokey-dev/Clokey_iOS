@@ -14,29 +14,41 @@ class NotificationService: UNNotificationServiceExtension {
     var bestAttemptContent: UNMutableNotificationContent?
 
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
+        print("✅ Push Notification Received in NotificationService")
+        
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
 
         guard let bestAttemptContent = bestAttemptContent else {
+            print("❌ bestAttemptContent is nil")
             contentHandler(request.content)
             return
         }
 
-        // 🔹 memberProfileUrl 가져오기
-        if let memberProfileUrl = request.content.userInfo["memberProfileUrl"] as? String {
-            downloadImage(from: memberProfileUrl) { imageUrl in
+        // 🔹 이미지 URL 확인
+        if let imageUrlString = request.content.userInfo["image"] as? String {
+            print("🔹 Image URL Received: \(imageUrlString)")
+            
+            downloadImage(from: imageUrlString) { imageUrl in
                 if let imageUrl = imageUrl {
-                    let attachment = try? UNNotificationAttachment(identifier: "image", url: imageUrl, options: nil)
+                    let attachment = try? UNNotificationAttachment(identifier: "profileImage", url: imageUrl, options: nil)
                     if let attachment = attachment {
+                        print("✅ Image Attached Successfully")
                         bestAttemptContent.attachments = [attachment]
+                    } else {
+                        print("❌ Failed to Create Attachment")
                     }
+                } else {
+                    print("❌ Image Download Failed")
                 }
-                contentHandler(bestAttemptContent)
+                contentHandler(bestAttemptContent) // 이미지 없이도 알림 정상 표시
             }
         } else {
+            print("❌ No Image URL in Notification Payload")
             contentHandler(bestAttemptContent)
         }
     }
+
 
     override func serviceExtensionTimeWillExpire() {
         if let contentHandler = contentHandler, let bestAttemptContent = bestAttemptContent {
