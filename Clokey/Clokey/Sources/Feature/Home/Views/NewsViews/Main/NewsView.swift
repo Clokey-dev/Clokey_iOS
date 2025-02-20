@@ -504,9 +504,10 @@ class NewsView: UIView {
         
         followingCalendarBottomButtonLabel.snp.makeConstraints { make in
             make.top.equalTo(followingCalendarProfileName2.snp.bottom)
-            make.trailing.equalToSuperview().inset(36)
+            make.trailing.equalToSuperview().inset(20)
             make.height.equalTo(16)
         }
+        
         followingCalendarBottomButton.snp.makeConstraints { make in
             make.top.equalTo(followingCalendarProfileName2.snp.bottom)
             make.trailing.equalToSuperview().inset(20)
