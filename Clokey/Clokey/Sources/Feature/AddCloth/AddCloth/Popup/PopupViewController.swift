@@ -73,7 +73,7 @@ class PopupViewController: UIViewController {
 
     private let titleLabel = UILabel().then {
         $0.text = "옷 추가가 완료되었어요!"
-        $0.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        $0.font = UIFont.ptdSemiBoldFont(ofSize: 24)
         $0.textColor = .black
         $0.textAlignment = .center
     }
@@ -81,7 +81,7 @@ class PopupViewController: UIViewController {
     private let addButton = UIButton().then {
         $0.setTitle("옷 추가하기", for: .normal)
         $0.setTitleColor(.black, for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 20)
         $0.backgroundColor = .white
         $0.layer.cornerRadius = 10
         $0.layer.borderWidth = 1
@@ -91,10 +91,11 @@ class PopupViewController: UIViewController {
     private let completeButton = UIButton().then {
         $0.setTitle("완료", for: .normal)
         $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 20)
         $0.backgroundColor = UIColor(named: "mainBrown800")
         $0.layer.cornerRadius = 10
     }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -103,16 +104,20 @@ class PopupViewController: UIViewController {
         popupView.imageView.image = cloth
         
         if isPublicSelected == true {
-            popupView.publicButton.setImage(UIImage(named: "public_icon"), for: .normal)
+            popupView.publicButton.setImage(UIImage(named: "lock_off"), for: .normal)
         }else {
-            popupView.publicButton.setImage(UIImage(named: "private_icon"), for: .normal)
+            popupView.publicButton.setImage(UIImage(named: "lock_on"), for: .normal)
         }
         
         popupView.categoryButton1.setTitle(categoryName, for: .normal)
         popupView.categoryButton2.setTitle(categoryCloth, for: .normal)
         
+        popupView.brandNameLabel.text = (brand?.isEmpty ?? true) ? "지정 없음" : brand
         
-        popupView.brandNameLabel.text = brand
+        if url?.isEmpty == true {
+            popupView.urlGoButton.titleLabel?.text = "지정 없음"
+        }
+        
         popupView.urlGoButton.addTarget(self, action: #selector(urlGoButtonTapped), for: .touchUpInside)
     
         
@@ -153,7 +158,7 @@ class PopupViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     private func setupUI() {
@@ -164,7 +169,7 @@ class PopupViewController: UIViewController {
         view.addSubview(completeButton)
 
         titleLabel.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(51)
             $0.centerX.equalToSuperview()
         }
         
@@ -172,10 +177,10 @@ class PopupViewController: UIViewController {
         popupView.clipsToBounds = true
         
         popupView.snp.remakeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(34) // 기존 20 -> 40으로 증가
+            $0.top.equalTo(titleLabel.snp.bottom).offset(65) // 기존 20 -> 40으로 증가
             $0.centerX.equalToSuperview()
-            $0.width.equalTo(320)
-            $0.height.greaterThanOrEqualTo(508) // 최소 높이 증가
+            $0.width.equalTo(290)
+            $0.height.greaterThanOrEqualTo(448) // 최소 높이 증가
         }
    
         addButton.snp.makeConstraints {
@@ -240,6 +245,8 @@ class PopupViewController: UIViewController {
         }
     }
     
+    var url: String?
+    
     @objc private func didTapAddClothButton() {
         let addClothVC = AddClothViewController()
         navigationController?.pushViewController(addClothVC, animated: true)
@@ -258,6 +265,8 @@ class PopupViewController: UIViewController {
             print("필수 데이터 누락 또는 이미지 변환 실패")
             return
         }
+        
+        self.url = imageUrl
 
         let addClothesRequestDTO = AddClothesRequestDTO(
             categoryId: categoryId,
@@ -303,6 +312,7 @@ class PopupViewController: UIViewController {
             print("필수 데이터 누락 또는 이미지 변환 실패")
             return
         }
+        self.url = imageUrl
 
         let addClothesRequestDTO = AddClothesRequestDTO(
             categoryId: categoryId,

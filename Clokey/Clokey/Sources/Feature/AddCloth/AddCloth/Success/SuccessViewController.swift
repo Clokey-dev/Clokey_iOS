@@ -32,16 +32,6 @@ class SuccessViewController: UIViewController {
     }
     
     private func navigateToMainViewController() {
-//        let mainVC = MainViewController()
-//        mainVC.modalPresentationStyle = .fullScreen
-//        
-//        // 네비게이션 컨트롤러가 있을 경우 Push
-//        if let navigationController = navigationController {
-//            navigationController.setViewControllers([mainVC], animated: true)
-//        } else {
-//            // 네비게이션 컨트롤러가 없을 경우 모달로 표시
-//            present(mainVC, animated: true, completion: nil)
-//        }
         
         if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
             sceneDelegate.switchToMain()
