@@ -309,6 +309,25 @@ class NewsViewController: UIViewController {
                         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleCalendarImageTap))
                         self.newsView.followingCalendarUpdateImageView1.isUserInteractionEnabled = true
                         self.newsView.followingCalendarUpdateImageView1.addGestureRecognizer(tapGesture)
+                       
+                    }
+                    
+                    
+                    if calendarItems.count > 1 {
+                        let secondCalendarItem = calendarItems[1]
+
+                        if let secondImageUrl = secondCalendarItem.imageUrl {
+                            self.newsView.followingCalendarUpdateImageView2.kf.setImage(with: URL(string: secondImageUrl))
+                        }
+
+                        self.newsView.followingCalendarProfileIcon2.kf.setImage(with: URL(string: secondCalendarItem.profileImage))
+                        self.newsView.followingCalendarProfileName2.text = secondCalendarItem.clokeyId
+
+                        self.newsView.followingCalendarUpdateImageView2.accessibilityIdentifier = "\(secondCalendarItem.historyId)"
+
+                        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleCalendarImageTap))
+                        self.newsView.followingCalendarUpdateImageView2.isUserInteractionEnabled = true
+                        self.newsView.followingCalendarUpdateImageView2.addGestureRecognizer(tapGesture)
                         
                         // 두 번째 요소(calendarItems[1])를 사용하지 않고 첫 번째 요소의 값을 사용하거나,
                         // 두 번째 요소가 있을 때만 처리하도록 변경합니다.
@@ -328,6 +347,7 @@ class NewsViewController: UIViewController {
                         self.newsView.followingCalendarProfileIcon2.isUserInteractionEnabled = true
                         self.newsView.followingCalendarProfileIcon2.addGestureRecognizer(tapGesture)
                     }
+
                     
                 }
                 

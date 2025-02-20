@@ -59,6 +59,13 @@ class CalendarViewController: UIViewController {
         $0.titleLabel?.font = .ptdBoldFont(ofSize: 16)
     }
     
+    // 로딩 인디케이터
+    private let loadingIndicator = UIActivityIndicatorView(style: .large).then {
+        $0.color = UIColor(named: "pointOrange800")
+        $0.hidesWhenStopped = true
+        $0.backgroundColor = .clear
+    }
+    
     // 달력 뷰 표시
     private let calendarView = CalendarView()
     
@@ -102,6 +109,7 @@ class CalendarViewController: UIViewController {
         view.addSubview(userNameLabel)
         view.addSubview(monthControlStack)
         view.addSubview(calendarView)
+        view.addSubview(loadingIndicator)
         
         monthControlStack.addArrangedSubview(previousMonthButton)
         monthControlStack.addArrangedSubview(monthLabel)
@@ -122,6 +130,10 @@ class CalendarViewController: UIViewController {
             $0.top.equalTo(monthControlStack.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(500)
+        }
+        
+        loadingIndicator.snp.makeConstraints {
+            $0.center.equalToSuperview()
         }
     }
     
@@ -155,7 +167,6 @@ class CalendarViewController: UIViewController {
             }
         }
     }
-
     
     // MARK: - Calendar Methods
     private func updateCalendar() {
@@ -184,8 +195,17 @@ class CalendarViewController: UIViewController {
         formatter.dateFormat = "yyyy-MM"
         let monthString = formatter.string(from: currentMonth)
         
+        // 로딩 시작 (UI 스레드에서 실행)
+        DispatchQueue.main.async {
+            self.loadingIndicator.startAnimating()
+        }
+        
         historyService.historyMonth(clokeyId: nil, month: monthString) { [weak self] result in
             guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                self.loadingIndicator.stopAnimating() // 로딩 완료되면 중지
+            }
             
             switch result {
             case .success(let response):
@@ -193,15 +213,17 @@ class CalendarViewController: UIViewController {
                     dict[history.date] = history.imageUrl
                 }
                 self.historyIdMap = response.histories.reduce(into: [:]) { dict, history in
-                    dict[history.date] = history.historyId  // historyId 저장
+                    dict[history.date] = history.historyId
                 }
                 self.userNameLabel.text = "\(response.nickName)의 스타일 캘린더"
                 self.updateCalendar()
+                
             case .failure(let error):
                 print("캘린더 데이터 로드 실패: \(error.localizedDescription)")
             }
         }
     }
+
 }
 
 // MARK: - CalendarViewDelegate

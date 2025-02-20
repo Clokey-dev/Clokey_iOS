@@ -15,7 +15,7 @@ protocol CustomGalleryViewControllerDelegate: AnyObject { // AnyObject 타입으
     func galleryViewController(_ viewController: CustomGalleryViewController, didSelect images: [UIImage])
 }
 
-class CustomGalleryViewController: UIViewController {
+class CustomGalleryViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Properties
     
@@ -72,6 +72,7 @@ class CustomGalleryViewController: UIViewController {
         setupUI()
         setupActions()
         checkPhotoLibraryPermission()
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     // MARK: - Setup

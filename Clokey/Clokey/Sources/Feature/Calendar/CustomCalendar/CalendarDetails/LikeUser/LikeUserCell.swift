@@ -11,16 +11,25 @@ import SnapKit
 import Then
 import Kingfisher
 
+protocol LikeUserCellDelegate: AnyObject {
+    func didTapProfileImage(with clokeyId: String)
+}
+
 // MARK: - Like User Cell
 class LikeUserCell: UICollectionViewCell {
     static let identifier = "LikeUserCell"
+    
+    // MARK: - Properties
+    private var userId: String?
+    private var followStatus: Bool = false
+    weak var delegate: LikeUserCellDelegate?
     
     // MARK: - UI Components
     private let profileImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-        $0.layer.cornerRadius = 20  
-//        $0.backgroundColor = .systemGray5
+        $0.layer.cornerRadius = 20
+        $0.isUserInteractionEnabled = true
     }
     
     private let userInfoStackView = UIStackView().then {
@@ -99,26 +108,97 @@ class LikeUserCell: UICollectionViewCell {
             $0.width.equalTo(76)
             $0.height.equalTo(30)
         }
+        
+        let cellTapGesture = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
+           contentView.addGestureRecognizer(cellTapGesture)
+           
+        // 팔로우 버튼이 탭 제스처를 가로채도록 설정
+        followButton.isUserInteractionEnabled = true
+        let folloewButtonTapGesture = UITapGestureRecognizer(target: self, action: #selector(followButtonTapped))
+        followButton.addGestureRecognizer(folloewButtonTapGesture)
+        
+    }
+    
+    // MARK: - ProfileView 이동
+    
+    @objc private func cellTapped() {
+        // userIdLabel의 텍스트(클로키 아이디)를 델리게이트를 통해 전달
+        if let clokeyId = userIdLabel.text {
+            delegate?.didTapProfileImage(with: clokeyId)
+        }
+        print("프로필을 클릭 했습니다.")
     }
     
     // MARK: - Configure
     func configure(with user: LikeUserModel) {
+        userId = user.userId
         userIdLabel.text = user.userId
         nicknameLabel.text = user.nickname
+        followStatus = user.isFollowing
         
         if let url = URL(string: user.profileImageUrl) {
             profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "profile_test"))
         }
         
         updateFollowButton(isFollowing: user.isFollowing)
+        
+        // 본인이면 followButton 숨김
+        followButton.isHidden = user.isMe
     }
     
     func updateFollowButton(isFollowing: Bool) {
+        followStatus = isFollowing
         var configuration = UIButton.Configuration.plain()
         configuration.title = isFollowing ? "팔로잉" : "팔로우"
         configuration.baseForegroundColor = isFollowing ? .black : .white
         configuration.background.backgroundColor = isFollowing ? .white : .mainBrown800
         
         followButton.configuration = configuration
+        followButton.layer.borderWidth = 1
+        followButton.layer.borderColor = UIColor.mainBrown800.cgColor    }
+    
+    // MARK: - 팔로우 기능
+    // 팔로우 버튼
+    @objc private func followButtonTapped() {
+        guard let clokeyId = userIdLabel.text else { return }
+
+        followUser(clokeyId: clokeyId)
+    }
+    
+    // 팔로우/언팔로우
+    private func followUser(clokeyId: String) {
+        let membersService = MembersService()
+        let wasFollowing = followStatus
+        
+        membersService.followUser(clokeyId: clokeyId) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success:
+                self.followStatus.toggle()
+                DispatchQueue.main.async {
+                    self.updateFollowButton(isFollowing: self.followStatus)
+                }
+                // 팔로우 걸때만
+                if !wasFollowing && self.followStatus {
+                    self.sendFollowNotification(clokeyId: clokeyId)
+                }
+            case .failure(let error):
+                print("팔로우 실패: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    // 팔로우 걸 때 알림
+    private func sendFollowNotification(clokeyId: String) {
+        let notificationService = NotificationService()
+        
+        notificationService.notificationFollow(clokeyId: clokeyId) { result in
+            switch result {
+            case .success:
+                print("팔로우 알림 성공")
+            case .failure(let error):
+                print("팔로우 알림 실패: \(error.localizedDescription)")
+            }
+        }
     }
 }
