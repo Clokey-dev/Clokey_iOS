@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDelegate {
+class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDelegate, UIGestureRecognizerDelegate {
     
     let searchView = SearchView()
     private let searchManager = SearchManager() //  검색 기록 관리 객체
@@ -50,6 +50,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
         
         //  검색 기록 로드
         loadRecentSearches()
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     //  viewWillAppear에서 검색 기록을 강제 업데이트
     //   viewWillAppear()에서 불필요한 NotificationCenter 등록 정리
@@ -223,7 +224,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
     private func performHashtagSearch(with query: String) {
         guard !query.isEmpty else { return }
         
-        print("🔍 해시태그 검색 실행: \(query)")
+       
         
         // 검색어 저장
         searchManager.addSearchKeyword(query)
@@ -251,7 +252,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
 //  최근 검색어 목록을 위한 UITableView 구현
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(" [SearchViewController] 테이블 뷰 데이터 개수: \(searchHistory.count)")
+        
         return searchHistory.count
         
     }
@@ -278,7 +279,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         
-        print(" [SearchViewController] 테이블 뷰 셀 생성: \(searchHistory[indexPath.row])")
+       
         return cell
     }
     

@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-class WeatherChooseViewController: UIViewController {
+class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - UI Components
     
@@ -148,6 +148,8 @@ class WeatherChooseViewController: UIViewController {
         setupUI()
         setupSeasonButtons()
         setupTemperatureLabels()
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
     }
     

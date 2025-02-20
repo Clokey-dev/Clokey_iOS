@@ -14,6 +14,8 @@ protocol RecordOOTDViewControllerDelegate: AnyObject {
 
 class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegate {
 
+    
+    var historyId: Int?
     // MARK: - Properties
     private let calendarDetailView = CalendarDetailView()
     private var viewModel: CalendarDetailViewModel?
@@ -33,6 +35,10 @@ class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegat
         super.viewDidLoad()
         setupUI()
         setupNavigationBar()
+        if let id = historyId {
+                   // 예: historyService.historyDetail(historyId: id) { ... } 또는 viewModel 초기화
+                   print("받은 historyId: \(id)")
+               }
         updateView()
         
         let appearance = UINavigationBarAppearance()

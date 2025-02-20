@@ -14,7 +14,7 @@ enum YourFollowTabType: Int {
     case following = 1
 }
 
-class YourFollowListViewController: UIViewController {
+class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegate {
     var selectedTab: YourFollowTabType = .follower // 기본값: 팔로워
     
     var clokeyId: String = ""
@@ -109,6 +109,8 @@ class YourFollowListViewController: UIViewController {
         setupCollectionViews()
         loadFollowerData()
 //        loadFollowingData()
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         titleLabel.text = clokeyId
         followerButton.setTitle("팔로워(\(followerCount))", for: .normal)
@@ -269,7 +271,7 @@ class YourFollowListViewController: UIViewController {
     }
     
     private func animateIndicator(to button: UIButton) {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.1) {
             self.indicatorView.snp.remakeConstraints { make in
                 make.centerX.equalTo(button)
                 make.top.equalTo(button.snp.bottom).offset(2)
@@ -410,5 +412,24 @@ extension YourFollowListViewController: UICollectionViewDataSource, UICollection
             return cell
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == followerCollectionView {
+            let selectedUser = followerusers[indexPath.item]
+            print("팔로워 선택됨: \(selectedUser.nickname)")
+            
+            let followProfileViewController = FollowProfileViewController()
+            followProfileViewController.followId = selectedUser.userId
+            navigationController?.pushViewController(followProfileViewController, animated: false)
+        } else if collectionView == followingCollectionView {
+            let selectedUser = followingusers[indexPath.item]
+            print("팔로잉 선택됨: \(selectedUser.nickname)")
+            
+            let followProfileViewController = FollowProfileViewController()
+            followProfileViewController.followId = selectedUser.userId
+            navigationController?.pushViewController(followProfileViewController, animated: false)
+        }
+    }
+    
 }
 

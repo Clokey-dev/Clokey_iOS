@@ -1,7 +1,7 @@
 import UIKit
 import TOCropViewController
 
-class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
     
     var clothName: String? // 전달받은 옷 이름
     var categoryName: String?
@@ -25,6 +25,8 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
         
         lastAddView.isUserInteractionEnabled = true
         lastAddView.addButton.isUserInteractionEnabled = true
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         setupActions()
         
