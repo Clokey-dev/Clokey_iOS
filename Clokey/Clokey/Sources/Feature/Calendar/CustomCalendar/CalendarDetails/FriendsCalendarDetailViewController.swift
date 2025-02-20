@@ -11,7 +11,7 @@ import Then
 import RxSwift
 import RxCocoa
 
-class FriendsCalendarDetailViewController: UIViewController {
+class FriendsCalendarDetailViewController: UIViewController, UIGestureRecognizerDelegate {
 
     // MARK: - Properties
     private let calendarDetailView = CalendarDetailView()
@@ -59,6 +59,7 @@ class FriendsCalendarDetailViewController: UIViewController {
         calendarDetailView.likeLabel.isUserInteractionEnabled = true
         calendarDetailView.likeLabel.addGestureRecognizer(likeTapGesture)
 
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
 
     // MARK: - Setup

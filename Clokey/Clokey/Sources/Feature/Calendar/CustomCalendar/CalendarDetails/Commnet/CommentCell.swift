@@ -13,6 +13,7 @@ import Kingfisher
 
 protocol CommentCellDelegate: AnyObject {
     func didTapReplyButton(commentId: Int64)
+    func didTapProfile(with userId: String)
 }
 
 class CommentCell: UITableViewCell {
@@ -29,6 +30,7 @@ class CommentCell: UITableViewCell {
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 20
         $0.backgroundColor = .lightGray
+        $0.isUserInteractionEnabled = true
     }
 
     private let nameLabel = UILabel().then {
@@ -96,6 +98,9 @@ class CommentCell: UITableViewCell {
             $0.leading.equalToSuperview().offset(20)
             $0.width.height.equalTo(40)
         }
+        
+        let cellTapGesture = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
+        profileImageView.addGestureRecognizer(cellTapGesture)
     }
 
     func configure(profileImage: String, name: String, comment: String, isLastReply: Bool, commentId: Int) {
@@ -139,5 +144,11 @@ class CommentCell: UITableViewCell {
 
     @objc private func didTapReply() {
         delegate?.didTapReplyButton(commentId: Int64(self.tag)) 
+    }
+    
+    @objc private func cellTapped() {
+        if let userId = nameLabel.text {
+            delegate?.didTapProfile(with: userId)
+        }
     }
 }
