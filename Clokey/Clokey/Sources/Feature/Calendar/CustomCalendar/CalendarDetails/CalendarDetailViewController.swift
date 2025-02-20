@@ -41,6 +41,8 @@ class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegat
                }
         updateView()
         
+        navBarManager.setupWhiteNavigationBar(for: navigationController)
+        
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .white
