@@ -239,8 +239,7 @@ class FriendsCalendarDetailViewController: UIViewController, UIGestureRecognizer
     
     // 댓글에서 프로필 화면으로
     func showProfile(for clokeyId: String) {
-        let followProfileVC = FollowProfileViewController()
-        followProfileVC.followId = clokeyId
+        let followProfileVC = FollowProfileViewController(followId: clokeyId)
         navigationController?.pushViewController(followProfileVC, animated: true)
     }
 }

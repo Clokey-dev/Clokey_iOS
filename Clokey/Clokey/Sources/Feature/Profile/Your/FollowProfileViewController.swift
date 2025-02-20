@@ -108,6 +108,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         let membersService = MembersService()
         
         
+        // MARK: - 사용자 정보 받아서 로드하는 API
         membersService.getUserProfile(clokey_id: followId) { [weak self] result in
             guard let self = self else { return }
             
@@ -192,6 +193,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                         return
                     }
                     
+                    // 팔로우
                     if isFollowing {
                         self.followProfileView.followButton.setTitle("팔로잉", for: .normal)
                         self.followProfileView.followButton.backgroundColor = .white
@@ -223,35 +225,52 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         navigationController?.popViewController(animated: true)
     }
     
+    // MARK: - 팔로우 버튼 이벤트
     @objc private func didTapFollowButton() {
-        let isCurrentlyFollowing = followProfileView.followButton.backgroundColor
+        let currentTitle = followProfileView.followButton.title(for: .normal)
         let followService = MembersService()
         
-        // 팔로우 중이면 -> 언팔 API 호출 / 팔로우 중이 아니면 -> 팔로우 API 호출
         followService.followUser(clokeyId: followId) { [weak self] result in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    if isCurrentlyFollowing == .mainBrown800 {
-                        // 언팔로우 상태로 변경
+                    if currentTitle == "팔로잉" {
+                        // 팔로잉 -> 팔로우 (언팔로우 상태로 변경)
                         self.followProfileView.followButton.setTitle("팔로우", for: .normal)
-                        self.followProfileView.followButton.backgroundColor = .white
-                        self.followProfileView.followButton.setTitleColor(.black, for: .normal)
-                        self.followProfileView.followButton.layer.borderColor = UIColor.mainBrown800.cgColor
-                        self.followProfileView.followButton.layer.borderWidth = 1
-                    } else {
-                        // 팔로잉 상태로 변경
-                        self.followProfileView.followButton.setTitle("팔로잉", for: .normal)
                         self.followProfileView.followButton.backgroundColor = .mainBrown800
                         self.followProfileView.followButton.setTitleColor(.white, for: .normal)
                         self.followProfileView.followButton.layer.borderColor = UIColor.mainBrown800.cgColor
                         self.followProfileView.followButton.layer.borderWidth = 1
+                    } else {
+                        // 팔로우 -> 팔로잉 (팔로우 상태로 변경)
+                        self.followProfileView.followButton.setTitle("팔로잉", for: .normal)
+                        self.followProfileView.followButton.backgroundColor = .white
+                        self.followProfileView.followButton.setTitleColor(.black, for: .normal)
+                        self.followProfileView.followButton.layer.borderColor = UIColor.mainBrown800.cgColor
+                        self.followProfileView.followButton.layer.borderWidth = 1
+                        
+                        // 팔로우할 때만 알림 보내기
+                        self.sendFollowNotification(clokeyId: self.followId)
                     }
                 case .failure(let error):
                     print("🚨 팔로우/언팔로우 요청 실패: \(error.localizedDescription)")
                 }
+            }
+        }
+    }
+
+    // 팔로우 알림 보내기
+    private func sendFollowNotification(clokeyId: String) {
+        let notificationService = NotificationService()
+        
+        notificationService.notificationFollow(clokeyId: clokeyId) { result in
+            switch result {
+            case .success:
+                print("✅ 팔로우 알림 전송 성공")
+            case .failure(let error):
+                print("🚨 팔로우 알림 전송 실패: \(error.localizedDescription)")
             }
         }
     }
