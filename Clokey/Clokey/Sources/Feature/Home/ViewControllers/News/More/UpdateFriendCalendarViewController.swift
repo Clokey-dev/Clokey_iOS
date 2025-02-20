@@ -165,4 +165,10 @@ extension UpdateFriendCalendarViewController: UICollectionViewDataSource {
         
         return cell
     }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedUpdate = modelData[indexPath.item]
+        print("Selected Update: \(selectedUpdate.name)")
+        let followProfileVC = FollowProfileViewController(followId: selectedUpdate.name)
+        navigationController?.pushViewController(followProfileVC, animated: true)
+    }
 }

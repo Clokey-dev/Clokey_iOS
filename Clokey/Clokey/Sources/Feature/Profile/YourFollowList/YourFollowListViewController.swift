@@ -215,7 +215,7 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
         }
         
         scrollView.snp.makeConstraints { make in
-            make.top.equalTo(indicatorView.snp.bottom).offset(0)
+            make.top.equalTo(indicatorView.snp.bottom).offset(8)
             make.leading.trailing.bottom.equalToSuperview()
         }
         
@@ -223,10 +223,12 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
         contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.width.equalToSuperview()
+            make.height.greaterThanOrEqualTo(scrollView.snp.height)
         }
         
         containerView.snp.makeConstraints {
-            $0.top.equalTo(indicatorView.snp.bottom).offset(8)
+//            $0.top.equalTo(indicatorView.snp.bottom).offset(8)
+            $0.top.equalToSuperview().offset(8)
             $0.leading.trailing.bottom.equalToSuperview()
         }
         

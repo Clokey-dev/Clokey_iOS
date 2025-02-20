@@ -221,7 +221,7 @@ class MyFollowListViewController: UIViewController, UIGestureRecognizerDelegate 
         
         // scrollView 제약조건: 네비게이션, 탭바, 인디케이터 아래부터 화면 끝까지
             scrollView.snp.makeConstraints { make in
-                make.top.equalTo(indicatorView.snp.bottom).offset(0)
+                make.top.equalTo(indicatorView.snp.bottom).offset(8)
                 make.leading.trailing.bottom.equalToSuperview()
             }
             
@@ -229,10 +229,12 @@ class MyFollowListViewController: UIViewController, UIGestureRecognizerDelegate 
             contentView.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
                 make.width.equalToSuperview()
+                make.height.greaterThanOrEqualTo(scrollView.snp.height)
             }
         
         containerView.snp.makeConstraints {
-            $0.top.equalTo(indicatorView.snp.bottom).offset(8)
+//            $0.top.equalTo(indicatorView.snp.bottom).offset(8)
+            $0.top.equalToSuperview().offset(8)
             $0.leading.trailing.bottom.equalToSuperview()
         }
         

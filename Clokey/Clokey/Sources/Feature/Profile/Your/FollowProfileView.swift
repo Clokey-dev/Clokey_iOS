@@ -145,21 +145,21 @@ class FollowProfileView: UIView {
     let clothesImageView1: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .white
     }
     
     /// 두 번째 의류 추천 이미지
     let clothesImageView2: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .white
     }
     
     /// 세 번째 의류 추천 이미지
     let clothesImageView3: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .white
     }
     
     /// '내 옷 보러가기' 버튼 텍스트 레이블
