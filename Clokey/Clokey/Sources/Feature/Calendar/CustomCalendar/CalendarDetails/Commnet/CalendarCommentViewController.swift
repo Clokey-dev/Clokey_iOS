@@ -223,8 +223,9 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         commentView.commentTextField.placeholder = "답글 작성하기"
     }
     
-    func didTapProfile(with userId: String) {
-        handleProfile(clokeyId: userId)
+    // 프로필 이미지로 clokeyId 전달
+    func didTapProfile(with clokeyId: String) {
+        handleProfile(clokeyId: clokeyId)
     }
     
     private func findIndexPath(for commentId: Int64) -> IndexPath? {
@@ -317,7 +318,6 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
    }
     
     // 프로필로 이동
-    
     func handleProfile(clokeyId: String) {
         DispatchQueue.main.async {
             self.navigateToProfile(clokeyId: clokeyId)
@@ -354,7 +354,8 @@ extension CalendarCommentViewController: UITableViewDataSource, UITableViewDeleg
             name: comment.nickName,
             comment: comment.content,
             isLastReply: comment.parentCommentId == nil, // parentCommentId가 nil인 경우에만 답글 달기 표시
-            commentId: comment.id
+            commentId: comment.id,
+            clokeyId: comment.clokeyId
         )
 
         cell.delegate = self

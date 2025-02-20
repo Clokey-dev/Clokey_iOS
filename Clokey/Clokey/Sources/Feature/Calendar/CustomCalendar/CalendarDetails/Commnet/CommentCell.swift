@@ -13,11 +13,13 @@ import Kingfisher
 
 protocol CommentCellDelegate: AnyObject {
     func didTapReplyButton(commentId: Int64)
-    func didTapProfile(with userId: String)
+    func didTapProfile(with clokeyId: String)
 }
 
 class CommentCell: UITableViewCell {
     static let identifier = "CommentCell"
+    
+    private var storedClokeyId: String?  // 추가
     
     weak var delegate: CommentCellDelegate? // 델리게이트 선언
 
@@ -103,7 +105,7 @@ class CommentCell: UITableViewCell {
         profileImageView.addGestureRecognizer(cellTapGesture)
     }
 
-    func configure(profileImage: String, name: String, comment: String, isLastReply: Bool, commentId: Int) {
+    func configure(profileImage: String, name: String, comment: String, isLastReply: Bool, commentId: Int, clokeyId: String) {
         if let url = URL(string: profileImage) {
             profileImageView.kf.setImage(
                 with: url,
@@ -122,6 +124,8 @@ class CommentCell: UITableViewCell {
         commentLabel.text = comment
         replyButton.isHidden = !isLastReply
         self.tag = Int(commentId)
+        self.storedClokeyId = clokeyId
+
     }
     
     func setSelected(_ selected: Bool) {
@@ -147,8 +151,9 @@ class CommentCell: UITableViewCell {
     }
     
     @objc private func cellTapped() {
-        if let userId = nameLabel.text {
-            delegate?.didTapProfile(with: userId)
+        if let clokeyId = storedClokeyId {
+            delegate?.didTapProfile(with: clokeyId)
         }
+        print("프로필 선택되었어요.")
     }
 }
