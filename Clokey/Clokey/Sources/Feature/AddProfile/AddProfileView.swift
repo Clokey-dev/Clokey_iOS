@@ -379,8 +379,8 @@ final class AddProfileView: UIView {
         }
         
         completeButton.snp.makeConstraints { make in
-            make.top.equalTo(privateButton.snp.bottom).offset(80)
-            //            make.bottom.equalTo(contentView.safeAreaLayoutGuide).offset(-20) //  contentView의 끝을 completeButton에 맞춤
+//            make.top.equalTo(privateButton.snp.bottom).offset(80)
+            make.top.equalTo(privateButton.snp.bottom).offset(160)
             make.centerX.equalToSuperview()
             make.height.equalTo(54)
             make.width.equalTo(353)

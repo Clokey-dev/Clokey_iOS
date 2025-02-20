@@ -30,7 +30,7 @@ final class CustomBottomSheetViewController: UIViewController {
      let defaultProfileButton = UIButton().then {
         var configuration = UIButton.Configuration.plain()
         configuration.image = UIImage(systemName: "person.fill")
-        configuration.title = "기본 프로필"
+        configuration.title = " 기본 프로필"
         configuration.imagePadding = 20 // 이미지와 텍스트 간격
         configuration.baseForegroundColor = .black // 텍스트 및 이미지 색상
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 22, bottom: 0, trailing: 0) // 버튼 내부 여백
@@ -87,7 +87,7 @@ final class CustomBottomSheetViewController: UIViewController {
         
         defaultProfileButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(48)
-            make.leading.equalToSuperview()
+            make.leading.equalToSuperview().offset(3)
             make.trailing.equalToSuperview().offset(-22)
             make.height.equalTo(32)
         }

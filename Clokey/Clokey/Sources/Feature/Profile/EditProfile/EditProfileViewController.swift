@@ -127,6 +127,7 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
     
     
     
+    
     @objc private func didTapAddImageButton(_ sender: UIButton) {
         isSelectingProfileImage = (sender == editProfileView.addImageButton2)
         
