@@ -12,7 +12,7 @@ class AddCategoryCollectionViewCell: UICollectionViewCell {
         config.baseBackgroundColor = .clear
         config.baseForegroundColor = .black
         config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 13, bottom: 4, trailing: 13) // 내부 여백
-        let font = UIFont.systemFont(ofSize: 16)// 원하는 글씨체와 크기 설정
+        let font = UIFont.ptdMediumFont(ofSize: 16)// 원하는 글씨체와 크기 설정
         var titleAttr = AttributedString("티셔츠") // 기본 텍스트
         titleAttr.font = font
         config.attributedTitle = titleAttr

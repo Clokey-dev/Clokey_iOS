@@ -150,7 +150,7 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         label.attributedText = attributedString
-        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.font = UIFont.ptdBoldFont(ofSize: 20)
         label.textAlignment = .left
         
         return label

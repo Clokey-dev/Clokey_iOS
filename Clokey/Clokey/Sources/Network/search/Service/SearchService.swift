@@ -1,10 +1,3 @@
-//
-//  SearchService.swift
-//  Clokey
-//
-//  Created by 소민준 on 2/13/25.
-//
-
 import Foundation
 import Moya
 
@@ -20,47 +13,56 @@ public final class SearchService : NetworkManager {
         ]
         self.provider = provider ?? MoyaProvider<SearchEndpoint>(plugins: plugins)
     }
-    //사용자 검색 API
+    
+    // 사용자 검색 API
     public func searchMember(
         by: String,
         keyword: String,
         page: Int,
         size: Int,
-        completion: @escaping (Result< SearchMemberResponseDTO, NetworkError>) -> Void
+        completion: @escaping (Result<SearchMemberResponseDTO, NetworkError>) -> Void
     ){
-        request(target: .searchMember(by: by, keyword: keyword, page: page, size: size),
-                decodingType: SearchMemberResponseDTO.self,
-                completion: completion
+        request(
+            target: .searchMember(by: by, keyword: keyword, page: page, size: size),
+            decodingType: SearchMemberResponseDTO.self,
+            completion: completion
         )
     }
     
-    //기록, 해시태그 검색 API
+    // 기록, 해시태그 검색 API
     public func searchHistory(
         by: String,
         keyword: String,
         page: Int,
         size: Int,
-        completion: @escaping (Result< SearchHistoryCategoryResponseDTO, NetworkError>) -> Void
-        
+        completion: @escaping (Result<SearchHistoryCategoryResponseDTO, NetworkError>) -> Void
     ){
-        request(target: .searchHistory(by: by, keyword: keyword, page: page, size: size),
-                decodingType: SearchHistoryCategoryResponseDTO.self,
-                completion: completion
+        request(
+            target: .searchHistory(by: by, keyword: keyword, page: page, size: size),
+            decodingType: SearchHistoryCategoryResponseDTO.self,
+            completion: completion
         )
-        
     }
-    //옷 검색 API
+    
+    // 옷 검색 API
     public func searchClothes(
+        clokeyId: String?,   // <-- clokeyId 추가
         by: String,
         keyword: String,
         page: Int,
         size: Int,
-        completion: @escaping (Result <SearchClothesResponseDTO, NetworkError>) -> Void
-        
-    ){
-        request(target: .searchClothes(by: by, keyword: keyword, page: page, size: size),
-                decodingType: SearchClothesResponseDTO.self,
-                completion: completion
+        completion: @escaping (Result<SearchClothesResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .searchClothes(
+                clokeyId: clokeyId,
+                by: by,
+                keyword: keyword,
+                page: page,
+                size: size
+            ),
+            decodingType: SearchClothesResponseDTO.self,
+            completion: completion
         )
     }
 }

@@ -94,7 +94,7 @@ class RecordTagClothViewController: UIViewController {
     
     private let titleLabel = UILabel().then {
         $0.text = "태그한 옷"
-        $0.font = .systemFont(ofSize: 16, weight: .medium)
+        $0.font = .ptdMediumFont(ofSize: 16)
         $0.textColor = .black
     }
 

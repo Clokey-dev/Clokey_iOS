@@ -29,7 +29,7 @@ class CalendarCommentView: UIView, UIGestureRecognizerDelegate {
     // MARK: - UI Components
     private let titleLabel = UILabel().then {
         $0.text = "댓글"
-        $0.font = .boldSystemFont(ofSize: 18)
+        $0.font = .ptdBoldFont(ofSize: 18)
         $0.textAlignment = .center
     }
     

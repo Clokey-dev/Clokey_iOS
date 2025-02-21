@@ -144,7 +144,7 @@ class DeleteAccountView: UIView {
         
         let titleLabel = UILabel().then {
             $0.text = title
-            $0.font = UIFont.boldSystemFont(ofSize: 16)
+            $0.font = UIFont.ptdBoldFont(ofSize: 16)
             $0.textColor = .black
         }
         cardView.addSubview(titleLabel)

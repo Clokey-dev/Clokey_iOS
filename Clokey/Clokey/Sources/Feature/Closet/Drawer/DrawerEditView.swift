@@ -32,7 +32,7 @@ final class DrawerEditView: UIView, SortDropdownViewDelegate {
         let label = UILabel()
         label.text = "착용순"
         label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        label.font = UIFont.ptdMediumFont(ofSize: 12)
         return label
     }()
     

@@ -36,7 +36,7 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "옷 추가"
-        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.font = UIFont.ptdBoldFont(ofSize: 20)
         label.textAlignment = .center
         return label
     }()
@@ -50,7 +50,7 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
     private let questionLabel: UILabel = {
         let label = UILabel()
         label.text = "주로 어떤 날씨에 착용하세요?"
-        label.font = UIFont.boldSystemFont(ofSize: 24)
+        label.font = UIFont.ptdBoldFont(ofSize: 24)
         label.textAlignment = .left //  왼쪽 정렬로 변경
         label.textColor = .black
         return label
@@ -116,7 +116,7 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
     //  Lower Thumb 위에 온도 레이블
     private let lowerThumbLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.font = UIFont.ptdBoldFont(ofSize: 14)
         label.textColor = .brown
         label.textAlignment = .center
         label.alpha = 0 //  기본적으로 숨김
@@ -126,7 +126,7 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
     //  Upper Thumb 위에 온도 레이블
     private let upperThumbLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.font = UIFont.ptdBoldFont(ofSize: 14)
         label.textColor = .brown
         label.textAlignment = .center
         label.alpha = 0 //  기본적으로 숨김

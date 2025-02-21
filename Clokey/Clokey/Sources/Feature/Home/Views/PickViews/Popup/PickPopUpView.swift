@@ -81,7 +81,7 @@ class PickPopUpView: UIView {
         $0.backgroundColor = UIColor.clear
         $0.layer.cornerRadius = 5
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+        $0.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
     }
     
     let summerButton = UIButton().then {
@@ -91,7 +91,7 @@ class PickPopUpView: UIView {
         $0.backgroundColor = UIColor.clear
         $0.layer.cornerRadius = 5
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+        $0.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
     }
     
     let fallButton = UIButton().then {
@@ -101,7 +101,7 @@ class PickPopUpView: UIView {
         $0.backgroundColor = UIColor.clear
         $0.layer.cornerRadius = 5
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+        $0.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
     }
     
     let winterButton = UIButton().then {
@@ -111,7 +111,7 @@ class PickPopUpView: UIView {
         $0.backgroundColor = UIColor.clear
         $0.layer.cornerRadius = 5
         $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+        $0.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
     }
     
     
