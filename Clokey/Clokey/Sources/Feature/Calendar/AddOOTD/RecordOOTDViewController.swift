@@ -140,7 +140,22 @@ class RecordOOTDViewController: UIViewController, UIGestureRecognizerDelegate {
     // MARK: - Actions
     // 뒤로가기
     @objc private func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
+        let alertController = UIAlertController(
+            title: "나가시겠습니까?",
+            message: "작성 중인 내용은 저장되지 않습니다.",
+            preferredStyle: .alert
+        )
+        
+        let confirmAction = UIAlertAction(title: "확인", style: .destructive) { [weak self] _ in
+            self?.navigationController?.popViewController(animated: true)
+        }
+        
+        let cancelAction = UIAlertAction(title: "아니오", style: .cancel)
+        
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true)
     }
     
     // CustomGalleryViewController로 네비게이션

@@ -22,6 +22,8 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
     // 검색 관련 변수
     private var currentSearchText: String = ""
     
+    let navBarManager = NavigationBarManager()
+    
     // 정렬 옵션
     enum SortOption: String {
         case wear = "WEAR"
@@ -87,6 +89,16 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
         // updateInitialIndicatorPosition()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navBarManager.setupWhiteNavigationBar(for: navigationController)
+    }
+    
+    override func viewWillDisappear (_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navBarManager.setupWhiteNavigationBar(for: navigationController)
+    }
+    
     // MARK: - 초기 설정
     private func configureInitialSetup() {
         setupNavigationBar()      // 네비게이션 바 설정
@@ -104,7 +116,6 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
     
     // MARK: - Setup Methods
     private func setupNavigationBar() {
-        let navBarManager = NavigationBarManager()
         navBarManager.addBackButton(to: navigationItem, target: self, action: #selector(backButtonTapped))
         
         // clokeyId가 비어있으면 "내 옷장", 그렇지 않으면 "\(clokeyId)의 옷장"으로 설정

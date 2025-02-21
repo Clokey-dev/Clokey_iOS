@@ -13,7 +13,7 @@ import Foundation
 public struct LoginResponseDTO: Codable {
     public let id: Int
     public let email: String
-    public let nickname: String
+    public let nickname: String?
     public let accessToken: String
     public let refreshToken: String
     public let registerStatus: String
