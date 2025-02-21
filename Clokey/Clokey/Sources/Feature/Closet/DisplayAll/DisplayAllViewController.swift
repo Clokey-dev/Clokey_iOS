@@ -55,6 +55,7 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
     
     // 페이징 관련 변수
     private var currentPage = 1
+    private let pageSize = 12      // 페이지 당 아이템 개수를 12로 설정
     private var isLoading = false
     private var hasMorePages = true
     
@@ -233,7 +234,7 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
             season: season,
             sort: currentSort.rawValue,
             page: page,
-            size: 12
+            size: pageSize
         ) { [weak self] result in
             guard let self = self else { return }
             self.isLoading = false
@@ -270,10 +271,11 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
         }
         isLoading = true
         let clokeyIdForAPI = clokeyId.isEmpty ? nil : clokeyId
-        searchService.searchClothes(by: "name-and-brand",
-                                    keyword: keyword,
-                                    page: 1,
-                                    size: 12) { [weak self] result in
+        searchService.searchClothes(            clokeyId: clokeyIdForAPI,
+            by: "name-and-brand",
+            keyword: keyword,
+            page: 1,
+            size: 12) { [weak self] result in
             guard let self = self else { return }
             self.isLoading = false
             switch result {

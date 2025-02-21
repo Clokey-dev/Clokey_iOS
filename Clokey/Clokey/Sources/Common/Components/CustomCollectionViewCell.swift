@@ -30,7 +30,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
     
     // 상품 넘버링
     let numberLabel = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 12, weight: .bold)
+        $0.font = UIFont.ptdBoldFont(ofSize: 12)
         $0.textColor = .white
         $0.backgroundColor = UIColor.mainBrown600
         $0.textAlignment = .center
@@ -40,7 +40,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
     
     // N회 라벨
     let countLabel = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        $0.font = UIFont.ptdRegularFont(ofSize: 12)
         $0.textColor = .white
         $0.backgroundColor = UIColor.mainBrown600
         $0.textAlignment = .center
@@ -51,7 +51,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
     
     // 상품 이름 라벨
     let nameLabel = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        $0.font = UIFont.ptdRegularFont(ofSize: 12)
         $0.textColor = .black
         $0.textAlignment = .left
     }

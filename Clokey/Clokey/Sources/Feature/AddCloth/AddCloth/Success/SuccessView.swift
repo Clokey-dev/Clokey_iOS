@@ -20,7 +20,7 @@ class SuccessView: UIView {
     private let messageLabel: UILabel = {
         let label = UILabel()
         label.text = "옷장에 안전하게\n보관해 드릴게요!"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .medium) // 기본 폰트
+        label.font = UIFont.ptdMediumFont(ofSize: 16) // 기본 폰트
         label.textColor = .black
         label.textAlignment = .center
         label.numberOfLines = 2 // 두 줄로 표시

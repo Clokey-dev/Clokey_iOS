@@ -124,14 +124,14 @@ class SmartSummationViewController: UIViewController {
                     self.summationView.categoryButton2.setTitle(frequent.coreCategoryName, for: .normal)
                     self.summationView.frequentTitleLabel.text = " - 일주일간 평균 \(frequent.usage)회 착용"
                     self.frequentClothes = Array(frequent.clothPreviews.prefix(3))
-                    self.summationView.seeAllButton.setTitle("\(frequent.coreCategoryName) 전체보기", for: .normal)
+                    self.summationView.seeAllButton.setTitle("\(frequent.coreCategoryName)말고 다른 옷 보러가기", for: .normal)
                     self.summationView.freCollectionView.reloadData()
                     
                     self.summationView.categoryButton3.setTitle(infrequent.baseCategoryName, for: .normal)
                     self.summationView.categoryButton4.setTitle(infrequent.coreCategoryName, for: .normal)
                     self.summationView.infrequentTitleLabel.text = " - 일주일간 평균 \(infrequent.usage)회 착용"
                     self.infrequentClothes = Array(infrequent.clothPreviews.prefix(3))
-                    self.summationView.seeAllButton2.setTitle("\(infrequent.coreCategoryName) 전체보기", for: .normal)
+                    self.summationView.seeAllButton2.setTitle("옷장 구석에서 \(infrequent.coreCategoryName) 찾아보기", for: .normal)
                     self.summationView.infreCollectionView.reloadData()
                 }
             case .failure(let error):

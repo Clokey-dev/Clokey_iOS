@@ -287,7 +287,7 @@ class SmartSummationView: UIView {
         
         bannerDescription.snp.makeConstraints {
             $0.leading.equalTo(bannerImage.snp.trailing).offset(5)
-            $0.trailing.equalTo(bannerView.snp.trailing).offset(-33)
+            $0.trailing.equalTo(bannerView.snp.trailing).offset(-101)
             $0.centerY.equalToSuperview()
         }
         
@@ -335,14 +335,15 @@ class SmartSummationView: UIView {
         // closetView참고
         seeAllButton.snp.makeConstraints {
             $0.top.equalTo(freCollectionView.snp.bottom).offset(8)
-            $0.trailing.equalTo(bannerView.snp.trailing)
+            $0.trailing.equalTo(bannerView.snp.trailing).offset(-10)
             $0.height.equalTo(44)
         }
         
         frontIconView.snp.makeConstraints {
-            $0.top.equalTo(freCollectionView.snp.bottom).offset(8)
-            $0.leading.equalTo(seeAllButton.snp.trailing).offset(-9)
-            $0.width.height.equalTo(12)
+            $0.top.equalTo(freCollectionView.snp.bottom).offset(24)
+            $0.leading.equalTo(seeAllButton.snp.trailing).offset(10)
+            $0.width.equalTo(6)
+            $0.height.equalTo(12)
         }
         
         // 두 번째 라인: [categoryButton3] [TitleLabel3] [categoryButton4] [TitleLabel4]
@@ -384,13 +385,13 @@ class SmartSummationView: UIView {
         
         seeAllButton2.snp.makeConstraints {
             $0.top.equalTo(infreCollectionView.snp.bottom).offset(8)
-            $0.trailing.equalTo(bannerView.snp.trailing)
+            $0.trailing.equalTo(bannerView.snp.trailing).offset(-10)
             $0.height.equalTo(44)
         }
         
         frontIconView2.snp.makeConstraints {
-            $0.top.equalTo(infreCollectionView.snp.bottom).offset(8)
-            $0.leading.equalTo(seeAllButton2.snp.trailing).offset(-9)
+            $0.top.equalTo(infreCollectionView.snp.bottom).offset(24)
+            $0.leading.equalTo(seeAllButton2.snp.trailing).offset(10)
             $0.width.height.equalTo(12)
         }
         

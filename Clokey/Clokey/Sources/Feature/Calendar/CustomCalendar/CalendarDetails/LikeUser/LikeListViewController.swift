@@ -42,7 +42,7 @@ class LikeListViewController: UIViewController {
     
     private let titleLabel = UILabel().then {
         $0.text = "좋아요"
-        $0.font = .systemFont(ofSize: 16, weight: .semibold)
+        $0.font = .ptdSemiBoldFont(ofSize: 16)
     }
     
     private let closeButton = UIButton().then {
