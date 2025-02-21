@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate {
     // 스마트요약에서 넘어온 데이터들
     var selectedBaseCategoryName: String?
     var selectedCoreCategoryName: String?
@@ -13,6 +13,8 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
     
     // MARK: - Properties
     private let displayAllView = DisplayAllView()
+    
+    private let refreshControl = UIRefreshControl()
     
     // 의류 리스트 - 검색/정렬/필터링에 사용
     var clothItems: [ClosetModel] = []
@@ -80,6 +82,11 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
                               coreCategoryId: coreId,
                               season: selectedSeason)
         }
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        
+        displayAllView.collectionView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
     }
     
     override func viewDidLayoutSubviews() {
@@ -355,6 +362,15 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
     @objc private func searchFieldDidChange(_ textField: UITextField) {
         let keyword = textField.text?.trimmingCharacters(in: .whitespaces) ?? ""
         currentSearchText = keyword
+    }
+    
+    @objc private func didPullToRefresh() {
+        loadClothesData()
+        
+        // 풀투리프레시 종료 (약간의 딜레이 후)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.refreshControl.endRefreshing()
+        }
     }
 }
 
