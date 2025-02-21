@@ -187,7 +187,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         
         
         showPopup(with: tappedImageView.image, clothId: clothId)
-        popUpView.urlGoButton.addTarget(self, action: #selector(urlGoButtonTapped), for: .touchUpInside)
+        
     }
     
     private func showPopup(with image: UIImage?, clothId: Int64) {
@@ -400,6 +400,8 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     if let imageUrl = URL(string: response.imageUrl) {
                         popUpView.imageView.kf.setImage(with: imageUrl)
                     }
+                    
+                    popUpView.urlGoButton.addTarget(self, action: #selector(self.urlGoButtonTapped), for: .touchUpInside)
                     
                 case .failure(let error):
                     print("팝업 의류 데이터 로드 실패: \(error.localizedDescription)")
