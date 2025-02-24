@@ -10,7 +10,7 @@
 import UIKit
 import Kingfisher
 
-class UpdateFriendCalendarViewController: UIViewController, UIGestureRecognizerDelegate {
+class UpdateFriendCalendarViewController: UIViewController, UIGestureRecognizerDelegate,  UICollectionViewDelegate {
     
     private let updateFriendCalendarView = UpdateFriendCalendarView()
     private var modelData: [UpdateFriendCalendarModel] = []
@@ -61,8 +61,12 @@ class UpdateFriendCalendarViewController: UIViewController, UIGestureRecognizerD
         }
     }
     
+//    private func setupDelegate() {
+//        updateFriendCalendarView.updateFriendCalendarCollectionView.dataSource = self
+//    }
     private func setupDelegate() {
         updateFriendCalendarView.updateFriendCalendarCollectionView.dataSource = self
+        updateFriendCalendarView.updateFriendCalendarCollectionView.delegate = self
     }
     
     private func loadData(isNextPage: Bool = false) {
