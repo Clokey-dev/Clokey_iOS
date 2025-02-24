@@ -2,21 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleIcons</key>
-    <dict>
-        <key>CFBundlePrimaryIcon</key>
-        <dict>
-            <key>CFBundleIconFiles</key>
-            <array>
-                <string>AppIcon</string> <!-- 앱 아이콘 이미지 -->
-            </array>
-        </dict>
-    </dict>
-
-    <key>BGTaskSchedulerPermittedIdentifiers</key>
-    <array>
-        <string>com.yourapp.backgroundTask</string>
-    </array>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.yourapp.backgroundTask</string>
+	</array>
+	<key>CFBundleIcons</key>
+	<dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>AppIcon</string>
+			</array>
+		</dict>
+	</dict>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -32,7 +31,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>kakao$(KAKAO_NATIVE_APP_KEY):oauth</string>
+				<string>kakao-oauth-$(KAKAO_NATIVE_APP_KEY)</string>
 			</array>
 		</dict>
 	</array>
