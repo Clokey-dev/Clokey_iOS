@@ -43,7 +43,7 @@ class ClosetCollectionViewCell: UICollectionViewCell {
     
     // 상품 이름 라벨
     let nameLabel = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        $0.font = UIFont.ptdRegularFont(ofSize: 12)
         $0.textColor = .black
         $0.textAlignment = .left
     }

@@ -106,7 +106,7 @@ class PhotoEditViewController: UIViewController, UIGestureRecognizerDelegate {
         navBarManager.setTitle(
             to: navigationItem,
             title: "사진 편집",
-            font: .systemFont(ofSize: 18, weight: .semibold), textColor: .black
+            font: .ptdSemiBoldFont(ofSize: 18), textColor: .black
         )
 
         view.addSubview(thumbnailCollectionView)

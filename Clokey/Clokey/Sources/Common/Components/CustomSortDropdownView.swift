@@ -109,7 +109,7 @@ class CustomSortDropdownView: UIView, UITableViewDelegate, UITableViewDataSource
         // 옵션 라벨
         private let titleLabel = UILabel().then {
             $0.textColor = .black
-            $0.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+            $0.font = UIFont.ptdMediumFont(ofSize: 16)
         }
         
         // 선택된 옵션 체크 이미지

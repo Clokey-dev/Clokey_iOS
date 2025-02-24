@@ -29,7 +29,7 @@ class NotificationView: UIView {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "알림"
-        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        label.font = UIFont.ptdBoldFont(ofSize: 20)
         label.textAlignment = .center
         return label
     }()

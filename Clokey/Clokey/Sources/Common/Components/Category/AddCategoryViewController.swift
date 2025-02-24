@@ -288,7 +288,7 @@ class AddCategoryViewController: UIViewController, UICollectionViewDataSource, U
         let text = categories[indexPath.section].buttons[indexPath.item].name
 
         // Calculate the size of the text
-        let textWidth = (text as NSString).size(withAttributes: [.font: UIFont.systemFont(ofSize: 16)]).width
+        let textWidth = (text as NSString).size(withAttributes: [.font: UIFont.ptdMediumFont(ofSize: 16)]).width
         let buttonWidth = textWidth + 28 // Add padding for the button
 
         if buttonWidth > maxRowWidth {

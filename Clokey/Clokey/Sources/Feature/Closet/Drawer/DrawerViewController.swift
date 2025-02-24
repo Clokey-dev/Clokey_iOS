@@ -18,30 +18,31 @@ class DrawerViewController: UIViewController, UICollectionViewDataSource, UIColl
     // 폴더 안에 들어 있는 옷 목록 (예: FolderClothDTO 배열)
     private var clothItems: [FolderClothDTO] = []
     
+    // 페이징 관련 변수
+    private var currentPage = 1
+    private let pageSize = 12
+    private var isLoading = false
+    private var hasMorePages = true
+    
     // MARK: - Navigation Bar Button
     private lazy var editButton: UIBarButtonItem = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(named: "dot3_icon")?.withRenderingMode(.alwaysTemplate), for: .normal)
         button.tintColor = .mainBrown800
-        button.translatesAutoresizingMaskIntoConstraints = false  // 제약조건 사용
-        
-        // 제약 조건 추가
+        button.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             button.widthAnchor.constraint(equalToConstant: 24),
             button.heightAnchor.constraint(equalToConstant: 24)
         ])
-        
         button.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
         return UIBarButtonItem(customView: button)
     }()
 
-    
     // MARK: - Initializer
     // ② 이니셜라이저에서 drawerItem을 받아 저장
     init(drawerItem: DrawerModel) {
         self.drawerItem = drawerItem
         super.init(nibName: nil, bundle: nil)
-        
     }
     
     // 스토리보드 사용하지 않을 때 필수
@@ -59,11 +60,9 @@ class DrawerViewController: UIViewController, UICollectionViewDataSource, UIColl
         setupUI()
         setupCollectionView()
         
-        // 예시) drawerItem.id를 folderId로 사용하여 해당 폴더 안의 옷 목록을 불러온다고 가정
-        //      만약 drawerItem 자체가 이미 폴더 안의 옷 목록이면, 여기서 별도 API 호출이 필요 없을 수도 있음
-        loadFolderClothes(folderId: Int(drawerItem.id), page: 1)
+        // 첫 페이지 데이터 로드 (page 1)
+        loadFolderClothes(folderId: Int(drawerItem.id), isNextPage: false)
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -96,16 +95,31 @@ class DrawerViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     // MARK: - API
-    private func loadFolderClothes(folderId: Int, page: Int) {
-        folderService.folderCheck(folderId: folderId, page: page) { [weak self] result in
+    private func loadFolderClothes(folderId: Int, isNextPage: Bool = false) {
+        // 로딩 중이거나, 다음 페이지 요청일 때 추가 데이터가 없으면 진행하지 않음
+        guard !isLoading && (hasMorePages || !isNextPage) else { return }
+        isLoading = true
+        let pageToLoad = isNextPage ? currentPage + 1 : 1
+        
+        folderService.folderCheck(folderId: folderId, page: pageToLoad) { [weak self] result in
+            guard let self = self else { return }
             DispatchQueue.main.async {
+                self.isLoading = false
                 switch result {
                 case .success(let responseDTO):
-                    // FolderCheckResponseDTO -> clothes: [FolderClothDTO]
-                    self?.clothItems = responseDTO.clothes
-                    self?.drawerView.collectionView.reloadData()
+                    let newItems = responseDTO.clothes
+                    if isNextPage {
+                        self.clothItems.append(contentsOf: newItems)
+                        self.currentPage = pageToLoad
+                    } else {
+                        self.clothItems = newItems
+                        self.currentPage = 1
+                    }
+                    // 새로 받아온 아이템 개수가 pageSize 이상이면 다음 페이지 존재
+                    self.hasMorePages = newItems.count >= self.pageSize
+                    self.drawerView.collectionView.reloadData()
                 case .failure(let error):
-                    self?.showError(error)
+                    self.showError(error)
                 }
             }
         }
@@ -125,7 +139,6 @@ class DrawerViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     @objc func backButtonTapped() {
-        // 탭바 로직은 기존 코드 유지
         if let tabBarController = self.tabBarController {
             tabBarController.selectedIndex = 3
             if let closetNav = tabBarController.viewControllers?[3] as? UINavigationController {
@@ -156,17 +169,13 @@ class DrawerViewController: UIViewController, UICollectionViewDataSource, UIColl
         }
         
         let cloth = clothItems[indexPath.item]
-        
-        // Kingfisher로 이미지 로딩
         if let imageUrl = cloth.imageUrl,
            !imageUrl.isEmpty,
            let url = URL(string: imageUrl) {
             cell.productImageView.kf.setImage(with: url, placeholder: nil)
         } else {
-            // "아무 것도 표시하지 않고 싶다" → Kingfisher에 nil 전달
             cell.productImageView.image = nil
         }
-
         
         cell.nameLabel.text = cloth.clothName
         cell.countLabel.text = "\(cloth.clothCount)회"
@@ -179,5 +188,18 @@ class DrawerViewController: UIViewController, UICollectionViewDataSource, UIColl
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cloth = clothItems[indexPath.item]
         print("Selected cloth: \(cloth.clothName)")
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+extension DrawerViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let contentHeight = scrollView.contentSize.height
+        let screenHeight = scrollView.frame.size.height
+        // 스크롤이 바닥에 가까워지면 다음 페이지 로드
+        if offsetY > contentHeight - screenHeight - 100 {
+            loadFolderClothes(folderId: Int(drawerItem.id), isNextPage: true)
+        }
     }
 }

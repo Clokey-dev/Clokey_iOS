@@ -37,7 +37,7 @@ class SearchView: UIView {
         let button = UIButton(type: .system)
         button.setTitle("전체삭제", for: .normal)
         button.setTitleColor(.gray, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        button.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 14)
         return button
     }()
     
@@ -51,7 +51,7 @@ class SearchView: UIView {
     let searchTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "검색"
-        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.font = UIFont.ptdBoldFont(ofSize: 20)
         label.textColor = .black
         return label
     }()
@@ -60,7 +60,7 @@ class SearchView: UIView {
     private let recentSearchLabel: UILabel = {
         let label = UILabel()
         label.text = "최근 검색 기록"
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.ptdBoldFont(ofSize: 16)
         label.textColor = .black
         return label
     }()
@@ -69,7 +69,7 @@ class SearchView: UIView {
     private let recommendedTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "추천 검색어"
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.ptdBoldFont(ofSize: 16)
         label.textColor = .black
         return label
     }()

@@ -91,7 +91,7 @@ class AgreementCell: UITableViewCell {
     func configure(with agreement: Agreement, isFirst: Bool) {
         let statusText = agreement.isRequired ? "(필수)" : "(선택)"
         let statusAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.boldSystemFont(ofSize: 16),
+            .font: UIFont.ptdBoldFont(ofSize: 16),
             .foregroundColor: agreement.isChecked ? UIColor.pointOrange800 : UIColor.pointOrange400
         ]
         let attributedString = NSMutableAttributedString(string: statusText, attributes: statusAttributes)

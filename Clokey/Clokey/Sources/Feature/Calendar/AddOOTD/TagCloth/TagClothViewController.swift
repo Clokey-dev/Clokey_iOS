@@ -75,6 +75,8 @@ class TagClothViewController: UIViewController, UIGestureRecognizerDelegate {
     private var isLoading = false
     private var hasMorePages = true
     
+    var clokeyId: String = ""
+    
     // 확인 버튼
     private lazy var confirmButton: UIBarButtonItem = {
         let button = UIBarButtonItem(title: "확인", style: .done,
@@ -172,7 +174,9 @@ class TagClothViewController: UIViewController, UIGestureRecognizerDelegate {
         
         isLoading = true
         let page = isNextPage ? currentPage + 1 : 1
-
+        
+        let clokeyIdForAPI: String? = clokeyId.isEmpty ? nil : clokeyId
+        
         clothesService.getClothes(
             clokeyId: nil,
             categoryId: categoryId,
@@ -220,8 +224,9 @@ class TagClothViewController: UIViewController, UIGestureRecognizerDelegate {
         guard !keyword.isEmpty else { return }
 
         isLoading = true
-
+        let clokeyIdForAPI = clokeyId.isEmpty ? nil : clokeyId
         searchService.searchClothes(
+            clokeyId: clokeyIdForAPI,
             by: "name-and-brand",
             keyword: keyword,
             page: 1,

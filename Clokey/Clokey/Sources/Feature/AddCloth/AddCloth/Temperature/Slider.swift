@@ -32,7 +32,7 @@ final class Slider: UIControl {
     
     private let lowerThumbLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.font = UIFont.ptdThinFont(ofSize: 14)
         label.textColor = .brown
         label.textAlignment = .center
         label.alpha = 0 
@@ -40,7 +40,7 @@ final class Slider: UIControl {
     }()
     private let upperThumbLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.font = UIFont.ptdBoldFont(ofSize: 14)
         label.textColor = .brown
         label.textAlignment = .center
         label.alpha = 0

@@ -60,7 +60,7 @@ class RecordOOTDViewController: UIViewController, UIGestureRecognizerDelegate {
         navBarManager.setTitle(
             to: navigationItem,
             title: "캘린더에 기록하기",
-            font: .systemFont(ofSize: 18, weight: .semibold),
+            font: .ptdSemiBoldFont(ofSize: 18),
             textColor: .black
         )
     }
@@ -293,7 +293,7 @@ extension RecordOOTDViewController: UICollectionViewDataSource {
             // 넘버링 라벨을 x 버튼으로 재활용
             cell.numberLabel.isHidden = false
             cell.numberLabel.text = "×"
-            cell.numberLabel.font = .systemFont(ofSize: 14, weight: .bold)
+            cell.numberLabel.font = .ptdBoldFont(ofSize: 14)
             cell.countLabel.isHidden = true
             cell.numberLabel.backgroundColor = .clear
             cell.numberLabel.textColor = .black

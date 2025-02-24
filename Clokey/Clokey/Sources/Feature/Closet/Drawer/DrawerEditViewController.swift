@@ -51,6 +51,7 @@ class DrawerEditViewController: UIViewController, UICollectionViewDataSource, UI
     
     // 페이징 관련 변수
     private var currentPage = 1
+    private let pageSize = 12
     private var isLoading = false
     private var hasMorePages = true
     
@@ -204,7 +205,7 @@ class DrawerEditViewController: UIViewController, UICollectionViewDataSource, UI
             season: season,
             sort: currentSort.rawValue,
             page: page,
-            size: 12
+            size: pageSize
         ) { [weak self] result in
             guard let self = self else { return }
             self.isLoading = false
@@ -220,19 +221,17 @@ class DrawerEditViewController: UIViewController, UICollectionViewDataSource, UI
                 }
                 
                 if isNextPage {
-                    // 다음 페이지 요청이면 기존 데이터에 추가
                     self.originalClothItems.append(contentsOf: newItems)
                     self.products.append(contentsOf: newItems)
                     self.currentPage = page
                 } else {
-                    // 처음 로드하면 기존 데이터를 덮어쓰기
                     self.originalClothItems = newItems
                     self.products = newItems
                     self.currentPage = 1
                 }
                 
-                // 새로운 아이템이 있으면 hasMorePages를 true, 없으면 false로 설정
-                self.hasMorePages = !newItems.isEmpty
+                // 응답받은 아이템 개수가 pageSize 이상이면 더 불러올 페이지가 있다고 판단
+                self.hasMorePages = newItems.count >= self.pageSize
                 
                 DispatchQueue.main.async {
                     self.drawerEditView.collectionView.reloadData()
