@@ -28,17 +28,17 @@ public struct InquiryClothesDetailResponseDTO: Codable {
 
 // 옷 조회(수정용)
 public struct checkEditClothesResponseDTO: Codable {
-    public let id: CLong
+    public let id: Int64
     public let name: String
-    public let seasons: [Season]
+    public let seasons: [String]
     public let tempUpperBound: Int
     public let tempLowerBound: Int
-    public let thicknessLevel: [ThicknessLevel]
-    public let visibility: [Visibility]
-    public let clothUrl: String
-    public let brand: String
+    public let thicknessLevel: String
+    public let visibility: String
+    public let clothUrl: String?
+    public let brand: String?
     public let imageUrl: String
-    public let categoryId: CLong
+    public let categoryId: Int64
 }
 
 // 옷 조회(팝업용)
