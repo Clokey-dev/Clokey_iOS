@@ -377,6 +377,8 @@ class NewsViewController: UIViewController {
         
         // closeButton 클릭 시 팝업 닫기 기능 추가
         popUpView.deleteButton.addTarget(self, action: #selector(dismissPopup), for: .touchUpInside)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissPopup))
+        bgView.addGestureRecognizer(tap)
         
         let clotehsService = ClothesService()
         
