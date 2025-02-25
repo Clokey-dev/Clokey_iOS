@@ -85,36 +85,25 @@ class CalendarCell: UICollectionViewCell {
         imageView.isHidden = !isCurrentMonth
         imageView.kf.cancelDownloadTask()
 
-        if isToday {
+        todayView.isHidden = true
+        
+        if isCurrentMonth, isToday {
             todayView.isHidden = false
             dayLabel.textColor = .white
         } else {
-            todayView.isHidden = true
-            
-            if isSelected {
-                contentView.backgroundColor = .systemBlue.withAlphaComponent(0.3)
-                dayLabel.textColor = .black
-            } else {
-                contentView.backgroundColor = .white
-                dayLabel.textColor = .black
-            }
+            dayLabel.textColor = .black
         }
-        
-//        // 로딩 전 셀 리셋
-//        imageView.image = nil
-//        
-//        // 이미지 로딩
-//        if let imageUrl = imageUrl, let url = URL(string: imageUrl) {
-//            todayView.isHidden = true
-//            imageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"))
-//        } else {
-//            imageView.image = nil
-//        }
         // 현재 달의 셀에만 이미지 표시
         if isCurrentMonth, let imageUrl = imageUrl, let url = URL(string: imageUrl) {
             imageView.isHidden = false
             todayView.isHidden = true
             imageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"))
+        }
+        // 선택된 날짜
+        if isSelected {
+            contentView.backgroundColor = .systemBlue.withAlphaComponent(0.3)
+        } else {
+            contentView.backgroundColor = .white
         }
     }
     
