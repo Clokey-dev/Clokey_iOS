@@ -27,16 +27,7 @@ public final class ClothesService : NetworkManager {
         self.provider = provider ?? MoyaProvider<ClothesEndpoint>(plugins: plugins)
     }
     
-    public func inquiryClothesDetail (
-        cloth_id: Int,
-        completion: @escaping (Result<InquiryClothesDetailResponseDTO, NetworkError>) -> Void
-    ){
-        request(
-            target: .inquiryClothesDetail(cloth_id: cloth_id),
-            decodingType: InquiryClothesDetailResponseDTO.self,
-            completion: completion
-        )
-    }
+   
     
     public func checkEditClothes (
         clothId: Int64,

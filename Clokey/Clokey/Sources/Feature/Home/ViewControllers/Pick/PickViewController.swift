@@ -32,6 +32,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     private let model = PickImageModel.dummy()
     //새로고침 기능 추가
     private let refreshControl = UIRefreshControl()
+    private var loadingOverlay: UIView?
     
     override func loadView() {
         self.view = pickView
@@ -53,6 +54,8 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         updateYesterdayWeatherUI()
         setupBottomLabelTap()
         //        bindData()
+        
+        showLoadingOverlay()
         
         
         locationManager.delegate = self
@@ -477,10 +480,12 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                         self.pickView.weatherImageName3.text = recommendedClothes[2].clothName
                         self.clothId3 = recommendedClothes[2].clothId
                     }
+                    self.hideLoadingOverlay()
                     
                 case .failure(let error):
                     print("추천 의상 데이터 가져오기 실패: \(error.localizedDescription)")
                     self.pickView.updateEmptyState(isEmpty: true)
+                    self.hideLoadingOverlay()
                 }
             }
         }
@@ -755,6 +760,28 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         // 약간의 지연 후 refreshControl 종료
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.refreshControl.endRefreshing()
+        }
+    }
+    
+    private func showLoadingOverlay() {
+        let overlay = UIView()
+        overlay.backgroundColor = .white
+        view.addSubview(overlay)
+        
+        // SnapKit을 사용하여 전체화면 제약조건 추가
+        overlay.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        loadingOverlay = overlay
+    }
+    
+    private func hideLoadingOverlay() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.loadingOverlay?.alpha = 0
+        }) { _ in
+            self.loadingOverlay?.removeFromSuperview()
+            self.loadingOverlay = nil
         }
     }
 }
