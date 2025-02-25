@@ -32,6 +32,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     private let model = PickImageModel.dummy()
     //새로고침 기능 추가
     private let refreshControl = UIRefreshControl()
+    private var isDataLoaded: Bool = false // 데이터 로드 여부 플래그
     private var loadingOverlay: UIView?
     
     override func loadView() {
@@ -56,9 +57,6 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         setupBottomLabelTap()
         //        bindData()
         
-        showLoadingOverlay()
-        
-        
         locationManager.delegate = self
         locationManager.distanceFilter = kCLDistanceFilterNone
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -74,6 +72,18 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        
+        // 데이터가 이미 로드되었으면 오버레이가 있으면 제거
+            if isDataLoaded {
+                if loadingOverlay != nil {
+                    hideLoadingOverlay()
+                }
+            } else {
+                // 데이터가 로드되지 않았고, 오버레이가 아직 없다면 오버레이 표시
+                if loadingOverlay == nil {
+                    showLoadingOverlay()
+                }
+            }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -482,7 +492,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                         self.clothId3 = recommendedClothes[2].clothId
                     }
                     self.hideLoadingOverlay()
-                    
+                    self.isDataLoaded = true // 데이터 로드 완료
                 case .failure(let error):
                     print("추천 의상 데이터 가져오기 실패: \(error.localizedDescription)")
                     self.pickView.updateEmptyState(isEmpty: true)
