@@ -42,8 +42,6 @@ final class MainViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         checkNotificationExistence()
-        setupDelegates()
-        showViewController(homeVC)
     }
 
     override func viewDidAppear(_ animated: Bool) {
