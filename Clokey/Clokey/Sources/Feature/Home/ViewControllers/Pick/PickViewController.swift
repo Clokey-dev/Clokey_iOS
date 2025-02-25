@@ -44,6 +44,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         // 새로고침 기능 추가 
         pickView.scrollView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
+        NotificationCenter.default.addObserver(self, selector: #selector(didPullToRefresh), name: NSNotification.Name("RefreshHomeNotification"), object: nil)
         
         
         setupActions()

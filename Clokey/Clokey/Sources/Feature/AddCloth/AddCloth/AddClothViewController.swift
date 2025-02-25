@@ -2,7 +2,7 @@ import UIKit
 import SnapKit
 
 
-class AddClothViewController: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
+class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureRecognizerDelegate*/ {
     private let addClothesView = AddClothesView()
     
     
@@ -214,6 +214,7 @@ class AddClothViewController: UIViewController, UITextFieldDelegate, UIGestureRe
     
     //
     @objc private func handleBack() {
+        NotificationCenter.default.post(name: NSNotification.Name("RefreshHomeNotification"), object: nil)
         if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
             sceneDelegate.switchToMain()
         }
@@ -254,6 +255,16 @@ class AddClothViewController: UIViewController, UITextFieldDelegate, UIGestureRe
 
     }
     
+}
+
+extension AddClothViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer == self.navigationController?.interactivePopGestureRecognizer {
+            handleBack()
+            return false  // 기본 pop 동작 차단
+        }
+        return true
+    }
 }
 
 
