@@ -2,7 +2,7 @@ import UIKit
 import SnapKit
 
 
-class AddClothViewController: UIViewController, UITextFieldDelegate {
+class AddClothViewController: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
     private let addClothesView = AddClothesView()
     
     
@@ -252,20 +252,9 @@ class AddClothViewController: UIViewController, UITextFieldDelegate {
         addClothesView.reclassifyButton.isHidden = true
         addClothesView.reclassifyButton.alpha = 0.0
 
-        //  필요하면 추가적인 초기화 코드 작성 가능
     }
     
 }
 
-extension AddClothViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        // 인터랙티브 팝 제스처일 경우 handleBack 호출 후 기본 동작 방지
-        if gestureRecognizer == self.navigationController?.interactivePopGestureRecognizer {
-            self.handleBack()
-            return false
-        }
-        return true
-    }
-}
 
 
