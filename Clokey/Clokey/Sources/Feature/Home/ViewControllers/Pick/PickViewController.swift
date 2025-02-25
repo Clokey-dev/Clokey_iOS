@@ -78,6 +78,9 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        fetchWeatherRecommendations()
+        loadRecapData()
     }
     
     var clothId1:Int64?
@@ -203,6 +206,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         bgView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
         backgroundView = bgView
         
         // 팝업 뷰 생성
@@ -226,6 +230,8 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         
         // closeButton 클릭 시 팝업 닫기 기능 추가
         popUpView.deleteButton.addTarget(self, action: #selector(dismissPopup), for: .touchUpInside)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissPopup))
+        bgView.addGestureRecognizer(tap)
         
         let clotehsService = ClothesService()
         

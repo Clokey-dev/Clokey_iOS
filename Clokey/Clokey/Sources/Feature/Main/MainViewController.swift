@@ -42,6 +42,8 @@ final class MainViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         checkNotificationExistence()
+        setupDelegates()
+        showViewController(homeVC)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -63,48 +65,6 @@ final class MainViewController: UIViewController {
             }
             UserDefaults.standard.set(false, forKey: "navigateToCloset")
         }
-//        if shouldNavigateToCloset {
-//            // 전환할 뷰 컨트롤러 배열 (원하는 순서에 맞게 구성)
-//            let viewControllers: [UIViewController] = [calendarVC, closetVC]
-//            // 탭바 아이템 배열 (실제 탭바에 설정된 순서)
-//            let tabBarItems = mainView.tabBarView.tabBar.items ?? []
-//            
-//            // 현재 전환할 인덱스
-//            var currentIndex = 0
-//            
-//            func animateTransition() {
-//                // 배열의 모든 인덱스를 순회할 때까지
-//                if currentIndex < viewControllers.count {
-//                    UIView.transition(with: mainView.contentView,
-//                                      duration: 0.1, // 각 전환의 지속시간 (0.5초)
-//                                      options: .transitionCrossDissolve,
-//                                      animations: { [weak self] in
-//                        guard let self = self else { return }
-//                        // 해당 인덱스의 뷰 컨트롤러 표시
-//                        self.showViewController(viewControllers[currentIndex])
-//                        // 탭바 선택 아이템도 해당 인덱스로 변경 (아이템이 충분할 경우)
-//                        if currentIndex < tabBarItems.count {
-//                            self.mainView.tabBarView.tabBar.selectedItem = tabBarItems[currentIndex+2]
-//                        }
-//                    },
-//                                      completion: { _ in
-//                        // 다음 인덱스로 이동
-//                        currentIndex += 1
-//                        // 약간의 딜레이 후 재귀적으로 다음 전환 실행
-//                        if currentIndex < viewControllers.count {
-//                            DispatchQueue.main.asyncAfter(deadline: .now()) {
-//                                animateTransition()
-//                            }
-//                        }
-//                    })
-//                }
-//            }
-//            
-//            // 애니메이션 전환 시작
-//            animateTransition()
-//            // 한 번 실행한 후 다시 실행되지 않도록 설정
-//            UserDefaults.standard.set(false, forKey: "navigateToCloset")
-//        }
     }
     
     // MARK: - Setup
@@ -231,121 +191,3 @@ extension MainViewController: TabBarViewDelegate {
 }
 
 
-////
-////  MainViewController.swift
-////  Clokey
-////
-////  Created by 황상환 on 12/31/24.
-////
-//
-//import UIKit
-//import SnapKit
-//import Then
-//
-//// MainView, Header,TabBar 이벤트 처리 델리게이트도 수행
-//final class MainViewController: UIViewController {
-//    
-//    // MARK: - Properties
-//    private let mainView = MainView()
-//    
-//    private lazy var homeVC = HomeViewController()
-//    private lazy var calendarVC = CalendarViewController()
-//    private lazy var addClothVC = AddClothViewController()
-//    private lazy var closetVC = ClosetViewController()
-//    private lazy var profileVC = ProfileViewController()
-//    
-//    // MARK: - Lifecycle
-//    override func loadView() {
-//        view = mainView
-//    }
-//    
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        setupDelegates()
-//        showViewController(homeVC)
-//    }
-//    
-//    // MARK: - Setup
-//    // HeaderView와 TabBarView의 이벤트 처리 델리게이트 설정
-//    private func setupDelegates() {
-//        mainView.headerView.delegate = self
-//        mainView.tabBarView.delegate = self
-//    }
-//    
-//    // MARK: - Methods
-//    // 다른 뷰 컨트롤러로 화면 전환
-//    private func showViewController(_ viewController: UIViewController) {
-//        
-//        // `AddClothViewController`는 네비게이션 스택으로 푸시
-//        if viewController is AddClothViewController {
-//            pushAddClothViewController(viewController)
-//            return
-//        }
-//        //
-//        
-//        children.forEach {
-//            // 제거
-//            $0.willMove(toParent: nil)
-//            $0.view.removeFromSuperview()
-//            $0.removeFromParent()
-//        }
-//        
-//        // 생성
-//        addChild(viewController)
-//        mainView.contentView.addSubview(viewController.view)
-//        viewController.view.snp.makeConstraints {
-//            $0.edges.equalToSuperview()
-//        }
-//        viewController.didMove(toParent: self)
-//    }
-//    
-//    /// AddClothViewController로 네비게이션 전환
-//    private func pushAddClothViewController(_ viewController: UIViewController) {
-//        if let navController = navigationController {
-//            navController.pushViewController(viewController, animated: true)
-//        } else if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
-//                  let rootNav = sceneDelegate.window?.rootViewController as? UINavigationController {
-//            rootNav.pushViewController(viewController, animated: true)
-//        } else {
-//            print("🚨 네비게이션 컨트롤러 없음! SceneDelegate에서 강제 재설정 필요")
-//        }
-//    }
-//    //
-//}
-//
-//// MARK: - HeaderViewDelegate
-//// 헤더뷰에 있던 버튼 이벤트 처리
-//extension MainViewController: HeaderViewDelegate {
-//    func didTapSearchButton() {
-//        // 검색 버튼 탭 처리
-//    }
-//    
-//    func didTapNotificationButton() {
-//        // 알림 버튼 탭 처리
-//    }
-//}
-//
-//// MARK: - TabBarViewDelegate
-//extension MainViewController: TabBarViewDelegate {
-//    func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-//        switch item.tag {
-//        case 0:
-//            showViewController(homeVC)
-//            mainView.setHeaderViewHidden(false)
-//        case 1:
-//            showViewController(calendarVC)
-//            mainView.setHeaderViewHidden(false)
-//        case 2:
-//            showViewController(addClothVC)
-//            mainView.setHeaderViewHidden(false)
-//        case 3:
-//            showViewController(closetVC)
-//            mainView.setHeaderViewHidden(false)
-//        case 4:
-//            showViewController(profileVC)
-//            mainView.setHeaderViewHidden(true)
-//        default:
-//            break
-//        }
-//    }
-//}
