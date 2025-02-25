@@ -10,6 +10,11 @@ class AddCategoryView: UIView {
         return [springImageView, summerImageView, autumnImageView, winterImageView]
     }
     
+    // 라벨 선택
+    private var seasonLabelViews: [UILabel] {
+        return [springLabel, summerLabel, autumnLabel, winterLabel]
+    }
+    
     let backButton = UIButton().then {
         $0.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
         $0.tintColor = UIColor(named: "mainBrown800")
@@ -44,7 +49,7 @@ class AddCategoryView: UIView {
         let label = UILabel()
         label.text = "봄"
         label.font = UIFont.ptdRegularFont(ofSize: 16)
-        label.textColor = .black
+        label.textColor = .mainBrown800
         label.textAlignment = .center
         return label
     }()
@@ -62,7 +67,7 @@ class AddCategoryView: UIView {
         let label = UILabel()
         label.text = "여름"
         label.font = UIFont.ptdRegularFont(ofSize: 16)
-        label.textColor = .black
+        label.textColor = .mainBrown800
         label.textAlignment = .center
         return label
     }()
@@ -80,7 +85,7 @@ class AddCategoryView: UIView {
         let label = UILabel()
         label.text = "가을"
         label.font = UIFont.ptdRegularFont(ofSize: 16)
-        label.textColor = .black
+        label.textColor = .mainBrown800
         label.textAlignment = .center
         return label
     }()
@@ -98,7 +103,7 @@ class AddCategoryView: UIView {
         let label = UILabel()
         label.text = "겨울"
         label.font = UIFont.ptdRegularFont(ofSize: 16)
-        label.textColor = .black
+        label.textColor = .mainBrown800
         label.textAlignment = .center
         return label
     }()
@@ -248,15 +253,27 @@ class AddCategoryView: UIView {
     
     // 계절 선택
     func updateSelectedSeason(_ imageView: UIImageView) {
-       // 모든 이미지뷰의 테두리 초기화
-       seasonImageViews.forEach { view in
-           view.layer.borderWidth = 0
-       }
+        // 모든 이미지뷰의 테두리 초기화
+        seasonImageViews.forEach { view in
+            view.layer.borderWidth = 0
+        }
        
-       // 선택된 이미지뷰에 테두리 추가
-       imageView.layer.borderWidth = 3
-       imageView.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
-   }
+        // 선택된 이미지뷰에 테두리 추가
+        imageView.layer.borderWidth = 3
+        imageView.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+        
+        // 글씨 굵게
+        for (index, view) in seasonLabelViews.enumerated() {
+            view.layer.borderWidth = 0
+            seasonLabelViews[index].font = .ptdMediumFont(ofSize: 16)
+        }
+        
+        // 선택된 이미지 뷰에 테두리 & 라벨 두께
+        if let selectedIndex = seasonImageViews.firstIndex(of: imageView) {
+            imageView.layer.borderWidth = 3
+            imageView.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+            seasonLabelViews[selectedIndex].font = UIFont.ptdBoldFont(ofSize: 16)
+        }   }
 
 }
 
