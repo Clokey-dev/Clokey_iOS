@@ -214,7 +214,9 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
     
     //
     @objc private func handleBack() {
-        NotificationCenter.default.post(name: NSNotification.Name("RefreshHomeNotification"), object: nil)
+//        NotificationCenter.default.post(name: NSNotification.Name("RefreshHomeNotification"), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name("HideLoadingOverlayNotification"), object: nil)
+        
         if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
             sceneDelegate.switchToMain()
         }

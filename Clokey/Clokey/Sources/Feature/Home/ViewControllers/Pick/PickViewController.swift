@@ -45,17 +45,35 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         // 새로고침 기능 추가 
         pickView.scrollView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
-        NotificationCenter.default.addObserver(self, selector: #selector(didPullToRefresh), name: NSNotification.Name("RefreshHomeNotification"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(didPullToRefresh), name: NSNotification.Name("RefreshHomeNotification"), object: nil)
         
         
         setupActions()
         
         updateTimeLabel() // 현재 시간 업데이트
-        fetchWeatherData() // 날씨 데이터 가져오기
+        
         fetchVisualCrossingWeatherData(for: "Seoul") // 기본 위치: 서울
         updateYesterdayWeatherUI()
+        fetchWeatherData() // 날씨 데이터 가져오기
         setupBottomLabelTap()
         //        bindData()
+        
+        if isDataLoaded {
+            if loadingOverlay != nil {
+                hideLoadingOverlay()
+            }
+        } else {
+            // 데이터가 로드되지 않았고, 오버레이가 아직 없다면 오버레이 표시
+            if loadingOverlay == nil {
+                showLoadingOverlay()
+            }
+        }
+        
+        NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(handleHideLoadingOverlay),
+                                                   name: NSNotification.Name("HideLoadingOverlayNotification"),
+                                                   object: nil)
+       
         
         locationManager.delegate = self
         locationManager.distanceFilter = kCLDistanceFilterNone
@@ -64,7 +82,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.startUpdatingLocation()
         
         setupLocationIconTap()
-        
+        fetchWeatherRecommendations()
         loadRecapData()
         
     }
@@ -73,22 +91,19 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         
-        // 데이터가 이미 로드되었으면 오버레이가 있으면 제거
-            if isDataLoaded {
-                if loadingOverlay != nil {
-                    hideLoadingOverlay()
-                }
-            } else {
-                // 데이터가 로드되지 않았고, 오버레이가 아직 없다면 오버레이 표시
-                if loadingOverlay == nil {
-                    showLoadingOverlay()
-                }
-            }
+       
+        fetchWeatherData()
+        updateYesterdayWeatherUI()
+        fetchWeatherRecommendations()
+        loadRecapData()
+        
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
+        
+
     }
     
     var clothId1:Int64?
@@ -522,7 +537,10 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         WeatherAPI.shared.fetchWeather(for: "Seoul") { [weak self] weatherData in
             DispatchQueue.main.async {
                 if let weather = weatherData {
+                    print("API 응답 받음: \(weather)")
                     self?.updateTemperatureUI(weather: weather)
+                }else {
+                    print("API 호출 실패 또는 weatherData가 nil입니다.")
                 }
             }
         }
@@ -641,15 +659,21 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     
     // MARK: - 날씨 데이터 업데이트
     func updateTemperatureUI(weather: WeatherData) {
+        print("updateTemperatureUI 호출됨, 온도: \(weather.main.temp)")
         pickView.temperatureLabel.text = "\(Int(weather.main.temp))°C"
         
         nowTemp = Int(weather.main.temp)
+        
+        isDataLoaded = true
+            hideLoadingOverlay()
         
         // 아이콘 가져오기
         if let icon = weather.weather.first?.icon {
             let iconURL = "https://openweathermap.org/img/wn/\(icon)@2x.png"
             fetchWeatherIcon(from: iconURL)
         }
+        
+        fetchWeatherRecommendations()
     }
     
     
@@ -763,6 +787,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         // 필요에 따라 여러 API 호출을 재실행합니다.
         fetchWeatherData()
         fetchVisualCrossingWeatherData(for: "Seoul")
+        fetchWeatherRecommendations()
         updateYesterdayWeatherUI()
         loadRecapData()
         
@@ -794,6 +819,13 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
             self.loadingOverlay?.removeFromSuperview()
             self.loadingOverlay = nil
         }
+    }
+    
+    @objc private func handleHideLoadingOverlay() {
+        print("HideLoadingOverlayNotification received")
+        // 데이터 로드가 완료된 상태로 간주
+        isDataLoaded = true
+        hideLoadingOverlay()
     }
 }
 
