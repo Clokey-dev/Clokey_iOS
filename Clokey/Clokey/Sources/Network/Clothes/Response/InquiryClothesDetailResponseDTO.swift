@@ -8,37 +8,21 @@
 import Foundation
 
 // 옷 상세 조회(관리자용)
-public struct InquiryClothesDetailResponseDTO: Codable {
-    public let id: CLong
-    public let name: String
-    public let wearNum: Int
-    public let seasons: [Season] // 수정된 부분
-    public let tempUpperBound: Int
-    public let tempLowerBound: Int
-    public let thicknessLevel: [ThicknessLevel] // 수정된 부분
-    public let visibility: [Visibility]        // 수정된 부분
-    public let clothUrl: String
-    public let brand: String
-    public let imageUrl: String
-    public let memberId: CLong
-    public let categoryId: CLong
-    public let createdAt: Date // 엔티티 생성 시간
-    public let updatedAt: Date // 엔티티 수정 시간
-}
+
 
 // 옷 조회(수정용)
 public struct checkEditClothesResponseDTO: Codable {
-    public let id: CLong
+    public let id: Int64
     public let name: String
-    public let seasons: [Season]
+    public let seasons: [String]
     public let tempUpperBound: Int
     public let tempLowerBound: Int
-    public let thicknessLevel: [ThicknessLevel]
-    public let visibility: [Visibility]
-    public let clothUrl: String
-    public let brand: String
+    public let thicknessLevel: String
+    public let visibility: String
+    public let clothUrl: String?
+    public let brand: String?
     public let imageUrl: String
-    public let categoryId: CLong
+    public let categoryId: Int64
 }
 
 // 옷 조회(팝업용)

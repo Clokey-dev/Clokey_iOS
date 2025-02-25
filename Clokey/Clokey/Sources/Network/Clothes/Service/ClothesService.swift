@@ -27,23 +27,14 @@ public final class ClothesService : NetworkManager {
         self.provider = provider ?? MoyaProvider<ClothesEndpoint>(plugins: plugins)
     }
     
-    public func inquiryClothesDetail (
-        cloth_id: Int,
-        completion: @escaping (Result<InquiryClothesDetailResponseDTO, NetworkError>) -> Void
-    ){
-        request(
-            target: .inquiryClothesDetail(cloth_id: cloth_id),
-            decodingType: InquiryClothesDetailResponseDTO.self,
-            completion: completion
-        )
-    }
+   
     
     public func checkEditClothes (
-        cloth_id: Int,
+        clothId: Int64,
         completion: @escaping (Result<checkEditClothesResponseDTO, NetworkError>) -> Void
     ){
         request(
-            target: .checkEditClothes(cloth_id: cloth_id),
+            target: .checkEditClothes(clothId: clothId),
             decodingType: checkEditClothesResponseDTO.self,
             completion: completion)
     }
@@ -91,14 +82,15 @@ public final class ClothesService : NetworkManager {
     }
     
     public func editClothes (
-        cloth_id: Int, category_id: Int,
+        clothId: Int64,
+        imageData: Data,
         data: EditClothesRequestDTO,
-        completion: @escaping (Result<Bool, NetworkError>) -> Void
+        completion: @escaping (Result<Void, NetworkError>) -> Void
     ){
-        request(
-            target: .editClothes(cloth_id: cloth_id, category_id: category_id, data: data),
-            decodingType: Bool.self,
+        requestStatusCode(
+            target: .editClothes(clothId: clothId, imageData: imageData, data: data),
             completion: completion)
+            
     }
     
     public func deleteClothes (

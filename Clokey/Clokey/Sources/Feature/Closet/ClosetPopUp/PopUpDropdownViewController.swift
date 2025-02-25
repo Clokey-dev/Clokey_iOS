@@ -44,6 +44,7 @@ class PopUpDropdownViewController: UIViewController, PopUpDropdownViewDelegate, 
     // MARK: - PopUpDropdownViewDelegate 구현
     func didSelectEditCloth() {
         // 수정 동작 구현 (필요 시)
+       
     }
     
     func didSelectDeleteCloth() {

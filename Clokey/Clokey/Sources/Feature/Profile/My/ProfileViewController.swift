@@ -17,9 +17,8 @@ final class ProfileViewController: UIViewController {
     private let popUpView = PickPopUpView()
     private var backgroundView: UIView?// 배경 어둡게 하기 위해 선언
     
-    private let model = ProfileModel.dummy()
-    
     private let refreshControl = UIRefreshControl()
+    private var loadingOverlay: UIView?
     
     var clokeyId: String = ""
     var followerCount: Int = 0
@@ -51,6 +50,8 @@ final class ProfileViewController: UIViewController {
         
         calendarViewController.shouldHideUserNameLabel = true
         addCalendarViewController()
+        
+        showLoadingOverlay()
         
         loadData()
         setupActions()
@@ -189,9 +190,11 @@ final class ProfileViewController: UIViewController {
                             print("clothId1 값이 nil 입니다.")
                         }
                     }
+                    self.hideLoadingOverlay()
                 }
             case .failure(let error):
                 print("프로필 데이터를 불러오는 데 실패함: \(error.localizedDescription)")
+                self.hideLoadingOverlay()
             }
         }
     }
@@ -560,6 +563,28 @@ final class ProfileViewController: UIViewController {
         // 풀투리프레시 종료 (약간의 딜레이 후)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.refreshControl.endRefreshing()
+        }
+    }
+    
+    private func showLoadingOverlay() {
+        let overlay = UIView()
+        overlay.backgroundColor = .white
+        view.addSubview(overlay)
+        
+        // SnapKit을 사용하여 전체화면 제약조건 추가
+        overlay.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        loadingOverlay = overlay
+    }
+    
+    private func hideLoadingOverlay() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.loadingOverlay?.alpha = 0
+        }) { _ in
+            self.loadingOverlay?.removeFromSuperview()
+            self.loadingOverlay = nil
         }
     }
 }

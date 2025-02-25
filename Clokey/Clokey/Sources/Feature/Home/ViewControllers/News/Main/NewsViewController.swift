@@ -20,6 +20,7 @@ class NewsViewController: UIViewController {
     private var currentIndex: Int = 0
     //새로고침 기능 구현을 위한 RefreshControl추가 
     private let refreshControl = UIRefreshControl()
+    private var loadingOverlay: UIView?
     
     private lazy var pageControl: UIPageControl = UIPageControl().then {
         $0.numberOfPages = totalImages()
@@ -54,6 +55,8 @@ class NewsViewController: UIViewController {
         setupActions()
         
         fetchFriendCalendar()
+        
+        showLoadingOverlay()
     }
     
     
@@ -693,10 +696,12 @@ class NewsViewController: UIViewController {
                     self.setupPageControl()
                     
                     print("recommandNewsSlides 업데이트 완료: \(self.recommandNewsSlides.count)개")
+                    self.hideLoadingOverlay()
                 }
                 
             case .failure(let error):
                 print("Failed to load recommend data: \(error.localizedDescription)")
+                self.hideLoadingOverlay()
             }
         }
     }
@@ -893,7 +898,27 @@ class NewsViewController: UIViewController {
             }
         }
     }
+    private func showLoadingOverlay() {
+        let overlay = UIView()
+        overlay.backgroundColor = .white
+        view.addSubview(overlay)
+        
+        // SnapKit을 사용하여 전체화면 제약조건 추가
+        overlay.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        loadingOverlay = overlay
+    }
     
+    private func hideLoadingOverlay() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.loadingOverlay?.alpha = 0
+        }) { _ in
+            self.loadingOverlay?.removeFromSuperview()
+            self.loadingOverlay = nil
+        }
+    }
     
     
 }
@@ -922,6 +947,7 @@ extension NewsViewController: UIPageViewControllerDataSource {
         guard nextIndex < recommandNewsSlides.count else { return nil }
         return createImageViewController(for: nextIndex)
     }
+    
 }
 
 
