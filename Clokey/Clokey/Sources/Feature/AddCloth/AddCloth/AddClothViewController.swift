@@ -5,6 +5,8 @@ import SnapKit
 class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureRecognizerDelegate*/ {
     private let addClothesView = AddClothesView()
     
+    var clothId: Int64 = 0
+    
     
     override func loadView() {
         view = addClothesView

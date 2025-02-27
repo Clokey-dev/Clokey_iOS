@@ -126,7 +126,7 @@ extension ClothesEndpoint: TargetType {
 
             return .uploadMultipart(multipartData)
             
-        case .editClothes(let clothId, let imageData, let data):
+        case .editClothes(_, let imageData, let data):
             var multipartData = [MultipartFormData]()
 
             do {
