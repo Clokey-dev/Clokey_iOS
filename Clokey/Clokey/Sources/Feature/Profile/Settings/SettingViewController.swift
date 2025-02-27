@@ -156,6 +156,7 @@ class SettingViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
 
+    // 로그아웃
     @objc private func didTapLogout() {
         
         let alert = UIAlertController(
@@ -166,8 +167,10 @@ class SettingViewController: UIViewController, UIGestureRecognizerDelegate {
         
         let confirmAction = UIAlertAction(title: "확인", style: .destructive) { _ in
             UserDefaults.standard.set(false, forKey: "isLoggedIn")
+            UserDefaults.standard.removeObject(forKey: "FCMToken") // 디바이스 토큰 삭제
             KeychainHelper.shared.delete(forKey: "accessToken")
             KeychainHelper.shared.delete(forKey: "refreshToken")
+            
             
             guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
                 print("SceneDelegate를 찾을 수 없습니다.")
