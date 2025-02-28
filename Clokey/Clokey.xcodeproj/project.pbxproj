@@ -104,6 +104,7 @@
 		076FAB4A2D2E748B00FF3979 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB492D2E748B00FF3979 /* LoginView.swift */; };
 		076FAB4E2D2EBB3A00FF3979 /* KakaoAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB4D2D2EBB3A00FF3979 /* KakaoAuthService.swift */; };
 		076FAB5A2D3020D800FF3979 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FAB572D3020D800FF3979 /* LoginViewController.swift */; };
+		07703AB22D719A5500F704C9 /* FriendsActionSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07703AB12D719A5500F704C9 /* FriendsActionSheetViewController.swift */; };
 		077DC8CC2D62060900C02FA4 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 077DC8CB2D62060900C02FA4 /* Lottie */; };
 		077DC8CF2D62067400C02FA4 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 077DC8CE2D62067400C02FA4 /* FirebaseAnalytics */; };
 		077DC8D12D62067400C02FA4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 077DC8D02D62067400C02FA4 /* FirebaseAuth */; };
@@ -385,6 +386,7 @@
 		076FAB492D2E748B00FF3979 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		076FAB4D2D2EBB3A00FF3979 /* KakaoAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthService.swift; sourceTree = "<group>"; };
 		076FAB572D3020D800FF3979 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		07703AB12D719A5500F704C9 /* FriendsActionSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FriendsActionSheetViewController.swift; path = /Users/hwangs/Downloads/FriendsActionSheetViewController.swift; sourceTree = "<absolute>"; };
 		077DC91A2D62085100C02FA4 /* JWTHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWTHelper.swift; sourceTree = "<group>"; };
 		077DC91B2D62085100C02FA4 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		077DC91E2D62092700C02FA4 /* TokenRefreshPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenRefreshPlugin.swift; sourceTree = "<group>"; };
@@ -1459,6 +1461,7 @@
 				07CF63E42D55DE6900CCF9F4 /* CalendarDetailViewModel.swift */,
 				07ECCEA22D4E79C000AFF486 /* CalendarImageCell.swift */,
 				07ECCEAD2D4EAA2400AFF486 /* CustomActionSheetViewController.swift */,
+				07703AB12D719A5500F704C9 /* FriendsActionSheetViewController.swift */,
 				07ECCB342D4E34DF00AFF486 /* CalendarDetailViewController.swift */,
 				07CB2E9F2D65169F00B3F9B7 /* FriendsCalendarDetailViewController.swift */,
 			);
@@ -2126,6 +2129,7 @@
 				A676618B2D5B367B006AAB63 /* EditProfileViewController.swift in Sources */,
 				0744FFD82D5B1DD500E60282 /* ImageView.swift in Sources */,
 				07649EE52D4DE58900B6B2B2 /* MembersLoginResponseDTO.swift in Sources */,
+				07703AB22D719A5500F704C9 /* FriendsActionSheetViewController.swift in Sources */,
 				0744FFAC2D5B1D6900E60282 /* PickPopUpView.swift in Sources */,
 				A648ACDC2D5CECAC0094C126 /* CategoriesRequestDTO.swift in Sources */,
 				07649EE62D4DE58900B6B2B2 /* MembersLoginRequestDTO.swift in Sources */,
