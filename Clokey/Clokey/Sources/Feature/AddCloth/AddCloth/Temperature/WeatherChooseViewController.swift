@@ -11,6 +11,17 @@ import SnapKit
 
 class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate {
     
+    var clothId: Int64 = 0 {
+        didSet {
+            isEditingMode = (clothId != 0) // clothId가 0이면 추가, 0이 아니면 수정 모드
+        }
+    }
+    var isEditingMode: Bool = false
+    
+    var editSeasons: [String]? // 기존 seasons 값 저장
+    var editTempUpperBound: Int?
+    var editTempLowerBound: Int?
+    
     // MARK: - UI Components
     
     ///  네비게이션 바
@@ -151,6 +162,7 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
+        applyExistingValues()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -405,5 +417,54 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
         }
         
         
+    }
+    
+    private func applyExistingValues() {
+        // 수정 모드일 경우(clothId가 0이 아니면)
+        if isEditingMode {
+            if let existingSeasons = editSeasons {
+                selectedSeasons = Set(existingSeasons)
+                print("✅ selectedSeasons 업데이트됨: \(selectedSeasons)")
+                updateSeasonButtonsUI() // 기존 계절 선택 버튼 업데이트
+            }
+
+            if let lower = editTempLowerBound, let upper = editTempUpperBound {
+                slider.lower = Double(Float(lower))
+                slider.upper = Double(Float(upper))
+            }
+
+            updateNextButtonState() // 버튼 활성화 상태 업데이트
+        }
+    }
+    
+    private func updateSeasonButtonsUI() {
+        print("🔄 updateSeasonButtonsUI() 호출됨")
+        
+        for button in seasonButtons {
+            guard let season = button.title(for: .normal) else { continue }
+            print("🎯 버튼 텍스트: \(season), 선택됨 여부: \(selectedSeasons.contains(season))")
+            
+            var seasons: String = ""
+            
+            if season == "봄"{
+                seasons = "SPRING"
+            } else if season == "여름" {
+                seasons = "SUMMER"
+            } else if season == "가을" {
+                seasons = "FALL"
+            } else if season == "겨울" {
+                seasons = "WINTER"
+            }
+
+            if selectedSeasons.contains(seasons) {
+                button.backgroundColor = UIColor(named: "mainBrown800")
+                button.setTitleColor(.white, for: .normal)
+                button.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+            } else {
+                button.backgroundColor = .clear
+                button.setTitleColor(UIColor(named: "mainBrown800"), for: .normal)
+                button.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+            }
+        }
     }
 }

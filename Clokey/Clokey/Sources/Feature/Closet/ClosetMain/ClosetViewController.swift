@@ -55,14 +55,14 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
         closetView.customTotalSegmentView.delegate = self
         
         NotificationCenter.default.addObserver(self,
-                                              selector: #selector(handleClothDeleted),
-                                              name: Notification.Name("clothDeleted"),
-                                              object: nil)
+                                               selector: #selector(handleClothDeleted),
+                                               name: Notification.Name("clothDeleted"),
+                                               object: nil)
         
         NotificationCenter.default.addObserver(self,
-                                              selector: #selector(handleClothEdit(_:)),
-                                              name: Notification.Name("clothEdit"),
-                                              object: nil)
+                                               selector: #selector(handleClothEdit(_:)),
+                                               name: Notification.Name("clothEdit"),
+                                               object: nil)
     }
     
     // NotificationCenter 콜백
@@ -71,22 +71,13 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
         loadClothesData(categoryId: currentMainCategoryId)
     }
     
-//    @objc private func handleClothEdit() {
-//        // 옷이 삭제된 뒤, 바로 ClosetViewController 데이터를 다시 불러옴
-////        loadClothesData(categoryId: currentMainCategoryId)
-//        let addClothVC = AddClothViewController()
-//        addClothVC.clothId = Int64(currentSubCategoryId ?? 0)
-//        print("\(currentSubCategoryId)")
-//        self.navigationController?.pushViewController(addClothVC, animated: true)
-//    }
-    
     @objc private func handleClothEdit(_ notification: Notification) {
-//        loadClothesData(categoryId: currentMainCategoryId)
+        //        loadClothesData(categoryId: currentMainCategoryId)
         if let clothIdValue = notification.userInfo?["clothId"] {
-                print("clothId value: \(clothIdValue) and its type: \(type(of: clothIdValue))")
-            } else {
-                print("clothId not found in userInfo")
-            }
+            print("clothId value: \(clothIdValue) and its type: \(type(of: clothIdValue))")
+        } else {
+            print("clothId not found in userInfo")
+        }
         
         let addClothVC = AddClothViewController()
         if let clothId = notification.userInfo?["clothId"] as? Int64 {
@@ -96,17 +87,13 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
         self.navigationController?.pushViewController(addClothVC, animated: true)
     }
     
-    deinit {
-            NotificationCenter.default.removeObserver(self)
-        }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadInitialData()
         navigationController?.setNavigationBarHidden(true, animated: animated)
         // 새로 추가된 폴더가 있을 경우 최신 데이터를 불러옵니다.
         loadDrawers()
-
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -142,7 +129,7 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
         closetView.drawerCollectionView.dataSource = self
         closetView.drawerCollectionView.delegate = self
         closetView.drawerCollectionView.register(DrawerCollectionViewCell.self,
-                                                   forCellWithReuseIdentifier: DrawerCollectionViewCell.identifier)
+                                                 forCellWithReuseIdentifier: DrawerCollectionViewCell.identifier)
     }
     
     private func setupSegmentedControl() {
@@ -394,7 +381,7 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
             navigationController?.pushViewController(drawerVC, animated: true)
         }
     }
-
+    
 }
 
 // MARK: - CustomTotalSegmentViewDelegate
