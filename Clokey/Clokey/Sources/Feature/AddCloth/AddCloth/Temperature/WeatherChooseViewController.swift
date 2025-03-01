@@ -168,6 +168,10 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
+        if isEditingMode == true {
+            titleLabel.text = "옷 수정"
+        }
+        
         applyExistingValues()
     }
     
@@ -451,10 +455,16 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
         // 수정 모드일 경우(clothId가 0이 아니면)
         if isEditingMode {
             if let existingSeasons = editSeasons {
-                selectedSeasons = Set(existingSeasons)
-                print("✅ selectedSeasons 업데이트됨: \(selectedSeasons)")
-                updateSeasonButtonsUI() // 기존 계절 선택 버튼 업데이트
-            }
+                        let reverseSeasonMapping: [String: String] = [
+                            "SPRING": "봄",
+                            "SUMMER": "여름",
+                            "FALL": "가을",
+                            "WINTER": "겨울"
+                        ]
+                        selectedSeasons = Set(existingSeasons.compactMap { reverseSeasonMapping[$0] })
+                        print("✅ 한글로 변환된 selectedSeasons: \(selectedSeasons)")
+                        updateSeasonButtonsUI()
+                    }
 
             if let lower = editTempLowerBound, let upper = editTempUpperBound {
                 slider.lower = Double(Float(lower))
@@ -465,30 +475,72 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
         }
     }
     
+//    private func updateSeasonButtonsUI() {
+//        print("🔄 updateSeasonButtonsUI() 호출됨")
+//        
+//        for button in seasonButtons {
+//            guard let season = button.title(for: .normal) else { continue }
+//            print("🎯 버튼 텍스트: \(season), 선택됨 여부: \(selectedSeasons.contains(season))")
+//            
+//            var seasons: String = ""
+//            
+//            if season == "봄"{
+//                seasons = "SPRING"
+//            } else if season == "여름" {
+//                seasons = "SUMMER"
+//            } else if season == "가을" {
+//                seasons = "FALL"
+//            } else if season == "겨울" {
+//                seasons = "WINTER"
+//            }
+//
+//            if selectedSeasons.contains(seasons) {
+//                button.backgroundColor = UIColor(named: "mainBrown800")
+//                button.setTitleColor(.white, for: .normal)
+//                button.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+//            } else {
+//                button.backgroundColor = .clear
+//                button.setTitleColor(UIColor(named: "mainBrown800"), for: .normal)
+//                button.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+//            }
+//        }
+//    }
     private func updateSeasonButtonsUI() {
-        print("🔄 updateSeasonButtonsUI() 호출됨")
+        print("updateSeasonButtonsUI() 호출됨")
         
+        let reverseSeasonMapping: [String: String] = [
+            "봄": "SPRING",
+            "여름": "SUMMER",
+            "가을": "FALL",
+            "겨울": "WINTER"
+        ]
+
         for button in seasonButtons {
             guard let season = button.title(for: .normal) else { continue }
-            print("🎯 버튼 텍스트: \(season), 선택됨 여부: \(selectedSeasons.contains(season))")
-            
-            var seasons: String = ""
-            
-            if season == "봄"{
-                seasons = "SPRING"
-            } else if season == "여름" {
-                seasons = "SUMMER"
-            } else if season == "가을" {
-                seasons = "FALL"
-            } else if season == "겨울" {
-                seasons = "WINTER"
-            }
+            print("버튼 텍스트: \(season), 선택됨 여부 확인 중...")
 
-            if selectedSeasons.contains(seasons) {
+            // 한글 -> 영어 변환 (기존 로직)
+            let seasonMapping: [String: String] = [
+                "SPRING": "봄",
+                "SUMMER": "여름",
+                "FALL": "가을",
+                "WINTER": "겨울"
+            ]
+            
+            guard let mappedSeason = seasonMapping[season] else { continue }
+            print("변환된 계절명: \(mappedSeason)")
+
+            // 🔹 selectedSeasons 내부 값을 한글로 변환하여 비교
+            let selectedSeasonsInKorean = selectedSeasons.compactMap { reverseSeasonMapping[$0] }
+            print("한글로 변환된 선택된 계절 목록: \(selectedSeasonsInKorean)")
+
+            if selectedSeasonsInKorean.contains(season) {
+                print("✅ 선택됨: \(season)")
                 button.backgroundColor = UIColor(named: "mainBrown800")
                 button.setTitleColor(.white, for: .normal)
                 button.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
             } else {
+                print("❌ 선택되지 않음: \(season)")
                 button.backgroundColor = .clear
                 button.setTitleColor(UIColor(named: "mainBrown800"), for: .normal)
                 button.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor

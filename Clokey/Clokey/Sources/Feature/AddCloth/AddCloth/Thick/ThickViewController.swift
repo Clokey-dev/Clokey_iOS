@@ -225,6 +225,10 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapInfoButton))
         questionIcon.addGestureRecognizer(tapGesture)
         
+        if isEditingMode == true {
+            titleLabel.text = "옷 수정"
+        }
+        
         applyExistingValues()
         
     }
@@ -418,17 +422,39 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
     @objc private func didTapNextButton() {
         let lastAddVC = LastAddViewController()
         /***/
-        lastAddVC.clothName = clothName // 값 전달
-        lastAddVC.categoryName = categoryName
-        lastAddVC.categoryCloth = categoryCloth
-        lastAddVC.categoryId = categoryId
-        lastAddVC.selectedSeasons = selectedSeasons
-        lastAddVC.minTemp = minTemp
-        lastAddVC.maxTemp = maxTemp
-        lastAddVC.thickCount = Int(thickSlider.value)
-        lastAddVC.isPublicSelected = isPublicSelected
-        /***/
-        navigationController?.pushViewController(lastAddVC, animated: true)
+        if isEditingMode {
+            lastAddVC.clothId = clothId 
+            lastAddVC.clothName = clothName // 값 전달
+            lastAddVC.categoryName = categoryName
+            lastAddVC.categoryCloth = categoryCloth
+            lastAddVC.categoryId = categoryId
+            lastAddVC.selectedSeasons = selectedSeasons
+            lastAddVC.minTemp = minTemp
+            lastAddVC.maxTemp = maxTemp
+            lastAddVC.thickCount = Int(thickSlider.value)
+            lastAddVC.isPublicSelected = isPublicSelected
+            
+            lastAddVC.editClothUrl = editClothUrl
+            lastAddVC.editBrand = editBrand
+            lastAddVC.editImageUrl = editImageUrl
+            
+            /***/
+            navigationController?.pushViewController(lastAddVC, animated: true)
+            
+        } else {
+            lastAddVC.clothName = clothName // 값 전달
+            lastAddVC.categoryName = categoryName
+            lastAddVC.categoryCloth = categoryCloth
+            lastAddVC.categoryId = categoryId
+            lastAddVC.selectedSeasons = selectedSeasons
+            lastAddVC.minTemp = minTemp
+            lastAddVC.maxTemp = maxTemp
+            lastAddVC.thickCount = Int(thickSlider.value)
+            lastAddVC.isPublicSelected = isPublicSelected
+            /***/
+            navigationController?.pushViewController(lastAddVC, animated: true)
+        }
+        
     }
     
     private func applyExistingValues() {

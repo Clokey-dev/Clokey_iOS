@@ -10,6 +10,14 @@ import SnapKit
 import Then
 
 class PopupViewController: UIViewController {
+    var clothId: Int64 = 0 {
+        didSet {
+            isEditingMode = (clothId != 0) // clothId가 0이면 추가, 0이 아니면 수정 모드
+        }
+    }
+    var isEditingMode: Bool = false
+    
+    
     var clothName: String? // 전달받은 옷 이름
     var categoryName: String?
     var categoryCloth: String?
@@ -70,6 +78,7 @@ class PopupViewController: UIViewController {
     var clothImage: Data? // 전달받은 이미지
     
     private let popupView = PopupView() //  뷰 객체만 포함
+    private let addClothView = AddClothView()
 
     private let titleLabel = UILabel().then {
         $0.text = "옷 추가가 완료되었어요!"
@@ -148,6 +157,10 @@ class PopupViewController: UIViewController {
         completeButton.addTarget(self, action: #selector(didTapCompleteButton), for: .touchUpInside)
         
         updateSeasonButtons() // 초기 상태 업데이트
+        
+        if isEditingMode == true {
+            titleLabel.text = "옷 수정이 완료되었어요!"
+        }
         
     }
     
@@ -279,16 +292,41 @@ class PopupViewController: UIViewController {
             clothUrl: imageUrl,
             brand: brand
         )
+        
+        let editClothesRequestDTO = EditClothesRequestDTO(
+            categoryId: categoryId,
+            name: clothName,
+            seasons: Array(season),
+            tempUpperBound: maxTemp,
+            tempLowerBound: minTemp,
+            thicknessLevel: thicknessLevel,
+            visibility: visibility,
+            clothUrl: imageUrl,
+            brand: brand
+        )
 
         let clothesService = ClothesService()
-
-        clothesService.addClothes(imageData: selectedImage, data: addClothesRequestDTO) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let response):
-                    print("옷 추가 성공: \(response)")
-                case .failure(let error):
-                    print("옷 추가 실패: \(error.localizedDescription)")
+        
+        if isEditingMode {
+            clothesService.editClothes(clothId: clothId, imageData: selectedImage, clothUpdateRequest: editClothesRequestDTO) { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let response):
+                        print("옷 수정 성공: \(response)")
+                    case .failure(let error):
+                        print("옷 수정 실패: \(error.localizedDescription)")
+                    }
+                }
+            }
+        } else {
+            clothesService.addClothes(imageData: selectedImage, data: addClothesRequestDTO) { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let response):
+                        print("옷 추가 성공: \(response)")
+                    case .failure(let error):
+                        print("옷 추가 실패: \(error.localizedDescription)")
+                    }
                 }
             }
         }
@@ -325,16 +363,41 @@ class PopupViewController: UIViewController {
             clothUrl: imageUrl,
             brand: brand
         )
+        
+        let editClothesRequestDTO = EditClothesRequestDTO(
+            categoryId: categoryId,
+            name: clothName,
+            seasons: Array(season),
+            tempUpperBound: maxTemp,
+            tempLowerBound: minTemp,
+            thicknessLevel: thicknessLevel,
+            visibility: visibility,
+            clothUrl: imageUrl,
+            brand: brand
+        )
 
         let clothesService = ClothesService()
 
-        clothesService.addClothes(imageData: selectedImage, data: addClothesRequestDTO) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let response):
-                    print("옷 추가 성공: \(response)")
-                case .failure(let error):
-                    print("옷 추가 실패: \(error.localizedDescription)")
+        if isEditingMode {
+            clothesService.editClothes(clothId: clothId, imageData: selectedImage, clothUpdateRequest: editClothesRequestDTO) { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let response):
+                        print("옷 수정 성공: \(response)")
+                    case .failure(let error):
+                        print("옷 수정 실패: \(error.localizedDescription)")
+                    }
+                }
+            }
+        } else {
+            clothesService.addClothes(imageData: selectedImage, data: addClothesRequestDTO) { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let response):
+                        print("옷 추가 성공: \(response)")
+                    case .failure(let error):
+                        print("옷 추가 실패: \(error.localizedDescription)")
+                    }
                 }
             }
         }

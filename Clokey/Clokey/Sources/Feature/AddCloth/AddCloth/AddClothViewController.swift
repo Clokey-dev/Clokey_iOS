@@ -52,7 +52,9 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
         
-//        updateUIForMode() // 추가 vs 수정 모드에 맞춰 UI 업데이트
+        if isEditingMode == true {
+            addClothesView.titleLabel.text = "옷 수정"
+        }
         loadEditCloth()
     }
     
@@ -72,18 +74,7 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
     @objc internal override func dismissKeyboard() {
         view.endEditing(true) //  현재 화면에서 키보드 내리기
     }
-    
-//    private func updateUIForMode() {
-//        if isEditingMode {
-//            // 수정 모드 UI 설정
-//            addClothesView.inputField.text = existingClothName // 기존 데이터 불러오기
-//            addClothesView.nextButton.setTitle("수정 완료", for: .normal)
-//        } else {
-//            // 추가 모드 UI 설정
-//            addClothesView.inputField.text = ""
-//            addClothesView.nextButton.setTitle("다음", for: .normal)
-//        }
-//    }
+
    
     private func setupAction() {
         addClothesView.backButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
@@ -259,8 +250,25 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
         }
         
         let categoryVC = CategoryViewController()
-        categoryVC.clothName = clothName // 값 전달
-        navigationController?.pushViewController(categoryVC, animated: true)
+        
+        if isEditingMode {
+            categoryVC.clothId = clothId
+            categoryVC.editSeasons = editClothModel?.seasons
+            categoryVC.editTempUpperBound = editClothModel?.tempUpperBound
+            categoryVC.editTempLowerBound = editClothModel?.tempLowerBound
+            categoryVC.editThicknessLevel = editClothModel?.thicknessLevel
+            categoryVC.editVisibility = editClothModel?.visibility
+            categoryVC.editClothUrl = editClothModel?.clothUrl
+            categoryVC.editBrand = editClothModel?.brand
+            categoryVC.editImageUrl = editClothModel?.imageUrl
+            
+            categoryVC.clothName = clothName // 값 전달
+            
+            self.navigationController?.pushViewController(categoryVC, animated: true)
+        } else {
+            categoryVC.clothName = clothName // 값 전달
+            self.navigationController?.pushViewController(categoryVC, animated: true)
+        }
     }
     
     //

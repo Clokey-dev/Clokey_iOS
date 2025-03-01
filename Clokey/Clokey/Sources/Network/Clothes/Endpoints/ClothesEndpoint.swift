@@ -15,7 +15,7 @@ public enum ClothesEndpoint {
     case smartSummationClothes
     case getCategoryClothes(category: String, season: String, sort: String, page: Int) // 쿼리 매개변수 추가
     case addClothes(image: Data, data: AddClothesRequestDTO) // category_id 추가
-    case editClothes(clothId: Int64, imageData: Data, data: EditClothesRequestDTO)
+    case editClothes(clothId: Int64, imageData: Data, clothUpdateRequest: EditClothesRequestDTO)
     case deleteClothes(cloth_id: Int)
     case getClothes(clokeyId: String?, categoryId: CLong, season: String, sort: String, page: Int, size: Int)
     case searchByNameAndBrand(keyword: String, page: Int, size: Int)
@@ -126,17 +126,17 @@ extension ClothesEndpoint: TargetType {
 
             return .uploadMultipart(multipartData)
             
-        case .editClothes(_, let imageData, let data):
+        case .editClothes(_, let imageData, let clothUpdateRequest):
             var multipartData = [MultipartFormData]()
 
             do {
-                let jsonData = try JSONEncoder().encode(data)
+                let jsonData = try JSONEncoder().encode(clothUpdateRequest)
                 
                 //  JSON 확인 로그 추가
                 let jsonString = String(data: jsonData, encoding: .utf8) ?? "JSON 변환 실패"
                 print(" JSON 데이터: \(jsonString)")
 
-                let jsonPart = MultipartFormData(provider: .data(jsonData), name: "clothCreateRequest", mimeType: "application/json")
+                let jsonPart = MultipartFormData(provider: .data(jsonData), name: "clothUpdateRequest", mimeType: "application/json")
                 multipartData.append(jsonPart)
             } catch {
                 print("🚨 JSON 인코딩 실패: \(error.localizedDescription)")
