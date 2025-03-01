@@ -45,7 +45,7 @@ extension ClothesEndpoint: TargetType {
             return "/clothes"
         case .addClothes:
             return "/clothes"
-        case .editClothes(cloth_id: let clothId):
+        case .editClothes(let clothId, _, _):
             return "/clothes/\(clothId)"
         case .deleteClothes(let cloth_id):
             return "/clothes/\(cloth_id)"

@@ -534,13 +534,13 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
             let selectedSeasonsInKorean = selectedSeasons.compactMap { reverseSeasonMapping[$0] }
             print("한글로 변환된 선택된 계절 목록: \(selectedSeasonsInKorean)")
 
-            if selectedSeasonsInKorean.contains(season) {
-                print("✅ 선택됨: \(season)")
+            if selectedSeasonsInKorean.contains(mappedSeason) {
+                print("✅ 선택됨: \(mappedSeason)")
                 button.backgroundColor = UIColor(named: "mainBrown800")
                 button.setTitleColor(.white, for: .normal)
                 button.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
             } else {
-                print("❌ 선택되지 않음: \(season)")
+                print("❌ 선택되지 않음: \(mappedSeason)")
                 button.backgroundColor = .clear
                 button.setTitleColor(UIColor(named: "mainBrown800"), for: .normal)
                 button.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor

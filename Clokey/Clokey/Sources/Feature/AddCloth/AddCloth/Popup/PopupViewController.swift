@@ -160,6 +160,7 @@ class PopupViewController: UIViewController {
         
         if isEditingMode == true {
             titleLabel.text = "옷 수정이 완료되었어요!"
+            print(clothId)
         }
         
     }
