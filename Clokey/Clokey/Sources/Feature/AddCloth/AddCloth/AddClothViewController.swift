@@ -111,6 +111,11 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
             weatherVC.editSeasons = editClothModel?.seasons
             weatherVC.editTempUpperBound = editClothModel?.tempUpperBound
             weatherVC.editTempLowerBound = editClothModel?.tempLowerBound
+            weatherVC.editThicknessLevel = editClothModel?.thicknessLevel
+            weatherVC.editVisibility = editClothModel?.visibility
+            weatherVC.editClothUrl = editClothModel?.clothUrl
+            weatherVC.editBrand = editClothModel?.brand
+            weatherVC.editImageUrl = editClothModel?.imageUrl
             
             weatherVC.clothName = clothName // 값 전달
             weatherVC.categoryName = cate1

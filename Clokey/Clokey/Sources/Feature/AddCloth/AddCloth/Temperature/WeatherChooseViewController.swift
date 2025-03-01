@@ -22,6 +22,12 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
     var editTempUpperBound: Int?
     var editTempLowerBound: Int?
     
+    var editThicknessLevel: String?
+    var editVisibility: String?
+    var editClothUrl: String?
+    var editBrand: String?
+    var editImageUrl: String?
+    
     // MARK: - UI Components
     
     ///  네비게이션 바
@@ -372,15 +378,37 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
     @objc private func didTapNextButton() {
         let nextVC = ThickViewController() //  다음으로 이동할 VC (파일명에 맞게 수정)
         /***/
-        nextVC.clothName = clothName // 값 전달
-        nextVC.categoryName = categoryName
-        nextVC.categoryCloth = categoryCloth
-        nextVC.categoryId = categoryId
-        nextVC.selectedSeasons = selectedSeasons
-        nextVC.minTemp = Int(slider.lower)
-        nextVC.maxTemp = Int(slider.upper)
-        /***/
-        navigationController?.pushViewController(nextVC, animated: true) // 네비게이션 Push 방식으로 이동
+        
+        
+        if isEditingMode {
+            nextVC.clothId = clothId
+            nextVC.clothName = clothName // 값 전달
+            nextVC.categoryName = categoryName
+            nextVC.categoryCloth = categoryCloth
+            nextVC.categoryId = categoryId
+            nextVC.selectedSeasons = selectedSeasons
+            nextVC.minTemp = Int(slider.lower)
+            nextVC.maxTemp = Int(slider.upper)
+            
+            nextVC.editThicknessLevel = editThicknessLevel
+            nextVC.editVisibility = editVisibility
+            nextVC.editClothUrl = editClothUrl
+            nextVC.editBrand = editBrand
+            nextVC.editImageUrl = editImageUrl
+            
+            navigationController?.pushViewController(nextVC, animated: true) // 네비게이션 Push 방식으로 이동
+            
+        } else {
+            nextVC.clothName = clothName // 값 전달
+            nextVC.categoryName = categoryName
+            nextVC.categoryCloth = categoryCloth
+            nextVC.categoryId = categoryId
+            nextVC.selectedSeasons = selectedSeasons
+            nextVC.minTemp = Int(slider.lower)
+            nextVC.maxTemp = Int(slider.upper)
+            
+            navigationController?.pushViewController(nextVC, animated: true) // 네비게이션 Push 방식으로 이동
+        }
     }
     
     private func updateNextButtonState() {
