@@ -32,11 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             KakaoSDK.initSDK(appKey: appKey)
         }
 
-        // 앱이 종료된 상태에서 푸시 알림을 클릭해 실행된 경우, historyId 저장
-        if let remoteNotification = launchOptions?[.remoteNotification] as? [AnyHashable: Any] {
-            handleNotification(userInfo: remoteNotification)
-        }
-
         return true
     }
 
@@ -66,19 +61,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("❌ APNs 등록 실패: \(error.localizedDescription)")
     }
-
-    // MARK: - 푸시 알림 클릭 시 historyId 저장
-    func handleNotification(userInfo: [AnyHashable: Any]) {
-        guard let historyIdString = userInfo["historyId"] as? String,
-              let historyId = Int(historyIdString) else {
-            print("❌ historyId 없음")
-            return
-        }
-
-        // historyId를 UserDefaults에 저장
-        UserDefaults.standard.set(historyId, forKey: "PendingHistoryId")
-        UserDefaults.standard.synchronize()
-    }
 }
 
 // MARK: - Firebase MessagingDelegate
@@ -94,23 +76,61 @@ extension AppDelegate: MessagingDelegate {
 // MARK: - UNUserNotificationCenterDelegate (푸시 알림 처리)
 extension AppDelegate {
     // 포그라운드에서 알림 수신
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        let userInfo = notification.request.content.userInfo
-        handleNotification(userInfo: userInfo) // 포그라운드에서도 데이터 활용 가능
-        completionHandler([.alert, .badge, .sound])
-    }
-
-    // 백그라운드 & 종료 상태에서 푸시 클릭 시 실행되는 메서드
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         
         if let historyId = userInfo["historyId"] as? String {
-            UserDefaults.standard.set(historyId, forKey: "PendingHistoryId")
-            UserDefaults.standard.synchronize()
+            navigateToHistoryDetail(historyId: historyId)
+        }
+        
+        if let clokeyId = userInfo["clokeyId"] as? String {
+            navigateToFollowProfile(clokeyId: clokeyId)
         }
         
         completionHandler()
     }
 
-    
+    // 푸시 알림을 누르면 기록으로 이동
+    private func navigateToHistoryDetail(historyId: String) {
+        DispatchQueue.main.async {
+            guard let historyIdInt = Int(historyId) else {
+                print("historyId 변환 실패")
+                return
+            }
+
+            let detailVC = FriendsCalendarDetailViewController()
+
+            let historyService = HistoryService()
+            historyService.historyDetail(historyId: historyIdInt) { result in
+                switch result {
+                case .success(let response):
+                    DispatchQueue.main.async {
+                        detailVC.setDetailData(response) // 올바른 DTO 전달
+                        
+                        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                           let window = scene.windows.first,
+                           let navController = window.rootViewController as? UINavigationController {
+                            navController.pushViewController(detailVC, animated: true)
+                        }
+                    }
+                case .failure(let error):
+                    print("히스토리 상세 조회 실패: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    // 푸시 알림을 누르면 프로필로 이동
+    private func navigateToFollowProfile(clokeyId: String) {
+        DispatchQueue.main.async {
+            let followVC = FollowProfileViewController(followId: clokeyId)
+
+            if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let window = scene.windows.first,
+               let navController = window.rootViewController as? UINavigationController {
+                navController.pushViewController(followVC, animated: true)
+            }
+        }
+    }
 }

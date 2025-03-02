@@ -177,21 +177,39 @@ class CustomActionSheetViewController: UIViewController {
     
     // 삭제 버튼
     @objc private func deleteButtonTapped() {
-        historyService.historyDelete(historyId: historyId) { [weak self] result in
+        let alertController = UIAlertController(
+            title: "기록을 삭제하시겠습니까?",
+            message: "삭제한 기록은 되돌릴 수 없습니다.",
+            preferredStyle: .alert
+        )
+        
+        let confirmAction = UIAlertAction(title: "확인", style: .destructive) { [weak self] _ in
             guard let self = self else { return }
             
-            switch result {
-            case .success:  
-                DispatchQueue.main.async {
-                    self.hideSheet { [weak self] in
-                        self?.delegate?.didDeleteHistory()
+            self.historyService.historyDelete(historyId: self.historyId) { [weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                case .success:
+                    DispatchQueue.main.async {
+                        self.hideSheet { [weak self] in
+                            self?.delegate?.didDeleteHistory()
+                        }
                     }
+                case .failure(let error):
+                    print("기록 삭제 에러: \(error.localizedDescription)")
                 }
-            case .failure(let error):
-                print("기록 삭제 에러: \(error.localizedDescription)")
             }
         }
+        
+        let cancelAction = UIAlertAction(title: "아니오", style: .cancel)
+        
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true)
     }
+
 }
 
 extension UIImage {
