@@ -84,11 +84,11 @@ public final class ClothesService : NetworkManager {
     public func editClothes (
         clothId: Int64,
         imageData: Data,
-        data: EditClothesRequestDTO,
+        clothUpdateRequest: EditClothesRequestDTO,
         completion: @escaping (Result<Void, NetworkError>) -> Void
     ){
         requestStatusCode(
-            target: .editClothes(clothId: clothId, imageData: imageData, data: data),
+            target: .editClothes(clothId: clothId, imageData: imageData, clothUpdateRequest: clothUpdateRequest),
             completion: completion)
             
     }
