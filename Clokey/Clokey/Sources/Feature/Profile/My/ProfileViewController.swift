@@ -135,7 +135,7 @@ final class ProfileViewController: UIViewController {
                         self.profileImage = profileImageUrl
                         self.profileView.profileImageView.kf.setImage(with: url)
                     } else {
-                        self.profileView.profileImageView.image = UIImage(named: "default_background_image") // 기본 이미지 설정
+                        self.profileView.profileImageView.image = UIImage(named: "profile_basic") // 기본 이미지 설정
                     }
                     if let profileBackImageUrl = URL(string: userProfile.profileBackImageUrl) {
                         self.profileView.backgroundImageView.kf.setImage(with: profileBackImageUrl)
@@ -152,7 +152,7 @@ final class ProfileViewController: UIViewController {
                         if let clothImage = clothes[0].clothImage, let url = URL(string: clothImage) {
                             self.profileView.clothesImageView1.kf.setImage(with: url)
                         } else {
-                            self.profileView.clothesImageView1.image = UIImage(named: "default_cloth_image") // 기본 이미지 설정
+                            self.profileView.clothesImageView1.image = UIImage(named: "beforeaddimage") // 기본 이미지 설정
                         }
                         
                         if let clothId = clothes[0].clothId {
@@ -167,7 +167,7 @@ final class ProfileViewController: UIViewController {
                         if let clothImage = clothes[1].clothImage, let url = URL(string: clothImage) {
                             self.profileView.clothesImageView2.kf.setImage(with: url)
                         } else {
-                            self.profileView.clothesImageView2.image = UIImage(named: "default_cloth_image") // 기본 이미지 설정
+                            self.profileView.clothesImageView2.image = UIImage(named: "beforeaddimage") // 기본 이미지 설정
                         }
                         
                         if let clothId = clothes[1].clothId {
@@ -181,7 +181,7 @@ final class ProfileViewController: UIViewController {
                         if let clothImage = clothes[2].clothImage, let url = URL(string: clothImage) {
                             self.profileView.clothesImageView3.kf.setImage(with: url)
                         } else {
-                            self.profileView.clothesImageView3.image = UIImage(named: "default_cloth_image") // 기본 이미지 설정
+                            self.profileView.clothesImageView3.image = UIImage(named: "beforeaddimage") // 기본 이미지 설정
                         }
                         
                         if let clothId = clothes[2].clothId {
