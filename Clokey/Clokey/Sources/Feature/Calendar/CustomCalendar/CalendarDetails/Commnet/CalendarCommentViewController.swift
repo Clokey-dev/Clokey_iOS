@@ -27,6 +27,11 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         $0.alpha = 0
     }
     
+    // 블러 효과
+    private let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .dark)).then {
+        $0.alpha = 0
+    }
+    
     private let commentView = CalendarCommentView()
     private var comments: [Comment] = []
     private var selectedCommentId: Int64? = nil // 대댓글 대상 ID
@@ -115,6 +120,52 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         }
         
         comments = organizedComments
+    }
+    
+    // 배경 블러처리 On
+    private func showBlurBackground() {
+        view.addSubview(blurView)
+        blurView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        UIView.animate(withDuration: 0.3) {
+            self.blurView.alpha = 1
+        }
+    }
+    // 배경 블러처리 Off
+    private func hideBlurBackground() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.blurView.alpha = 0
+        }) { _ in
+            self.blurView.removeFromSuperview()
+        }
+    }
+    
+    // 삭제 API 함수
+    func didTapDelete(commentId: Int64) {
+        let alert = UIAlertController(title: "댓글 삭제", message: "정말 삭제하시겠습니까?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "삭제", style: .destructive) { _ in
+            self.historyService.historyCommentDelete(commentId: Int(commentId)) { result in
+                switch result {
+                case .success:
+                    DispatchQueue.main.async {
+                        // 삭제 후 새로고침 추가
+                        self.comments.removeAll { $0.id == commentId || $0.parentCommentId == Int(commentId) }
+                        self.commentView.commentTableView.reloadData()
+                        self.delegate?.didUpdateComment(count: self.comments.count)
+                    }
+                case .failure(let error):
+                    print("삭제 실패: \(error)")
+                }
+            }
+        })
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+        present(alert, animated: true)
+    }
+
+    // TODO: - 신고 API 함수 구현 필요
+    func didTapReport(commentId: Int64) {
+        let alert = UIAlertController(title: "신고 접수", message: "신고가 접수되었습니다.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default))
+        present(alert, animated: true)
     }
     
     @objc func dismissView() {
@@ -381,51 +432,5 @@ extension CalendarCommentViewController: UITableViewDataSource, UITableViewDeleg
 
     private func isLastReply(comment: Comment) -> Bool {
         return !comments.contains { $0.parentCommentId == comment.id }
-    }
-    
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true // 모든 셀 swipe 가능
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            let commentToDelete = comments[indexPath.row]
-            
-            // 삭제할 댓글과 관련된 모든 인덱스를 찾기
-            var indexesToDelete = [IndexPath]()
-            indexesToDelete.append(indexPath)
-            
-            // 만약 메인 댓글이라면, 관련된 대댓글들의 인덱스도 찾기
-            if commentToDelete.parentCommentId == nil {
-                for (index, comment) in comments.enumerated() {
-                    if comment.parentCommentId == commentToDelete.id {
-                        indexesToDelete.append(IndexPath(row: index, section: 0))
-                    }
-                }
-            }
-            
-            // 정렬된 인덱스(내림차순)
-            let sortedIndexes = indexesToDelete.sorted(by: { $0.row > $1.row })
-            
-            historyService.historyCommentDelete(commentId: commentToDelete.id) { [weak self] result in
-                guard let self = self else { return }
-                
-                switch result {
-                case .success:
-                    self.delegate?.didDeleteComment()
-                    DispatchQueue.main.async {
-                        // 내림차순으로 정렬된 인덱스를 사용하여 배열에서 항목들을 제거
-                        for indexPath in sortedIndexes {
-                            self.comments.remove(at: indexPath.row)
-                        }
-                        // 테이블뷰에서 해당 행들을 삭제
-                        tableView.deleteRows(at: sortedIndexes, with: .fade)
-                    }
-                    
-                case .failure(let error):
-                    print("댓글 삭제 실패: \(error)")
-                }
-            }
-        }
     }
 }
