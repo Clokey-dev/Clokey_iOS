@@ -418,7 +418,7 @@ class MyFollowListViewController: UIViewController, UIGestureRecognizerDelegate 
                     self.updateFollowingCollectionViewHeight()
                 }
             case .failure(let error):
-                print("🚨 팔로워 데이터 가져오기 실패: \(error.localizedDescription)")
+                print("팔로워 데이터 가져오기 실패: \(error.localizedDescription)")
             }
         }
     }

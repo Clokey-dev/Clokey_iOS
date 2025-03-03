@@ -30,7 +30,7 @@ class NewsView: UIView {
     }
     
     let slideContainerView: UIView = UIView().then {
-        $0.backgroundColor = .gray // 슬라이드 뷰 배경은 투명
+        $0.backgroundColor = .white // 슬라이드 뷰 배경은 투명
         $0.layer.cornerRadius = 8.5
     }
     
