@@ -123,20 +123,8 @@ extension SceneDelegate: Coordinator {
         let navigationController = UINavigationController(rootViewController: mainVC)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
-        
-        // 자동으로 historyId를 이용해 FriendsCalendarDetailViewController 띄우기
-        if let historyId = UserDefaults.standard.value(forKey: "PendingHistoryId") as? Int {
-            UserDefaults.standard.removeObject(forKey: "PendingHistoryId") // 사용 후 삭제
-            fetchHistoryDetail(historyId: historyId)
-        }
-        
-        // 자동으로 clokeyId가 있는 경우 FollowProfileViewController로 이동
-        if let clokeyId = UserDefaults.standard.string(forKey: "PendingClokeyId") {
-            UserDefaults.standard.removeObject(forKey: "PendingClokeyId")
-            navigateToFollowProfile(clokeyId: clokeyId)
-        }
     }
-    //기록 띄울떄
+    //기록 띄울 때
     private func fetchHistoryDetail(historyId: Int) {
        let historyService = HistoryService()
 
@@ -202,6 +190,7 @@ extension SceneDelegate: Coordinator {
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
+    
     // 화면 전환 메서드 -> LoginViewController
     func switchToLogin() {
         let loginVC = LoginViewController(coordinator: self)

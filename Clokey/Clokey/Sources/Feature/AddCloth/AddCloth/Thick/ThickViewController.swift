@@ -10,6 +10,19 @@ import SnapKit
 
 class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
     
+    var clothId: Int64 = 0 {
+        didSet {
+            isEditingMode = (clothId != 0) // clothId가 0이면 추가, 0이 아니면 수정 모드
+        }
+    }
+    var isEditingMode: Bool = false
+    
+    var editThicknessLevel: String?
+    var editVisibility: String?
+    var editClothUrl: String?
+    var editBrand: String?
+    var editImageUrl: String?
+    
     // MARK: - UI Components
     
     ///  네비게이션 바
@@ -212,6 +225,12 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapInfoButton))
         questionIcon.addGestureRecognizer(tapGesture)
         
+        if isEditingMode == true {
+            titleLabel.text = "옷 수정"
+        }
+        
+        applyExistingValues()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -403,18 +422,67 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
     @objc private func didTapNextButton() {
         let lastAddVC = LastAddViewController()
         /***/
-        lastAddVC.clothName = clothName // 값 전달
-        lastAddVC.categoryName = categoryName
-        lastAddVC.categoryCloth = categoryCloth
-        lastAddVC.categoryId = categoryId
-        lastAddVC.selectedSeasons = selectedSeasons
-        lastAddVC.minTemp = minTemp
-        lastAddVC.maxTemp = maxTemp
-        lastAddVC.thickCount = Int(thickSlider.value)
-        lastAddVC.isPublicSelected = isPublicSelected
-        /***/
-        lastAddVC.modalPresentationStyle = .fullScreen //  전체 화면 모달
-        navigationController?.pushViewController(lastAddVC, animated: true)
+        if isEditingMode {
+            lastAddVC.clothId = clothId 
+            lastAddVC.clothName = clothName // 값 전달
+            lastAddVC.categoryName = categoryName
+            lastAddVC.categoryCloth = categoryCloth
+            lastAddVC.categoryId = categoryId
+            lastAddVC.selectedSeasons = selectedSeasons
+            lastAddVC.minTemp = minTemp
+            lastAddVC.maxTemp = maxTemp
+            lastAddVC.thickCount = Int(thickSlider.value)
+            lastAddVC.isPublicSelected = isPublicSelected
+            
+            lastAddVC.editClothUrl = editClothUrl
+            lastAddVC.editBrand = editBrand
+            lastAddVC.editImageUrl = editImageUrl
+            
+            /***/
+            navigationController?.pushViewController(lastAddVC, animated: true)
+            
+        } else {
+            lastAddVC.clothName = clothName // 값 전달
+            lastAddVC.categoryName = categoryName
+            lastAddVC.categoryCloth = categoryCloth
+            lastAddVC.categoryId = categoryId
+            lastAddVC.selectedSeasons = selectedSeasons
+            lastAddVC.minTemp = minTemp
+            lastAddVC.maxTemp = maxTemp
+            lastAddVC.thickCount = Int(thickSlider.value)
+            lastAddVC.isPublicSelected = isPublicSelected
+            /***/
+            navigationController?.pushViewController(lastAddVC, animated: true)
+        }
+        
+    }
+    
+    private func applyExistingValues() {
+        var thicknessLevel: Int = 0
+        // 두께감 설정 (문자열 비교 후 숫자로 변환)
+        if editThicknessLevel == "LEVEL_0" {
+            thicknessLevel = 0
+        } else if editThicknessLevel == "LEVEL_1" {
+            thicknessLevel = 1
+        } else if editThicknessLevel == "LEVEL_2" {
+            thicknessLevel = 2
+        } else if editThicknessLevel == "LEVEL_3" {
+            thicknessLevel = 3
+        } else if editThicknessLevel == "LEVEL_4" {
+            thicknessLevel = 4
+        } else if editThicknessLevel == "LEVEL_5" {
+            thicknessLevel = 5
+        }
+        
+        // 두께감 값 적용
+        thickSlider.value = Float(thicknessLevel)
+        print("두께감 적용됨: \(thicknessLevel)")
+
+        // 공개 여부 적용
+        if let visibility = editVisibility {
+            isPublicSelected = (visibility == "PUBLIC") // PUBLIC이면 true, 아니면 false
+            print("공개 여부 적용됨: \(isPublicSelected == true ? "공개" : "비공개")")
+        }
     }
 }
 

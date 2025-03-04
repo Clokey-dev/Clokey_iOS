@@ -11,6 +11,23 @@ import SnapKit
 
 class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate {
     
+    var clothId: Int64 = 0 {
+        didSet {
+            isEditingMode = (clothId != 0) // clothId가 0이면 추가, 0이 아니면 수정 모드
+        }
+    }
+    var isEditingMode: Bool = false
+    
+    var editSeasons: [String]? // 기존 seasons 값 저장
+    var editTempUpperBound: Int?
+    var editTempLowerBound: Int?
+    
+    var editThicknessLevel: String?
+    var editVisibility: String?
+    var editClothUrl: String?
+    var editBrand: String?
+    var editImageUrl: String?
+    
     // MARK: - UI Components
     
     ///  네비게이션 바
@@ -151,6 +168,11 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
+        if isEditingMode == true {
+            titleLabel.text = "옷 수정"
+        }
+        
+        applyExistingValues()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -360,15 +382,37 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
     @objc private func didTapNextButton() {
         let nextVC = ThickViewController() //  다음으로 이동할 VC (파일명에 맞게 수정)
         /***/
-        nextVC.clothName = clothName // 값 전달
-        nextVC.categoryName = categoryName
-        nextVC.categoryCloth = categoryCloth
-        nextVC.categoryId = categoryId
-        nextVC.selectedSeasons = selectedSeasons
-        nextVC.minTemp = Int(slider.lower)
-        nextVC.maxTemp = Int(slider.upper)
-        /***/
-        navigationController?.pushViewController(nextVC, animated: true) // 네비게이션 Push 방식으로 이동
+        
+        
+        if isEditingMode {
+            nextVC.clothId = clothId
+            nextVC.clothName = clothName // 값 전달
+            nextVC.categoryName = categoryName
+            nextVC.categoryCloth = categoryCloth
+            nextVC.categoryId = categoryId
+            nextVC.selectedSeasons = selectedSeasons
+            nextVC.minTemp = Int(slider.lower)
+            nextVC.maxTemp = Int(slider.upper)
+            
+            nextVC.editThicknessLevel = editThicknessLevel
+            nextVC.editVisibility = editVisibility
+            nextVC.editClothUrl = editClothUrl
+            nextVC.editBrand = editBrand
+            nextVC.editImageUrl = editImageUrl
+            
+            navigationController?.pushViewController(nextVC, animated: true) // 네비게이션 Push 방식으로 이동
+            
+        } else {
+            nextVC.clothName = clothName // 값 전달
+            nextVC.categoryName = categoryName
+            nextVC.categoryCloth = categoryCloth
+            nextVC.categoryId = categoryId
+            nextVC.selectedSeasons = selectedSeasons
+            nextVC.minTemp = Int(slider.lower)
+            nextVC.maxTemp = Int(slider.upper)
+            
+            navigationController?.pushViewController(nextVC, animated: true) // 네비게이션 Push 방식으로 이동
+        }
     }
     
     private func updateNextButtonState() {
@@ -405,5 +449,40 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
         }
         
         
+    }
+    
+    private func applyExistingValues() {
+        // 수정 모드일 경우(clothId가 0이 아니면)
+        if isEditingMode {
+            if let existingSeasons = editSeasons {
+                let reverseSeasonMapping: [String: String] = [
+                    "SPRING": "봄",
+                    "SUMMER": "여름",
+                    "FALL": "가을",
+                    "WINTER": "겨울"
+                ]
+                selectedSeasons = Set(existingSeasons.compactMap { reverseSeasonMapping[$0] })
+                print("한글로 변환된 selectedSeasons: \(selectedSeasons)")
+                updateSeasonButtonsUI()
+            }
+            
+            if let lower = editTempLowerBound, let upper = editTempUpperBound {
+                slider.lower = Double(Float(lower))
+                slider.upper = Double(Float(upper))
+            }
+            
+            updateNextButtonState() // 버튼 활성화 상태 업데이트
+        }
+    }
+    
+    private func updateSeasonButtonsUI() {
+        for button in seasonButtons {
+            guard let season = button.title(for: .normal) else { continue }
+            
+            let isSelected = selectedSeasons.contains(season)
+            button.backgroundColor = isSelected ? UIColor(named: "mainBrown800") : .clear
+            button.setTitleColor(isSelected ? .white : UIColor(named: "mainBrown800"), for: .normal)
+            button.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+        }
     }
 }

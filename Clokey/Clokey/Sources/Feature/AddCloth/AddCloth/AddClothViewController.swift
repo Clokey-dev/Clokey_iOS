@@ -1,9 +1,32 @@
 import UIKit
 import SnapKit
 
+struct EditClothModel {
+    var id: Int64
+    var name: String
+    var seasons: [String]
+    var tempUpperBound: Int
+    var tempLowerBound: Int
+    var thicknessLevel: String
+    var visibility: String
+    var clothUrl: String?
+    var brand: String?
+    var imageUrl: String
+    var categoryId: Int64
+}
 
-class AddClothViewController: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
+class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureRecognizerDelegate*/ {
     private let addClothesView = AddClothesView()
+    
+    var editClothModel: EditClothModel?
+    
+    var clothId: Int64 = 0 {
+        didSet {
+            isEditingMode = (clothId != 0) // clothId가 0이면 추가, 0이 아니면 수정 모드
+        }
+    }
+    var isEditingMode: Bool = false
+//    var existingClothName: String? // 수정할 때 기존 이름 저장
     
     
     override func loadView() {
@@ -16,13 +39,11 @@ class AddClothViewController: UIViewController, UITextFieldDelegate, UIGestureRe
         
         navigationController?.navigationBar.isHidden = true
         addClothesView.inputField.delegate = self
-        
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         setupAction()
         
         view.addSubview(loadingIndicator)
-        
         loadingIndicator.snp.makeConstraints {
                     $0.center.equalToSuperview()
                 }
@@ -30,6 +51,11 @@ class AddClothViewController: UIViewController, UITextFieldDelegate, UIGestureRe
         //  화면 탭하면 키보드 내리기
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
+        
+        if isEditingMode == true {
+            addClothesView.titleLabel.text = "옷 수정"
+        }
+        loadEditCloth()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -48,6 +74,7 @@ class AddClothViewController: UIViewController, UITextFieldDelegate, UIGestureRe
     @objc internal override func dismissKeyboard() {
         view.endEditing(true) //  현재 화면에서 키보드 내리기
     }
+
    
     private func setupAction() {
         addClothesView.backButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
@@ -68,17 +95,32 @@ class AddClothViewController: UIViewController, UITextFieldDelegate, UIGestureRe
             return
         }
         
-        // WeatherClothesViewController로 이동
-        let weatherVC = WeatherChooseViewController()
-        weatherVC.clothName = clothName // 값 전달
-        weatherVC.categoryName = cate1
-        weatherVC.categoryCloth = cate3
-        weatherVC.categoryId = cate3Id
-        if let navController = self.navigationController {
-            navController.pushViewController(weatherVC, animated: true)
+        if isEditingMode {
+            // WeatherClothesViewController로 이동
+            let weatherVC = WeatherChooseViewController()
+            weatherVC.clothId = clothId
+            weatherVC.editSeasons = editClothModel?.seasons
+            weatherVC.editTempUpperBound = editClothModel?.tempUpperBound
+            weatherVC.editTempLowerBound = editClothModel?.tempLowerBound
+            weatherVC.editThicknessLevel = editClothModel?.thicknessLevel
+            weatherVC.editVisibility = editClothModel?.visibility
+            weatherVC.editClothUrl = editClothModel?.clothUrl
+            weatherVC.editBrand = editClothModel?.brand
+            weatherVC.editImageUrl = editClothModel?.imageUrl
+            
+            weatherVC.clothName = clothName // 값 전달
+            weatherVC.categoryName = cate1
+            weatherVC.categoryCloth = cate3
+            weatherVC.categoryId = cate3Id
+            self.navigationController?.pushViewController(weatherVC, animated: true)
         } else {
-            weatherVC.modalPresentationStyle = .fullScreen
-            self.present(weatherVC, animated: true, completion: nil)
+            // WeatherClothesViewController로 이동
+            let weatherVC = WeatherChooseViewController()
+            weatherVC.clothName = clothName // 값 전달
+            weatherVC.categoryName = cate1
+            weatherVC.categoryCloth = cate3
+            weatherVC.categoryId = cate3Id
+            self.navigationController?.pushViewController(weatherVC, animated: true)
         }
     }
     
@@ -208,13 +250,31 @@ class AddClothViewController: UIViewController, UITextFieldDelegate, UIGestureRe
         }
         
         let categoryVC = CategoryViewController()
-        categoryVC.clothName = clothName // 값 전달
-        navigationController?.pushViewController(categoryVC, animated: true)
+        
+        if isEditingMode {
+            categoryVC.clothId = clothId
+            categoryVC.editSeasons = editClothModel?.seasons
+            categoryVC.editTempUpperBound = editClothModel?.tempUpperBound
+            categoryVC.editTempLowerBound = editClothModel?.tempLowerBound
+            categoryVC.editThicknessLevel = editClothModel?.thicknessLevel
+            categoryVC.editVisibility = editClothModel?.visibility
+            categoryVC.editClothUrl = editClothModel?.clothUrl
+            categoryVC.editBrand = editClothModel?.brand
+            categoryVC.editImageUrl = editClothModel?.imageUrl
+            
+            categoryVC.clothName = clothName // 값 전달
+            
+            self.navigationController?.pushViewController(categoryVC, animated: true)
+        } else {
+            categoryVC.clothName = clothName // 값 전달
+            self.navigationController?.pushViewController(categoryVC, animated: true)
+        }
     }
     
     //
     @objc private func handleBack() {
-//        navigationController?.popViewController(animated: true)
+//        NotificationCenter.default.post(name: NSNotification.Name("RefreshHomeNotification"), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name("HideLoadingOverlayNotification"), object: nil)
         
         if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
             sceneDelegate.switchToMain()
@@ -254,9 +314,50 @@ class AddClothViewController: UIViewController, UITextFieldDelegate, UIGestureRe
         addClothesView.reclassifyButton.isHidden = true
         addClothesView.reclassifyButton.alpha = 0.0
 
-        //  필요하면 추가적인 초기화 코드 작성 가능
+    }
+    
+    
+    private func loadEditCloth() {
+        let clothesService = ClothesService()
+        
+        clothesService.checkEditClothes(clothId: clothId) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                self.editClothModel = EditClothModel(
+                    id: response.id,
+                    name: response.name,
+                    seasons: response.seasons,
+                    tempUpperBound: response.tempUpperBound,
+                    tempLowerBound: response.tempLowerBound,
+                    thicknessLevel: response.thicknessLevel,
+                    visibility: response.visibility,
+                    clothUrl: response.clothUrl,
+                    brand: response.brand,
+                    imageUrl: response.imageUrl,
+                    categoryId: response.categoryId)
+                
+                DispatchQueue.main.async {
+//                    self.updateUIForMode()
+                    self.addClothesView.inputField.text = response.name
+                }
+            case .failure(let error):
+                print("옷 정보 로드 실패: \(error.localizedDescription)")
+            }
+        }
     }
     
 }
+
+extension AddClothViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer == self.navigationController?.interactivePopGestureRecognizer {
+            handleBack()
+            return false  // 기본 pop 동작 차단
+        }
+        return true
+    }
+}
+
 
 

@@ -3,6 +3,23 @@ import UIKit
 
 class CategoryViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate {
     
+    var clothId: Int64 = 0 {
+        didSet {
+            isEditingMode = (clothId != 0) // clothId가 0이면 추가, 0이 아니면 수정 모드
+        }
+    }
+    var isEditingMode: Bool = false
+    
+    var editSeasons: [String]? // 기존 seasons 값 저장
+    var editTempUpperBound: Int?
+    var editTempLowerBound: Int?
+    
+    var editThicknessLevel: String?
+    var editVisibility: String?
+    var editClothUrl: String?
+    var editBrand: String?
+    var editImageUrl: String?
+    
     private let addCategoryView = AddCategoryView()
     private var categories: [AddCategoryModel] = []
     private var selectedIndexPath: IndexPath? // 현재 선택된 버튼의 IndexPath를 저장
@@ -90,15 +107,32 @@ class CategoryViewController: UIViewController, UICollectionViewDataSource, UICo
 
         // WeatherChooseViewController로 데이터 전달
         let weatherVC = WeatherChooseViewController()
-        weatherVC.clothName = clothName
-        weatherVC.categoryName = selectedCategory.name // 카테고리 이름 전달
-        weatherVC.categoryCloth = selectedClothesName        // 버튼 이름 전달
-        weatherVC.categoryId = selectedClothesId        // 버튼 ID 전달
-        //        weatherVC.categoryCloth = selectedButtonName // 선택된 버튼 이름 전달
         
-
-        // 화면 전환
-        navigationController?.pushViewController(weatherVC, animated: true)
+        if isEditingMode {
+            weatherVC.clothId = clothId
+            weatherVC.editSeasons = editSeasons
+            weatherVC.editTempUpperBound = editTempUpperBound
+            weatherVC.editTempLowerBound = editTempLowerBound
+            weatherVC.editThicknessLevel = editThicknessLevel
+            weatherVC.editVisibility = editVisibility
+            weatherVC.editClothUrl = editClothUrl
+            weatherVC.editBrand = editBrand
+            weatherVC.editImageUrl = editImageUrl
+            
+            weatherVC.clothName = clothName
+            weatherVC.categoryName = selectedCategory.name // 카테고리 이름 전달
+            weatherVC.categoryCloth = selectedClothesName        // 버튼 이름 전달
+            weatherVC.categoryId = selectedClothesId        // 버튼 ID 전달
+            self.navigationController?.pushViewController(weatherVC, animated: true)
+        } else {
+            weatherVC.clothName = clothName
+            weatherVC.categoryName = selectedCategory.name // 카테고리 이름 전달
+            weatherVC.categoryCloth = selectedClothesName        // 버튼 이름 전달
+            weatherVC.categoryId = selectedClothesId        // 버튼 ID 전달
+            self.navigationController?.pushViewController(weatherVC, animated: true)
+        }
+        
+        //        weatherVC.categoryCloth = selectedButtonName // 선택된 버튼 이름 전달
 
         print("Selected Button: \(selectedButtonName), Category: \(selectedCategory.name)")
     }

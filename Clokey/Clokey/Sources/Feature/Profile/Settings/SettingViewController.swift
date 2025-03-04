@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SettingViewController: UIViewController {
+class SettingViewController: UIViewController, UIGestureRecognizerDelegate {
 
     private let settingView = SettingView()
     
@@ -21,6 +21,8 @@ class SettingViewController: UIViewController {
         
         updateUI()
         setupActions()
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
     private func updateUI() {
@@ -137,9 +139,24 @@ class SettingViewController: UIViewController {
     }
     
     @objc private func didTapInquiry() {
+        let imageUrl: String? = "http://pf.kakao.com/_amHbn"
         print("문의하기")
+        guard let urlString = imageUrl, let url = URL(string: urlString) else {
+            print("Invalid URL")
+            return
+        }
+        
+        // URL 열기
+        UIApplication.shared.open(url, options: [:]) { success in
+            if success {
+                print("Opened URL: \(urlString)")
+            } else {
+                print("Failed to open URL: \(urlString)")
+            }
+        }
     }
 
+    // 로그아웃
     @objc private func didTapLogout() {
         
         let alert = UIAlertController(
@@ -150,8 +167,10 @@ class SettingViewController: UIViewController {
         
         let confirmAction = UIAlertAction(title: "확인", style: .destructive) { _ in
             UserDefaults.standard.set(false, forKey: "isLoggedIn")
+            UserDefaults.standard.removeObject(forKey: "FCMToken") // 디바이스 토큰 삭제
             KeychainHelper.shared.delete(forKey: "accessToken")
             KeychainHelper.shared.delete(forKey: "refreshToken")
+            
             
             guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
                 print("SceneDelegate를 찾을 수 없습니다.")

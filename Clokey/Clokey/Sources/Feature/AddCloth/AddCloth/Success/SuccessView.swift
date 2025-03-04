@@ -17,7 +17,7 @@ class SuccessView: UIView {
         return imageView
     }()
     
-    private let messageLabel: UILabel = {
+    let messageLabel: UILabel = {
         let label = UILabel()
         label.text = "옷장에 안전하게\n보관해 드릴게요!"
         label.font = UIFont.ptdMediumFont(ofSize: 16) // 기본 폰트

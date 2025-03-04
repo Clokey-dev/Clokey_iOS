@@ -2,6 +2,17 @@ import UIKit
 import TOCropViewController
 
 class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
+    var clothId: Int64 = 0 {
+        didSet {
+            isEditingMode = (clothId != 0) // clothId가 0이면 추가, 0이 아니면 수정 모드
+        }
+    }
+    var isEditingMode: Bool = false
+    
+    var editClothUrl: String?
+    var editBrand: String?
+    var editImageUrl: String?
+    
     
     var clothName: String? // 전달받은 옷 이름
     var categoryName: String?
@@ -37,6 +48,12 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
         //  키보드 이벤트 감지
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        if isEditingMode == true {
+            lastAddView.titleLabel.text = "옷 수정"
+        }
+        
+        applyExistingValues()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -140,29 +157,89 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
     
     @objc private func didTapNextButton() {
         let popupVC = PopupViewController()
-        /***/
-        popupVC.clothName = clothName // 값 전달
-        popupVC.categoryName = categoryName
-        popupVC.categoryCloth = categoryCloth
-        popupVC.categoryId = categoryId
-        popupVC.selectedSeasons = selectedSeasons
-        popupVC.minTemp = minTemp
-        popupVC.maxTemp = maxTemp
-        popupVC.thickCount = thickCount
-        popupVC.isPublicSelected = isPublicSelected
-        popupVC.imageUrl = lastAddView.urlTextField.text
-        popupVC.brand = lastAddView.brandTextField.text
         
-        //  선택한 이미지를 전달
-        if let selectedImage = lastAddView.imageView.image,
-           let imageData = selectedImage.jpegData(compressionQuality: 0.8) {
-            popupVC.cloth = selectedImage
-            popupVC.clothImage = imageData
+        if isEditingMode {
+            popupVC.clothId = clothId 
+            popupVC.clothName = clothName // 값 전달
+            popupVC.categoryName = categoryName
+            popupVC.categoryCloth = categoryCloth
+            popupVC.categoryId = categoryId
+            popupVC.selectedSeasons = selectedSeasons
+            popupVC.minTemp = minTemp
+            popupVC.maxTemp = maxTemp
+            popupVC.thickCount = thickCount
+            popupVC.isPublicSelected = isPublicSelected
+            popupVC.imageUrl = lastAddView.urlTextField.text
+            popupVC.brand = lastAddView.brandTextField.text
+            
+            //  선택한 이미지를 전달
+            if let selectedImage = lastAddView.imageView.image,
+               let imageData = selectedImage.jpegData(compressionQuality: 0.8) {
+                popupVC.cloth = selectedImage
+                popupVC.clothImage = imageData
+            } else {
+                popupVC.clothImage = nil // 이미지가 없을 경우 nil 전달
+            }
+            
+            navigationController?.pushViewController(popupVC, animated: true)
         } else {
-            popupVC.clothImage = nil // 이미지가 없을 경우 nil 전달
+            popupVC.clothName = clothName // 값 전달
+            popupVC.categoryName = categoryName
+            popupVC.categoryCloth = categoryCloth
+            popupVC.categoryId = categoryId
+            popupVC.selectedSeasons = selectedSeasons
+            popupVC.minTemp = minTemp
+            popupVC.maxTemp = maxTemp
+            popupVC.thickCount = thickCount
+            popupVC.isPublicSelected = isPublicSelected
+            popupVC.imageUrl = lastAddView.urlTextField.text
+            popupVC.brand = lastAddView.brandTextField.text
+            
+            //  선택한 이미지를 전달
+            if let selectedImage = lastAddView.imageView.image,
+               let imageData = selectedImage.jpegData(compressionQuality: 0.8) {
+                popupVC.cloth = selectedImage
+                popupVC.clothImage = imageData
+            } else {
+                popupVC.clothImage = nil // 이미지가 없을 경우 nil 전달
+            }
+            navigationController?.pushViewController(popupVC, animated: true)
         }
-        /***/
-        popupVC.modalPresentationStyle = .fullScreen //  전체 화면 모달
-        navigationController?.pushViewController(popupVC, animated: true)
+    }
+    
+    private func applyExistingValues() {
+        //  clothUrl 적용
+        if let clothUrl = editClothUrl {
+            lastAddView.urlTextField.text = clothUrl
+            print("clothUrl 적용됨: \(clothUrl)")
+        }
+        
+        //  브랜드명 적용
+        if let brand = editBrand {
+            lastAddView.brandTextField.text = brand
+            print("브랜드명 적용됨: \(brand)")
+        }
+        
+        //  이미지 적용
+        if let imageUrl = editImageUrl, let url = URL(string: imageUrl) {
+            print("최종 이미지 URL: \(imageUrl)")
+            
+            lastAddView.imageView.kf.setImage(
+                with: url,
+                placeholder: UIImage(named: "placeholderImage"),
+                options: [.forceRefresh],
+                completionHandler: { result in
+                    switch result {
+                    case .success(let value):
+                        print("Kingfisher 이미지 다운로드 성공")
+                        self.lastAddView.imageView.image = value.image
+                    case .failure(let error):
+                        print("Kingfisher 이미지 다운로드 실패: \(error.localizedDescription)")
+                    }
+                }
+            )
+        } else {
+            print("editImageUrl이 nil 또는 URL 변환 실패")
+        }
     }
 }
