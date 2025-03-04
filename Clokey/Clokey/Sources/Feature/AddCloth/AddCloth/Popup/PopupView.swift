@@ -56,14 +56,8 @@ class PopupView: UIView {
         $0.layer.cornerRadius = 4
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
-        if #available(iOS 15.0, *) {
-            var config = UIButton.Configuration.filled()
-            config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
-            $0.configuration = config
-        } else {
-            $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
-        }
-        $0.sizeToFit()
+        $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+        $0.sizeToFit() 
     }
     
      let seasonStackView = UIStackView().then {
@@ -268,28 +262,9 @@ class PopupView: UIView {
             make.width.equalTo(39)
         }
         
-//        brandLabel.snp.makeConstraints { make in
-//            make.top.equalTo(wearCountLabel.snp.bottom).offset(8)
-//            make.leading.equalToSuperview().offset(92)
-//        }
-//        
-//        brandNameLabel.snp.makeConstraints { make in
-//            make.centerY.equalTo(brandLabel)
-//            make.leading.equalTo(brandLabel.snp.trailing).offset(5)
-//        }
-//        brandLabel.snp.makeConstraints { make in
-//            make.top.equalTo(wearCountLabel.snp.bottom).offset(8)
-//            make.centerX.equalToSuperview()
-//        }
-//
-//        brandNameLabel.snp.makeConstraints { make in
-//            make.centerY.equalTo(brandLabel)
-//            make.leading.equalTo(brandLabel.snp.trailing).offset(5)
-//            make.trailing.lessThanOrEqualToSuperview().offset(-92) // 너무 길어지지 않도록 제한
-//        }
         
         brandContainerView.snp.makeConstraints { make in
-            make.top.equalTo(wearCountLabel.snp.bottom).offset(8)
+            make.top.equalTo(wearCountLabel.snp.bottom).offset(12)
             make.leading.greaterThanOrEqualToSuperview().offset(20) // 고정이 아닌 최소값 설정 (왼쪽 이동 가능)
             make.trailing.lessThanOrEqualToSuperview().offset(-20) // 너무 길어지지 않도록 제한
             make.centerX.equalToSuperview() //  중앙 정렬 유지 (왼쪽으로 이동할 수 있도록)
@@ -307,7 +282,7 @@ class PopupView: UIView {
         }
         
         urlLabel.snp.makeConstraints { make in
-            make.top.equalTo(brandLabel.snp.bottom).offset(8)
+            make.top.equalTo(brandContainerView.snp.bottom).offset(12)
             make.leading.equalToSuperview().offset(92)
         }
         
