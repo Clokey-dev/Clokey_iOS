@@ -49,7 +49,7 @@ extension ClothesEndpoint: TargetType {
             return "/clothes/\(clothId)"
         case .deleteClothes(let cloth_id):
             return "/clothes/\(cloth_id)"
-        case .getClothes(let clokeyId, _, _, _, _, _):
+        case .getClothes:
             return "/clothes/closet-view"
         case .searchByNameAndBrand:
             return "/clothes/search/name-and-brand"
@@ -79,11 +79,11 @@ extension ClothesEndpoint: TargetType {
     // 요청 데이터(내가 서버로 보내야 하는 데이터)
     public var task: Moya.Task {
         switch self {
-        case .inquiryClothesDetail(let cloth_id):
+        case .inquiryClothesDetail(_):
             return .requestPlain
-        case .checkEditClothes(let clothId):
+        case .checkEditClothes(_):
             return .requestPlain
-        case .checkPopUpClothes(let clothId):
+        case .checkPopUpClothes(_):
             return .requestPlain
         case .smartSummationClothes:
             return .requestPlain
@@ -153,7 +153,7 @@ extension ClothesEndpoint: TargetType {
             multipartData.append(imagePart)
 
             return .uploadMultipart(multipartData)
-        case .deleteClothes(let cloth_id):
+        case .deleteClothes(_):
             return .requestPlain
         case let .getClothes(clokeyId, categoryId, season, sort, page, size):
             var parameters: [String: Any] = [

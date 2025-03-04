@@ -145,13 +145,4 @@ final class CustomBottomSheetViewController: UIViewController {
             self.dismiss(animated: false)
         })
     }
-    
-    // MARK: - Animations
-    //    private func showAnimation() {
-    //        containerView.transform = CGAffineTransform(translationX: 0, y: view.frame.height)
-    //        UIView.animate(withDuration: 0.3) {
-    //            self.containerView.transform = .identity
-    //        }
-    //    }
-    
 }
