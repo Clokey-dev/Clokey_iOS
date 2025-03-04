@@ -287,7 +287,7 @@ class SmartSummationView: UIView {
         
         bannerDescription.snp.makeConstraints {
             $0.leading.equalTo(bannerImage.snp.trailing).offset(5)
-            $0.trailing.equalTo(bannerView.snp.trailing).offset(-101)
+            $0.trailing.equalTo(bannerView.snp.trailing).offset(-10)
             $0.centerY.equalToSuperview()
         }
         
