@@ -10,6 +10,7 @@ class DrawerViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     // MARK: - API Service
     private let folderService = FolderService()
+    private let clothesService = ClothesService()
     
     // MARK: - Data
     // ① 이니셜라이저를 통해 주입받을 DrawerItem (또는 folderId 등)
