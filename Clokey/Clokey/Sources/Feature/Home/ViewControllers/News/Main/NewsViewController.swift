@@ -229,7 +229,7 @@ class NewsViewController: UIViewController {
                         return
                     }
                     
-                    // ✅ 프로필 이미지 설정
+                    // 프로필 이미지 설정
                     if let firstProfileImageUrl = URL(string: firstClosetItem.profileImage) {
                         self.newsView.profileImageView.kf.setImage(with: firstProfileImageUrl)
                         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileIconTap))
@@ -240,12 +240,12 @@ class NewsViewController: UIViewController {
                         print("프로필 이미지가 없습니다.")
                     }
                     
-                    // ✅ 유저 이름 및 날짜 설정
+                    // 유저 이름 및 날짜 설정
                     self.newsView.usernameLabel.text = firstClosetItem.clokeyId
                     self.newsView.profileImageView.accessibilityIdentifier = firstClosetItem.clokeyId
                     self.newsView.dateLabel.text = firstClosetItem.date
                     
-                    // ✅ clothesId와 images를 순서대로 가져오기
+                    // clothesId와 images를 순서대로 가져오기
                     let itemCount = min(firstClosetItem.clothesId.count, firstClosetItem.images.count)
                     
                     let clothIds = firstClosetItem.clothesId
@@ -260,7 +260,7 @@ class NewsViewController: UIViewController {
                     self.newsView.friendClothesImageView3.kf.setImage(with: itemCount > 2 ? URL(string: images[2]) : nil)
 
                     if itemCount == 0 {
-                        print("❌ 옷 데이터가 없습니다.")
+                        print("옷 데이터가 없습니다.")
                     }
                 }
                 
@@ -335,7 +335,7 @@ class NewsViewController: UIViewController {
         }
         
         guard let clothId = selectedClothId else {
-            print("❌ clothId 값이 없습니다.")
+            print("clothId 값이 없습니다.")
             return
         }
         
@@ -385,7 +385,7 @@ class NewsViewController: UIViewController {
         
         let clotehsService = ClothesService()
         
-        // ✅ checkPopUpClothes API 호출 및 UI 업데이트
+        // checkPopUpClothes API 호출 및 UI 업데이트
         clotehsService.checkPopUpClothes(clothId: clothId) { [weak self] result in
             guard let self = self else { return }
             

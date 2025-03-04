@@ -123,11 +123,6 @@ class PopupViewController: UIViewController {
         
         popupView.brandNameLabel.text = (brand?.isEmpty ?? true) ? "지정 없음" : brand
         
-//        if let url = url, !url.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-//            popupView.urlGoButton.setTitle("바로 가기", for: .normal)
-//        } else {
-//            popupView.urlGoButton.setTitle("지정 없음", for: .normal)
-//        }
         updateUrlGoButtonTitle(with: url)
         
         popupView.urlGoButton.addTarget(self, action: #selector(urlGoButtonTapped), for: .touchUpInside)

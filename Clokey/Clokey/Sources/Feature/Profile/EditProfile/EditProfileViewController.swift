@@ -108,7 +108,7 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
               let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
         
         let keyboardHeight = keyboardFrame.height
-        let bottomInset = keyboardHeight - view.safeAreaInsets.bottom
+//        let bottomInset = keyboardHeight - view.safeAreaInsets.bottom
         
         if let activeTextField = view.findFirstResponder() as? UITextField {
             let textFieldFrame = activeTextField.convert(activeTextField.bounds, to: view)
@@ -293,7 +293,7 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
                     self.editProfileView.idCheckButton.setTitleColor(.gray, for: .normal)
                     self.validateForm()
                     
-                case .failure(let error):
+                case .failure(_):
 //                    self.addProfileView.idError(hidden: false)
                     self.editProfileView.idStatusLabel.text = "중복된 아이디입니다."
                     self.editProfileView.idStatusLabel.textColor = .pointOrange800
@@ -360,7 +360,7 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
             return
         }
         
-        let formattedId = "@\(id)"
+//        let formattedId = "@\(id)"
         let bio = editProfileView.bioTextField.text ?? ""
         let visibility = isPublic ? "PUBLIC" : "PRIVATE"
         

@@ -297,9 +297,9 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         notificationService.notificationFollow(clokeyId: clokeyId) { result in
             switch result {
             case .success:
-                print("✅ 팔로우 알림 전송 성공")
+                print("팔로우 알림 전송 성공")
             case .failure(let error):
-                print("🚨 팔로우 알림 전송 실패: \(error.localizedDescription)")
+                print("팔로우 알림 전송 실패: \(error.localizedDescription)")
             }
         }
     }
@@ -428,7 +428,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         
         let clotehsService = ClothesService()
         
-        // ✅ checkPopUpClothes API 호출 및 UI 업데이트
+        //  checkPopUpClothes API 호출 및 UI 업데이트
         clotehsService.checkPopUpClothes(clothId: clothId) { [weak self] result in
             guard let self = self else { return }
             

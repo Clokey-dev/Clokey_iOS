@@ -43,7 +43,7 @@ class ThickSlider: UISlider {
         maximumTrackTintColor = .clear
         
         // Thumb를 완전한 brown으로 설정
-        let thumbColor = UIColor(named: "mainbrown800") ?? UIColor.mainBrown400
+//        let thumbColor = UIColor(named: "mainbrown800") ?? UIColor.mainBrown400
             
         setThumbImage(createThumbImage(size: thumbSize, color: selectedColor), for: .normal)
         

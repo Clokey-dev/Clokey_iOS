@@ -56,8 +56,14 @@ class PopupView: UIView {
         $0.layer.cornerRadius = 4
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
-        $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
-        $0.sizeToFit() 
+        if #available(iOS 15.0, *) {
+            var config = UIButton.Configuration.filled()
+            config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
+            $0.configuration = config
+        } else {
+            $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+        }
+        $0.sizeToFit()
     }
     
      let seasonStackView = UIStackView().then {
@@ -116,6 +122,8 @@ class PopupView: UIView {
         $0.backgroundColor = UIColor(named: "mainBrown600")
         $0.layer.cornerRadius = 5
     }
+    
+    let brandContainerView = UIView()
     
     let brandLabel: UILabel = {
         let label = UILabel()
@@ -181,8 +189,11 @@ class PopupView: UIView {
 //        addSubview(descriptionLabel)
         addSubview(wearCountLabel)
         addSubview(wearCountButton)
-        addSubview(brandLabel)
-        addSubview(brandNameLabel)
+//        addSubview(brandLabel)
+//        addSubview(brandNameLabel)
+        addSubview(brandContainerView)
+        brandContainerView.addSubview(brandLabel)
+        brandContainerView.addSubview(brandNameLabel)
         addSubview(urlLabel)
         addSubview(urlGoButton)
     }
@@ -257,14 +268,42 @@ class PopupView: UIView {
             make.width.equalTo(39)
         }
         
-        brandLabel.snp.makeConstraints { make in
-            make.top.equalTo(wearCountLabel.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(92)
-        }
+//        brandLabel.snp.makeConstraints { make in
+//            make.top.equalTo(wearCountLabel.snp.bottom).offset(8)
+//            make.leading.equalToSuperview().offset(92)
+//        }
+//        
+//        brandNameLabel.snp.makeConstraints { make in
+//            make.centerY.equalTo(brandLabel)
+//            make.leading.equalTo(brandLabel.snp.trailing).offset(5)
+//        }
+//        brandLabel.snp.makeConstraints { make in
+//            make.top.equalTo(wearCountLabel.snp.bottom).offset(8)
+//            make.centerX.equalToSuperview()
+//        }
+//
+//        brandNameLabel.snp.makeConstraints { make in
+//            make.centerY.equalTo(brandLabel)
+//            make.leading.equalTo(brandLabel.snp.trailing).offset(5)
+//            make.trailing.lessThanOrEqualToSuperview().offset(-92) // 너무 길어지지 않도록 제한
+//        }
         
+        brandContainerView.snp.makeConstraints { make in
+            make.top.equalTo(wearCountLabel.snp.bottom).offset(8)
+            make.leading.greaterThanOrEqualToSuperview().offset(20) // 고정이 아닌 최소값 설정 (왼쪽 이동 가능)
+            make.trailing.lessThanOrEqualToSuperview().offset(-20) // 너무 길어지지 않도록 제한
+            make.centerX.equalToSuperview() //  중앙 정렬 유지 (왼쪽으로 이동할 수 있도록)
+        }
+
+        brandLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview() // brandContainerView 내부의 왼쪽 고정
+            make.centerY.equalToSuperview()
+        }
+
         brandNameLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(brandLabel)
-            make.leading.equalTo(brandLabel.snp.trailing).offset(5)
+            make.leading.equalTo(brandLabel.snp.trailing).offset(5) // 브랜드명은 브랜드 라벨 오른쪽에서 시작
+            make.centerY.equalToSuperview()
+            make.trailing.lessThanOrEqualToSuperview() // 최대 길이 제한
         }
         
         urlLabel.snp.makeConstraints { make in
