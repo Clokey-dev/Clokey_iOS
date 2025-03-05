@@ -104,7 +104,7 @@ final class SettingView: UIView {
     
     let blokedAccountLabel = UILabel().then {
         $0.text = "차단한 계정 "
-        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .black
     }
     
@@ -125,7 +125,7 @@ final class SettingView: UIView {
     
     let pushLabel = UILabel().then {
         $0.text = "PUSH 알림"
-        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .black
     }
     
@@ -136,7 +136,7 @@ final class SettingView: UIView {
     
     let marketingLabel = UILabel().then {
         $0.text = "마케팅 알림 수신 동의"
-        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .black
     }
     
@@ -158,13 +158,13 @@ final class SettingView: UIView {
     
     let versionLabel = UILabel().then {
         $0.text = "버전 정보"
-        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .black
     }
     
     let versionInfoLabel = UILabel().then {
         $0.text = "1.0.0"
-        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .gray
     }
     
@@ -175,7 +175,7 @@ final class SettingView: UIView {
     
     let inquiryLabel = UILabel().then {
         $0.text = "문의하기"
-        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .black
     }
     
@@ -191,7 +191,7 @@ final class SettingView: UIView {
     
     let logoutLabel = UILabel().then {
         $0.text = "로그아웃"
-        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .black
     }
     
@@ -207,7 +207,7 @@ final class SettingView: UIView {
     
     let deleteAccountLabel = UILabel().then {
         $0.text = "계정 탈퇴"
-        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .black
     }
     
