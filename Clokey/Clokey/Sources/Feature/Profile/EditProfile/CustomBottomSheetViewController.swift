@@ -138,7 +138,7 @@ final class CustomBottomSheetViewController: UIViewController {
         }
     }
     
-    private func hideAnimation() {
+    func hideAnimation() {
         UIView.animate(withDuration: 0.0, animations: {
             self.containerView.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
         }, completion: { _ in
