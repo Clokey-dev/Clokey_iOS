@@ -35,6 +35,11 @@ class FollowProfileView: UIView {
         $0.textAlignment = .center
     }
     
+    let optionButton = UIButton().then {
+        $0.setImage(UIImage(named: "dot3_icon"), for: .normal)
+        $0.tintColor = UIColor(named: "mainBrown800")
+    }
+    
     let backgroundImageView = UIImageView().then {
         $0.image = UIImage(named: "profile_background")
         $0.backgroundColor = UIColor(red: 255/255, green: 248/255, blue: 235/255, alpha: 1.0)
@@ -211,6 +216,7 @@ class FollowProfileView: UIView {
         contentView.addSubview(backgroundImageView)
         contentView.addSubview(backButton)
         contentView.addSubview(usernameLabel)
+        contentView.addSubview(optionButton)
         contentView.addSubview(profileContainer)
         profileContainer.addSubview(profileImageView)
         contentView.addSubview(nicknameLabel)
@@ -262,6 +268,12 @@ class FollowProfileView: UIView {
         usernameLabel.snp.makeConstraints { make in
             make.centerY.equalTo(backButton)
             make.leading.equalTo(backButton.snp.trailing).offset(15)
+        }
+        
+        optionButton.snp.makeConstraints { make in
+            make.centerY.equalTo(backButton)
+            make.trailing.equalToSuperview().offset(-20)
+            make.size.equalTo(24)
         }
         
         profileContainer.snp.makeConstraints { make in
