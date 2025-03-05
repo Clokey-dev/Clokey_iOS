@@ -266,7 +266,6 @@ class CategoryViewController: UIViewController, UICollectionViewDataSource, UICo
         }
 
         let sectionInset = layout.sectionInset.left + layout.sectionInset.right
-        let interItemSpacing = layout.minimumInteritemSpacing
         let maxRowWidth = collectionView.bounds.width - sectionInset
 
         // Extract the name of the button

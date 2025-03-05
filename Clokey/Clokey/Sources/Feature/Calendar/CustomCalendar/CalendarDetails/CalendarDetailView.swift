@@ -474,7 +474,6 @@ class CalendarDetailView: UIView {
         }
 
         let maxLines: CGFloat = 3
-        let maxHeight = contentLabel.font.lineHeight * maxLines
         
         // 줄바꿈, 띄어쓰기 포함하여 정확한 줄 개수 계산
         let textBoundingRect = (text as NSString).boundingRect(

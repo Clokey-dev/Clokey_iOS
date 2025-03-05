@@ -135,7 +135,7 @@ class AddCategoryViewController: UIViewController, UICollectionViewDataSource, U
         delegate?.didSelectCategory(selectedClothesId, season: selectedSeasonValue)
        navigationController?.popViewController(animated: true)
         
-        print("Selected Button: \(selectedButtonName), Category: \(selectedCategory.name), Season: \(selectedSeasonValue)")
+        print("Selected Button: \(selectedButtonName), Category: \(selectedCategory.name), Season: \(String(describing: selectedSeasonValue))")
     }
     
     @objc private func seasonImageTapped(_ gesture: UITapGestureRecognizer) {
@@ -281,7 +281,7 @@ class AddCategoryViewController: UIViewController, UICollectionViewDataSource, U
         }
 
         let sectionInset = layout.sectionInset.left + layout.sectionInset.right
-        let interItemSpacing = layout.minimumInteritemSpacing
+//        let interItemSpacing = layout.minimumInteritemSpacing
         let maxRowWidth = collectionView.bounds.width - sectionInset
 
         // Extract the name of the button
