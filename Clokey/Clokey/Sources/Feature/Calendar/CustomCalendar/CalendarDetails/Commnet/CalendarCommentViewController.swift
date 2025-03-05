@@ -168,6 +168,13 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         present(alert, animated: true)
     }
     
+    // 차단 API 함수
+    func didTapBlock(commentId: Int64) {
+        let alert = UIAlertController(title: "차단", message: "차단이 접수되었습니다.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default))
+        present(alert, animated: true)
+    }
+    
     @objc func dismissView() {
         self.dismiss(animated: true)
     }
