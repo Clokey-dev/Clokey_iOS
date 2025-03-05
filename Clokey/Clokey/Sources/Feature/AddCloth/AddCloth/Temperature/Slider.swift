@@ -247,8 +247,8 @@ final class Slider: UIControl {
         return (upper - minValue) / (maxValue - minValue)
     }
     @objc private func updateThumbLabels() {
-//        let totalWidth = self.frame.width
-//        let totalRange = self.maxValue - self.minValue
+        let totalWidth = self.frame.width
+        let totalRange = self.maxValue - self.minValue
 //        let perDegreeWidth = totalWidth / CGFloat(totalRange)
 
         let lowerX = self.lowerThumbButton.center.x

@@ -104,7 +104,7 @@ final class SettingView: UIView {
     
     let blokedAccountLabel = UILabel().then {
         $0.text = "차단한 계정 "
-        $0.font = UIFont.ptdRegularFont(ofSize: 16)
+        $0.font = UIFont.systemFont(ofSize: 16)
         $0.textColor = .black
     }
     
