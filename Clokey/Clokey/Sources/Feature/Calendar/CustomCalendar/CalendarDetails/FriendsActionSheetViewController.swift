@@ -1,26 +1,24 @@
 //
-//  CustomActionSheetViewController.swift
+//  FriendsActionSheetViewController.swift
 //  Clokey
 //
-//  Created by 황상환 on 2/2/25.
+//  Created by 황상환 on 2/28/25.
 //
 
 import UIKit
 import SnapKit
 import Then
 
-
-protocol CustomActionSheetDelegate: AnyObject {
-    // 글 삭제 후 현재 화면을 닫기 위한 delegte
-    func didDeleteHistory()
-    func didTapEdit()
+protocol FriendsActionSheetDelegate: AnyObject {
+    func didReportUser()
+    func didBlockUser()
 }
 
-class CustomActionSheetViewController: UIViewController {
+class FriendsActionSheetViewController: UIViewController {
     
     // MARK: - Properties
 
-    weak var delegate: CustomActionSheetDelegate?
+    weak var delegate: FriendsActionSheetDelegate?
     private let historyId: Int
     private let historyService = HistoryService()
     
@@ -43,16 +41,17 @@ class CustomActionSheetViewController: UIViewController {
         $0.clipsToBounds = true
     }
     
-    private let editButton = {
+    // 신고하기 버튼
+    private let reportButton = {
         var configuration = UIButton.Configuration.plain()
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0)
-        configuration.image = UIImage(named: "edit_icon")?.resized(to: CGSize(width: 36, height: 36))
+        configuration.image = UIImage(named: "report_icon")?.resized(to: CGSize(width: 36, height: 36))
         configuration.imagePadding = 8
 
         // 폰트 & 텍스트 크기 조절
         let titleFont = UIFont.ptdMediumFont(ofSize: 18)
         let attributedString = NSAttributedString(
-            string: "편집하기",
+            string: "신고하기",
             attributes: [
                 .font: titleFont,
                 .foregroundColor: UIColor.black
@@ -65,17 +64,17 @@ class CustomActionSheetViewController: UIViewController {
         return button
     }()
 
-    
-    private let deleteButton = {
+    // 차단하기 버튼
+    private let blockButton = {
         var configuration = UIButton.Configuration.plain()
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0)
-        configuration.image = UIImage(named: "delete_icon")?.resized(to: CGSize(width: 36, height: 36))
+        configuration.image = UIImage(named: "block_icon")?.resized(to: CGSize(width: 36, height: 36))
         configuration.imagePadding = 8
 
         // 폰트 & 텍스트 크기 조절
         let titleFont = UIFont.ptdMediumFont(ofSize: 18)
         let attributedString = NSAttributedString(
-            string: "삭제하기",
+            string: "차단하기",
             attributes: [
                 .font: titleFont,
                 .foregroundColor: UIColor.black
@@ -111,8 +110,8 @@ class CustomActionSheetViewController: UIViewController {
         view.addSubview(dimmedView)
         view.addSubview(containerView)
         
-        containerView.addSubview(editButton)
-        containerView.addSubview(deleteButton)
+        containerView.addSubview(reportButton)
+        containerView.addSubview(blockButton)
         
         dimmedView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -123,14 +122,14 @@ class CustomActionSheetViewController: UIViewController {
             $0.height.equalTo(140)
         }
         
-        editButton.snp.makeConstraints {
+        reportButton.snp.makeConstraints {
             $0.top.equalToSuperview().offset(20)
             $0.left.right.equalToSuperview()
             $0.height.equalTo(44)
         }
         
-        deleteButton.snp.makeConstraints {
-            $0.top.equalTo(editButton.snp.bottom)
+        blockButton.snp.makeConstraints {
+            $0.top.equalTo(reportButton.snp.bottom)
             $0.left.right.equalToSuperview()
             $0.height.equalTo(44)
         }
@@ -143,8 +142,8 @@ class CustomActionSheetViewController: UIViewController {
         let dimmedTap = UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped))
         dimmedView.addGestureRecognizer(dimmedTap)
         
-        editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
-        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        reportButton.addTarget(self, action: #selector(reportButtonTapped), for: .touchUpInside)
+        blockButton.addTarget(self, action: #selector(blockButtonTapped), for: .touchUpInside)
     }
     
     // MARK: - Animation
@@ -169,55 +168,29 @@ class CustomActionSheetViewController: UIViewController {
         hideSheet()
     }
     
-    // 편집 버튼
-    @objc private func editButtonTapped() {
-        hideSheet()
-        delegate?.didTapEdit()
+    // 신고 버튼
+    @objc private func reportButtonTapped() {
+//        hideSheet()
+//        delegate?.didReportUser()
+        print("신고해~")
     }
     
-    // 삭제 버튼
-    @objc private func deleteButtonTapped() {
-        let alertController = UIAlertController(
-            title: "기록을 삭제하시겠습니까?",
-            message: "삭제한 기록은 되돌릴 수 없습니다.",
-            preferredStyle: .alert
-        )
-        
-        let confirmAction = UIAlertAction(title: "확인", style: .destructive) { [weak self] _ in
-            guard let self = self else { return }
-            
-            self.historyService.historyDelete(historyId: self.historyId) { [weak self] result in
-                guard let self = self else { return }
-                
-                switch result {
-                case .success:
-                    DispatchQueue.main.async {
-                        self.hideSheet { [weak self] in
-                            self?.delegate?.didDeleteHistory()
-                        }
-                    }
-                case .failure(let error):
-                    print("기록 삭제 에러: \(error.localizedDescription)")
-                }
-            }
-        }
-        
-        let cancelAction = UIAlertAction(title: "아니오", style: .cancel)
-        
-        alertController.addAction(confirmAction)
-        alertController.addAction(cancelAction)
-        
-        present(alertController, animated: true)
-    }
-
-}
-
-extension UIImage {
-    func resized(to size: CGSize) -> UIImage? {
-        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
-        self.draw(in: CGRect(origin: .zero, size: size))
-        let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return resizedImage
+    // 차단 버튼
+    @objc private func blockButtonTapped() {
+//        historyService.historyDelete(historyId: historyId) { [weak self] result in
+//            guard let self = self else { return }
+//
+//            switch result {
+//            case .success:
+//                DispatchQueue.main.async {
+//                    self.hideSheet { [weak self] in
+//                        self?.delegate?.didBlockUser()
+//                    }
+//                }
+//            case .failure(let error):
+//                print("기록 삭제 에러: \(error.localizedDescription)")
+//            }
+//        }
+        print("차단해~")
     }
 }

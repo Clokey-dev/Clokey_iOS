@@ -38,7 +38,7 @@ class CustomSearchField: UIView {
             .foregroundColor: UIColor.gray,
             .font: UIFont.ptdMediumFont(ofSize: 16)
         ]
-        textField.attributedPlaceholder = NSAttributedString(string: "내 옷 검색하기", attributes: placeholderAttributes)
+        textField.attributedPlaceholder = NSAttributedString(string: "옷 검색하기", attributes: placeholderAttributes)
 
         return textField
     }()

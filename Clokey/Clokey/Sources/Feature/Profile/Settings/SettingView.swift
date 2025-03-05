@@ -12,19 +12,27 @@ import Then
 final class SettingView: UIView {
     
     let backButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        let boldConfig = UIImage.SymbolConfiguration(weight: .bold)
+        let image = UIImage(systemName: "chevron.left", withConfiguration: boldConfig)
+        $0.setImage(image, for: .normal)
         $0.tintColor = .black
     }
     
     let settingLabel = UILabel().then {
         $0.text = "설정"
-        $0.font = UIFont.systemFont(ofSize: 20)
+        $0.font = UIFont.ptdSemiBoldFont(ofSize: 20)
         $0.textAlignment = .center
     }
     
+    private let scrollView = UIScrollView().then {
+        $0.showsVerticalScrollIndicator = false
+    }
+
+    private let contentView = UIView()
+    
     let infoTitleLabel = UILabel().then {
         $0.text = "로그인/회원정보"
-        $0.font = UIFont.systemFont(ofSize: 20)
+        $0.font = UIFont.ptdSemiBoldFont(ofSize: 20)
         $0.textAlignment = .center
     }
     
@@ -42,13 +50,72 @@ final class SettingView: UIView {
     
     let emailLabel = UILabel().then {
         $0.text = "email@xxxxx.com"
-        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .darkGray
     }
     
+    // 계정
+    let accountTitleLabel = UILabel().then {
+        $0.text = "계정"
+        $0.font = UIFont.ptdSemiBoldFont(ofSize: 20)
+        $0.textAlignment = .center
+    }
+    
+    let separatorLine4 = UIView().then {
+        $0.backgroundColor = UIColor(red: 107/255, green: 107/255, blue: 107/255, alpha: 1)
+    }
+    
+    // 좋아요 한 기록
+    let LikedHistoryContainer = UIView().then {
+        $0.backgroundColor = .white
+    }
+    
+    let LikedHistoryLabel = UILabel().then {
+        $0.text = "좋아요 한 기록 "
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
+        $0.textColor = .black
+    }
+    
+    let LikedHistoryButton = UIButton().then {
+        $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
+        $0.tintColor = .black
+    }
+
+    // 내가 남긴 댓글
+    let HistoryCommentContainer = UIView().then {
+        $0.backgroundColor = .white
+    }
+    
+    let HistoryCommentLabel = UILabel().then {
+        $0.text = "내가 남긴 댓글"
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
+        $0.textColor = .black
+    }
+
+    let HistoryCommentButton = UIButton().then {
+        $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
+        $0.tintColor = .black
+    }
+    
+    // 차단한 계정
+    let blokedAccountContainer = UIView().then {
+        $0.backgroundColor = .white
+    }
+    
+    let blokedAccountLabel = UILabel().then {
+        $0.text = "차단한 계정 "
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
+        $0.textColor = .black
+    }
+    
+    let blokedAccountButton = UIButton().then {
+        $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
+        $0.tintColor = .black
+    }
+    // 알림
     let alarmTitleLabel = UILabel().then {
         $0.text = "알림"
-        $0.font = UIFont.systemFont(ofSize: 20)
+        $0.font = UIFont.ptdSemiBoldFont(ofSize: 20)
         $0.textAlignment = .center
     }
     
@@ -58,7 +125,7 @@ final class SettingView: UIView {
     
     let pushLabel = UILabel().then {
         $0.text = "PUSH 알림"
-        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .black
     }
     
@@ -69,7 +136,7 @@ final class SettingView: UIView {
     
     let marketingLabel = UILabel().then {
         $0.text = "마케팅 알림 수신 동의"
-        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .black
     }
     
@@ -81,7 +148,7 @@ final class SettingView: UIView {
     
     let supportTitleLabel = UILabel().then {
         $0.text = "고객 지원"
-        $0.font = UIFont.systemFont(ofSize: 20)
+        $0.font = UIFont.ptdSemiBoldFont(ofSize: 20)
         $0.textAlignment = .center
     }
     
@@ -91,13 +158,13 @@ final class SettingView: UIView {
     
     let versionLabel = UILabel().then {
         $0.text = "버전 정보"
-        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .black
     }
     
     let versionInfoLabel = UILabel().then {
         $0.text = "1.0.0"
-        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .gray
     }
     
@@ -108,7 +175,7 @@ final class SettingView: UIView {
     
     let inquiryLabel = UILabel().then {
         $0.text = "문의하기"
-        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .black
     }
     
@@ -124,7 +191,7 @@ final class SettingView: UIView {
     
     let logoutLabel = UILabel().then {
         $0.text = "로그아웃"
-        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .black
     }
     
@@ -140,7 +207,7 @@ final class SettingView: UIView {
     
     let deleteAccountLabel = UILabel().then {
         $0.text = "계정 탈퇴"
-        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .black
     }
     
@@ -164,153 +231,239 @@ final class SettingView: UIView {
     private func setupUI() {
         backgroundColor = .white
         
-        addSubviews(
-            backButton, settingLabel, infoTitleLabel, separatorLine1, kakaoImage,
-            emailLabel, alarmTitleLabel, separatorLine2, pushLabel, pushSwitch, marketingLabel, marketingSwitch, supportTitleLabel, separatorLine3,
-            versionLabel, versionInfoLabel,
-            inquiryContainer, logoutContainer, deleteContainer
-        )
+        addSubviews(backButton, settingLabel, scrollView)
         
+        scrollView.addSubview(contentView)
+
+        contentView.addSubviews(
+            infoTitleLabel, separatorLine1, kakaoImage, emailLabel, accountTitleLabel,
+            separatorLine4, LikedHistoryContainer, LikedHistoryLabel, LikedHistoryButton,
+            HistoryCommentContainer, HistoryCommentLabel, HistoryCommentButton,
+            blokedAccountContainer, blokedAccountLabel, blokedAccountButton,
+            alarmTitleLabel, separatorLine2, pushLabel, pushSwitch, marketingLabel,
+            marketingSwitch, supportTitleLabel, separatorLine3, versionLabel,
+            versionInfoLabel, inquiryContainer, logoutContainer, deleteContainer
+        )
+
+        LikedHistoryContainer.addSubviews(LikedHistoryLabel, LikedHistoryButton)
+        HistoryCommentContainer.addSubviews(HistoryCommentLabel, HistoryCommentButton)
+        blokedAccountContainer.addSubviews(blokedAccountLabel, blokedAccountButton)
         inquiryContainer.addSubviews(inquiryLabel, inquiryButton)
         logoutContainer.addSubviews(logoutLabel, logoutButton)
         deleteContainer.addSubviews(deleteAccountLabel, deleteAccountButton)
     }
+
     
-    private func setupConstraints(){
-        backButton.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide).offset(11)
-            make.leading.equalToSuperview().offset(20)
-            make.size.equalTo(CGSize(width: 10, height: 20))
+    private func setupConstraints() {
+        backButton.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide).offset(11)
+            $0.leading.equalToSuperview().offset(20)
+            $0.size.equalTo(CGSize(width: 10, height: 20))
         }
-        
-        settingLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(backButton)
-            make.leading.equalTo(backButton.snp.trailing).offset(20)
+
+        settingLabel.snp.makeConstraints {
+            $0.centerY.equalTo(backButton)
+            $0.leading.equalTo(backButton.snp.trailing).offset(20)
         }
-        
-        infoTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(backButton.snp.bottom).offset(45)
-            make.leading.equalToSuperview().offset(20)
+
+        // 스크롤 뷰
+        scrollView.snp.makeConstraints {
+            $0.top.equalTo(settingLabel.snp.bottom).offset(10)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
-        
-        separatorLine1.snp.makeConstraints { make in
-            make.top.equalTo(infoTitleLabel.snp.bottom).offset(9)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(1)
+
+        contentView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview().priority(.low)
+            $0.width.equalTo(scrollView) // 가로 스크롤 방지
         }
-        
-        kakaoImage.snp.makeConstraints { make in
-            make.top.equalTo(separatorLine1.snp.bottom).offset(16)
-            make.leading.equalToSuperview().offset(20)
-            make.size.equalTo(CGSize(width: 40, height: 40))
+
+        infoTitleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(20)
+            $0.leading.equalToSuperview().offset(20)
         }
-       
-        emailLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(kakaoImage)
-            make.leading.equalTo(kakaoImage.snp.trailing).offset(15)
+
+        separatorLine1.snp.makeConstraints {
+            $0.top.equalTo(infoTitleLabel.snp.bottom).offset(9)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(1)
         }
-        
-        alarmTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(kakaoImage.snp.bottom).offset(32)
-            make.leading.equalToSuperview().offset(20)
+
+        kakaoImage.snp.makeConstraints {
+            $0.top.equalTo(separatorLine1.snp.bottom).offset(16)
+            $0.leading.equalToSuperview().offset(20)
+            $0.size.equalTo(CGSize(width: 40, height: 40))
         }
-        
-        separatorLine2.snp.makeConstraints { make in
-            make.top.equalTo(alarmTitleLabel.snp.bottom).offset(9)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(1)
+
+        emailLabel.snp.makeConstraints {
+            $0.centerY.equalTo(kakaoImage)
+            $0.leading.equalTo(kakaoImage.snp.trailing).offset(15)
         }
-        
-        pushLabel.snp.makeConstraints { make in
-            make.top.equalTo(separatorLine2.snp.bottom).offset(16)
-            make.leading.equalToSuperview().offset(20)
+
+        accountTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(kakaoImage.snp.bottom).offset(39)
+            $0.leading.equalToSuperview().offset(20)
         }
-        
-        pushSwitch.snp.makeConstraints { make in
-            make.centerY.equalTo(pushLabel)
-            make.trailing.equalToSuperview().offset(-20)
+
+        separatorLine4.snp.makeConstraints {
+            $0.top.equalTo(accountTitleLabel.snp.bottom).offset(9)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(1)
         }
-        
-        marketingLabel.snp.makeConstraints { make in
-            make.top.equalTo(pushLabel.snp.bottom).offset(25)
-            make.leading.equalToSuperview().offset(20)
+
+        // 좋아요 한 기록
+        LikedHistoryContainer.snp.makeConstraints {
+            $0.top.equalTo(separatorLine4.snp.bottom).offset(10)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(44)
         }
-        
-        marketingSwitch.snp.makeConstraints { make in
-            make.centerY.equalTo(marketingLabel)
-            make.trailing.equalToSuperview().offset(-20)
+
+        LikedHistoryLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(20)
+            $0.centerY.equalToSuperview()
         }
-        
-        supportTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(marketingLabel.snp.bottom).offset(51)
-            make.leading.equalToSuperview().offset(20)
+
+        LikedHistoryButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.centerY.equalToSuperview()
         }
-        
-        separatorLine3.snp.makeConstraints { make in
-            make.top.equalTo(supportTitleLabel.snp.bottom).offset(9)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(1)
+
+        // 내가 남긴 댓글
+        HistoryCommentContainer.snp.makeConstraints {
+            $0.top.equalTo(LikedHistoryContainer.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(44)
         }
-        
-        versionLabel.snp.makeConstraints { make in
-            make.top.equalTo(separatorLine3.snp.bottom).offset(16)
-            make.leading.equalToSuperview().offset(20)
+
+        HistoryCommentLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(20)
+            $0.centerY.equalToSuperview()
         }
-        
-        versionInfoLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(versionLabel)
-            make.trailing.equalToSuperview().offset(-20)
+
+        HistoryCommentButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.centerY.equalToSuperview()
         }
-        
+
+        // 차단한 계정
+        blokedAccountContainer.snp.makeConstraints {
+            $0.top.equalTo(HistoryCommentContainer.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(44)
+        }
+
+        blokedAccountLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(20)
+            $0.centerY.equalToSuperview()
+        }
+
+        blokedAccountButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.centerY.equalToSuperview()
+        }
+
+        alarmTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(blokedAccountLabel.snp.bottom).offset(39)
+            $0.leading.equalToSuperview().offset(20)
+        }
+
+        separatorLine2.snp.makeConstraints {
+            $0.top.equalTo(alarmTitleLabel.snp.bottom).offset(9)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(1)
+        }
+
+        pushLabel.snp.makeConstraints {
+            $0.top.equalTo(separatorLine2.snp.bottom).offset(16)
+            $0.leading.equalToSuperview().offset(20)
+        }
+
+        pushSwitch.snp.makeConstraints {
+            $0.centerY.equalTo(pushLabel)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
+
+        marketingLabel.snp.makeConstraints {
+            $0.top.equalTo(pushLabel.snp.bottom).offset(25)
+            $0.leading.equalToSuperview().offset(20)
+        }
+
+        marketingSwitch.snp.makeConstraints {
+            $0.centerY.equalTo(marketingLabel)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
+
+        supportTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(marketingLabel.snp.bottom).offset(51)
+            $0.leading.equalToSuperview().offset(20)
+        }
+
+        separatorLine3.snp.makeConstraints {
+            $0.top.equalTo(supportTitleLabel.snp.bottom).offset(9)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(1)
+        }
+
+        versionLabel.snp.makeConstraints {
+            $0.top.equalTo(separatorLine3.snp.bottom).offset(16)
+            $0.leading.equalToSuperview().offset(20)
+        }
+
+        versionInfoLabel.snp.makeConstraints {
+            $0.centerY.equalTo(versionLabel)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
+
         // 문의하기
-        inquiryContainer.snp.makeConstraints { make in
-            make.top.equalTo(versionInfoLabel.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(44)
+        inquiryContainer.snp.makeConstraints {
+            $0.top.equalTo(versionInfoLabel.snp.bottom).offset(10)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(44)
         }
-        
-        inquiryLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.centerY.equalToSuperview()
+
+        inquiryLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(20)
+            $0.centerY.equalToSuperview()
         }
-        
-        inquiryButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-20)
-            make.centerY.equalToSuperview()
+
+        inquiryButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.centerY.equalToSuperview()
         }
-        
+
         // 로그아웃
-        logoutContainer.snp.makeConstraints { make in
-            make.top.equalTo(inquiryContainer.snp.bottom)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(44)
+        logoutContainer.snp.makeConstraints {
+            $0.top.equalTo(inquiryContainer.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(44)
         }
-        
-        logoutLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.centerY.equalToSuperview()
+
+        logoutLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(20)
+            $0.centerY.equalToSuperview()
         }
-        
-        logoutButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-20)
-            make.centerY.equalToSuperview()
+
+        logoutButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.centerY.equalToSuperview()
         }
-        
+
         // 계정 탈퇴
-        deleteContainer.snp.makeConstraints { make in
-            make.top.equalTo(logoutContainer.snp.bottom)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(44)
+        deleteContainer.snp.makeConstraints {
+            $0.top.equalTo(logoutContainer.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(44)
+            $0.bottom.equalToSuperview().offset(-20)
         }
-        
-        deleteAccountLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.centerY.equalToSuperview()
+
+        deleteAccountLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(20)
+            $0.centerY.equalToSuperview()
         }
-        
-        deleteAccountButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-20)
-            make.centerY.equalToSuperview()
+
+        deleteAccountButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.centerY.equalToSuperview()
         }
     }
 }

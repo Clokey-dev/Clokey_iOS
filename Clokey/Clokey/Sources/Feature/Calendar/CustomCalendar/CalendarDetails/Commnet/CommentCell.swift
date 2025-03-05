@@ -14,6 +14,8 @@ import Kingfisher
 protocol CommentCellDelegate: AnyObject {
     func didTapReplyButton(commentId: Int64)
     func didTapProfile(with clokeyId: String)
+    func didTapDelete(commentId: Int64) 
+    func didTapReport(commentId: Int64)
 }
 
 class CommentCell: UITableViewCell {
@@ -67,16 +69,21 @@ class CommentCell: UITableViewCell {
         $0.spacing = 8
         $0.alignment = .leading
     }
+    
+    // MARK: - Init
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
+        setupContextMenu()
         selectionStyle = .none
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Method
 
     private func setupUI() {
         contentView.addSubview(containerView)
@@ -144,8 +151,13 @@ class CommentCell: UITableViewCell {
             self.containerView.backgroundColor = .white
         }
     }
-    
+    // 댓글 꾹 누를 경우 이벤트
+    private func setupContextMenu() {
+        let interaction = UIContextMenuInteraction(delegate: self)
+        self.addInteraction(interaction)
+    }
 
+    // MARK: Action
     @objc private func didTapReply() {
         delegate?.didTapReplyButton(commentId: Int64(self.tag)) 
     }
@@ -155,5 +167,22 @@ class CommentCell: UITableViewCell {
             delegate?.didTapProfile(with: clokeyId)
         }
         print("프로필 선택되었어요.")
+    }
+}
+
+// 댓글 꾹 누를 시, 효과 처리
+extension CommentCell: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            let deleteAction = UIAction(title: "삭제하기", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+                self.delegate?.didTapDelete(commentId: Int64(self.tag))
+            }
+            
+            let reportAction = UIAction(title: "신고하기", image: UIImage(systemName: "exclamationmark.triangle")) { _ in
+                self.delegate?.didTapReport(commentId: Int64(self.tag))
+            }
+
+            return UIMenu(title: "", children: [deleteAction, reportAction])
+        }
     }
 }

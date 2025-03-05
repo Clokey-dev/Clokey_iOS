@@ -41,6 +41,8 @@ class FriendsCalendarDetailViewController: UIViewController, UIGestureRecognizer
         
         calendarDetailView.likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         
+        calendarDetailView.plusButton.addTarget(self, action: #selector(didTapPlusButton), for: .touchUpInside)
+        
         calendarDetailView.clothesIconButton.addTarget(self, action: #selector(didTapClothesIconButton), for: .touchUpInside)
         
         calendarDetailView.moreButton.addTarget(self, action: #selector(didTapMoreButton), for: .touchUpInside)
@@ -78,7 +80,7 @@ class FriendsCalendarDetailViewController: UIViewController, UIGestureRecognizer
         view.backgroundColor = .white
         view.addSubview(calendarDetailView)
         
-        calendarDetailView.shouldHidePlusButton = true
+        calendarDetailView.shouldHidePlusButton = false
         calendarDetailView.shouldHidelockCheckImageView = true
         
         calendarDetailView.snp.makeConstraints {
@@ -171,7 +173,17 @@ class FriendsCalendarDetailViewController: UIViewController, UIGestureRecognizer
         let followProfileVC = FollowProfileViewController(followId: clokeyId)
         navigationController?.pushViewController(followProfileVC, animated: true)
     }
-//
+    
+    // 신고/차단 버튼
+    @objc private func didTapPlusButton() {
+        guard let viewModel = viewModel else { return }
+        let historyId = Int(viewModel.historyId)
+        
+        let actionSheet = FriendsActionSheetViewController(historyId: historyId)
+        actionSheet.delegate = self
+        actionSheet.modalPresentationStyle = .overFullScreen
+        present(actionSheet, animated: false)
+    }
     
     // MARK: - Method
     
@@ -267,5 +279,15 @@ extension FriendsCalendarDetailViewController: CalendarCommentDelegate {
     
     func didDeleteComment() {
         // 댓글 삭제 처리 구현
+    }
+}
+
+extension FriendsCalendarDetailViewController: FriendsActionSheetDelegate {
+    func didReportUser() {
+        print("사용자가 신고됨")
+    }
+
+    func didBlockUser() {
+        print("사용자가 차단됨")
     }
 }
