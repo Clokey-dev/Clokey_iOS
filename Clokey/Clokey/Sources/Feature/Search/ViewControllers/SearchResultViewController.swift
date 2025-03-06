@@ -133,7 +133,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.view.backgroundColor = .white
-        
+        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     @objc private func tabSelected(_ sender: UIButton) {

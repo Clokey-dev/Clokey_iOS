@@ -104,25 +104,25 @@ class FriendsCalendarDetailViewController: UIViewController, UIGestureRecognizer
             calendarDetailView.configure(with: viewModel)
         }
     }
-    // 댓글 업데이트를 위한 API
-    private func refreshHistoryDetail() {
-        guard let viewModel = viewModel else { return }
-        let historyId = Int(viewModel.historyId)
-
-        print("댓글 변경 감지 → 최신 히스토리 데이터 가져오는 중...")
-
-        historyService.historyDetail(historyId: historyId) { [weak self] result in
-            switch result {
-            case .success(let response):
-                DispatchQueue.main.async {
-                    self?.viewModel = CalendarDetailViewModel(data: response)
-                    self?.updateView()
-                    print("최신 댓글 데이터 업데이트 완료!")
-                }
-            case .failure(let error):
-                print("댓글 데이터 업데이트 실패: \(error)")
-            }
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // 네비게이션 바 다시 보이기
+        navigationController?.setNavigationBarHidden(false, animated: false)
+        
+        // iOS 13 이상에서 사용하는 UINavigationBarAppearance 설정
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground() // 불투명 배경 설정
+        appearance.backgroundColor = .white        // 원하는 배경색
+        
+        // Large Title, ScrollEdgeAppearance 등을 모두 동일하게 설정
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        
+        // Bar Tint, TintColor 설정 (뒤로가기 버튼 색, 타이틀 색 등)
+        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.isTranslucent = false
     }
 
     
