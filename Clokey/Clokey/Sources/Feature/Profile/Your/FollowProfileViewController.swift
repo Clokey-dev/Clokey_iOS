@@ -262,11 +262,11 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         bottomSheetVC.delegate = self // Delegate 연결
         bottomSheetVC.defaultProfileButton.configuration?.image = UIImage(systemName: "exclamationmark.circle")
         bottomSheetVC.defaultProfileButton.configuration?.title = "신고하기"
-//        bottomSheetVC.choosePhotoButton.configuration?.image = UIImage(systemName: "nosign")
-        if let originalImage = UIImage(named: "block") {
-            let resizedImage = originalImage.resize(to: CGSize(width: 34.6, height: 34.6)) // 원하는 크기로 조절
-            bottomSheetVC.choosePhotoButton.configuration?.image = resizedImage
-        }
+        bottomSheetVC.choosePhotoButton.configuration?.image = UIImage(systemName: "nosign")
+//        if let originalImage = UIImage(named: "block") {
+//            let resizedImage = originalImage.resize(to: CGSize(width: 34.6, height: 34.6)) // 원하는 크기로 조절
+////            bottomSheetVC.choosePhotoButton.configuration?.image = resizedImage
+//        }
         bottomSheetVC.choosePhotoButton.configuration?.title = "차단하기"
         bottomSheetVC.modalPresentationStyle = .overFullScreen
         present(bottomSheetVC, animated: false)
