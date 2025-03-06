@@ -126,8 +126,7 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         titleLabel.text = clokeyId
-        followerButton.setTitle("팔로워(\(followerCount))", for: .normal)
-        followingButton.setTitle("팔로잉(\(followingCount))", for: .normal)
+        
         
         // 초기 탭 설정
         updateCollectionView(for: selectedTab)
@@ -354,6 +353,9 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
                 self.hasMorePages = !newResult.isEmpty
                 
                 DispatchQueue.main.async {
+                    self.followerCount = self.followerusers.count
+                    self.followerButton.setTitle("팔로워(\(self.followerCount))", for: .normal)
+                    
                     self.followerCollectionView.reloadData()
                     self.updateFollowerCollectionViewHeight()
                 }
@@ -408,6 +410,9 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
                 self.hasMorePages1 = !newResult.isEmpty
                 
                 DispatchQueue.main.async {
+                    self.followingCount = self.followingusers.count
+                    self.followingButton.setTitle("팔로잉(\(self.followingCount))", for: .normal)
+                    
                     self.followingCollectionView.reloadData()
                     self.updateFollowingCollectionViewHeight()
                 }

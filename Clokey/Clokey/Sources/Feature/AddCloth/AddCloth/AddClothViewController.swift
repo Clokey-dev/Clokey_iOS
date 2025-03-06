@@ -346,7 +346,6 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
             }
         }
     }
-    
 }
 
 extension AddClothViewController: UIGestureRecognizerDelegate {

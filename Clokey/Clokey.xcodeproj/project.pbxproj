@@ -275,6 +275,11 @@
 		A67661AA2D5B367B006AAB63 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661A62D5B367B006AAB63 /* ProfileView.swift */; };
 		A67661AB2D5B367B006AAB63 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661A72D5B367B006AAB63 /* ProfileViewController.swift */; };
 		A67661AD2D5B3760006AAB63 /* PrivateStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661AC2D5B3760006AAB63 /* PrivateStackView.swift */; };
+		A6FBF9C52D78BA83000FC4EA /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9C42D78BA83000FC4EA /* CheckBox.swift */; };
+		A6FBF9C72D78BAAA000FC4EA /* AccountReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9C62D78BAAA000FC4EA /* AccountReportView.swift */; };
+		A6FBF9C92D78BAC5000FC4EA /* AccountReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9C82D78BAC5000FC4EA /* AccountReportViewController.swift */; };
+		A6FBF9CB2D78BAE3000FC4EA /* AccountReportCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9CA2D78BAE3000FC4EA /* AccountReportCompleteView.swift */; };
+		A6FBF9CD2D78BB05000FC4EA /* AccountReportCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9CC2D78BB05000FC4EA /* AccountReportCompleteViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -535,6 +540,11 @@
 		A67661A62D5B367B006AAB63 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		A67661A72D5B367B006AAB63 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		A67661AC2D5B3760006AAB63 /* PrivateStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateStackView.swift; sourceTree = "<group>"; };
+		A6FBF9C42D78BA83000FC4EA /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
+		A6FBF9C62D78BAAA000FC4EA /* AccountReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountReportView.swift; sourceTree = "<group>"; };
+		A6FBF9C82D78BAC5000FC4EA /* AccountReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountReportViewController.swift; sourceTree = "<group>"; };
+		A6FBF9CA2D78BAE3000FC4EA /* AccountReportCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountReportCompleteView.swift; sourceTree = "<group>"; };
+		A6FBF9CC2D78BB05000FC4EA /* AccountReportCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountReportCompleteViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1395,6 +1405,7 @@
 		07E1CB492D3664C300F86BB8 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				A6FBF9C32D78BA5B000FC4EA /* Report */,
 				0744011D2D5CB9EB00E60282 /* Category */,
 				07E1CB5D2D36A10000F86BB8 /* CustomButton.swift */,
 				07E1CB5E2D36A10000F86BB8 /* CustomButtonTextField.swift */,
@@ -1851,6 +1862,18 @@
 			path = My;
 			sourceTree = "<group>";
 		};
+		A6FBF9C32D78BA5B000FC4EA /* Report */ = {
+			isa = PBXGroup;
+			children = (
+				A6FBF9C42D78BA83000FC4EA /* CheckBox.swift */,
+				A6FBF9C62D78BAAA000FC4EA /* AccountReportView.swift */,
+				A6FBF9C82D78BAC5000FC4EA /* AccountReportViewController.swift */,
+				A6FBF9CA2D78BAE3000FC4EA /* AccountReportCompleteView.swift */,
+				A6FBF9CC2D78BB05000FC4EA /* AccountReportCompleteViewController.swift */,
+			);
+			path = Report;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2001,12 +2024,14 @@
 				07649C2A2D4DDD5D00B6B2B2 /* WeatherClothesCollectionViewCell.swift in Sources */,
 				07ECCB5C2D4E351E00AFF486 /* CustomSortDropdownView.swift in Sources */,
 				077DC91C2D62085100C02FA4 /* TokenManager.swift in Sources */,
+				A6FBF9CB2D78BAE3000FC4EA /* AccountReportCompleteView.swift in Sources */,
 				077DC91D2D62085100C02FA4 /* JWTHelper.swift in Sources */,
 				07ECCB5D2D4E351E00AFF486 /* CustomSearchField.swift in Sources */,
 				07F8598B2D61D73500DD5BF8 /* ImageCell.swift in Sources */,
 				07F8598C2D61D73500DD5BF8 /* SearchManager.swift in Sources */,
 				07F8598D2D61D73500DD5BF8 /* SearchModel.swift in Sources */,
 				07F8598E2D61D73500DD5BF8 /* SearchResultModel.swift in Sources */,
+				A6FBF9C52D78BA83000FC4EA /* CheckBox.swift in Sources */,
 				07F859A42D61D94000DD5BF8 /* SearchEndpoint.swift in Sources */,
 				07F8598F2D61D73500DD5BF8 /* UserCell.swift in Sources */,
 				07F859902D61D73500DD5BF8 /* UserModel.swift in Sources */,
@@ -2056,6 +2081,7 @@
 				1EF33C7C2D665FFB00142954 /* ClosetCollectionViewCell.swift in Sources */,
 				1EF33C7D2D665FFB00142954 /* ArrangeClosetViewController.swift in Sources */,
 				1EF33C7E2D665FFB00142954 /* DrawerEditViewController.swift in Sources */,
+				A6FBF9CD2D78BB05000FC4EA /* AccountReportCompleteViewController.swift in Sources */,
 				1EF33C7F2D665FFB00142954 /* ClosetPopUpViewController.swift in Sources */,
 				1EF33C802D665FFB00142954 /* FolderDropdownView.swift in Sources */,
 				1EF33C812D665FFB00142954 /* ArrangeClosetView.swift in Sources */,
@@ -2159,11 +2185,13 @@
 				A676619A2D5B367B006AAB63 /* DeleteAccountView.swift in Sources */,
 				A67661A92D5B367B006AAB63 /* ProfileModel.swift in Sources */,
 				A648ACE02D5CECF50094C126 /* CategoriesService.swift in Sources */,
+				A6FBF9C92D78BAC5000FC4EA /* AccountReportViewController.swift in Sources */,
 				A67661AA2D5B367B006AAB63 /* ProfileView.swift in Sources */,
 				A67661AD2D5B3760006AAB63 /* PrivateStackView.swift in Sources */,
 				A67661AB2D5B367B006AAB63 /* ProfileViewController.swift in Sources */,
 				A676619B2D5B367B006AAB63 /* DeleteAccountViewController.swift in Sources */,
 				A676619C2D5B367B006AAB63 /* SettingView.swift in Sources */,
+				A6FBF9C72D78BAAA000FC4EA /* AccountReportView.swift in Sources */,
 				A676619D2D5B367B006AAB63 /* SettingViewController.swift in Sources */,
 				A648ACDA2D5CECA50094C126 /* CategoriesEndPoint.swift in Sources */,
 				074401AE2D5E1F9A00E60282 /* AddClothingViewController.swift in Sources */,

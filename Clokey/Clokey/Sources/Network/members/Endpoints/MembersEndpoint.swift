@@ -130,7 +130,7 @@ extension MembersEndpoint: TargetType {
             return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
             //        case .getUser:
             //            return .requestPlain
-        case .followUser(let clokeyId):
+        case .followUser(_):
             return .requestPlain
         case .unfollowUser(let data):
             return .requestJSONEncodable(data)
@@ -139,7 +139,7 @@ extension MembersEndpoint: TargetType {
         case .optionalTermAgree(let data):
             return .requestJSONEncodable(data)
         case .getFollowPeople(_, let page, let isFollowing):
-            var parameters: [String: Any] = [
+            let parameters: [String: Any] = [
                 "page": page,
                 "isFollowing": isFollowing
             ]

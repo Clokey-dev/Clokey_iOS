@@ -123,9 +123,7 @@ class PopupViewController: UIViewController {
         
         popupView.brandNameLabel.text = (brand?.isEmpty ?? true) ? "지정 없음" : brand
         
-        if url?.isEmpty == true {
-            popupView.urlGoButton.titleLabel?.text = "지정 없음"
-        }
+        updateUrlGoButtonTitle(with: url)
         
         popupView.urlGoButton.addTarget(self, action: #selector(urlGoButtonTapped), for: .touchUpInside)
     
@@ -241,6 +239,19 @@ class PopupViewController: UIViewController {
             popupView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
             popupView.winterButton.setTitleColor(.white, for: .normal)
         }
+    }
+    
+    func updateUrlGoButtonTitle(with url: String?) {
+        let title = (url?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty != false) ? "지정 없음" : "바로가기"
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            .underlineStyle: NSUnderlineStyle.single.rawValue,
+            .foregroundColor: UIColor.mainBrown800,
+            .font: UIFont.ptdMediumFont(ofSize: 16)
+        ]
+        
+        let attributedTitle = NSAttributedString(string: title, attributes: attributes)
+        popupView.urlGoButton.setAttributedTitle(attributedTitle, for: .normal)
     }
     
     @objc private func urlGoButtonTapped() {
