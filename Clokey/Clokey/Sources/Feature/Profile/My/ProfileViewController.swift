@@ -237,9 +237,12 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc private func didTapMyClosetButton() {
-        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
-            sceneDelegate.navigateToMyCloset()
-        }
+//        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+//            sceneDelegate.navigateToMyCloset()
+//        }
+        let displayAllVC = DisplayAllViewController()
+        displayAllVC.clokeyId = clokeyId
+        navigationController?.pushViewController(displayAllVC, animated: true)
     }
     
     @objc private func didTapFollowerButton() {
