@@ -425,12 +425,13 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
                     self.navigationController?.popViewController(animated: true)
                 }
             case .failure(let error):
-                if let response = (error as? MoyaError)?.response {
-                    let responseBody = String(data: response.data, encoding: .utf8) ?? "응답 데이터 없음"
-                    print("프로필 업데이트 실패 - 상태 코드: \(response.statusCode), 응답: \(responseBody)")
-                } else {
-                    print("프로필 업데이트 실패 - 네트워크 오류: \(error.localizedDescription)")
-                }
+//                if let response = (error as? MoyaError)?.response {
+//                    let responseBody = String(data: response.data, encoding: .utf8) ?? "응답 데이터 없음"
+//                    print("프로필 업데이트 실패 - 상태 코드: \(response.statusCode), 응답: \(responseBody)")
+//                } else {
+//                    print("프로필 업데이트 실패 - 네트워크 오류: \(error.localizedDescription)")
+//                }
+                print("프로필 업데이트 실패 - 네트워크 오류: \(error.localizedDescription)")
             }
         }
     }
