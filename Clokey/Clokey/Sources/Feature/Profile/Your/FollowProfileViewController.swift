@@ -682,13 +682,19 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
 
 extension FollowProfileViewController: CustomBottomSheetDelegate {
     func didTapChoosePhoto() {
+        let bottomSheetVC = CustomBottomSheetViewController()
+        bottomSheetVC.hideAnimation()
         
+        followProfileView.followButton.setTitle("차단 해제", for: .normal)
+        followProfileView.followButton.backgroundColor = .mainBrown800
+        followProfileView.followButton.setTitleColor(.white, for: .normal)
+        followProfileView.updateCloseAccount(isClosed: true)
     }
     
     func didTapDefaultProfile() {
         let bottomSheetVC = CustomBottomSheetViewController()
         //        bottomSheetVC.hideAnimation()
-        bottomSheetVC.dismiss(animated: false) { [weak self] in
+        bottomSheetVC.dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
             
             let accountRepoVC = AccountReportViewController()
