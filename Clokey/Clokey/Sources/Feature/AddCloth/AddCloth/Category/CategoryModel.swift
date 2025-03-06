@@ -96,22 +96,6 @@ extension CategoryModel {
     }
 }
 
-//extension CategoryModel {
-//    static func getCategoryByName(_ userInput: String) -> (String, String, Int64)? {
-//        let lowercasedInput = userInput.lowercased()
-//
-//        for category in allCategories {
-//            if let button = category.buttons.first(where: { button in
-//                let components = button.name.lowercased().split(separator: "/") //  '/' 기준으로 나누기
-//                return components.contains { lowercasedInput.contains($0) } //  사용자 입력에서 키워드 포함 여부 검사
-//            }) {
-//                return (category.name, button.name, button.id) // ✅ id 값도 반환
-//            }
-//        }
-//        return nil
-//    }
-//}
-
 extension CategoryModel {
     static func getCategoryByName(_ userInput: String) -> (String, String, Int64)? {
         let lowercasedInput = userInput.lowercased()

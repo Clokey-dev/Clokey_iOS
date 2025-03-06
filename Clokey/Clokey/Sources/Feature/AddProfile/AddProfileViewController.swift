@@ -168,6 +168,17 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
         cropViewController.dismiss(animated: true)
     }
     
+    func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
+        print("사용자가 크롭을 취소했습니다.")
+//        isSelectingProfileImage = false //  프로필 이미지 선택 상태 해제
+        if isSelectingProfileImage {
+            addProfileView.profileImageView.image = UIImage(named: "profile_basic")
+        } else {
+            addProfileView.backgroundImageView.image = UIImage(named: "profile_background")
+        } //  기존 이미지 유지 또는 nil 처리
+        cropViewController.dismiss(animated: true)
+    }
+    
     
     private func addActions() {
         

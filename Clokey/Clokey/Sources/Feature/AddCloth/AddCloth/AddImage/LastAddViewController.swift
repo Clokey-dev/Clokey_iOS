@@ -60,7 +60,7 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
@@ -76,7 +76,7 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
               let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
         
         let keyboardHeight = keyboardFrame.height
-        let bottomInset = keyboardHeight - view.safeAreaInsets.bottom
+        //        let bottomInset = keyboardHeight - view.safeAreaInsets.bottom
         
         if let activeTextField = view.findFirstResponder() as? UITextField {
             let textFieldFrame = activeTextField.convert(activeTextField.bounds, to: view)
@@ -107,9 +107,9 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
     }
     
     @objc private func didTapAddImageButton(_ sender: UIButton) {
-            isSelectingProfileImage = true
-            showImagePicker() // 이미지 선택 기능 호출
-        }
+        isSelectingProfileImage = true
+        showImagePicker() // 이미지 선택 기능 호출
+    }
     
     // 갤러리에서 이미지 선택하는 기능
     private func showImagePicker() {
@@ -132,34 +132,52 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
         }
     }
     
+    // 사용자가 취소(Cancel) 버튼을 눌렀을 때
+//    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+//        print("✅ imagePickerControllerDidCancel 실행됨")
+//        picker.dismiss(animated: true)
+//
+//        // 사용자가 취소한 경우 크롭 화면이 뜨지 않도록 설정
+//        isSelectingProfileImage = false //  프로필 이미지 선택 상태 해제
+//        lastAddView.imageView.image = nil //  기존 이미지 유지 또는 nil 처리
+//
+//        print("사용자가 이미지 선택을 취소했습니다.")
+//    }
+    
     // 크롭 화면 호출
-        private func showCropViewController() {
-            guard let imageToCrop = lastAddView.imageView.image else { return } // 선택된 이미지 가져오기
-            
-            let cropViewController = TOCropViewController(croppingStyle: .default, image: imageToCrop)
-            cropViewController.delegate = self
-            cropViewController.aspectRatioLockEnabled = true
-            cropViewController.resetAspectRatioEnabled = false
-            cropViewController.aspectRatioPickerButtonHidden = true
-            cropViewController.customAspectRatio = CGSize(width: 3, height: 4)
-            
-            present(cropViewController, animated: true)
-        }
+    private func showCropViewController() {
+        guard let imageToCrop = lastAddView.imageView.image else { return } // 선택된 이미지 가져오기
+        
+        let cropViewController = TOCropViewController(croppingStyle: .default, image: imageToCrop)
+        cropViewController.delegate = self
+        cropViewController.aspectRatioLockEnabled = true
+        cropViewController.resetAspectRatioEnabled = false
+        cropViewController.aspectRatioPickerButtonHidden = true
+        cropViewController.customAspectRatio = CGSize(width: 3, height: 4)
+        
+        present(cropViewController, animated: true)
+    }
     
     // 크롭 완료 후 이미지 설정
-        func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
-            lastAddView.imageView.image = image // 크롭된 이미지를 프로필 이미지로 설정
-            print("이미지 크롭 완료!")
-            cropViewController.dismiss(animated: true)
-        }
+    func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
+        lastAddView.imageView.image = image // 크롭된 이미지를 프로필 이미지로 설정
+        print("이미지 크롭 완료!")
+        cropViewController.dismiss(animated: true)
+    }
+    func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
+        print("사용자가 크롭을 취소했습니다.")
+        isSelectingProfileImage = false //  프로필 이미지 선택 상태 해제
+        lastAddView.imageView.image = UIImage(named: "beforeaddimage") //  기존 이미지 유지 또는 nil 처리
+        cropViewController.dismiss(animated: true)
+    }
     
-   
+    
     
     @objc private func didTapNextButton() {
         let popupVC = PopupViewController()
         
         if isEditingMode {
-            popupVC.clothId = clothId 
+            popupVC.clothId = clothId
             popupVC.clothName = clothName // 값 전달
             popupVC.categoryName = categoryName
             popupVC.categoryCloth = categoryCloth

@@ -40,7 +40,7 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
         
         button.setImage(image, for: .normal)
         button.contentMode = .scaleAspectFit //  아이콘 비율 유지
-        button.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+        button.addTarget(ThickViewController.self, action: #selector(didTapBackButton), for: .touchUpInside)
         return button
     }()
     
