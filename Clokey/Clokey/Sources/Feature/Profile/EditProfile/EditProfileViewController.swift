@@ -10,6 +10,7 @@ import TOCropViewController
 import Moya
 
 final class EditProfileViewController: UIViewController, TOCropViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
+    private let navBarManager = NavigationBarManager()
     
     private let editProfileView = EditProfileView()
     private var isSelectingProfileImage = false
@@ -33,6 +34,7 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigationBar()
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
@@ -91,13 +93,35 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+//        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
+//        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
+    
+    // 네비게이션 설정
+        private func setupNavigationBar() {
+            navBarManager.addBackButton(
+                to: navigationItem,
+                target: self,
+                action: #selector(didTapBackButton)
+            )
+            
+            navBarManager.setTitle(
+                to: navigationItem,
+                title: "프로필 설정",
+                font: .ptdSemiBoldFont(ofSize: 18),
+//                font: .systemFont(ofSize: 18, weight: .semibold),
+                textColor: .black
+            )
+        }
+    
+    // 뒤로가기
+        @objc private func didTapBackButton() {
+            navigationController?.popViewController(animated: true)
+        }
     
     @objc internal override func dismissKeyboard() {
         view.endEditing(true) //  현재 화면에서 키보드 내리기
@@ -213,7 +237,7 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
     
     private func addActions() {
         
-        editProfileView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+//        editProfileView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         
         editProfileView.nicknameTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         editProfileView.nicknameTextField.addTarget(self, action: #selector(validateNickname), for: .editingChanged)
@@ -226,9 +250,9 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
         editProfileView.completeButton.addTarget(self, action: #selector(didTapCompleteButton), for: .touchUpInside)
     }
     
-    @objc private func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
-    }
+//    @objc private func didTapBackButton() {
+//        navigationController?.popViewController(animated: true)
+//    }
     
     // 텍스트 필드 변경 시 호출되는 메서드
     @objc private func textFieldDidChange(_ textField: UITextField) {
