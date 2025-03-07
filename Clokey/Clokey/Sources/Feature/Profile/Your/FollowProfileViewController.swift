@@ -68,7 +68,8 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        
+        navigationController?.navigationBar.alpha = 0
     }
     
     override func viewDidAppear(_ animated: Bool) {

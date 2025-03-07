@@ -13,7 +13,7 @@ import SnapKit
 import Kingfisher
 
 class NewsViewController: UIViewController {
-    
+    private let searchManager = SearchManager()
     private var pageViewController: UIPageViewController!
     private let newsView = NewsView()
     private var recommandNewsSlides: [RecommandNewsSlideModel] = []
@@ -799,7 +799,10 @@ class NewsViewController: UIViewController {
             let hashtag = slide.hashtag ?? ""
             let searchQuery = hashtag.hasPrefix("#") ? String(hashtag.dropFirst()) : hashtag
             
-            // 예: 해시태그 탭이 기본 선택된 SearchResultViewController로 이동
+            // 검색어를 최근 검색어에 저장
+            self.searchManager.addSearchKeyword(searchQuery)
+            
+            // 해시태그 탭이 기본 선택된 SearchResultViewController로 이동
             let searchResultVC = SearchResultViewController(query: searchQuery, results: [], initialTabIsHashtag: true)
             self.navigationController?.pushViewController(searchResultVC, animated: true)
         }

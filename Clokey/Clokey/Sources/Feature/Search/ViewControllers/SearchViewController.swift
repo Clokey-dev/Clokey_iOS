@@ -23,7 +23,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
         
         view.backgroundColor = .white
         
-        
+        navigationController?.setNavigationBarHidden(true, animated: false)
         searchView.delegate = self
         //  검색 기록 변경 시 자동 업데이트
         NotificationCenter.default.addObserver(self, selector: #selector(updateSearchHistory), name: NSNotification.Name("SearchHistoryUpdated"), object: nil)

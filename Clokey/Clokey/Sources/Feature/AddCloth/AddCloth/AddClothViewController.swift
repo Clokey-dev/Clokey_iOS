@@ -247,26 +247,33 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.pointOrange800.cgColor
         button.layer.cornerRadius = 5
-        //        button.contentEdgeInsets = UIEdgeInsets(top: 3, left: 14, bottom: 3, right: 14) //  내부 여백 추가
-        //  iOS 15 이상에서 contentInsets 적용
+        
+        // 버튼이 본인의 콘텐츠 크기에 맞춰지도록 설정
+        button.setContentHuggingPriority(.required, for: .horizontal)
+        button.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
+        // contentInsets 조정 (필요 시 값을 조절)
         if #available(iOS 15.0, *) {
             var config = UIButton.Configuration.filled()
-            config.contentInsets = NSDirectionalEdgeInsets(top: 3, leading: 14, bottom: 3, trailing: 14)
-            config.baseBackgroundColor = .clear // 기본 배경 제거
+            config.contentInsets = NSDirectionalEdgeInsets(top: 3, leading: 8, bottom: 3, trailing: 8)
+            config.baseBackgroundColor = .clear
             button.configuration = config
         } else {
-            // iOS 14 이하에서는 기존 방식 유지
-            button.contentEdgeInsets = UIEdgeInsets(top: 3, left: 14, bottom: 3, right: 14)
+            button.contentEdgeInsets = UIEdgeInsets(top: 3, left: 8, bottom: 3, right: 8)
         }
         return button
     }
     
 
     private func makeSeparator() -> UIImageView {
-        let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "chevron.right") // SF Symbol 설정
-        imageView.tintColor = .mainBrown800 // 색상 적용
+        let imageView = UIImageView(image: UIImage(systemName: "chevron.right"))
+        imageView.tintColor = .mainBrown800
         imageView.contentMode = .scaleAspectFit
+        imageView.setContentHuggingPriority(.required, for: .horizontal)
+        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        imageView.snp.makeConstraints {
+            $0.width.equalTo(12)
+        }
         return imageView
     }
     //

@@ -59,7 +59,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         
         setupRefreshControl()
         
-        
+       
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
@@ -116,7 +116,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        navigationController?.setNavigationBarHidden(true, animated: false)
+        
         searchView.hashtagsCollectionView.reloadData()
         searchView.accountsCollectionView.reloadData()
     }
@@ -126,13 +126,14 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         searchHistory = searchManager.fetchRecentSearches() //  검색 기록 강제 업데이트
         searchView.accountsCollectionView.reloadData()
         navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.navigationBar.alpha = 0
     }
     
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.view.backgroundColor = .white
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        
     }
     
     @objc private func tabSelected(_ sender: UIButton) {
