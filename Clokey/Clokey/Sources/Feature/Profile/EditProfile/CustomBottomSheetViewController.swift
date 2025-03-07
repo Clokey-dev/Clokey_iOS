@@ -94,7 +94,8 @@ final class CustomBottomSheetViewController: UIViewController {
     
         choosePhotoButton.snp.makeConstraints { make in
             make.top.equalTo(defaultProfileButton.snp.bottom).offset(21)
-            make.leading.equalToSuperview()
+//            make.leading.equalToSuperview()
+            make.leading.equalToSuperview().offset(3)
             make.trailing.equalToSuperview().offset(-22)
             make.height.equalTo(32)
         }

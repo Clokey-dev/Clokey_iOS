@@ -86,7 +86,8 @@ final class HomeViewController: UIViewController {
             make.centerX.equalTo(selectedButton.snp.centerX)
             make.bottom.equalTo(homeView.separatorLine.snp.top)
             make.height.equalTo(5)
-            make.width.equalTo(88)
+//            make.width.equalTo(88)
+            make.width.equalTo(homeView.separatorLine.snp.width).multipliedBy(0.5)
         }
 
         selectedButton.setTitleColor(indicatorColor, for: .normal)

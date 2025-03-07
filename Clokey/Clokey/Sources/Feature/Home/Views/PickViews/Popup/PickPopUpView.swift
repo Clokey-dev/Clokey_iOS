@@ -13,7 +13,7 @@ class PickPopUpView: UIView {
     
     // MARK: - UI Components
     var nameLabel = UILabel().then {
-        $0.text = "회색 레터링 후드티"
+        $0.text = ""
         $0.font = UIFont.ptdSemiBoldFont(ofSize: 16)
         $0.textColor = .black
     }
@@ -40,7 +40,7 @@ class PickPopUpView: UIView {
     }
     
     let categoryButton1 = UIButton().then {
-        $0.setTitle("상의", for: .normal)
+        $0.setTitle("", for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
         $0.backgroundColor = UIColor.clear
@@ -56,7 +56,7 @@ class PickPopUpView: UIView {
     
     
     let categoryButton2 = UIButton().then {
-        $0.setTitle("후드티", for: .normal)
+        $0.setTitle("", for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
         

@@ -262,11 +262,11 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         bottomSheetVC.delegate = self // Delegate 연결
         bottomSheetVC.defaultProfileButton.configuration?.image = UIImage(systemName: "exclamationmark.circle")
         bottomSheetVC.defaultProfileButton.configuration?.title = "신고하기"
-//        bottomSheetVC.choosePhotoButton.configuration?.image = UIImage(systemName: "nosign")
-        if let originalImage = UIImage(named: "block") {
-            let resizedImage = originalImage.resize(to: CGSize(width: 34.6, height: 34.6)) // 원하는 크기로 조절
-            bottomSheetVC.choosePhotoButton.configuration?.image = resizedImage
-        }
+        bottomSheetVC.choosePhotoButton.configuration?.image = UIImage(systemName: "nosign")
+//        if let originalImage = UIImage(named: "block") {
+//            let resizedImage = originalImage.resize(to: CGSize(width: 34.6, height: 34.6)) // 원하는 크기로 조절
+////            bottomSheetVC.choosePhotoButton.configuration?.image = resizedImage
+//        }
         bottomSheetVC.choosePhotoButton.configuration?.title = "차단하기"
         bottomSheetVC.modalPresentationStyle = .overFullScreen
         present(bottomSheetVC, animated: false)
@@ -682,13 +682,19 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
 
 extension FollowProfileViewController: CustomBottomSheetDelegate {
     func didTapChoosePhoto() {
+        let bottomSheetVC = CustomBottomSheetViewController()
+        bottomSheetVC.hideAnimation()
         
+        followProfileView.followButton.setTitle("차단 해제", for: .normal)
+        followProfileView.followButton.backgroundColor = .mainBrown800
+        followProfileView.followButton.setTitleColor(.white, for: .normal)
+        followProfileView.updateCloseAccount(isClosed: true)
     }
     
     func didTapDefaultProfile() {
         let bottomSheetVC = CustomBottomSheetViewController()
         //        bottomSheetVC.hideAnimation()
-        bottomSheetVC.dismiss(animated: false) { [weak self] in
+        bottomSheetVC.dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
             
             let accountRepoVC = AccountReportViewController()

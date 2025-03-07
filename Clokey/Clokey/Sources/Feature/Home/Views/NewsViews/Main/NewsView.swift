@@ -58,7 +58,7 @@ class NewsView: UIView {
     }
     
     let profileContainerView: UIView = UIView().then {
-        $0.backgroundColor = UIColor(red: 255/255, green: 248/255, blue: 235/255, alpha: 1) // 연한 베이지색 배경
+        $0.backgroundColor = UIColor(red: 255/255, green: 254/255, blue: 252/255, alpha: 1) // 연한 베이지색 배경
         $0.layer.cornerRadius = 10
         $0.clipsToBounds = true
     }
@@ -67,18 +67,18 @@ class NewsView: UIView {
         $0.image = UIImage(named: "profile_icon")
         $0.tintColor = .gray
         $0.contentMode = .scaleAspectFill
-//        $0.layer.cornerRadius = 20
+        $0.layer.cornerRadius = 12
         $0.clipsToBounds = true
     }
     
     let usernameLabel: UILabel = UILabel().then {
-        $0.text = "Sena_05"
+        $0.text = ""
         $0.textColor = .black
         $0.font = UIFont.ptdMediumFont(ofSize: 14)
     }
     
     let dateLabel: UILabel = UILabel().then {
-        $0.text = "2024.11.27"
+        $0.text = ""
         $0.textColor = .black
         $0.font = UIFont.ptdMediumFont(ofSize: 12)
     }
@@ -87,23 +87,25 @@ class NewsView: UIView {
         $0.axis = .horizontal
         $0.spacing = 21
         $0.distribution = .fillEqually
+//        $0.clipsToBounds = true
+//        $0.layer.cornerRadius = 5
     }
     
     // Image Views for Kingfisher
     let friendClothesImageView1 = UIImageView().then {
-        $0.contentMode = .scaleAspectFill
+        $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 5
     }
     
     let friendClothesImageView2 = UIImageView().then {
-        $0.contentMode = .scaleAspectFill
+        $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 5
     }
     
     let friendClothesImageView3 = UIImageView().then {
-        $0.contentMode = .scaleAspectFill
+        $0.contentMode = .scaleAspectFit
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 5
     }
@@ -144,7 +146,7 @@ class NewsView: UIView {
     }
     
     let followingCalendarUpdateSubTitle: UILabel = UILabel().then {
-        $0.text = "2024.11.27" // 부제목 텍스트
+        $0.text = "" // 부제목 텍스트
         $0.textColor = .black // 텍스트 색상
         $0.font = UIFont.ptdRegularFont(ofSize: 14) // 작은 폰트 크기
         $0.numberOfLines = 0 // 여러 줄 허용
@@ -158,36 +160,42 @@ class NewsView: UIView {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
         $0.backgroundColor = .white
+//        $0.clipsToBounds = true
+        $0.layer.cornerRadius = 5
     }
     
     let followingCalendarProfileIcon1: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
         $0.clipsToBounds = true
+        $0.layer.cornerRadius = 10
     }
     
     let followingCalendarProfileName1 = UILabel().then{
         $0.font = UIFont.ptdMediumFont(ofSize: 14)
         $0.textColor = .black
-        $0.text = "티라미수케이크"
+        $0.text = ""
     }
     
     let followingCalendarUpdateImageView2: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
         $0.backgroundColor = .white
+//        $0.clipsToBounds = true
+        $0.layer.cornerRadius = 5
     }
     
     let followingCalendarProfileIcon2: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
         $0.clipsToBounds = true
+        $0.layer.cornerRadius = 10
     }
     
     let followingCalendarProfileName2 = UILabel().then{
         $0.font = UIFont.ptdMediumFont(ofSize: 14)
         $0.textColor = .black
-        $0.text = "티라미수케이크"
+        $0.text = ""
     }
     
     let followingCalendarBottomButton: UIStackView = UIStackView().then {
@@ -225,72 +233,84 @@ class NewsView: UIView {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
         $0.backgroundColor = .white
+//        $0.clipsToBounds = true
+        $0.layer.cornerRadius = 5
     }
     
     let hotAccountProfileIcon1: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
         $0.clipsToBounds = true
+        $0.layer.cornerRadius = 10
     }
     
     let hotAccountProfileName1 = UILabel().then{
         $0.font = UIFont.ptdMediumFont(ofSize: 14)
         $0.textColor = UIColor(red: 52/255, green: 52/255, blue: 52/255, alpha: 1.0)
-        $0.text = "티라미수케이크"
+        $0.text = ""
     }
     
     let hotAccountImageView2: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
         $0.backgroundColor = .white
+//        $0.clipsToBounds = true
+        $0.layer.cornerRadius = 5
     }
     
     let hotAccountProfileIcon2: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
         $0.clipsToBounds = true
+        $0.layer.cornerRadius = 10
     }
     
     let hotAccountProfileName2 = UILabel().then{
         $0.font = UIFont.ptdMediumFont(ofSize: 14)
         $0.textColor = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0)
-        $0.text = "티라미수케이크"
+        $0.text = ""
     }
     
     let hotAccountImageView3: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
         $0.backgroundColor = .white
+//        $0.clipsToBounds = true
+        $0.layer.cornerRadius = 5
     }
     
     let hotAccountProfileIcon3: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
         $0.clipsToBounds = true
+        $0.layer.cornerRadius = 10
     }
     
     let hotAccountProfileName3 = UILabel().then{
         $0.font = UIFont.ptdMediumFont(ofSize: 14)
         $0.textColor = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0)
-        $0.text = "티라미수케이크"
+        $0.text = ""
     }
     
     let hotAccountImageView4: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
         $0.backgroundColor = .white
+//        $0.clipsToBounds = true
+        $0.layer.cornerRadius = 5
     }
     
     let hotAccountProfileIcon4: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
         $0.clipsToBounds = true
+        $0.layer.cornerRadius = 10
     }
     
     let hotAccountProfileName4 = UILabel().then{
         $0.font = UIFont.ptdMediumFont(ofSize: 14)
         $0.textColor = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0)
-        $0.text = "티라미수케이크"
+        $0.text = ""
     }
     
     // MARK: - Initializer
@@ -327,7 +347,7 @@ class NewsView: UIView {
         [friendClothesImageView1, friendClothesImageView2, friendClothesImageView3].forEach { imageView in
             imageView.contentMode = .scaleAspectFill
             imageView.clipsToBounds = true
-            imageView.layer.cornerRadius = 0
+            imageView.layer.cornerRadius = 5
             imageStackView.addArrangedSubview(imageView)
         }
         
@@ -399,6 +419,7 @@ class NewsView: UIView {
             make.top.equalTo(friendClothesTitle.snp.bottom).offset(14)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(179)
+
         }
         
         profileImageView.snp.makeConstraints { make in

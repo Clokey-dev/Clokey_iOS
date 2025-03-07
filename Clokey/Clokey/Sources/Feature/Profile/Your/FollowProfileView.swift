@@ -12,6 +12,7 @@ import Then
 class FollowProfileView: UIView {
     private let privateStackView1 = PrivateStackView()
     private let privateStackView2 = PrivateStackView()
+    private let privateStackView3 = PrivateStackView()
 
     /// 세로 스크롤을 지원하는 ScrollView
     let scrollView: UIScrollView = UIScrollView().then {
@@ -150,6 +151,8 @@ class FollowProfileView: UIView {
     let clothesImageView1: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
+        $0.layer.cornerRadius = 5
+        $0.layer.masksToBounds = true
         $0.backgroundColor = .white
     }
     
@@ -157,6 +160,8 @@ class FollowProfileView: UIView {
     let clothesImageView2: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
+        $0.layer.cornerRadius = 5
+        $0.layer.masksToBounds = true
         $0.backgroundColor = .white
     }
     
@@ -164,6 +169,8 @@ class FollowProfileView: UIView {
     let clothesImageView3: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
+        $0.layer.cornerRadius = 5
+        $0.layer.masksToBounds = true
         $0.backgroundColor = .white
     }
     
@@ -431,6 +438,33 @@ class FollowProfileView: UIView {
             // 데이터가 있으면 EmptyStackView 제거하고 관련 요소 표시
             privateStackView2.removeFromSuperview()
 
+        }
+    }
+    
+    func updateCloseAccount(isClosed: Bool) {
+        if isClosed {
+            privateStackView3.privateIcon.image = UIImage(named: "block")
+            privateStackView3.privateMessageTitle.text = "차단한 계정입니다.\n옷장과 기록을 보시려면\n차단을 해제해주세요."
+            clothesImageContainerView.addSubview(privateStackView3)
+            privateStackView3.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+            
+            clothesLabel.isHidden = true
+            bottomButtonLabel.isHidden = true
+            bottomArrowIcon.isHidden = true
+            
+            recordLabel.isHidden = true
+            calendarContainerView.isHidden = true
+        } else {
+            privateStackView3.removeFromSuperview()
+            
+            clothesLabel.isHidden = false
+            bottomButtonLabel.isHidden = false
+            bottomArrowIcon.isHidden = false
+            
+            recordLabel.isHidden = false
+            calendarContainerView.isHidden = false
         }
     }
 }

@@ -3,17 +3,6 @@ import SnapKit
 import Then
 
 class LastAddView: UIView {
-
-    let backButton = UIButton().then {
-        $0.setImage(UIImage(named: "back_icon"), for: .normal)
-        $0.tintColor = UIColor(named: "mainBrown800")
-    }
-
-    let titleLabel = UILabel().then {
-        $0.text = "옷 추가"
-        $0.font = UIFont.ptdRegularFont(ofSize: 20)
-        $0.textColor = .black
-    }
     
     let addClothLabel = UILabel().then {
         $0.text = "옷 사진을 추가해주세요."
@@ -94,8 +83,8 @@ class LastAddView: UIView {
     private func setupUI() {
         backgroundColor = .white
         
-        addSubview(backButton)
-        addSubview(titleLabel)
+//        addSubview(backButton)
+//        addSubview(titleLabel)
         addSubview(addClothLabel)
         
         addSubview(imageView)
@@ -114,17 +103,8 @@ class LastAddView: UIView {
     // MARK: - Setup Constraints
     private func setupConstraints() {
         
-        backButton.snp.makeConstraints {
-            $0.top.leading.equalTo(safeAreaLayoutGuide).inset(20)
-            $0.size.equalTo(CGSize(width: 10, height: 20))
-        }
-        
-        titleLabel.snp.makeConstraints {
-            $0.centerY.equalTo(backButton)
-            $0.centerX.equalToSuperview()
-        }
         addClothLabel.snp.makeConstraints { make in
-            make.top.equalTo(backButton.snp.bottom).offset(33)
+            make.top.equalTo(safeAreaLayoutGuide).offset(29)
             make.leading.equalToSuperview().offset(20)
             make.height.equalTo(45)
             make.width.equalTo(346)
