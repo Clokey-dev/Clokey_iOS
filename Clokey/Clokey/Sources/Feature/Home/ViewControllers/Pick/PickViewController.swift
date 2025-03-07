@@ -11,6 +11,7 @@ import UIKit
 import Kingfisher
 import MapKit
 import Moya
+import WeatherKit
 
 class PickViewController: UIViewController, CLLocationManagerDelegate {
     
