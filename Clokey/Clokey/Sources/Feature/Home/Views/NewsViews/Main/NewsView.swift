@@ -167,6 +167,7 @@ class NewsView: UIView {
     let followingCalendarProfileIcon1: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
+        $0.layer.cornerRadius = 12
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 10
     }
@@ -188,6 +189,7 @@ class NewsView: UIView {
     let followingCalendarProfileIcon2: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
+        $0.layer.cornerRadius = 12
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 10
     }
@@ -240,6 +242,7 @@ class NewsView: UIView {
     let hotAccountProfileIcon1: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
+        $0.layer.cornerRadius = 12
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 10
     }
@@ -261,6 +264,7 @@ class NewsView: UIView {
     let hotAccountProfileIcon2: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
+        $0.layer.cornerRadius = 12
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 10
     }
@@ -282,6 +286,7 @@ class NewsView: UIView {
     let hotAccountProfileIcon3: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
+        $0.layer.cornerRadius = 12
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 10
     }
@@ -303,6 +308,7 @@ class NewsView: UIView {
     let hotAccountProfileIcon4: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
+        $0.layer.cornerRadius = 12
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 10
     }

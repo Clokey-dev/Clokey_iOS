@@ -4,20 +4,31 @@ import SnapKit
 final class DrawerView: UIView, UICollectionViewDataSource {
     
     // MARK: - Properties
-    let collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 10
-        layout.minimumInteritemSpacing = 10
-        layout.itemSize = CGSize(width: 111, height: 167)
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .clear
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.register(ClosetCollectionViewCell.self, forCellWithReuseIdentifier: ClosetCollectionViewCell.identifier)
-        return collectionView
-    }()
-    
+    let collectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewFlowLayout().then {
+            $0.scrollDirection = .vertical
+            $0.minimumLineSpacing = 20
+            $0.minimumInteritemSpacing = 10
+            $0.estimatedItemSize = .zero
+            
+            // 화면 너비 기반으로 동적 아이템 크기 계산
+            let totalMargin: CGFloat = 40 // 좌우 패딩(마진) 총합
+            let interitemSpacing: CGFloat = 10 * 2 // 아이템 간 간격 * 2 (3열 기준)
+            let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing
+            let itemWidth = availableWidth / 3
+            
+            let imageHeight = itemWidth * (4.0 / 3.0) // 가로세로비 4:3 예시
+            let labelHeight: CGFloat = 20
+            let itemHeight = imageHeight + 5 + labelHeight
+            
+            $0.itemSize = CGSize(width: itemWidth, height: itemHeight)
+        }
+    ).then {
+        $0.backgroundColor = .clear
+        $0.showsVerticalScrollIndicator = false
+        $0.register(ClosetCollectionViewCell.self, forCellWithReuseIdentifier: ClosetCollectionViewCell.identifier)
+    }
     private var products: [ClosetModel] = []
     private var shouldHideNumberLabel: Bool = false
     
