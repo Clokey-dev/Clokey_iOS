@@ -754,6 +754,7 @@ class NewsViewController: UIViewController {
         //        pageControl.numberOfPages = totalImages() // 이미지 개수 설정
         pageControl.numberOfPages = recommandNewsSlides.count
         pageControl.currentPage = currentIndexValue()
+        pageControl.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
         
         pageControl.addTarget(self, action: #selector(pageControlValueChanged(_:)), for: .valueChanged)
         
@@ -761,6 +762,7 @@ class NewsViewController: UIViewController {
         pageControl.snp.makeConstraints { make in
             make.top.equalTo(newsView.slideContainerView.snp.bottom).offset(10)
             make.centerX.equalToSuperview()
+    
         }
     }
     
