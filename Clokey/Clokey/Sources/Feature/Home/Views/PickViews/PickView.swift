@@ -95,7 +95,7 @@ class PickView: UIView {
         $0.font = UIFont.ptdRegularFont(ofSize: 12)
         $0.textColor = .black // 텍스트 색상
         $0.textAlignment = .center // 텍스트 중앙 정렬
-        $0.text = "회색 울 코트" // 기본 텍스트
+        $0.text = "" // 기본 텍스트
     }
 
     /// 두 번째 의류 추천 이미지
@@ -111,7 +111,7 @@ class PickView: UIView {
         $0.font = UIFont.ptdRegularFont(ofSize: 12)
         $0.textColor = .black // 텍스트 색상
         $0.textAlignment = .center // 텍스트 중앙 정렬
-        $0.text = "앙고라 패턴 니트" // 기본 텍스트
+        $0.text = "" // 기본 텍스트
     }
 
     /// 세 번째 의류 추천 이미지
@@ -127,7 +127,7 @@ class PickView: UIView {
         $0.font = UIFont.ptdRegularFont(ofSize: 12)
         $0.textColor = .black // 텍스트 색상
         $0.textAlignment = .center // 텍스트 중앙 정렬
-        $0.text = "스웨이드 자켓" // 기본 텍스트
+        $0.text = "" // 기본 텍스트
     }
     
     /// '내 옷 보러가기' 버튼 텍스트 레이블
