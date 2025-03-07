@@ -235,22 +235,6 @@ class CategoryViewController: UIViewController, UICollectionViewDataSource, UICo
         return UICollectionReusableView()
     }
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let layout = collectionViewLayout as! UICollectionViewFlowLayout
-//        let sectionInset = layout.sectionInset.left + layout.sectionInset.right
-//        let interItemSpacing = layout.minimumInteritemSpacing
-//        let maxRowWidth = collectionView.bounds.width - sectionInset
-//        
-//        let text = categories[indexPath.section].buttons[indexPath.item]
-//        let textWidth = text.size(withAttributes: [.font: UIFont.systemFont(ofSize: 16)]).width
-//        let buttonWidth = textWidth + 28
-//        
-//        if buttonWidth > maxRowWidth {
-//            return CGSize(width: maxRowWidth, height: 32)
-//        }
-//        
-//        return CGSize(width: buttonWidth, height: 32)
-//    }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let layout = collectionViewLayout as? UICollectionViewFlowLayout else {
             print("Error: Invalid collection view layout")
@@ -266,7 +250,6 @@ class CategoryViewController: UIViewController, UICollectionViewDataSource, UICo
         }
 
         let sectionInset = layout.sectionInset.left + layout.sectionInset.right
-        let interItemSpacing = layout.minimumInteritemSpacing
         let maxRowWidth = collectionView.bounds.width - sectionInset
 
         // Extract the name of the button

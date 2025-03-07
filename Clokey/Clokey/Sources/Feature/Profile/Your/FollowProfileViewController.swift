@@ -234,6 +234,9 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     
     private func setupActions() {
         followProfileView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+        
+        followProfileView.optionButton.addTarget(self, action: #selector(didTapReportButton), for: .touchUpInside)
+        
         followProfileView.followButton.addTarget(self, action: #selector(didTapFollowButton), for: .touchUpInside)
         followProfileView.followerCountButton.addTarget(self, action: #selector(didTapFollowerButton), for: .touchUpInside)
         followProfileView.followingCountButton.addTarget(self, action: #selector(didTapFollowingButton), for: .touchUpInside)
@@ -250,6 +253,23 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     
     @objc private func didTapBackButton() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func didTapReportButton(_ sender: UIButton) {
+//        isSelectingProfileImage = (sender == addProfileView.addImageButton2)
+        
+        let bottomSheetVC = CustomBottomSheetViewController()
+        bottomSheetVC.delegate = self // Delegate 연결
+        bottomSheetVC.defaultProfileButton.configuration?.image = UIImage(systemName: "exclamationmark.circle")
+        bottomSheetVC.defaultProfileButton.configuration?.title = "신고하기"
+        bottomSheetVC.choosePhotoButton.configuration?.image = UIImage(systemName: "nosign")
+//        if let originalImage = UIImage(named: "block") {
+//            let resizedImage = originalImage.resize(to: CGSize(width: 34.6, height: 34.6)) // 원하는 크기로 조절
+////            bottomSheetVC.choosePhotoButton.configuration?.image = resizedImage
+//        }
+        bottomSheetVC.choosePhotoButton.configuration?.title = "차단하기"
+        bottomSheetVC.modalPresentationStyle = .overFullScreen
+        present(bottomSheetVC, animated: false)
     }
     
     // MARK: - 팔로우 버튼 이벤트
@@ -297,9 +317,9 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         notificationService.notificationFollow(clokeyId: clokeyId) { result in
             switch result {
             case .success:
-                print("✅ 팔로우 알림 전송 성공")
+                print("팔로우 알림 전송 성공")
             case .failure(let error):
-                print("🚨 팔로우 알림 전송 실패: \(error.localizedDescription)")
+                print("팔로우 알림 전송 실패: \(error.localizedDescription)")
             }
         }
     }
@@ -428,7 +448,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         
         let clotehsService = ClothesService()
         
-        // ✅ checkPopUpClothes API 호출 및 UI 업데이트
+        //  checkPopUpClothes API 호출 및 UI 업데이트
         clotehsService.checkPopUpClothes(clothId: clothId) { [weak self] result in
             guard let self = self else { return }
             
@@ -658,4 +678,27 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         }
     }
     
+}
+
+extension FollowProfileViewController: CustomBottomSheetDelegate {
+    func didTapChoosePhoto() {
+        let bottomSheetVC = CustomBottomSheetViewController()
+        bottomSheetVC.hideAnimation()
+        
+        followProfileView.followButton.setTitle("차단 해제", for: .normal)
+        followProfileView.followButton.backgroundColor = .mainBrown800
+        followProfileView.followButton.setTitleColor(.white, for: .normal)
+        followProfileView.updateCloseAccount(isClosed: true)
+    }
+    
+    func didTapDefaultProfile() {
+        let bottomSheetVC = CustomBottomSheetViewController()
+        //        bottomSheetVC.hideAnimation()
+        bottomSheetVC.dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            
+            let accountRepoVC = AccountReportViewController()
+            self.navigationController?.pushViewController(accountRepoVC, animated: true)
+        }
+    }
 }

@@ -9,30 +9,13 @@ import UIKit
 
 class AddClothesView: UIView {
     
-    let backButton: UIButton = {
-        let button = UIButton(type: .system)
-        let image = UIImage(systemName: "chevron.left")?.withTintColor(.mainBrown800, renderingMode: .alwaysOriginal)
-        button.setImage(image, for: .normal)
-        button.contentMode = .scaleAspectFit
-        
-        return button
-    }()
-    
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "옷 추가"
-        label.font = UIFont.ptdSemiBoldFont(ofSize: 20)
-        label.textAlignment = .center
-        return label
-    }()
-    
     ///  "옷의 이름을 입력해주세요!" 타이틀
     let subTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "옷의 이름을 입력해주세요!"
         label.font = UIFont.ptdSemiBoldFont(ofSize: 24)
         label.textAlignment = .left
-        label.textColor = .mainBrown800
+        label.textColor = .black
         return label
     }()
     
@@ -41,7 +24,7 @@ class AddClothesView: UIView {
         label.text = "옷 이름을 설정하고 입력 버튼을 누르시면\n카테고리 자동 분류가 이루어집니다."
         label.font = UIFont.ptdMediumFont(ofSize: 16)
         label.textAlignment = .left
-        label.textColor = .mainBrown400
+        label.textColor = UIColor(red: 72/255, green: 72/255, blue: 72/255, alpha: 1)
         label.numberOfLines = 2
         return label
     }()
@@ -167,8 +150,6 @@ class AddClothesView: UIView {
     private func setupUI() {
         backgroundColor = .white
         
-        addSubview(backButton)
-        addSubview(titleLabel)
         addSubview(subTitleLabel)
         addSubview(descriptionLabel)
         
@@ -188,17 +169,10 @@ class AddClothesView: UIView {
     }
     
     private func setupConstraints() {
-        backButton.snp.makeConstraints {
-            $0.top.leading.equalTo(safeAreaLayoutGuide).inset(20)
-        }
-        
-        titleLabel.snp.makeConstraints {
-            $0.centerY.equalTo(backButton)
-            $0.centerX.equalToSuperview()
-        }
         
         subTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(backButton.snp.bottom).offset(29)
+//            $0.top.equalTo(backButton.snp.bottom).offset(29)
+            $0.top.equalTo(safeAreaLayoutGuide).offset(29)
             $0.leading.equalToSuperview().offset(20)
         }
         

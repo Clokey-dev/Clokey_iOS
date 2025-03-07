@@ -16,6 +16,7 @@ struct EditClothModel {
 }
 
 class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureRecognizerDelegate*/ {
+    private let navBarManager = NavigationBarManager()
     private let addClothesView = AddClothesView()
     
     var editClothModel: EditClothModel?
@@ -26,7 +27,6 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
         }
     }
     var isEditingMode: Bool = false
-//    var existingClothName: String? // 수정할 때 기존 이름 저장
     
     
     override func loadView() {
@@ -36,8 +36,8 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigationBar()
         
-        navigationController?.navigationBar.isHidden = true
         addClothesView.inputField.delegate = self
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
@@ -52,15 +52,12 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
         
-        if isEditingMode == true {
-            addClothesView.titleLabel.text = "옷 수정"
-        }
+       
         loadEditCloth()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
         
         //  이전 화면에서 다시 돌아올 때 초기화
         resetViewState()
@@ -68,21 +65,52 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     @objc internal override func dismissKeyboard() {
         view.endEditing(true) //  현재 화면에서 키보드 내리기
     }
 
+    // 네비게이션 설정
+    private func setupNavigationBar() {
+        navBarManager.addBackButton(
+            to: navigationItem,
+            target: self,
+            action: #selector(didTapBackButton)
+        )
+        
+        if isEditingMode == true {
+            navBarManager.setTitle(
+                to: navigationItem,
+                title: "옷수정",
+                font: .ptdSemiBoldFont(ofSize: 20),
+                textColor: .black
+            )
+        } else {
+            navBarManager.setTitle(
+                to: navigationItem,
+                title: "옷추가",
+                font: .ptdSemiBoldFont(ofSize: 20),
+                textColor: .black
+            )
+        }
+    }
+    
+    // 뒤로가기
+    @objc private func didTapBackButton() {
+//        navigationController?.popViewController(animated: true)
+        NotificationCenter.default.post(name: NSNotification.Name("HideLoadingOverlayNotification"), object: nil)
+        
+        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+            sceneDelegate.switchToMain()
+        }
+        resetViewState() // 화면을 초기 상태로 되돌리는 함수 호출
+    }
    
     private func setupAction() {
-        addClothesView.backButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
         addClothesView.inputField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged) // 텍스트 변경 감지
         addClothesView.inputButton.addTarget(self, action: #selector(handleInput), for: .touchUpInside)
-
         addClothesView.reclassifyButton.addTarget(self, action: #selector(handleReclassify), for: .touchUpInside)
-        
         addClothesView.nextButton.addTarget(self, action: #selector(didTapNextButton), for: .touchUpInside)
         
     }
@@ -271,17 +299,7 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
         }
     }
     
-    //
-    @objc private func handleBack() {
-//        NotificationCenter.default.post(name: NSNotification.Name("RefreshHomeNotification"), object: nil)
-        NotificationCenter.default.post(name: NSNotification.Name("HideLoadingOverlayNotification"), object: nil)
-        
-        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
-            sceneDelegate.switchToMain()
-        }
-        resetViewState() // 화면을 초기 상태로 되돌리는 함수 호출
-    }
-    //
+
     @objc private func textFieldDidChange(_ textField: UITextField) {
         if let text = textField.text, !text.isEmpty {
             addClothesView.inputButton.backgroundColor = .mainBrown800 //  텍스트 있으면 색 변경
@@ -346,13 +364,13 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
             }
         }
     }
-    
 }
 
 extension AddClothViewController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer == self.navigationController?.interactivePopGestureRecognizer {
-            handleBack()
+//            handleBack()
+            didTapBackButton()
             return false  // 기본 pop 동작 차단
         }
         return true

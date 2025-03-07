@@ -2,6 +2,8 @@ import UIKit
 import TOCropViewController
 
 class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
+    private let navBarManager = NavigationBarManager()
+    
     var clothId: Int64 = 0 {
         didSet {
             isEditingMode = (clothId != 0) // clothId가 0이면 추가, 0이 아니면 수정 모드
@@ -34,6 +36,8 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupNavigationBar()
+        
         lastAddView.isUserInteractionEnabled = true
         lastAddView.addButton.isUserInteractionEnabled = true
         
@@ -49,23 +53,49 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
-        if isEditingMode == true {
-            lastAddView.titleLabel.text = "옷 수정"
-        }
         
         applyExistingValues()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
-    }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+    }
+    
+    // 네비게이션 설정
+    private func setupNavigationBar() {
+        navBarManager.addBackButton(
+            to: navigationItem,
+            target: self,
+            action: #selector(didTapBackButton)
+        )
+        
+        if isEditingMode == true {
+            navBarManager.setTitle(
+                to: navigationItem,
+                title: "옷수정",
+                font: .ptdSemiBoldFont(ofSize: 20),
+                textColor: .black
+            )
+        } else {
+            navBarManager.setTitle(
+                to: navigationItem,
+                title: "옷추가",
+                font: .ptdSemiBoldFont(ofSize: 20),
+                textColor: .black
+            )
+        }
+    }
+    
+    // 뒤로가기
+    @objc private func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
+    }
     
     @objc internal override func dismissKeyboard() {
         view.endEditing(true) //  현재 화면에서 키보드 내리기
@@ -76,7 +106,7 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
               let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
         
         let keyboardHeight = keyboardFrame.height
-        let bottomInset = keyboardHeight - view.safeAreaInsets.bottom
+        //        let bottomInset = keyboardHeight - view.safeAreaInsets.bottom
         
         if let activeTextField = view.findFirstResponder() as? UITextField {
             let textFieldFrame = activeTextField.convert(activeTextField.bounds, to: view)
@@ -95,21 +125,18 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
     
     // 버튼 액션 설정
     private func setupActions() {
-        lastAddView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+//        lastAddView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         
         lastAddView.addButton.addTarget(self, action: #selector(didTapAddImageButton(_:)), for: .touchUpInside)
         
         lastAddView.endButton.addTarget(self, action: #selector(didTapNextButton), for: .touchUpInside)
     }
     
-    @objc private func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
-    }
     
     @objc private func didTapAddImageButton(_ sender: UIButton) {
-            isSelectingProfileImage = true
-            showImagePicker() // 이미지 선택 기능 호출
-        }
+        isSelectingProfileImage = true
+        showImagePicker() // 이미지 선택 기능 호출
+    }
     
     // 갤러리에서 이미지 선택하는 기능
     private func showImagePicker() {
@@ -132,34 +159,41 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
         }
     }
     
+    
     // 크롭 화면 호출
-        private func showCropViewController() {
-            guard let imageToCrop = lastAddView.imageView.image else { return } // 선택된 이미지 가져오기
-            
-            let cropViewController = TOCropViewController(croppingStyle: .default, image: imageToCrop)
-            cropViewController.delegate = self
-            cropViewController.aspectRatioLockEnabled = true
-            cropViewController.resetAspectRatioEnabled = false
-            cropViewController.aspectRatioPickerButtonHidden = true
-            cropViewController.customAspectRatio = CGSize(width: 3, height: 4)
-            
-            present(cropViewController, animated: true)
-        }
+    private func showCropViewController() {
+        guard let imageToCrop = lastAddView.imageView.image else { return } // 선택된 이미지 가져오기
+        
+        let cropViewController = TOCropViewController(croppingStyle: .default, image: imageToCrop)
+        cropViewController.delegate = self
+        cropViewController.aspectRatioLockEnabled = true
+        cropViewController.resetAspectRatioEnabled = false
+        cropViewController.aspectRatioPickerButtonHidden = true
+        cropViewController.customAspectRatio = CGSize(width: 3, height: 4)
+        
+        present(cropViewController, animated: true)
+    }
     
     // 크롭 완료 후 이미지 설정
-        func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
-            lastAddView.imageView.image = image // 크롭된 이미지를 프로필 이미지로 설정
-            print("이미지 크롭 완료!")
-            cropViewController.dismiss(animated: true)
-        }
+    func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
+        lastAddView.imageView.image = image // 크롭된 이미지를 프로필 이미지로 설정
+        print("이미지 크롭 완료!")
+        cropViewController.dismiss(animated: true)
+    }
+    func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
+        print("사용자가 크롭을 취소했습니다.")
+        isSelectingProfileImage = false //  프로필 이미지 선택 상태 해제
+        lastAddView.imageView.image = UIImage(named: "beforeaddimage") //  기존 이미지 유지 또는 nil 처리
+        cropViewController.dismiss(animated: true)
+    }
     
-   
+    
     
     @objc private func didTapNextButton() {
         let popupVC = PopupViewController()
         
         if isEditingMode {
-            popupVC.clothId = clothId 
+            popupVC.clothId = clothId
             popupVC.clothName = clothName // 값 전달
             popupVC.categoryName = categoryName
             popupVC.categoryCloth = categoryCloth

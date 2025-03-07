@@ -174,9 +174,7 @@ class TagClothViewController: UIViewController, UIGestureRecognizerDelegate {
         
         isLoading = true
         let page = isNextPage ? currentPage + 1 : 1
-        
-        let clokeyIdForAPI: String? = clokeyId.isEmpty ? nil : clokeyId
-        
+                
         clothesService.getClothes(
             clokeyId: nil,
             categoryId: categoryId,

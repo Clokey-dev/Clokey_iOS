@@ -38,7 +38,7 @@ final class HomeView: UIView {
     /// 선택된 탭을 표시하는 인디케이터 뷰
     let indicatorView = UIView().then {
         $0.backgroundColor = .mainBrown800 // 기본 색상
-        $0.layer.cornerRadius = 2 // 모서리 반경
+//        $0.layer.cornerRadius = 2 // 모서리 반경
     }
     
     /// 탭 아래의 컨텐츠를 표시하는 컨테이너 뷰
@@ -82,7 +82,7 @@ final class HomeView: UIView {
         
         // PICK 버튼 레이아웃 설정
         pickButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview() // 왼쪽 끝에 배치
+            make.leading.equalToSuperview().offset(10) // 왼쪽 끝에 배치
             make.top.equalTo(safeAreaLayoutGuide).offset(12) // 안전 영역 위쪽에 배치
             make.width.equalToSuperview().multipliedBy(0.5) // 너비: 화면 절반
 //            make.height.equalTo(28) // 높이: 50
@@ -91,7 +91,7 @@ final class HomeView: UIView {
         
         // 소식 버튼 레이아웃 설정
         newsButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview() // 오른쪽 끝에 배치
+            make.trailing.equalToSuperview().inset(10) // 오른쪽 끝에 배치
             make.top.equalTo(safeAreaLayoutGuide).offset(12) // 안전 영역 위쪽에 배치
             make.width.equalToSuperview().multipliedBy(0.5) // 너비: 화면 절반
             make.height.equalTo(28) // 높이: 50
@@ -110,7 +110,8 @@ final class HomeView: UIView {
             make.centerX.equalTo(pickButton.snp.centerX) // PICK 버튼 중앙에 위치
             make.bottom.equalTo(separatorLine.snp.top) // separatorLine 기준으로 수정
             make.height.equalTo(5) // 높이: 5
-            make.width.equalTo(88)
+//            make.width.equalTo(88)
+            make.width.equalTo(separatorLine.snp.width).multipliedBy(0.5)
         }
         
         // 컨테이너 뷰 레이아웃 설정

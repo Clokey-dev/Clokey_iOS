@@ -16,6 +16,7 @@ protocol CommentCellDelegate: AnyObject {
     func didTapProfile(with clokeyId: String)
     func didTapDelete(commentId: Int64) 
     func didTapReport(commentId: Int64)
+    func didTapBlock(commentId: Int64)
 }
 
 class CommentCell: UITableViewCell {
@@ -181,8 +182,12 @@ extension CommentCell: UIContextMenuInteractionDelegate {
             let reportAction = UIAction(title: "신고하기", image: UIImage(systemName: "exclamationmark.triangle")) { _ in
                 self.delegate?.didTapReport(commentId: Int64(self.tag))
             }
+            
+            let blockAction = UIAction(title: "차단하기", image: UIImage(systemName: "nosign")) { _ in
+                self.delegate?.didTapBlock(commentId: Int64(self.tag))
+            }
 
-            return UIMenu(title: "", children: [deleteAction, reportAction])
+            return UIMenu(title: "", children: [deleteAction, reportAction, blockAction])
         }
     }
 }

@@ -10,6 +10,7 @@ import TOCropViewController
 import Moya
 
 final class EditProfileViewController: UIViewController, TOCropViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
+    private let navBarManager = NavigationBarManager()
     
     private let editProfileView = EditProfileView()
     private var isSelectingProfileImage = false
@@ -33,6 +34,7 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigationBar()
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
@@ -91,13 +93,35 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+//        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
+//        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
+    
+    // 네비게이션 설정
+        private func setupNavigationBar() {
+            navBarManager.addBackButton(
+                to: navigationItem,
+                target: self,
+                action: #selector(didTapBackButton)
+            )
+            
+            navBarManager.setTitle(
+                to: navigationItem,
+                title: "프로필 설정",
+                font: .ptdSemiBoldFont(ofSize: 18),
+//                font: .systemFont(ofSize: 18, weight: .semibold),
+                textColor: .black
+            )
+        }
+    
+    // 뒤로가기
+        @objc private func didTapBackButton() {
+            navigationController?.popViewController(animated: true)
+        }
     
     @objc internal override func dismissKeyboard() {
         view.endEditing(true) //  현재 화면에서 키보드 내리기
@@ -108,7 +132,7 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
               let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
         
         let keyboardHeight = keyboardFrame.height
-        let bottomInset = keyboardHeight - view.safeAreaInsets.bottom
+//        let bottomInset = keyboardHeight - view.safeAreaInsets.bottom
         
         if let activeTextField = view.findFirstResponder() as? UITextField {
             let textFieldFrame = activeTextField.convert(activeTextField.bounds, to: view)
@@ -199,10 +223,21 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
         cropViewController.dismiss(animated: true)
     }
     
+    func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
+        print("사용자가 크롭을 취소했습니다.")
+//        isSelectingProfileImage = false //  프로필 이미지 선택 상태 해제
+        if isSelectingProfileImage {
+            editProfileView.profileImageView.image = UIImage(named: "profile_basic")
+        } else {
+            editProfileView.backgroundImageView.image = UIImage(named: "profile_background")
+        } //  기존 이미지 유지 또는 nil 처리
+        cropViewController.dismiss(animated: true)
+    }
+    
     
     private func addActions() {
         
-        editProfileView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+//        editProfileView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         
         editProfileView.nicknameTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         editProfileView.nicknameTextField.addTarget(self, action: #selector(validateNickname), for: .editingChanged)
@@ -215,9 +250,9 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
         editProfileView.completeButton.addTarget(self, action: #selector(didTapCompleteButton), for: .touchUpInside)
     }
     
-    @objc private func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
-    }
+//    @objc private func didTapBackButton() {
+//        navigationController?.popViewController(animated: true)
+//    }
     
     // 텍스트 필드 변경 시 호출되는 메서드
     @objc private func textFieldDidChange(_ textField: UITextField) {
@@ -293,7 +328,7 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
                     self.editProfileView.idCheckButton.setTitleColor(.gray, for: .normal)
                     self.validateForm()
                     
-                case .failure(let error):
+                case .failure(_):
 //                    self.addProfileView.idError(hidden: false)
                     self.editProfileView.idStatusLabel.text = "중복된 아이디입니다."
                     self.editProfileView.idStatusLabel.textColor = .pointOrange800
@@ -360,7 +395,7 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
             return
         }
         
-        let formattedId = "@\(id)"
+//        let formattedId = "@\(id)"
         let bio = editProfileView.bioTextField.text ?? ""
         let visibility = isPublic ? "PUBLIC" : "PRIVATE"
         
@@ -414,12 +449,13 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
                     self.navigationController?.popViewController(animated: true)
                 }
             case .failure(let error):
-                if let response = (error as? MoyaError)?.response {
-                    let responseBody = String(data: response.data, encoding: .utf8) ?? "응답 데이터 없음"
-                    print("프로필 업데이트 실패 - 상태 코드: \(response.statusCode), 응답: \(responseBody)")
-                } else {
-                    print("프로필 업데이트 실패 - 네트워크 오류: \(error.localizedDescription)")
-                }
+//                if let response = (error as? MoyaError)?.response {
+//                    let responseBody = String(data: response.data, encoding: .utf8) ?? "응답 데이터 없음"
+//                    print("프로필 업데이트 실패 - 상태 코드: \(response.statusCode), 응답: \(responseBody)")
+//                } else {
+//                    print("프로필 업데이트 실패 - 네트워크 오류: \(error.localizedDescription)")
+//                }
+                print("프로필 업데이트 실패 - 네트워크 오류: \(error.localizedDescription)")
             }
         }
     }

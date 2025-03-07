@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 
 class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate {
+    private let navBarManager = NavigationBarManager()
     
     var clothId: Int64 = 0 {
         didSet {
@@ -28,35 +29,6 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
     var editBrand: String?
     var editImageUrl: String?
     
-    // MARK: - UI Components
-    
-    ///  네비게이션 바
-    private let customNavBar: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        return view
-    }()
-    
-    ///  뒤로가기 버튼
-    private let backButton: UIButton = {
-        let button = UIButton(type: .system)
-        let image = UIImage(systemName: "chevron.left")?
-            .withTintColor(.black, renderingMode: .alwaysOriginal) //  아이콘 색상 변경 (검은색)
-        
-        button.setImage(image, for: .normal)
-        button.contentMode = .scaleAspectFit //  아이콘 비율 유지
-        button.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
-        return button
-    }()
-    
-    ///  타이틀 ("옷 추가")
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "옷 추가"
-        label.font = UIFont.ptdBoldFont(ofSize: 20)
-        label.textAlignment = .center
-        return label
-    }()
     private var temperatureLabels: [UILabel] = []
     
     ///  온도 값 배열
@@ -116,8 +88,6 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
     }()
     
 
-    
-    
     ///  다음 버튼
     private let nextButton: UIButton = {
         let button = UIButton()
@@ -162,27 +132,54 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigationBar()
         setupUI()
         setupSeasonButtons()
         setupTemperatureLabels()
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
-        if isEditingMode == true {
-            titleLabel.text = "옷 수정"
-        }
-        
         applyExistingValues()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+
+    }
+    
+    // 네비게이션 설정
+    private func setupNavigationBar() {
+        navBarManager.addBackButton(
+            to: navigationItem,
+            target: self,
+            action: #selector(didTapBackButton)
+        )
+        
+        if isEditingMode == true {
+            navBarManager.setTitle(
+                to: navigationItem,
+                title: "옷수정",
+                font: .ptdSemiBoldFont(ofSize: 20),
+                textColor: .black
+            )
+        } else {
+            navBarManager.setTitle(
+                to: navigationItem,
+                title: "옷추가",
+                font: .ptdSemiBoldFont(ofSize: 20),
+                textColor: .black
+            )
+        }
+    }
+    
+    // 뒤로가기
+    @objc private func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
     }
     
     // MARK: - UI Setup
@@ -192,10 +189,7 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
             self.thermometerIcon.image = UIImage(named: "thermo_icon")
         }
         
-        // 네비게이션 바 추가
-        view.addSubview(customNavBar)
-        customNavBar.addSubview(backButton)
-        customNavBar.addSubview(titleLabel)
+
         view.addSubview(lowerThumbLabel)
         view.addSubview(upperThumbLabel)
         view.addSubview(questionLabel)
@@ -212,25 +206,9 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
         view.addSubview(slider)
         view.addSubview(nextButton)
         
-        customNavBar.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(44)
-        }
-        
-        backButton.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(16)
-            $0.centerY.equalTo(customNavBar)
-            $0.width.height.equalTo(24)
-        }
-        
-        titleLabel.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.centerY.equalTo(customNavBar)
-        }
         
         questionLabel.snp.makeConstraints {
-            $0.top.equalTo(customNavBar.snp.bottom).offset(20)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(29)
             $0.leading.equalToSuperview().offset(20) //
             $0.trailing.equalToSuperview().offset(-20) //
         }
@@ -430,9 +408,9 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     // MARK: - 뒤로가기
-    @objc private func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
-    }
+//    @objc private func didTapBackButton() {
+//        navigationController?.popViewController(animated: true)
+//    }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
        

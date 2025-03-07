@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 
 class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
+    private let navBarManager = NavigationBarManager()
     
     var clothId: Int64 = 0 {
         didSet {
@@ -26,32 +27,32 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
     // MARK: - UI Components
     
     ///  네비게이션 바
-    private let customNavBar: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        return view
-    }()
-    
-    ///  뒤로가기 버튼
-    private let backButton: UIButton = {
-        let button = UIButton(type: .system)
-        let image = UIImage(systemName: "chevron.left")?
-            .withTintColor(.mainBrown800, renderingMode: .alwaysOriginal) //  아이콘 색상 변경 (검은색)
-        
-        button.setImage(image, for: .normal)
-        button.contentMode = .scaleAspectFit //  아이콘 비율 유지
-        button.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
-        return button
-    }()
-    
-    ///  타이틀 ("옷 추가")
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "옷 추가"
-        label.font = UIFont.ptdBoldFont(ofSize: 20)
-        label.textAlignment = .center
-        return label
-    }()
+//    private let customNavBar: UIView = {
+//        let view = UIView()
+//        view.backgroundColor = .white
+//        return view
+//    }()
+//    
+//    ///  뒤로가기 버튼
+//    private let backButton: UIButton = {
+//        let button = UIButton(type: .system)
+//        let image = UIImage(systemName: "chevron.left")?
+//            .withTintColor(.mainBrown800, renderingMode: .alwaysOriginal) //  아이콘 색상 변경 (검은색)
+//        
+//        button.setImage(image, for: .normal)
+//        button.contentMode = .scaleAspectFit //  아이콘 비율 유지
+//        button.addTarget(ThickViewController.self, action: #selector(didTapBackButton), for: .touchUpInside)
+//        return button
+//    }()
+//    
+//    ///  타이틀 ("옷 추가")
+//    private let titleLabel: UILabel = {
+//        let label = UILabel()
+//        label.text = "옷 추가"
+//        label.font = UIFont.ptdBoldFont(ofSize: 20)
+//        label.textAlignment = .center
+//        return label
+//    }()
     
     ///  두께감 설정 제목
     private let thicknessTitleLabel: UILabel = {
@@ -217,7 +218,8 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
-        super.viewDidLoad() 
+        super.viewDidLoad()
+        setupNavigationBar()
         setupUI()
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
@@ -225,9 +227,6 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapInfoButton))
         questionIcon.addGestureRecognizer(tapGesture)
         
-        if isEditingMode == true {
-            titleLabel.text = "옷 수정"
-        }
         
         applyExistingValues()
         
@@ -235,22 +234,50 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+
         
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+
+    }
+    
+    // 네비게이션 설정
+    private func setupNavigationBar() {
+        navBarManager.addBackButton(
+            to: navigationItem,
+            target: self,
+            action: #selector(didTapBackButton)
+        )
+        
+        if isEditingMode == true {
+            navBarManager.setTitle(
+                to: navigationItem,
+                title: "옷수정",
+                font: .ptdSemiBoldFont(ofSize: 20),
+                textColor: .black
+            )
+        } else {
+            navBarManager.setTitle(
+                to: navigationItem,
+                title: "옷추가",
+                font: .ptdSemiBoldFont(ofSize: 20),
+                textColor: .black
+            )
+        }
+    }
+    
+    // 뒤로가기
+    @objc private func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
     }
     
     // MARK: - UI Setup
     private func setupUI() {
         view.backgroundColor = .white
         
-        view.addSubview(customNavBar)
-        customNavBar.addSubview(backButton)
-        customNavBar.addSubview(titleLabel)
+
         
         view.addSubview(thicknessTitleLabel)
         view.addSubview(thicknessInfoButton)
@@ -285,8 +312,6 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
             $0.height.equalTo(24)
 //            $0.width.equalTo(24)//  높이만 설정
         }
-        // 설명 뷰 레이아웃 (초기값)
-        // 설명 뷰 레이아웃 (초기값)
         
         // 설명 라벨 배치
         thicknessInfoLabel.snp.makeConstraints {
@@ -294,28 +319,11 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
             $0.bottom.equalTo(thicknessInfoView.snp.bottom)
             $0.leading.equalTo(thicknessInfoView.snp.leading).offset(10)
         }
-        
-        // 네비게이션 바 레이아웃
-        customNavBar.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(44)
-        }
-        
-        backButton.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(20)
-            $0.centerY.equalTo(customNavBar)
-            $0.width.height.equalTo(24)
-        }
-        
-        titleLabel.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.centerY.equalTo(customNavBar)
-        }
+
         
         // 두께감 설정 타이틀
         thicknessTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(customNavBar.snp.bottom).offset(30)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(29)
             $0.leading.equalToSuperview().offset(20)
         }
         thicknessInfoButton.snp.makeConstraints {
@@ -371,9 +379,9 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Actions
     
-    @objc private func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
-    }
+//    @objc private func didTapBackButton() {
+//        navigationController?.popViewController(animated: true)
+//    }
     
     @objc private func didTapInfoButton() {
         let isHidden = thicknessInfoView.isHidden

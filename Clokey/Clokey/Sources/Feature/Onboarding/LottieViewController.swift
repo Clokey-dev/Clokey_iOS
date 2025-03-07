@@ -27,6 +27,8 @@ class LottieViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAnimation()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(resumeAnimation), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
 
     private func setupAnimation() {
@@ -63,4 +65,14 @@ class LottieViewController: UIViewController {
     @objc private func handleTap() {
         tapCompletionHandler?() // 터치 후 실행
     }
+    // 애니메이션 재실행
+    @objc private func resumeAnimation() {
+        animationView.stop()
+        animationView.play { [weak self] finished in
+            if finished {
+                self?.animationCompletionHandler?()
+            }
+        }
+    }
+
 }
