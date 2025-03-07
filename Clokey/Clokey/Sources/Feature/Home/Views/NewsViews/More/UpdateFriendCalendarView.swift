@@ -51,7 +51,7 @@ class UpdateFriendCalendarView: UIView {
     }
     
     let subTitle: UILabel = UILabel().then {
-        $0.text = "24.01.08"
+        $0.text = ""
         $0.font = UIFont.ptdRegularFont(ofSize: 14)
         $0.textColor = .black
     }
