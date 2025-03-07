@@ -242,7 +242,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview()
             make.width.equalTo(290)
-            make.height.equalTo(448)
+            make.height.equalTo(489)
         }
         
         // 팝업 애니메이션 효과
@@ -675,9 +675,6 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         
         fetchWeatherRecommendations()
     }
-    
-    
-    
     
     /// 최고/최저 온도 업데이트
     func updateWeatherHighLowUI(weather: DailyWeather) {
