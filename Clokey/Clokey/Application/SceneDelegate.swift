@@ -8,6 +8,7 @@
 import UIKit
 import KakaoSDKAuth
 import AuthenticationServices
+import Kingfisher
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
@@ -71,7 +72,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     // 씬이 활성화될 때 호출 (앱이 foreground에서 실행되고 사용자와 상호작용 가능한 상태)
     func sceneDidBecomeActive(_ scene: UIScene) {
-       
+        ImageCache.default.cleanExpiredDiskCache()
+        print("Kingfisher 만료된 디스크 캐시 정리")
     }
 
     // 씬이 비활성화되기 직전에 호출 (전화가 오거나 다른 앱으로 전환될 때)

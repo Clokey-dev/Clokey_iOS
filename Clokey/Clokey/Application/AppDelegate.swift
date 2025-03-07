@@ -66,7 +66,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 // MARK: - Firebase MessagingDelegate
 extension AppDelegate: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        guard let fcmToken = fcmToken else { return }
+        guard let fcmToken = fcmToken else {
+            print("FCM 토큰을 받지 못함")
+            return
+        }
         print("📌 FCM Token: \(fcmToken)")
         UserDefaults.standard.set(fcmToken, forKey: "FCMToken")
         UserDefaults.standard.synchronize()
