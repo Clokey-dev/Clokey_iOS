@@ -2,6 +2,8 @@ import UIKit
 import TOCropViewController
 
 class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
+    private let navBarManager = NavigationBarManager()
+    
     var clothId: Int64 = 0 {
         didSet {
             isEditingMode = (clothId != 0) // clothId가 0이면 추가, 0이 아니면 수정 모드
@@ -34,6 +36,8 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupNavigationBar()
+        
         lastAddView.isUserInteractionEnabled = true
         lastAddView.addButton.isUserInteractionEnabled = true
         
@@ -49,23 +53,49 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
-        if isEditingMode == true {
-            lastAddView.titleLabel.text = "옷 수정"
-        }
         
         applyExistingValues()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+
     }
     
+    // 네비게이션 설정
+    private func setupNavigationBar() {
+        navBarManager.addBackButton(
+            to: navigationItem,
+            target: self,
+            action: #selector(didTapBackButton)
+        )
+        
+        if isEditingMode == true {
+            navBarManager.setTitle(
+                to: navigationItem,
+                title: "옷수정",
+                font: .ptdSemiBoldFont(ofSize: 20),
+                textColor: .black
+            )
+        } else {
+            navBarManager.setTitle(
+                to: navigationItem,
+                title: "옷추가",
+                font: .ptdSemiBoldFont(ofSize: 20),
+                textColor: .black
+            )
+        }
+    }
+    
+    // 뒤로가기
+    @objc private func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
+    }
     
     @objc internal override func dismissKeyboard() {
         view.endEditing(true) //  현재 화면에서 키보드 내리기
@@ -95,16 +125,13 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
     
     // 버튼 액션 설정
     private func setupActions() {
-        lastAddView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+//        lastAddView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         
         lastAddView.addButton.addTarget(self, action: #selector(didTapAddImageButton(_:)), for: .touchUpInside)
         
         lastAddView.endButton.addTarget(self, action: #selector(didTapNextButton), for: .touchUpInside)
     }
     
-    @objc private func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
-    }
     
     @objc private func didTapAddImageButton(_ sender: UIButton) {
         isSelectingProfileImage = true
@@ -132,17 +159,6 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
         }
     }
     
-    // 사용자가 취소(Cancel) 버튼을 눌렀을 때
-//    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-//        print("✅ imagePickerControllerDidCancel 실행됨")
-//        picker.dismiss(animated: true)
-//
-//        // 사용자가 취소한 경우 크롭 화면이 뜨지 않도록 설정
-//        isSelectingProfileImage = false //  프로필 이미지 선택 상태 해제
-//        lastAddView.imageView.image = nil //  기존 이미지 유지 또는 nil 처리
-//
-//        print("사용자가 이미지 선택을 취소했습니다.")
-//    }
     
     // 크롭 화면 호출
     private func showCropViewController() {
