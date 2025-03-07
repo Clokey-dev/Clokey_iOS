@@ -90,7 +90,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         
         commentView.viewController = self
         commentView.comments = comments
-        
+        // 모달 닫기
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissView))
         backgroundView.addGestureRecognizer(tapGesture)
         
@@ -147,9 +147,11 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
                 switch result {
                 case .success:
                     DispatchQueue.main.async {
-                        // 삭제 후 새로고침 추가
+                        // 삭제 후 UI 업데이트
                         self.comments.removeAll { $0.id == commentId || $0.parentCommentId == Int(commentId) }
                         self.commentView.commentTableView.reloadData()
+
+                        // 댓글 개수 업데이트 알림 보내기
                         self.delegate?.didUpdateComment(count: self.comments.count)
                     }
                 case .failure(let error):
@@ -160,6 +162,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         alert.addAction(UIAlertAction(title: "취소", style: .cancel))
         present(alert, animated: true)
     }
+
 
     // TODO: - 신고 API 함수 구현 필요
     func didTapReport(commentId: Int64) {
@@ -176,8 +179,14 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     }
     
     @objc func dismissView() {
-        self.dismiss(animated: true)
+        print("📌 X 버튼으로 닫힘!")  // 로그 확인용
+        self.dismiss(animated: true) {
+            if let presentationController = self.presentationController {
+                self.presentationController?.delegate?.presentationControllerDidDismiss?(presentationController)
+            }
+        }
     }
+
 
     // 댓글 쓰기 버튼 눌렀을 때
     @objc func didTapSend() {
@@ -187,29 +196,31 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
             content: text,
             commentId: selectedCommentId
         )
-        
+
         historyService.historyCommentWrite(
             historyId: historyId,
             data: requestDTO
         ) { [weak self] result in
             guard let self = self else { return }
-           
+
             switch result {
             case .success(let response):
                 DispatchQueue.main.async {
                     // UI 초기화
                     self.resetCommentInput()
-                    
+
                     // 첫 페이지부터 다시 불러오기
                     self.currentPage = 1
                     self.isLastPage = false
                     self.comments = []
                     self.fetchComments(scrollToTop: true)  // 댓글 목록 새로고침 및 스크롤
-                }
 
+                    // 댓글 개수 업데이트 알림 보내기
+                    self.delegate?.didUpdateComment(count: self.comments.count)
+                }
+                
                 // 댓글 성공 시 notificationComment 전송
                 let commentId = response.commentId
-
                 if self.selectedCommentId == nil {
                     self.sendCommentNotification(historyId: self.historyId, commentId: commentId)
                 } else {
@@ -221,6 +232,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
             }
         }
     }
+
 
     // 댓글 UI 초기화
     private func resetCommentInput() {
@@ -241,7 +253,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
             switch result {
             case .success:
                 print("댓글 알림 전송 성공")
-            case .failure(let error):
+            case .failure(let error):   
                 print("댓글 알림 전송 실패: \(error.localizedDescription)")
             }
         }
