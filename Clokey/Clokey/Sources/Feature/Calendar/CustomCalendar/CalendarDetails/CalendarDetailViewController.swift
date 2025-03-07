@@ -36,9 +36,8 @@ class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegat
         setupUI()
         setupNavigationBar()
         if let id = historyId {
-                   // 예: historyService.historyDetail(historyId: id) { ... } 또는 viewModel 초기화
-                   print("받은 historyId: \(id)")
-               }
+           print("받은 historyId: \(id)")
+       }
         updateView()
         
         navBarManager.setupWhiteNavigationBar(for: navigationController)
@@ -117,6 +116,28 @@ class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegat
             calendarDetailView.configure(with: viewModel)
         }
     }
+    
+    // 댓글 업데이트를 위한 API
+    private func refreshHistoryDetail() {
+        guard let viewModel = viewModel else { return }
+        let historyId = Int(viewModel.historyId)
+
+        print("댓글 변경 감지 → 최신 히스토리 데이터 가져오는 중...")
+
+        historyService.historyDetail(historyId: historyId) { [weak self] result in
+            switch result {
+            case .success(let response):
+                DispatchQueue.main.async {
+                    self?.viewModel = CalendarDetailViewModel(data: response)
+                    self?.updateView()
+                    print("최신 댓글 데이터 업데이트 완료!")
+                }
+            case .failure(let error):
+                print("댓글 데이터 업데이트 실패: \(error)")
+            }
+        }
+    }
+
 
     
     // MARK: - Action
@@ -139,19 +160,23 @@ class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegat
     @objc private func didTapCommentButton() {
         guard let viewModel = viewModel else { return }
         let historyId = Int(viewModel.historyId)
-        
+
         let commentVC = Clokey.CalendarCommentViewController(historyId: historyId)
         commentVC.delegate = self
-        commentVC.modalPresentationStyle = UIModalPresentationStyle.pageSheet
-        
+        commentVC.modalPresentationStyle = .pageSheet
+
+        // 모달 닫힘 감지
+        commentVC.presentationController?.delegate = self
+
         if let sheet = commentVC.sheetPresentationController {
             sheet.detents = [UISheetPresentationController.Detent.medium(),
-                            UISheetPresentationController.Detent.large()]
+                             UISheetPresentationController.Detent.large()]
             sheet.preferredCornerRadius = 20
         }
-        
+
         present(commentVC, animated: true)
     }
+
     
     // 댓글에서 프로필 화면으로
     func showProfile(for clokeyId: String) {
@@ -290,11 +315,18 @@ extension CalendarDetailViewController: CalendarCommentDelegate {
     }
     
     func didUpdateComment(count: Int) {
-        // 기존 구현 유지
+        print("댓글 개수 변경 감지! 새로운 댓글 개수: \(count)")
+
+        // 댓글 개수를 UI에 반영 (라벨 업데이트)
+        calendarDetailView.commentButton.setTitle("\(count)", for: .normal)
+
+        // 최신 데이터를 가져오기 위해 API 호출
+        refreshHistoryDetail()
     }
-    
+
     func didDeleteComment() {
-        // 기존 구현 유지
+        print("댓글 삭제 감지!")
+        refreshHistoryDetail()
     }
 }
 
@@ -362,4 +394,9 @@ extension CalendarDetailViewController: CustomActionSheetDelegate {
         navigationController?.pushViewController(recordOOTDVC, animated: true)
     }
 }
-
+// 댓글창 감지
+extension CalendarDetailViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        print("CalendarCommentViewController가 닫혔습니다!")
+    }
+}
