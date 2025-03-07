@@ -89,7 +89,6 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadInitialData()
         navigationController?.setNavigationBarHidden(true, animated: animated)
         // 새로 추가된 폴더가 있을 경우 최신 데이터를 불러옵니다.
         loadDrawers()
