@@ -2,7 +2,7 @@ import UIKit
 import SnapKit
 
 class ArrangeClosetViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
+        
     private let arrangeClosetView = ArrangeClosetView()
 
     // API를 통해 받아올 옷(제품) 데이터
@@ -153,6 +153,22 @@ class ArrangeClosetViewController: UIViewController, UICollectionViewDataSource,
                 
             case .failure(let error):
                 print("Error loading clothes: \(error)")
+            }
+        }
+    }
+    
+    private func fetchSmartSummationData() {
+        clothesService.getSmartSummationClothes { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                let nickname = response.nickname
+                DispatchQueue.main.async {
+                    self.arrangeClosetView.bannerDescription.text =
+                        "겨울 옷을 정리할 시간입니다! \n \(nickname)님의 겨울 옷들을 보여드릴게요."
+                }
+            case .failure(let error):
+                print("스마트 요약 API 호출 실패: \(error.localizedDescription)")
             }
         }
     }

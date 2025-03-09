@@ -10,6 +10,7 @@ class DrawerViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     // MARK: - API Service
     private let folderService = FolderService()
+    private let clothesService = ClothesService()
     
     // MARK: - Data
     // ① 이니셜라이저를 통해 주입받을 DrawerItem (또는 folderId 등)
@@ -37,9 +38,8 @@ class DrawerViewController: UIViewController, UICollectionViewDataSource, UIColl
         button.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
         return UIBarButtonItem(customView: button)
     }()
-
+    
     // MARK: - Initializer
-    // ② 이니셜라이저에서 drawerItem을 받아 저장
     init(drawerItem: DrawerModel) {
         self.drawerItem = drawerItem
         super.init(nibName: nil, bundle: nil)
@@ -59,9 +59,15 @@ class DrawerViewController: UIViewController, UICollectionViewDataSource, UIColl
         super.viewDidLoad()
         setupUI()
         setupCollectionView()
-        
-        // 첫 페이지 데이터 로드 (page 1)
         loadFolderClothes(folderId: Int(drawerItem.id), isNextPage: false)
+        
+        // 기본 interactive pop 제스처 비활성화
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        
+        // 커스텀 왼쪽 엣지 스와이프 제스처 추가
+        let edgePanGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleEdgePan(_:)))
+        edgePanGesture.edges = .left
+        view.addGestureRecognizer(edgePanGesture)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,19 +80,11 @@ class DrawerViewController: UIViewController, UICollectionViewDataSource, UIColl
         navigationItem.rightBarButtonItem = editButton
         
         let navBarManager = NavigationBarManager()
-        navBarManager.addBackButton(
-            to: navigationItem,
-            target: self,
-            action: #selector(backButtonTapped)
-        )
-        
-        // 폴더명 등 타이틀을 drawerItem에서 가져와도 됨
-        navBarManager.setTitle(
-            to: navigationItem,
-            title: drawerItem.title,
-            font: .ptdBoldFont(ofSize: 20),
-            textColor: .black
-        )
+        navBarManager.addBackButton(to: navigationItem, target: self, action: #selector(backButtonTapped))
+        navBarManager.setTitle(to: navigationItem,
+                               title: drawerItem.title,
+                               font: .ptdBoldFont(ofSize: 20),
+                               textColor: .black)
     }
     
     private func setupCollectionView() {
@@ -96,7 +94,7 @@ class DrawerViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     // MARK: - API
     private func loadFolderClothes(folderId: Int, isNextPage: Bool = false) {
-        // 로딩 중이거나, 다음 페이지 요청일 때 추가 데이터가 없으면 진행하지 않음
+        // 로딩 중이거나, 다음 페이지 요청 시 추가 데이터가 없으면 진행하지 않음
         guard !isLoading && (hasMorePages || !isNextPage) else { return }
         isLoading = true
         let pageToLoad = isNextPage ? currentPage + 1 : 1
@@ -139,6 +137,7 @@ class DrawerViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     @objc func backButtonTapped() {
+        // backButtonTapped에서의 커스텀 뒤로가기 동작 (예: tabBarController에서 특정 탭 선택 후 pop)
         if let tabBarController = self.tabBarController {
             tabBarController.selectedIndex = 3
             if let closetNav = tabBarController.viewControllers?[3] as? UINavigationController {
@@ -146,6 +145,13 @@ class DrawerViewController: UIViewController, UICollectionViewDataSource, UIColl
             }
         } else {
             navigationController?.popToRootViewController(animated: true)
+        }
+    }
+    
+    @objc private func handleEdgePan(_ gesture: UIScreenEdgePanGestureRecognizer) {
+        // 스와이프 제스처가 끝났을 때 backButtonTapped 호출
+        if gesture.state == .ended {
+            backButtonTapped()
         }
     }
     
@@ -161,17 +167,12 @@ class DrawerViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: ClosetCollectionViewCell.identifier,
-            for: indexPath
-        ) as? ClosetCollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ClosetCollectionViewCell.identifier, for: indexPath) as? ClosetCollectionViewCell else {
             fatalError("Unable to dequeue ClosetCollectionViewCell")
         }
         
         let cloth = clothItems[indexPath.item]
-        if let imageUrl = cloth.imageUrl,
-           !imageUrl.isEmpty,
-           let url = URL(string: imageUrl) {
+        if let imageUrl = cloth.imageUrl, !imageUrl.isEmpty, let url = URL(string: imageUrl) {
             cell.productImageView.kf.setImage(with: url, placeholder: nil)
         } else {
             cell.productImageView.image = nil
