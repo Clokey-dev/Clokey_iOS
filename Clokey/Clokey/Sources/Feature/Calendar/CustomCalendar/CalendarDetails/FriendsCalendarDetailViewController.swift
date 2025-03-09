@@ -11,7 +11,7 @@ import Then
 import RxSwift
 import RxCocoa
 
-class FriendsCalendarDetailViewController: UIViewController, UIGestureRecognizerDelegate {
+class FriendsCalendarDetailViewController: UIViewController, UIGestureRecognizerDelegate, UITextViewDelegate {
 
     // MARK: - Properties
     private let calendarDetailView = CalendarDetailView()
@@ -65,6 +65,12 @@ class FriendsCalendarDetailViewController: UIViewController, UIGestureRecognizer
         calendarDetailView.addProfileTapAction(target: self, action: #selector(didTapProfile))
 
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        
+        
+       
+       
+        // 델리게이트 할당
+        calendarDetailView.hashtagsTextView.delegate = self
     }
 
     // MARK: - Setup
@@ -207,6 +213,8 @@ class FriendsCalendarDetailViewController: UIViewController, UIGestureRecognizer
         actionSheet.modalPresentationStyle = .overFullScreen
         present(actionSheet, animated: false)
     }
+    //해시태그 탭 했을때 검색결과 화면으로 push
+   
     
     // MARK: - Method
     
@@ -328,5 +336,30 @@ extension FriendsCalendarDetailViewController: UIAdaptivePresentationControllerD
         print("FriendsCalendarCommentViewController가 닫혔습니다!")
 
         refreshHistoryDetail()
+    }
+}
+
+// UITextViewDelegate
+extension FriendsCalendarDetailViewController {
+    func textView(_ textView: UITextView,
+                  shouldInteractWith URL: URL,
+                  in characterRange: NSRange,
+                  interaction: UITextItemInteraction) -> Bool {
+        if URL.scheme == "hashtag" {
+            // URL.host에는 '#' 제거한 값이 들어갑니다.
+            let tappedHashtag = URL.host?.removingPercentEncoding ?? ""
+            
+            // 최근 검색어 목록에 추가 (여기서는 '#' 없이 추가됩니다)
+            let searchManager = SearchManager()
+            searchManager.addSearchKeyword(tappedHashtag)
+            
+            // 해시태그 검색 화면으로 이동
+            let searchResultVC = SearchResultViewController(query: tappedHashtag,
+                                                            results: [],
+                                                            initialTabIsHashtag: true)
+            navigationController?.pushViewController(searchResultVC, animated: true)
+            return false // 기본 링크 동작 방지
+        }
+        return true
     }
 }

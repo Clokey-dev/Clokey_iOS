@@ -102,9 +102,10 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
             
             DispatchQueue.main.async {
                 self.updateIndicatorPosition(selectedButton: self.searchView.hashtagButton)
+                self.loadHistoryData(query: self.query, isNextPage: false)
             }
             // 해시태그 API 호출
-            loadHistoryData(query: query, isNextPage: false)
+            //loadHistoryData(query: query, isNextPage: false)
         } else {
             // 계정 탭 기본 선택 (기존 로직)
             filterUsers(with: query)
