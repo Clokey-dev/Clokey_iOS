@@ -200,7 +200,7 @@ class CustomTotalSegmentView: UIView {
                     configuration.baseBackgroundColor = .pointOrange800
                     configuration.baseForegroundColor = .white
                 } else {
-                    configuration.baseBackgroundColor = .pointOrange50
+                    configuration.baseBackgroundColor = UIColor(hexCode: "#fef2e9")
                     configuration.baseForegroundColor = .black
                 }
 
@@ -244,7 +244,7 @@ class CustomTotalSegmentView: UIView {
                     config?.baseForegroundColor = .white
                 } else {
                     // 비선택 버튼 (기본 색상)
-                    config?.baseBackgroundColor = .pointOrange50
+                    config?.baseBackgroundColor = UIColor(hexCode: "#fef2e9")
                     config?.baseForegroundColor = .black
                 }
                 button.configuration = config
