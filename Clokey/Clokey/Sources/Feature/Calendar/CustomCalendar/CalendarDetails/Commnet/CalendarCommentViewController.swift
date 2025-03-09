@@ -224,6 +224,9 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
                 if self.selectedCommentId == nil {
                     self.sendCommentNotification(historyId: self.historyId, commentId: commentId)
                 } else {
+                    // 대댓글 기록 주인
+                    self.sendCommentNotification(historyId: self.historyId, commentId: commentId)
+                    // 댓글에 대댓글 알림
                     self.sendReplyNotification(commentId: self.selectedCommentId!, replyId: commentId)
                 }
 

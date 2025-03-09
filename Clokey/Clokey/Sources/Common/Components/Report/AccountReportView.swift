@@ -10,6 +10,7 @@ import Then
 
 class AccountReportView: UIView {
     
+    // 계정 정보
     private let infoTitle = UILabel().then {
         $0.text = "계정 정보"
         $0.font = .ptdSemiBoldFont(ofSize: 16)
@@ -56,6 +57,7 @@ class AccountReportView: UIView {
         $0.backgroundColor = .lightGray
     }
     
+    // 신고 사유
     private let reportTitle = UILabel().then {
         $0.text = "신고 사유"
         $0.font = .ptdSemiBoldFont(ofSize: 16)
