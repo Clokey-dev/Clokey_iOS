@@ -212,15 +212,6 @@ class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegat
         
         present(likeListVC, animated: true)
     }
-
-    // 프로토콜 구현
-  
-
-//    extension CalendarDetailViewController: LikeListViewControllerDelegate {
-//        func likeListViewController(_ viewController: LikeListViewController, didSelectProfileWith clokeyId: String) {
-//            showProfile(for: clokeyId)
-//        }
-//    }
     
     @objc private func didTapMoreButton() {
         calendarDetailView.expandContent()
