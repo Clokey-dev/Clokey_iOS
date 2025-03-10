@@ -64,13 +64,13 @@ class AccountReportView: UIView {
         $0.textColor = .black
     }
     
-    private let checkbox1 = CheckBox()
-    private let checkbox1Title = UILabel().then {
+     let checkbox1 = CheckBox()
+     let checkbox1Title = UILabel().then {
         $0.text = "허위 계정 또는 사칭입니다"
         $0.font = .ptdMediumFont(ofSize: 14)
         $0.textColor = .black
     }
-    private let checkbox2 = CheckBox()
+    let checkbox2 = CheckBox()
     let checkbox2Title = UILabel().then {
         $0.text = "스팸 홍보 및 도배 계정입니다"
         $0.font = .ptdMediumFont(ofSize: 14)
@@ -84,30 +84,30 @@ class AccountReportView: UIView {
 //        $0.isHidden = true
     }
     
-    private let checkbox2InfoText1 = UILabel().then {
+     let checkbox2InfoText1 = UILabel().then {
         $0.text = "• 광고성 메시지를 지속적으로 보내는 계정"
         $0.font = .ptdRegularFont(ofSize: 12)
         $0.textColor = .black
     }
-    private let checkbox2InfoText2 = UILabel().then {
+     let checkbox2InfoText2 = UILabel().then {
         $0.text = "• 홍보 목적의 프로필 (상업적 링크 다수 포함)"
         $0.font = .ptdRegularFont(ofSize: 12)
         $0.textColor = .black
     }
-    private let checkbox2InfoText3 = UILabel().then {
+     let checkbox2InfoText3 = UILabel().then {
         $0.text = "• 동일한 내용의 글을 반복적으로 게시하는 계정"
         $0.font = .ptdRegularFont(ofSize: 12)
         $0.textColor = .black
     }
     
      let checkbox3 = CheckBox()
-    private let checkbox3Title = UILabel().then {
+     let checkbox3Title = UILabel().then {
         $0.text = "부적절한 프로필 정보입니다."
         $0.font = .ptdMediumFont(ofSize: 14)
         $0.textColor = .black
     }
-    private let checkbox4 = CheckBox()
-    private let checkbox4Title = UILabel().then {
+     let checkbox4 = CheckBox()
+     let checkbox4Title = UILabel().then {
         $0.text = "기타 (직접 입력 가능)"
         $0.font = .ptdMediumFont(ofSize: 14)
         $0.textColor = .black
