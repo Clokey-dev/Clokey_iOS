@@ -11,6 +11,12 @@ import Then
 import Kingfisher
 
 class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate {
+    private let navBarManager = NavigationBarManager()
+    
+//    let optionButton = UIButton().then {
+//        $0.setImage(UIImage(named: "dot3_icon"), for: .normal)
+//        $0.tintColor = UIColor(named: "mainBrown800")
+//    }
     
     // MARK: - Properties
     private let followProfileView = FollowProfileView()
@@ -33,6 +39,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     
     // MARK: - Lifecycle
     override func loadView() {
+        super.loadView()
         view = followProfileView
     }
     
@@ -45,8 +52,28 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
        }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print("navigationController:", self.navigationController)
+
+        print("네비게이션 바 상태:", navigationController?.isNavigationBarHidden ?? "nil")
+//        followProfileView.scrollView.snp.makeConstraints {
+//            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+//            $0.leading.trailing.bottom.equalToSuperview()
+//        }
+//        view.addSubview(optionButton)
+        followProfileView.scrollView.contentInsetAdjustmentBehavior = .automatic
+//        setupNavigationBar()
+        
+//        optionButton.snp.makeConstraints { make in
+////            make.top.equalTo(view.safeAreaLayoutGuide.snp.top) // 네비게이션 바와 동일한 높이
+//            make.centerY.equalTo(navigationController?.navigationBar ?? view.safeAreaLayoutGuide.snp.top)
+//            make.trailing.equalToSuperview().offset(-20) // 기존과 동일한 우측 정렬
+//            make.size.equalTo(24)
+//        }
+        setupNavigationBar()
+        
         followCalendarViewController.followId = self.followId
-        followProfileView.scrollView.contentInsetAdjustmentBehavior = .never
+//        followProfileView.scrollView.contentInsetAdjustmentBehavior = .never
         
         definesPresentationContext = true // 현재 컨텍스트에서 새로운 뷰 표시
         
@@ -68,19 +95,71 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+//        navigationController?.setNavigationBarHidden(true, animated: animated)
+        setupNavigationBar()
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: false)
+        print("viewDidAppear에서 네비게이션 바 상태:", navigationController?.isNavigationBarHidden ?? "nil")
+        
+        
         
         // 네비게이션 바 숨기기 강제 적용
-        navigationController?.setNavigationBarHidden(true, animated: false)
+//        navigationController?.setNavigationBarHidden(true, animated: false)
         
-        additionalSafeAreaInsets.top = 0
-        view.setNeedsLayout()
-        view.layoutIfNeeded()
+//        additionalSafeAreaInsets.top = 0
+//        view.setNeedsLayout()
+//        view.layoutIfNeeded()
     }
+
+    private func setupNavigationBar() {
+        print("setupNavigationBar() 호출됨")
+        
+//            navBarManager.addBackButton(
+//                to: navigationItem,
+//                target: self,
+//                action: #selector(didTapBackButton)
+//            )
+        let backButton = UIButton(type: .system)
+        let config = UIImage.SymbolConfiguration(weight: .bold)
+        let backImage = UIImage(systemName: "chevron.left", withConfiguration: config)
+        backButton.setImage(backImage, for: .normal)
+        backButton.tintColor = .mainBrown800
+        backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+//        backButton.accessibilityLabel = "뒤로 가기"
+            
+//            navBarManager.setNameTitle(
+//                to: navigationItem,
+//                title: clokey_Id,
+//                font: .ptdSemiBoldFont(ofSize: 20),
+//                textColor: .black
+//            )
+        
+        let titleLabel = UILabel()
+            titleLabel.text = clokey_Id
+        titleLabel.font = .ptdSemiBoldFont(ofSize: 20)
+            titleLabel.textColor = .black
+
+            let titleItem = UIBarButtonItem(customView: titleLabel)
+            
+            // 기존의 뒤로가기 버튼과 함께 배치 가능
+            navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: backButton), titleItem]
+        
+        navBarManager.setOption(
+            to: navigationItem,
+            target: self,
+            action: #selector(didTapReportButton))
+        
+        
+        }
+        
+        // 뒤로가기
+        @objc private func didTapBackButton() {
+            navigationController?.popViewController(animated: true)
+        }
     
     private func setupCalendar() {
         let calendarVC = FollowCalendarViewController()
@@ -109,6 +188,8 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         followCalendarViewController.removeFromParent()
     }
     
+    private var userId: String = ""
+    
     private func loadData() {
         
 //        let clokeyId = followId
@@ -123,7 +204,10 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
             switch result {
             case .success(let userProfile):
                 DispatchQueue.main.async {
-                    self.followProfileView.usernameLabel.text = userProfile.clokeyId
+//                    self.followProfileView.usernameLabel.text = userProfile.clokeyId
+                    self.userId = userProfile.clokeyId
+                    
+                    
                     self.clokey_Id = userProfile.clokeyId
                     self.followProfileView.nicknameLabel.text = userProfile.nickname
                     self.followProfileView.writeCountLabel.text = "\(userProfile.recordCount)"
@@ -223,6 +307,8 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                         self.followProfileView.updateClothesPrivateState(isPrivate: false)
                         self.followProfileView.updateCalendarPrivateState(isPrivate: false)
                     }
+                    
+                    self.setupNavigationBar()
                     self.hideLoadingOverlay()
                 }
             case .failure(let error):
@@ -233,9 +319,9 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     private func setupActions() {
-        followProfileView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+//        followProfileView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         
-        followProfileView.optionButton.addTarget(self, action: #selector(didTapReportButton), for: .touchUpInside)
+//        self.optionButton.addTarget(self, action: #selector(didTapReportButton), for: .touchUpInside)
         
         followProfileView.followButton.addTarget(self, action: #selector(didTapFollowButton), for: .touchUpInside)
         followProfileView.followerCountButton.addTarget(self, action: #selector(didTapFollowerButton), for: .touchUpInside)
@@ -251,9 +337,9 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         followProfileView.bottomArrowIcon.addGestureRecognizer(bottomArrowTapGesture)
     }
     
-    @objc private func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
-    }
+//    @objc private func didTapBackButton() {
+//        navigationController?.popViewController(animated: true)
+//    }
     
     @objc private func didTapReportButton(_ sender: UIButton) {
 //        isSelectingProfileImage = (sender == addProfileView.addImageButton2)
@@ -662,9 +748,13 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         view.addSubview(overlay)
         
         // SnapKit을 사용하여 전체화면 제약조건 추가
+//        overlay.snp.makeConstraints { make in
+//            make.edges.equalToSuperview()
+//        }
         overlay.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.bottom) // 네비게이션 바 아래부터 적용
+                make.leading.trailing.bottom.equalToSuperview()
+            }
         
         loadingOverlay = overlay
     }
