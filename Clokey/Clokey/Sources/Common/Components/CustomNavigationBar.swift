@@ -70,23 +70,7 @@ class NavigationBarManager {
             optionButton.heightAnchor.constraint(equalToConstant: 24)
         ])
         
-        navigationItem.rightBarButtonItem = /*optionButton*/ UIBarButtonItem(customView: optionButton)
-    }
-    
-    func setNameTitle(
-        to navigationItem: UINavigationItem,
-        title: String? = nil,
-        font: UIFont = UIFont.ptdSemiBoldFont(ofSize: 22),
-        textColor: UIColor = .label
-    ) {
-        let titleLabel = UILabel()
-        titleLabel.text = title
-        titleLabel.font = font
-        titleLabel.textColor = textColor
-        titleLabel.textAlignment = .left
-        titleLabel.accessibilityLabel = title
-        
-        navigationItem.titleView = titleLabel
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: optionButton)
     }
 }
 

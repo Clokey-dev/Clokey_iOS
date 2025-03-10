@@ -205,9 +205,6 @@ class FollowProfileView: UIView {
         scrollView.addSubview(contentView)
         
         contentView.addSubview(backgroundImageView)
-//        contentView.addSubview(backButton)
-//        contentView.addSubview(usernameLabel)
-//        contentView.addSubview(optionButton)
         
         contentView.addSubview(profileContainer)
         profileContainer.addSubview(profileImageView)
@@ -235,8 +232,6 @@ class FollowProfileView: UIView {
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints { make in
-//            make.edges.equalToSuperview() // 화면 전체에 ScrollView
-//            make.top.equalTo(safeAreaLayoutGuide).offset(30)
             make.top.equalTo(safeAreaLayoutGuide.snp.top)
             make.leading.trailing.bottom.equalToSuperview()
         }
@@ -253,29 +248,6 @@ class FollowProfileView: UIView {
             make.centerX.equalToSuperview()
             make.height.width.equalTo(393)
         }
-        
-//        backButton.snp.makeConstraints { make in
-//            make.top.equalTo(backgroundImageView.snp.top).offset(60)
-//            make.leading.equalToSuperview().offset(20)
-//            make.size.equalTo(24)
-//        }
-//        
-//        usernameLabel.snp.makeConstraints { make in
-//            make.centerY.equalTo(backButton)
-//            make.leading.equalTo(backButton.snp.trailing).offset(15)
-//        }
-        
-//        optionButton.snp.makeConstraints { make in
-////            make.centerY.equalTo(backButton)
-//            make.top.equalToSuperview().offset(30)
-//            make.trailing.equalToSuperview().offset(-20)
-//            make.size.equalTo(24)
-//        }
-//        optionButton.snp.makeConstraints { make in
-//            make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(0) // 네비게이션 바와 동일한 높이
-//            make.trailing.equalToSuperview().offset(-20) // 기존과 동일한 우측 정렬
-//            make.size.equalTo(24)
-//        }
         
         profileContainer.snp.makeConstraints { make in
             make.top.equalTo(backgroundImageView.snp.bottom).offset(-50)
