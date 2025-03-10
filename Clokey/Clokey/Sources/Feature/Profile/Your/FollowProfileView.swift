@@ -24,22 +24,6 @@ class FollowProfileView: UIView {
         $0.backgroundColor = .white // 배경색 흰색
     }
     
-    // MARK: - UI Components
-    let backButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        $0.tintColor = .black
-    }
-    
-    let usernameLabel = UILabel().then {
-        $0.text = "cake123(아이디란)"
-        $0.font = UIFont.ptdMediumFont(ofSize: 20)
-        $0.textAlignment = .center
-    }
-    
-    let optionButton = UIButton().then {
-        $0.setImage(UIImage(named: "dot3_icon"), for: .normal)
-        $0.tintColor = UIColor(named: "mainBrown800")
-    }
     
     let backgroundImageView = UIImageView().then {
         $0.image = UIImage(named: "profile_background")
@@ -221,9 +205,7 @@ class FollowProfileView: UIView {
         scrollView.addSubview(contentView)
         
         contentView.addSubview(backgroundImageView)
-        contentView.addSubview(backButton)
-        contentView.addSubview(usernameLabel)
-        contentView.addSubview(optionButton)
+        
         contentView.addSubview(profileContainer)
         profileContainer.addSubview(profileImageView)
         contentView.addSubview(nicknameLabel)
@@ -250,7 +232,8 @@ class FollowProfileView: UIView {
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview() // 화면 전체에 ScrollView
+            make.top.equalTo(safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.bottom.equalToSuperview()
         }
         
         // ContentView 제약 설정
@@ -264,23 +247,6 @@ class FollowProfileView: UIView {
             make.top.equalToSuperview()
             make.centerX.equalToSuperview()
             make.height.width.equalTo(393)
-        }
-        
-        backButton.snp.makeConstraints { make in
-            make.top.equalTo(backgroundImageView.snp.top).offset(60)
-            make.leading.equalToSuperview().offset(20)
-            make.size.equalTo(24)
-        }
-        
-        usernameLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(backButton)
-            make.leading.equalTo(backButton.snp.trailing).offset(15)
-        }
-        
-        optionButton.snp.makeConstraints { make in
-            make.centerY.equalTo(backButton)
-            make.trailing.equalToSuperview().offset(-20)
-            make.size.equalTo(24)
         }
         
         profileContainer.snp.makeConstraints { make in
