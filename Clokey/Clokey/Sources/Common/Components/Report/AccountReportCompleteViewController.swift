@@ -54,5 +54,7 @@ class AccountReportCompleteViewController: UIViewController {
 //                self.navigationController?.popToViewController(followProfileVC, animated: true)
 //            }
 //        }
+        let repotSuccessVC = ReportSuccessViewController()
+        navigationController?.pushViewController(repotSuccessVC, animated: true)
     }
 }
