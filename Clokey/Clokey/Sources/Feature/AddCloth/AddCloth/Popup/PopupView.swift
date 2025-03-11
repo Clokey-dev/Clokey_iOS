@@ -166,7 +166,8 @@ class PopupView: UIView {
     }
     // MARK: - Setup UI
     private func setupUI() {
-        backgroundColor = .mainBrown50
+//        backgroundColor = .mainBrown50
+        backgroundColor = UIColor(red: 255/255, green: 254/255, blue: 252/255, alpha: 1)
         layer.cornerRadius = 10
         addSubview(nameLabel)
         addSubview(publicButton)
@@ -249,7 +250,7 @@ class PopupView: UIView {
         } //스택 내 버튼 한번에 처리
 
         wearCountLabel.snp.makeConstraints { make in
-            make.top.equalTo(seasonStackView.snp.bottom).offset(14)
+            make.top.equalTo(seasonStackView.snp.bottom).offset(15)
             make.leading.equalToSuperview().offset(92)
         }
         
@@ -257,7 +258,7 @@ class PopupView: UIView {
 //            make.top.equalTo(seasonStackView.snp.bottom).offset(14)
             make.centerY.equalTo(wearCountLabel)
 //            make.leading.equalToSuperview().offset(159)
-            make.leading.equalTo(wearCountLabel.snp.trailing).offset(7)
+            make.leading.equalTo(wearCountLabel.snp.trailing).offset(10)
             make.height.equalTo(18)
             make.width.equalTo(39)
         }
