@@ -215,7 +215,8 @@ class AccountReportView: UIView {
         }
         
         checkbox1Title.snp.makeConstraints {
-            $0.top.equalTo(checkbox1.snp.top)
+//            $0.top.equalTo(checkbox1.snp.top)
+            $0.centerY.equalTo(checkbox1)
             $0.leading.equalTo(checkbox1.snp.trailing).offset(11)
         }
         
@@ -225,7 +226,8 @@ class AccountReportView: UIView {
         }
         
         checkbox2Title.snp.makeConstraints {
-            $0.top.equalTo(checkbox2.snp.top)
+//            $0.top.equalTo(checkbox2.snp.top)
+            $0.centerY.equalTo(checkbox2)
             $0.leading.equalTo(checkbox1.snp.trailing).offset(11)
         }
         
@@ -256,7 +258,8 @@ class AccountReportView: UIView {
         }
         
         checkbox3Title.snp.makeConstraints {
-            $0.top.equalTo(checkbox3.snp.top)
+//            $0.top.equalTo(checkbox3.snp.top)
+            $0.centerY.equalTo(checkbox3)
             $0.leading.equalTo(checkbox1.snp.trailing).offset(11)
         }
         
@@ -266,7 +269,8 @@ class AccountReportView: UIView {
         }
         
         checkbox4Title.snp.makeConstraints {
-            $0.top.equalTo(checkbox4.snp.top)
+//            $0.top.equalTo(checkbox4.snp.top)
+            $0.centerY.equalTo(checkbox4)
             $0.leading.equalTo(checkbox1.snp.trailing).offset(11)
         }
         

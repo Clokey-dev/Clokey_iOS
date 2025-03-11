@@ -255,11 +255,11 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                     if userProfile.visibility == "PRIVATE" {
                         self.followProfileView.updateClothesPrivateState(isPrivate: true)
                         self.followProfileView.updateCalendarPrivateState(isPrivate: true)
-                        self.followProfileView.followPrivateState(isPrivate: true)
+//                        self.followProfileView.followPrivateState(isPrivate: true)
                     } else {
                         self.followProfileView.updateClothesPrivateState(isPrivate: false)
                         self.followProfileView.updateCalendarPrivateState(isPrivate: false)
-                        self.followProfileView.followPrivateState(isPrivate: false)
+//                        self.followProfileView.followPrivateState(isPrivate: false)
                     }
                     
                     self.setupNavigationBar()

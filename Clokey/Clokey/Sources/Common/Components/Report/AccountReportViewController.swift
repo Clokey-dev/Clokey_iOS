@@ -76,6 +76,7 @@ class AccountReportViewController: UIViewController {
         let nextVC = AccountReportCompleteViewController()
         self.navigationController?.pushViewController(nextVC, animated: true)
     }
+
     
     @objc private func didTapCheckButton1(_ sender: UIButton) {
         
