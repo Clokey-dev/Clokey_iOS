@@ -372,6 +372,16 @@ class FollowProfileView: UIView {
         }
     }
     
+    func followPrivateState(isPrivate: Bool) {
+        if isPrivate {
+//            followButton.setTitle("팔로우하기", for: .normal)
+            followButton.isHidden = true
+        } else {
+//            followButton.setTitle("팔로우 취소하기", for: .normal)
+            followButton.isHidden = false
+        }
+    }
+    
     /// 데이터 상태에 따라 EmptyStackView 표시/숨김
     func updateClothesPrivateState(isPrivate: Bool) {
         if isPrivate {
