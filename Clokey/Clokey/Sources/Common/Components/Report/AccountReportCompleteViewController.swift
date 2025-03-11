@@ -15,14 +15,21 @@ class AccountReportCompleteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view = accountReportCompleteView
+        
+        //  화면 탭하면 키보드 내리기
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
 
         setupNavigationBar()
+        setupAction()
+    }
+    
+    @objc internal override func dismissKeyboard() {
+        view.endEditing(true) //  현재 화면에서 키보드 내리기
     }
     
     private func setupAction() {
         accountReportCompleteView.completeButton.addTarget(self, action: #selector(didTapCompleteButton), for: .touchUpInside)
-        
-        
     }
     
     // 네비게이션 설정
