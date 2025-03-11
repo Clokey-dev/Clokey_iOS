@@ -8,7 +8,8 @@
 import UIKit
 
 class SettingViewController: UIViewController, UIGestureRecognizerDelegate {
-
+    private let navBarManager = NavigationBarManager()
+    
     private let settingView = SettingView()
     
     // MARK: - Lifecycle
@@ -18,11 +19,37 @@ class SettingViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigationBar()
         
         updateUI()
         setupActions()
         
+        
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+    }
+    
+    // 네비게이션 설정
+    private func setupNavigationBar() {
+        let backButton = UIButton(type: .system)
+        let config = UIImage.SymbolConfiguration(weight: .bold)
+        let backImage = UIImage(systemName: "chevron.left", withConfiguration: config)
+        backButton.setImage(backImage, for: .normal)
+        backButton.tintColor = .mainBrown800
+        backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+        
+        let titleLabel = UILabel()
+        titleLabel.text = "설정"
+        titleLabel.font = .ptdSemiBoldFont(ofSize: 20)
+        titleLabel.textColor = .black
+        
+        let titleItem = UIBarButtonItem(customView: titleLabel)
+        
+        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: backButton), titleItem]
+    }
+    
+    // 뒤로가기
+    @objc private func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
     }
     
     private func updateUI() {
@@ -64,9 +91,6 @@ class SettingViewController: UIViewController, UIGestureRecognizerDelegate {
         settingView.marketingSwitch.addTarget(self, action: #selector(didTapAgreeTerms), for: .valueChanged)
         settingView.pushSwitch.addTarget(self, action: #selector(didTapAgreeTerms), for: .valueChanged)
         
-        // 백 버튼
-        settingView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
-        
         setupButtonActions(for: settingView.inquiryContainer, action: #selector(didTapInquiry))
         setupButtonActions(for: settingView.logoutContainer, action: #selector(didTapLogout))
         setupButtonActions(for: settingView.deleteContainer, action: #selector(didTapDeleteAccount))
@@ -88,7 +112,7 @@ class SettingViewController: UIViewController, UIGestureRecognizerDelegate {
     @objc private func buttonTouchDown(_ sender: UIButton) {
         sender.superview?.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
     }
-
+    
     // 터치 종료 시 배경색 복귀
     @objc private func buttonTouchUp(_ sender: UIButton) {
         UIView.animate(withDuration: 0.2) {
@@ -96,29 +120,25 @@ class SettingViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    @objc private func didTapBackButton() {
-        dismiss(animated: true, completion: nil)
-    }
-
     @objc private func didTapAgreeTerms() {
-        let marketingState = settingView.marketingSwitch.isOn 
+        let marketingState = settingView.marketingSwitch.isOn
         let pushState = settingView.pushSwitch.isOn
-
+        
         let requestData = OptionalTermAgreeRequestDTO(
             terms: [
                 OptionalTermAgreeRequestDTO.Terms(termId: 4, agreed: marketingState),
                 OptionalTermAgreeRequestDTO.Terms(termId: 5, agreed: pushState)
             ]
         )
-
+        
         MembersService().optionalTermAgree(data: requestData) { [weak self] result in
             guard let self = self else { return }
-
+            
             DispatchQueue.main.async {
                 switch result {
                 case .success(let response):
                     print(" 선택 동의 상태 변경 성공: \(response)")
-
+                    
                     //  서버 응답을 UI에 반영
                     if let marketingTerm = response.terms.first(where: { $0.termId == 4 }) {
                         self.settingView.marketingSwitch.isOn = marketingTerm.agreed
@@ -129,7 +149,7 @@ class SettingViewController: UIViewController, UIGestureRecognizerDelegate {
                     }
                 case .failure(let error):
                     print("🚨 선택 동의 상태 변경 실패: \(error.localizedDescription)")
-
+                    
                     //  요청 실패 시 스위치 상태 복구
                     self.settingView.marketingSwitch.isOn.toggle()
                     self.settingView.pushSwitch.isOn.toggle()
@@ -155,7 +175,7 @@ class SettingViewController: UIViewController, UIGestureRecognizerDelegate {
             }
         }
     }
-
+    
     // 로그아웃
     @objc private func didTapLogout() {
         
@@ -187,7 +207,7 @@ class SettingViewController: UIViewController, UIGestureRecognizerDelegate {
         
         present(alert, animated: true)
     }
-
+    
     @objc private func didTapDeleteAccount() {
         
         let deleteAccountViewController = DeleteAccountViewController()
