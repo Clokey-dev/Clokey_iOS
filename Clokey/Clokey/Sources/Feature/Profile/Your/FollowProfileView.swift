@@ -374,10 +374,8 @@ class FollowProfileView: UIView {
     
     func followPrivateState(isPrivate: Bool) {
         if isPrivate {
-//            followButton.setTitle("팔로우하기", for: .normal)
             followButton.isHidden = true
         } else {
-//            followButton.setTitle("팔로우 취소하기", for: .normal)
             followButton.isHidden = false
         }
     }
@@ -387,6 +385,13 @@ class FollowProfileView: UIView {
         if isPrivate {
            
             clothesImageContainerView.addSubview(privateStackView1)
+            
+            clothesImageContainerView.snp.remakeConstraints { make in
+                make.top.equalTo(clothesLabel.snp.bottom).offset(53)
+                make.leading.trailing.equalToSuperview().inset(20)
+                make.height.equalTo(164) // 고정 높이 설정
+            }
+            
             privateStackView1.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
             }
@@ -396,6 +401,12 @@ class FollowProfileView: UIView {
         } else {
             // 데이터가 있으면 EmptyStackView 제거하고 관련 요소 표시
             privateStackView1.removeFromSuperview()
+            
+            clothesImageContainerView.snp.remakeConstraints { make in
+                make.top.equalTo(clothesLabel.snp.bottom).offset(16)
+                make.leading.trailing.equalToSuperview().inset(20)
+                make.height.equalTo(164) // 고정 높이 설정
+            }
 
             bottomButtonLabel.isHidden = false
             bottomArrowIcon.isHidden = false
@@ -406,6 +417,14 @@ class FollowProfileView: UIView {
         if isPrivate {
             
             calendarContainerView.addSubview(privateStackView2)
+            
+            calendarContainerView.snp.remakeConstraints {
+                $0.top.equalTo(recordLabel.snp.bottom).offset(53)
+                $0.leading.trailing.equalToSuperview()
+                $0.height.equalTo(600)
+                $0.bottom.equalToSuperview().offset(20)
+            }
+            
             privateStackView2.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
             }
@@ -413,6 +432,13 @@ class FollowProfileView: UIView {
         } else {
             // 데이터가 있으면 EmptyStackView 제거하고 관련 요소 표시
             privateStackView2.removeFromSuperview()
+            
+            calendarContainerView.snp.remakeConstraints {
+                $0.top.equalTo(recordLabel.snp.bottom)
+                $0.leading.trailing.equalToSuperview()
+                $0.height.equalTo(600)
+                $0.bottom.equalToSuperview().offset(20)
+            }
 
         }
     }
