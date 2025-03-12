@@ -11,6 +11,8 @@ import Then
 import Kingfisher
 
 class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate {
+    private let navBarManager = NavigationBarManager()
+
     
     // MARK: - Properties
     private let followProfileView = FollowProfileView()
@@ -33,20 +35,25 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     
     // MARK: - Lifecycle
     override func loadView() {
+        super.loadView()
         view = followProfileView
     }
     
     init(followId: String) {
-            self.followId = followId
-            super.init(nibName: nil, bundle: nil)
-        }
+        self.followId = followId
+        super.init(nibName: nil, bundle: nil)
+    }
     required init?(coder: NSCoder) {
-           fatalError("init(coder:) has not been implemented")
-       }
+        fatalError("init(coder:) has not been implemented")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        followProfileView.scrollView.contentInsetAdjustmentBehavior = .automatic
+ 
+        setupNavigationBar()
+        
         followCalendarViewController.followId = self.followId
-        followProfileView.scrollView.contentInsetAdjustmentBehavior = .never
         
         definesPresentationContext = true // 현재 컨텍스트에서 새로운 뷰 표시
         
@@ -68,18 +75,49 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        setupNavigationBar()
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        // 네비게이션 바 숨기기 강제 적용
-        navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.setNavigationBarHidden(false, animated: false)
         
         additionalSafeAreaInsets.top = 0
         view.setNeedsLayout()
         view.layoutIfNeeded()
+    }
+    
+    private func setupNavigationBar() {
+        print("setupNavigationBar() 호출됨")
+        
+        let backButton = UIButton(type: .system)
+        let config = UIImage.SymbolConfiguration(weight: .bold)
+        let backImage = UIImage(systemName: "chevron.left", withConfiguration: config)
+        backButton.setImage(backImage, for: .normal)
+        backButton.tintColor = .mainBrown800
+        backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+        
+        let titleLabel = UILabel()
+        titleLabel.text = clokey_Id
+        titleLabel.font = .ptdSemiBoldFont(ofSize: 20)
+        titleLabel.textColor = .black
+        
+        let titleItem = UIBarButtonItem(customView: titleLabel)
+
+        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: backButton), titleItem]
+        
+        navBarManager.setOption(
+            to: navigationItem,
+            target: self,
+            action: #selector(didTapReportButton))
+        
+        
+    }
+    
+    // 뒤로가기
+    @objc private func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
     }
     
     private func setupCalendar() {
@@ -97,11 +135,11 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         followCalendarViewController.view.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-
+        
         // 자식 뷰컨트롤러 등록 완료
         followCalendarViewController.didMove(toParent: self)
     }
-
+    
     deinit {
         // 제거 시 메모리 정리
         followCalendarViewController.willMove(toParent: nil)
@@ -110,8 +148,6 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     private func loadData() {
-        
-//        let clokeyId = followId
         
         let membersService = MembersService()
         
@@ -123,7 +159,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
             switch result {
             case .success(let userProfile):
                 DispatchQueue.main.async {
-                    self.followProfileView.usernameLabel.text = userProfile.clokeyId
+
                     self.clokey_Id = userProfile.clokeyId
                     self.followProfileView.nicknameLabel.text = userProfile.nickname
                     self.followProfileView.writeCountLabel.text = "\(userProfile.recordCount)"
@@ -156,7 +192,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                         } else {
                             self.followProfileView.clothesImageView1.image = UIImage(named: "default_cloth_image") // 기본 이미지 설정
                         }
-
+                        
                         if let clothId = clothes[0].clothId {
                             self.clothId1 = clothId
                         } else {
@@ -170,7 +206,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                         } else {
                             self.followProfileView.clothesImageView2.image = UIImage(named: "default_cloth_image") // 기본 이미지 설정
                         }
-
+                        
                         if let clothId = clothes[1].clothId {
                             self.clothId2 = clothId
                         } else {
@@ -184,7 +220,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                         } else {
                             self.followProfileView.clothesImageView3.image = UIImage(named: "default_cloth_image") // 기본 이미지 설정
                         }
-
+                        
                         if let clothId = clothes[2].clothId {
                             self.clothId3 = clothId
                         } else {
@@ -219,10 +255,14 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                     if userProfile.visibility == "PRIVATE" {
                         self.followProfileView.updateClothesPrivateState(isPrivate: true)
                         self.followProfileView.updateCalendarPrivateState(isPrivate: true)
+//                        self.followProfileView.followPrivateState(isPrivate: true)
                     } else {
                         self.followProfileView.updateClothesPrivateState(isPrivate: false)
                         self.followProfileView.updateCalendarPrivateState(isPrivate: false)
+//                        self.followProfileView.followPrivateState(isPrivate: false)
                     }
+                    
+                    self.setupNavigationBar()
                     self.hideLoadingOverlay()
                 }
             case .failure(let error):
@@ -233,9 +273,6 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     }
     
     private func setupActions() {
-        followProfileView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
-        
-        followProfileView.optionButton.addTarget(self, action: #selector(didTapReportButton), for: .touchUpInside)
         
         followProfileView.followButton.addTarget(self, action: #selector(didTapFollowButton), for: .touchUpInside)
         followProfileView.followerCountButton.addTarget(self, action: #selector(didTapFollowerButton), for: .touchUpInside)
@@ -243,30 +280,22 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         
         followProfileView.bottomButtonLabel.isUserInteractionEnabled = true
         followProfileView.bottomArrowIcon.isUserInteractionEnabled = true
-
+        
         let bottomButtonTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapFollowClothButton))
         followProfileView.bottomButtonLabel.addGestureRecognizer(bottomButtonTapGesture)
-
+        
         let bottomArrowTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapFollowClothButton))
         followProfileView.bottomArrowIcon.addGestureRecognizer(bottomArrowTapGesture)
     }
-    
-    @objc private func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
-    }
+
     
     @objc private func didTapReportButton(_ sender: UIButton) {
-//        isSelectingProfileImage = (sender == addProfileView.addImageButton2)
         
         let bottomSheetVC = CustomBottomSheetViewController()
         bottomSheetVC.delegate = self // Delegate 연결
         bottomSheetVC.defaultProfileButton.configuration?.image = UIImage(systemName: "exclamationmark.circle")
         bottomSheetVC.defaultProfileButton.configuration?.title = "신고하기"
         bottomSheetVC.choosePhotoButton.configuration?.image = UIImage(systemName: "nosign")
-//        if let originalImage = UIImage(named: "block") {
-//            let resizedImage = originalImage.resize(to: CGSize(width: 34.6, height: 34.6)) // 원하는 크기로 조절
-////            bottomSheetVC.choosePhotoButton.configuration?.image = resizedImage
-//        }
         bottomSheetVC.choosePhotoButton.configuration?.title = "차단하기"
         bottomSheetVC.modalPresentationStyle = .overFullScreen
         present(bottomSheetVC, animated: false)
@@ -309,7 +338,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
             }
         }
     }
-
+    
     // 팔로우 알림 보내기
     private func sendFollowNotification(clokeyId: String) {
         let notificationService = NotificationService()
@@ -605,7 +634,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                         }
                     }
                     
-//                    popUpView.wearCountButton.titleLabel?.text = "\(response.wearNum)"
+                    //                    popUpView.wearCountButton.titleLabel?.text = "\(response.wearNum)"
                     popUpView.wearCountButton.setTitle("\(response.wearNum)회", for: .normal)
                     popUpView.brandNameLabel.text = (response.brand?.isEmpty ?? true) ? "지정 없음" : response.brand
                     self.url = response.clothUrl ?? ""
@@ -661,9 +690,9 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         overlay.backgroundColor = .white
         view.addSubview(overlay)
         
-        // SnapKit을 사용하여 전체화면 제약조건 추가
         overlay.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top) // 네비게이션 바 아래부터 적용
+            make.leading.trailing.bottom.equalToSuperview()
         }
         
         loadingOverlay = overlay

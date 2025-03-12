@@ -22,16 +22,16 @@ final class AddProfileView: UIView {
         $0.backgroundColor = .white // 배경색 흰색
     }
     
-    let backButton: UIButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        $0.tintColor = UIColor.brown
-    }
-    
-    let profileSettingLabel = UILabel().then {
-        $0.text = "프로필 설정"
-        $0.font = UIFont.systemFont(ofSize: 20)
-        $0.textAlignment = .center
-    }
+//    let backButton: UIButton = UIButton().then {
+//        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+//        $0.tintColor = UIColor.brown
+//    }
+//    
+//    let profileSettingLabel = UILabel().then {
+//        $0.text = "프로필 설정"
+//        $0.font = UIFont.systemFont(ofSize: 20)
+//        $0.textAlignment = .center
+//    }
     
     var backgroundImageView = UIImageView().then {
         $0.image = UIImage(named: "background_basic")
@@ -233,8 +233,8 @@ final class AddProfileView: UIView {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
         
-        contentView.addSubview(backButton)
-        contentView.addSubview(profileSettingLabel)
+//        contentView.addSubview(backButton)
+//        contentView.addSubview(profileSettingLabel)
         contentView.addSubview(backgroundImageView)
         contentView.addSubview(addImageButton1)
         contentView.addSubview(profileContainer)
@@ -266,20 +266,21 @@ final class AddProfileView: UIView {
             make.bottom.equalTo(completeButton.snp.bottom)
         }
         
-        backButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.top.equalTo(contentView.safeAreaLayoutGuide).offset(11)
-            make.width.height.equalTo(24)
-        }
-        
-        profileSettingLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.centerY.equalTo(backButton)
-        }
+//        backButton.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().offset(20)
+//            make.top.equalTo(contentView.safeAreaLayoutGuide).offset(11)
+//            make.width.height.equalTo(24)
+//        }
+//        
+//        profileSettingLabel.snp.makeConstraints { make in
+//            make.centerX.equalToSuperview()
+//            make.centerY.equalTo(backButton)
+//        }
         
         // 4. Background Image
         backgroundImageView.snp.makeConstraints { make in
-            make.top.equalTo(profileSettingLabel.snp.bottom).offset(11)
+//            make.top.equalTo(profileSettingLabel.snp.bottom).offset(11)
+            make.top.equalTo(safeAreaLayoutGuide).offset(11)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(393) // 이미지 높이 조정 (원하는 값으로)
         }

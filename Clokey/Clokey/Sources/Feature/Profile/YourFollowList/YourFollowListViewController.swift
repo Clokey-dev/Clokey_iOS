@@ -15,6 +15,8 @@ enum YourFollowTabType: Int {
 }
 
 class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegate {
+    private let navBarManager = NavigationBarManager()
+    
     var selectedTab: YourFollowTabType = .follower // 기본값: 팔로워
     
     var clokeyId: String = ""
@@ -35,20 +37,7 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
     
     private let refreshControl = UIRefreshControl()
     
-    // MARK: - UI Components
-    private let navigationBar = UIView().then {
-        $0.backgroundColor = .white
-    }
-    
-    private let titleLabel = UILabel().then {
-        $0.text = "cake123(아이디란)"
-        $0.font = .ptdMediumFont(ofSize: 16)
-    }
-    
-    private let closeButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        $0.tintColor = .black
-    }
+   
     
     let followerButton = UIButton(type: .system).then {
         $0.setTitle("팔로워(000)", for: .normal)
@@ -114,6 +103,7 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigationBar()
         setupUI()
         setupActions()
         setupCollectionViews()
@@ -124,8 +114,6 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
         refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
-        
-        titleLabel.text = clokeyId
         
         
         // 초기 탭 설정
@@ -139,7 +127,6 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
         
         loadFollowerData()
         loadFollowingData()
@@ -147,17 +134,34 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: false)
         
     }
+    
+    // 네비게이션 설정
+        private func setupNavigationBar() {
+            navBarManager.addBackButton(
+                to: navigationItem,
+                target: self,
+                action: #selector(didTapBackButton)
+            )
+            
+            navBarManager.setTitle(
+                to: navigationItem,
+                title: clokeyId,
+                font: .ptdSemiBoldFont(ofSize: 20),
+                textColor: .black
+            )
+        }
+        
+        // 뒤로가기
+        @objc private func didTapBackButton() {
+            navigationController?.popViewController(animated: true)
+        }
     
     // MARK: - Setup
     private func setupUI() {
         view.backgroundColor = .white
         
-        view.addSubview(navigationBar)
-        navigationBar.addSubview(titleLabel)
-        navigationBar.addSubview(closeButton)
         view.addSubview(followerButton)
         view.addSubview(followingButton)
         view.addSubview(separatorLine)
@@ -169,32 +173,17 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
         
         containerView.addSubview(followerCollectionView) // 초기 상태는 팔로워 컬렉션 뷰
         
-        navigationBar.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(44)
-        }
-        
-        titleLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
-        }
-        
-        closeButton.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(16)
-            $0.centerY.equalToSuperview()
-            $0.width.height.equalTo(24)
-        }
         
         followerButton.snp.makeConstraints { make in
             make.leading.equalToSuperview()
-            make.top.equalTo(navigationBar.snp.bottom).offset(12)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(12)
             make.width.equalToSuperview().multipliedBy(0.5)
             make.height.equalTo(28)
         }
         
         followingButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
-            make.top.equalTo(navigationBar.snp.bottom).offset(12)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(12)
             make.width.equalToSuperview().multipliedBy(0.5)
             make.height.equalTo(28)
         }
@@ -235,8 +224,6 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
             $0.edges.equalToSuperview()
             $0.height.equalTo(1)
         }
-        
-        closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
     }
     
     private func setupActions() {
@@ -252,11 +239,6 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
         followingCollectionView.dataSource = self
         followingCollectionView.delegate = self
 //        followingCollectionView.refreshControl = refreshControl
-    }
-    
-    // MARK: - Button Actions
-    @objc private func closeButtonTapped() {
-        navigationController?.popViewController(animated: true)
     }
     
     @objc private func followerButtonTapped() {

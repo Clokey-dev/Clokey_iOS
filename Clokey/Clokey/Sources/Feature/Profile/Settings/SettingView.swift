@@ -11,19 +11,6 @@ import Then
 
 final class SettingView: UIView {
     
-    let backButton = UIButton().then {
-        let boldConfig = UIImage.SymbolConfiguration(weight: .bold)
-        let image = UIImage(systemName: "chevron.left", withConfiguration: boldConfig)
-        $0.setImage(image, for: .normal)
-        $0.tintColor = .black
-    }
-    
-    let settingLabel = UILabel().then {
-        $0.text = "설정"
-        $0.font = UIFont.ptdSemiBoldFont(ofSize: 20)
-        $0.textAlignment = .center
-    }
-    
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
     }
@@ -231,7 +218,7 @@ final class SettingView: UIView {
     private func setupUI() {
         backgroundColor = .white
         
-        addSubviews(backButton, settingLabel, scrollView)
+        addSubview(scrollView)
         
         scrollView.addSubview(contentView)
 
@@ -255,20 +242,10 @@ final class SettingView: UIView {
 
     
     private func setupConstraints() {
-        backButton.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide).offset(11)
-            $0.leading.equalToSuperview().offset(20)
-            $0.size.equalTo(CGSize(width: 10, height: 20))
-        }
-
-        settingLabel.snp.makeConstraints {
-            $0.centerY.equalTo(backButton)
-            $0.leading.equalTo(backButton.snp.trailing).offset(20)
-        }
 
         // 스크롤 뷰
         scrollView.snp.makeConstraints {
-            $0.top.equalTo(settingLabel.snp.bottom).offset(10)
+            $0.top.equalTo(safeAreaLayoutGuide)/*.offset(10)*/
             $0.leading.trailing.bottom.equalToSuperview()
         }
 

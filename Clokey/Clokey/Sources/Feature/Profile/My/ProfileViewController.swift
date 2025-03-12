@@ -220,8 +220,7 @@ final class ProfileViewController: UIViewController {
     
     @objc private func didTapSettingButton() {
         let settingViewController = SettingViewController()
-        settingViewController.modalPresentationStyle = .fullScreen // 전체 화면으로 표시
-        present(settingViewController, animated: true, completion: nil)
+        navigationController?.pushViewController(settingViewController, animated: true)
     }
     
     @objc private func didTapEditButton() {

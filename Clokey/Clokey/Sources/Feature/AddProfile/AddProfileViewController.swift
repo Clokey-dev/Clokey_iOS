@@ -11,6 +11,7 @@ import TOCropViewController
 import Moya
 
 final class AddProfileViewController: UIViewController, TOCropViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    private let navBarManager = NavigationBarManager()
     
     private let addProfileView = AddProfileView()
     private var isSelectingProfileImage = false
@@ -30,17 +31,12 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigationBar()
+        
         addProfileView.isUserInteractionEnabled = true
         addProfileView.addImageButton1.isUserInteractionEnabled = true
         addProfileView.addImageButton2.isUserInteractionEnabled = true
-        
-//        if addProfileView.profileImageView.image == nil {
-//            addProfileView.profileImageView.image = UIImage(named: "profile_basic")
-//        }
-//        if addProfileView.backgroundImageView.image == nil {
-//            addProfileView.backgroundImageView.image = UIImage(named: "background_basic")
-//        }
-        
+
         addProfileView.addImageButton1.addTarget(self, action: #selector(didTapAddImageButton(_:)), for: .touchUpInside)
         addProfileView.addImageButton2.addTarget(self, action: #selector(didTapAddImageButton(_:)), for: .touchUpInside)
         
@@ -61,12 +57,33 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+//        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
+//        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    // 네비게이션 설정
+    private func setupNavigationBar() {
+        navBarManager.addBackButton(
+            to: navigationItem,
+            target: self,
+            action: #selector(didTapBackButton)
+        )
+        
+        navBarManager.setTitle(
+            to: navigationItem,
+            title: "프로필 설정",
+            font: .ptdSemiBoldFont(ofSize: 20),
+            textColor: .black
+        )
+    }
+    
+    // 뒤로가기
+    @objc private func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
     }
     
     @objc internal override func dismissKeyboard() {
@@ -78,7 +95,7 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
               let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
         
         let keyboardHeight = keyboardFrame.height
-        let bottomInset = keyboardHeight - view.safeAreaInsets.bottom
+//        let bottomInset = keyboardHeight - view.safeAreaInsets.bottom
         
         if let activeTextField = view.findFirstResponder() as? UITextField {
             let textFieldFrame = activeTextField.convert(activeTextField.bounds, to: view)
@@ -182,7 +199,7 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
     
     private func addActions() {
         
-        addProfileView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+//        addProfileView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         
         addProfileView.nicknameTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         addProfileView.nicknameTextField.addTarget(self, action: #selector(validateNickname), for: .editingChanged)
@@ -196,9 +213,9 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
     }
     
     
-    @objc private func didTapBackButton() {
-        self.dismiss(animated: true, completion: nil)
-    }
+//    @objc private func didTapBackButton() {
+//        self.dismiss(animated: true, completion: nil)
+//    }
     
     // 텍스트 필드 변경 시 호출되는 메서드
     @objc private func textFieldDidChange(_ textField: UITextField) {
@@ -281,7 +298,7 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
                     self.addProfileView.idCheckButton.setTitleColor(.gray, for: .normal)
                     self.validateForm()
                     
-                case .failure(let error):
+                case .failure(_):
 //                    self.addProfileView.idError(hidden: false)
                     self.addProfileView.idStatusLabel.text = "중복된 아이디입니다."
                     self.addProfileView.idStatusLabel.textColor = .pointOrange800
@@ -344,7 +361,7 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
             return
         }
         
-        let formattedId = "@\(id)"
+//        let formattedId = "@\(id)"
         let bio = addProfileView.bioTextField.text ?? ""
         let visibility = isPublic ? "PUBLIC" : "PRIVATE"
         
@@ -398,12 +415,7 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
                     }
                 }
             case .failure(let error):
-                if let response = (error as? MoyaError)?.response {
-                    let responseBody = String(data: response.data, encoding: .utf8) ?? "응답 데이터 없음"
-                    print("🚨 프로필 업데이트 실패 - 상태 코드: \(response.statusCode), 응답: \(responseBody)")
-                } else {
-                    print("🚨 프로필 업데이트 실패 - 네트워크 오류: \(error.localizedDescription)")
-                }
+                print("🚨 프로필 업데이트 실패 - 네트워크 오류: \(error.localizedDescription)")
             }
         }
     }
