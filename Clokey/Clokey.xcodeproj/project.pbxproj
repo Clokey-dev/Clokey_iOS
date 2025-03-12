@@ -210,7 +210,6 @@
 		07F859B82D62024300DD5BF8 /* LottieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F859B62D62024300DD5BF8 /* LottieViewController.swift */; };
 		1EF33C692D665FFB00142954 /* ArrangeClosetBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C482D665FFB00142954 /* ArrangeClosetBannerView.swift */; };
 		1EF33C6A2D665FFB00142954 /* DisplayAllViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C5C2D665FFB00142954 /* DisplayAllViewController.swift */; };
-		1EF33C6B2D665FFB00142954 /* SmartSummationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C4C2D665FFB00142954 /* SmartSummationModel.swift */; };
 		1EF33C6C2D665FFB00142954 /* SmartSummationBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C4B2D665FFB00142954 /* SmartSummationBannerView.swift */; };
 		1EF33C6D2D665FFB00142954 /* DrawerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C652D665FFB00142954 /* DrawerViewController.swift */; };
 		1EF33C6E2D665FFB00142954 /* PopUpDropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C582D665FFB00142954 /* PopUpDropdownView.swift */; };
@@ -478,7 +477,6 @@
 		1EF33C492D665FFB00142954 /* ArrangeClosetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeClosetView.swift; sourceTree = "<group>"; };
 		1EF33C4A2D665FFB00142954 /* ArrangeClosetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeClosetViewController.swift; sourceTree = "<group>"; };
 		1EF33C4B2D665FFB00142954 /* SmartSummationBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartSummationBannerView.swift; sourceTree = "<group>"; };
-		1EF33C4C2D665FFB00142954 /* SmartSummationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartSummationModel.swift; sourceTree = "<group>"; };
 		1EF33C4D2D665FFB00142954 /* SmartSummationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartSummationView.swift; sourceTree = "<group>"; };
 		1EF33C4E2D665FFB00142954 /* SmartSummationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartSummationViewController.swift; sourceTree = "<group>"; };
 		1EF33C502D665FFB00142954 /* ClosetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -1642,7 +1640,6 @@
 				1EF33C492D665FFB00142954 /* ArrangeClosetView.swift */,
 				1EF33C4A2D665FFB00142954 /* ArrangeClosetViewController.swift */,
 				1EF33C4B2D665FFB00142954 /* SmartSummationBannerView.swift */,
-				1EF33C4C2D665FFB00142954 /* SmartSummationModel.swift */,
 				1EF33C4D2D665FFB00142954 /* SmartSummationView.swift */,
 				1EF33C4E2D665FFB00142954 /* SmartSummationViewController.swift */,
 			);
@@ -2057,7 +2054,6 @@
 				07ECCB412D4E34DF00AFF486 /* CalendarDetailView.swift in Sources */,
 				1EF33C692D665FFB00142954 /* ArrangeClosetBannerView.swift in Sources */,
 				1EF33C6A2D665FFB00142954 /* DisplayAllViewController.swift in Sources */,
-				1EF33C6B2D665FFB00142954 /* SmartSummationModel.swift in Sources */,
 				1EF33C6C2D665FFB00142954 /* SmartSummationBannerView.swift in Sources */,
 				1EF33C6D2D665FFB00142954 /* DrawerViewController.swift in Sources */,
 				1EF33C6E2D665FFB00142954 /* PopUpDropdownView.swift in Sources */,
@@ -2248,7 +2244,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BBVZV8T99P;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_DEBUG_DYLIB = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
@@ -2292,7 +2288,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = BBVZV8T99P;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_DEBUG_DYLIB = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";

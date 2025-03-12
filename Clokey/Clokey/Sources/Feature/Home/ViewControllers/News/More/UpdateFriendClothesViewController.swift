@@ -46,7 +46,7 @@ class UpdateFriendClothesViewController: UIViewController, UIGestureRecognizerDe
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     @objc private func didTapBackButton() {

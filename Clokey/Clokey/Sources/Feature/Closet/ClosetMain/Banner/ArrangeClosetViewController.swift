@@ -4,10 +4,12 @@ import SnapKit
 class ArrangeClosetViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
         
     private let arrangeClosetView = ArrangeClosetView()
-
+    
     // API를 통해 받아올 옷(제품) 데이터
     private var products: [ClosetModel] = []
-
+    
+    // 사용자의 clokeyId (예: 사용자 고유 아이디 혹은 닉네임)
+    var clokeyId: String = ""
     
     private enum SortOption: String {
         case wear = "WEAR"
@@ -25,16 +27,16 @@ class ArrangeClosetViewController: UIViewController, UICollectionViewDataSource,
             }
         }
     }
-
+    
     private var currentSort: SortOption = .wear
     
     // API 서비스 인스턴스
     private let clothesService = ClothesService()
-
+    
     override func loadView() {
         view = arrangeClosetView
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()                     // 네비게이션 바, 뒤로가기 버튼 등 설정
@@ -42,8 +44,11 @@ class ArrangeClosetViewController: UIViewController, UICollectionViewDataSource,
         setupActions()
         setupSegmentedControl()
         loadInitialData()             // 초기 세그먼트에 맞는 데이터 로드
+        
+        // clokeyId를 API에서 받아와 배너 텍스트 업데이트
+        fetchClokeyId()
     }
-
+    
     // MARK: - Setup Methods
     private func setupCollectionView() {
         let collectionView = arrangeClosetView.collectionView
@@ -54,24 +59,24 @@ class ArrangeClosetViewController: UIViewController, UICollectionViewDataSource,
             flowLayout.estimatedItemSize = .zero
         }
     }
-
+    
     private func setupActions() {
         arrangeClosetView.customTotalSegmentView.menuButton.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
     }
-
+    
     @objc private func menuButtonTapped() {
         let categoryVC = AddCategoryViewController()
         categoryVC.modalPresentationStyle = .fullScreen
         categoryVC.modalTransitionStyle = .coverVertical
         present(categoryVC, animated: true, completion: nil)
     }
-
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         let initialIndex = arrangeClosetView.customTotalSegmentView.segmentedControl.selectedSegmentIndex
         arrangeClosetView.customTotalSegmentView.updateIndicatorPosition(for: initialIndex)
     }
-
+    
     private func setupUI() {
         let navBarManager = NavigationBarManager()
         navBarManager.addBackButton(
@@ -79,6 +84,7 @@ class ArrangeClosetViewController: UIViewController, UICollectionViewDataSource,
             target: self,
             action: #selector(backButtonTapped)
         )
+        // 네비게이션 타이틀은 기본값 "정리할 옷"을 사용
         navBarManager.setTitle(
             to: navigationItem,
             title: "정리할 옷",
@@ -86,7 +92,7 @@ class ArrangeClosetViewController: UIViewController, UICollectionViewDataSource,
             textColor: .black
         )
     }
-
+    
     private func setupSegmentedControl() {
         arrangeClosetView.customTotalSegmentView.segmentedControl.addTarget(
             self,
@@ -94,13 +100,13 @@ class ArrangeClosetViewController: UIViewController, UICollectionViewDataSource,
             for: .valueChanged
         )
     }
-
+    
     /// 초기 데이터 로드: 현재 선택된 세그먼트에 맞게 API 호출
     private func loadInitialData() {
         let initialIndex = arrangeClosetView.customTotalSegmentView.segmentedControl.selectedSegmentIndex
         updateContent(for: initialIndex)
     }
-
+    
     /// 세그먼트 변경 시 UI와 데이터를 업데이트합니다.
     private func updateContent(for index: Int) {
         if index == 0 {
@@ -120,19 +126,19 @@ class ArrangeClosetViewController: UIViewController, UICollectionViewDataSource,
             }
         }
         
-        // API를 통해 옷 데이터를 불러옵니다. (항상 첫 페이지, 6개 cell)
+        // API를 통해 옷 데이터를 불러옵니다. (항상 첫 페이지, 12개 cell)
         loadClothesData(categoryId: index)
     }
-
+    
     /// ClothesService를 통해 옷 목록을 불러옵니다.
     private func loadClothesData(categoryId: Int, season: String = "ALL") {
         clothesService.getClothes(
             clokeyId: nil,
             categoryId: categoryId,
-            season: season,
+            season: "WINTER",
             sort: currentSort.rawValue,      // 정렬 기능이 필요 없으므로 빈 문자열 전달
             page: 1,       // 항상 첫 페이지 (고정)
-            size: 6        // 6개의 cell만 표시
+            size: 12       // 12개의 cell만 표시
         ) { [weak self] result in
             guard let self = self else { return }
             
@@ -157,28 +163,30 @@ class ArrangeClosetViewController: UIViewController, UICollectionViewDataSource,
         }
     }
     
-    private func fetchSmartSummationData() {
+    /// API를 통해 clokeyId(혹은 사용자의 닉네임)를 받아와 배너 텍스트를 업데이트합니다.
+    private func fetchClokeyId() {
         clothesService.getSmartSummationClothes { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let response):
-                let nickname = response.nickname
+                // 여기서는 API 응답의 nickname을 clokeyId로 활용한다고 가정합니다.
+                self.clokeyId = response.nickname
                 DispatchQueue.main.async {
                     self.arrangeClosetView.bannerDescription.text =
-                        "겨울 옷을 정리할 시간입니다! \n \(nickname)님의 겨울 옷들을 보여드릴게요."
+                        "겨울 옷을 정리할 시간입니다!\n\(self.clokeyId)님의 겨울 옷들을 보여드릴게요."
                 }
             case .failure(let error):
-                print("스마트 요약 API 호출 실패: \(error.localizedDescription)")
+                print("클로키 아이디 받아오기 실패: \(error)")
             }
         }
     }
-
+    
     // MARK: - UICollectionView DataSource
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return products.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: CustomCollectionViewCell.identifier,
@@ -201,20 +209,20 @@ class ArrangeClosetViewController: UIViewController, UICollectionViewDataSource,
         cell.nameLabel.text = product.name
         return cell
     }
-
+    
     // MARK: - UICollectionView Delegate
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // 선택 시 추가 동작이 필요한 경우 구현
     }
-
+    
     @objc private func backButtonTapped() {
         navigationController?.popViewController(animated: true)
     }
-
+    
     @objc private func segmentChanged(_ sender: UISegmentedControl) {
         let index = sender.selectedSegmentIndex
         arrangeClosetView.customTotalSegmentView.updateIndicatorPosition(for: index)
         updateContent(for: index)
     }
-
 }
