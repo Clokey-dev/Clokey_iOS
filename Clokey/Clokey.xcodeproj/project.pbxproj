@@ -18,6 +18,8 @@
 		071D4C3E2D620AE900A6286D /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 071D4C3D2D620AE900A6286D /* Kingfisher */; };
 		071D4C412D620C2600A6286D /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 071D4C402D620C2600A6286D /* RxCocoa */; };
 		071D4C432D620C2600A6286D /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 071D4C422D620C2600A6286D /* RxSwift */; };
+		072EB0182D7DBA3F005698DE /* ReportReasonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072EB0172D7DBA3F005698DE /* ReportReasonView.swift */; };
+		072EB01A2D7EAD2F005698DE /* ReportReason.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072EB0192D7EAD2F005698DE /* ReportReason.swift */; };
 		0744001A2D5B1EFD00E60282 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 074400192D5B1EFD00E60282 /* GoogleService-Info.plist */; };
 		0744011E2D5CB9EB00E60282 /* AddCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744011A2D5CB9EB00E60282 /* AddCategoryView.swift */; };
 		0744011F2D5CB9EB00E60282 /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744011C2D5CB9EB00E60282 /* AddCategoryViewController.swift */; };
@@ -154,6 +156,8 @@
 		07E1CB5F2D36A10000F86BB8 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E1CB5D2D36A10000F86BB8 /* CustomButton.swift */; };
 		07E1CB602D36A10000F86BB8 /* CustomButtonTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E1CB5E2D36A10000F86BB8 /* CustomButtonTextField.swift */; };
 		07E1CB662D36A63200F86BB8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E1CB652D36A63200F86BB8 /* ViewController.swift */; };
+		07EB0BD12D81139C001F9A7C /* ReportSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EB0BCF2D81139C001F9A7C /* ReportSuccessView.swift */; };
+		07EB0BD22D81139C001F9A7C /* ReportSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EB0BD02D81139C001F9A7C /* ReportSuccessViewController.swift */; };
 		07ECCB3F2D4E34DF00AFF486 /* UploadModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCB3C2D4E34DF00AFF486 /* UploadModalView.swift */; };
 		07ECCB402D4E34DF00AFF486 /* CalendarDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCB342D4E34DF00AFF486 /* CalendarDetailViewController.swift */; };
 		07ECCB412D4E34DF00AFF486 /* CalendarDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07ECCB332D4E34DF00AFF486 /* CalendarDetailView.swift */; };
@@ -257,8 +261,6 @@
 		A6548E532D3F47DE00F79B66 /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */; };
 		A66BA3352D636AD400E69A4F /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66BA3342D636AD400E69A4F /* ProfileViewModel.swift */; };
 		A672AEB72D572A6E003EF3FF /* EmptyStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */; };
-		A675772C2D7FDD90009880F1 /* ReportSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675772B2D7FDD90009880F1 /* ReportSuccessViewController.swift */; };
-		A675772E2D7FDD9F009880F1 /* ReportSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A675772D2D7FDD9F009880F1 /* ReportSuccessView.swift */; };
 		A67661892D5B367B006AAB63 /* CustomBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661852D5B367B006AAB63 /* CustomBottomSheetViewController.swift */; };
 		A676618A2D5B367B006AAB63 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661862D5B367B006AAB63 /* EditProfileView.swift */; };
 		A676618B2D5B367B006AAB63 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661872D5B367B006AAB63 /* EditProfileViewController.swift */; };
@@ -306,6 +308,8 @@
 		070916562D58BEE1008DC9EE /* AddClothesRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothesRequestDTO.swift; sourceTree = "<group>"; };
 		070916582D58BEE1008DC9EE /* InquiryClothesDetailResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryClothesDetailResponseDTO.swift; sourceTree = "<group>"; };
 		0709165A2D58BEE1008DC9EE /* ClothesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesService.swift; sourceTree = "<group>"; };
+		072EB0172D7DBA3F005698DE /* ReportReasonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportReasonView.swift; sourceTree = "<group>"; };
+		072EB0192D7EAD2F005698DE /* ReportReason.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportReason.swift; sourceTree = "<group>"; };
 		074400192D5B1EFD00E60282 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		074401182D5CB9EB00E60282 /* AddCategoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryHeaderView.swift; sourceTree = "<group>"; };
 		074401192D5CB9EB00E60282 /* AddCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryModel.swift; sourceTree = "<group>"; };
@@ -421,6 +425,8 @@
 		07E1CB652D36A63200F86BB8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		07EADE702D6763DD00364FF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		07EADE712D6763DD00364FF0 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		07EB0BCF2D81139C001F9A7C /* ReportSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportSuccessView.swift; sourceTree = "<group>"; };
+		07EB0BD02D81139C001F9A7C /* ReportSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportSuccessViewController.swift; sourceTree = "<group>"; };
 		07ECCB262D4E34DF00AFF486 /* RecordOOTDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordOOTDView.swift; sourceTree = "<group>"; };
 		07ECCB272D4E34DF00AFF486 /* RecordOOTDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordOOTDViewController.swift; sourceTree = "<group>"; };
 		07ECCB282D4E34DF00AFF486 /* CustomGalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGalleryViewController.swift; sourceTree = "<group>"; };
@@ -524,8 +530,6 @@
 		A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
 		A66BA3342D636AD400E69A4F /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStackView.swift; sourceTree = "<group>"; };
-		A675772B2D7FDD90009880F1 /* ReportSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportSuccessViewController.swift; sourceTree = "<group>"; };
-		A675772D2D7FDD9F009880F1 /* ReportSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportSuccessView.swift; sourceTree = "<group>"; };
 		A67661852D5B367B006AAB63 /* CustomBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomSheetViewController.swift; sourceTree = "<group>"; };
 		A67661862D5B367B006AAB63 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		A67661872D5B367B006AAB63 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
@@ -1874,8 +1878,10 @@
 				A6FBF9C82D78BAC5000FC4EA /* AccountReportViewController.swift */,
 				A6FBF9CA2D78BAE3000FC4EA /* AccountReportCompleteView.swift */,
 				A6FBF9CC2D78BB05000FC4EA /* AccountReportCompleteViewController.swift */,
-				A675772B2D7FDD90009880F1 /* ReportSuccessViewController.swift */,
-				A675772D2D7FDD9F009880F1 /* ReportSuccessView.swift */,
+				072EB0172D7DBA3F005698DE /* ReportReasonView.swift */,
+				072EB0192D7EAD2F005698DE /* ReportReason.swift */,
+				07EB0BCF2D81139C001F9A7C /* ReportSuccessView.swift */,
+				07EB0BD02D81139C001F9A7C /* ReportSuccessViewController.swift */,
 			);
 			path = Report;
 			sourceTree = "<group>";
@@ -2097,7 +2103,10 @@
 				07ECCB422D4E34DF00AFF486 /* CalendarView.swift in Sources */,
 				07ECCEA32D4E79C000AFF486 /* CalendarImageCell.swift in Sources */,
 				07ECCEA52D4E7AE400AFF486 /* CalendarCommentView.swift in Sources */,
+				07EB0BD12D81139C001F9A7C /* ReportSuccessView.swift in Sources */,
+				07EB0BD22D81139C001F9A7C /* ReportSuccessViewController.swift in Sources */,
 				07ECCEB52D4EAF5800AFF486 /* LikeUserModel.swift in Sources */,
+				072EB0182D7DBA3F005698DE /* ReportReasonView.swift in Sources */,
 				07ECCB432D4E34DF00AFF486 /* UploadModalViewController.swift in Sources */,
 				07ECCB442D4E34DF00AFF486 /* PhotoEditViewController.swift in Sources */,
 				07ECCB452D4E34DF00AFF486 /* TagClothView.swift in Sources */,
@@ -2113,7 +2122,6 @@
 				07ECCEA92D4E834300AFF486 /* CommentCell.swift in Sources */,
 				07ECCB4B2D4E34DF00AFF486 /* RecordOOTDViewController.swift in Sources */,
 				07ECCB4C2D4E34DF00AFF486 /* RecordOOTDView.swift in Sources */,
-				A675772C2D7FDD90009880F1 /* ReportSuccessViewController.swift in Sources */,
 				07ECCB4D2D4E34DF00AFF486 /* CalendarModel.swift in Sources */,
 				07ECCB4E2D4E34DF00AFF486 /* TagClothViewController.swift in Sources */,
 				07F859A62D61D94A00DD5BF8 /* SearchResponseDTO.swift in Sources */,
@@ -2129,7 +2137,6 @@
 				07649FFA2D4DEA9000B6B2B2 /* AccessTokenPlugin.swift in Sources */,
 				07E1CB5F2D36A10000F86BB8 /* CustomButton.swift in Sources */,
 				07F8599E2D61D73500DD5BF8 /* NotificationType.swift in Sources */,
-				A675772E2D7FDD9F009880F1 /* ReportSuccessView.swift in Sources */,
 				07F8599F2D61D73500DD5BF8 /* NotificationViewModel.swift in Sources */,
 				07F859A02D61D73500DD5BF8 /* NotificationViewController.swift in Sources */,
 				07F859A12D61D73500DD5BF8 /* NotificationCell.swift in Sources */,
@@ -2233,6 +2240,7 @@
 				076FAB5A2D3020D800FF3979 /* LoginViewController.swift in Sources */,
 				07ECCEAC2D4E857B00AFF486 /* Comment.swift in Sources */,
 				07649FF82D4DE9AC00B6B2B2 /* KeychainHelper.swift in Sources */,
+				072EB01A2D7EAD2F005698DE /* ReportReason.swift in Sources */,
 				07E1CB4F2D36721900F86BB8 /* CustomNavigationBar.swift in Sources */,
 				076973382D63686D00AEA5D1 /* NotificationService.swift in Sources */,
 				076FAB402D2E6E0200FF3979 /* SceneDelegate.swift in Sources */,
@@ -2254,11 +2262,9 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
+				DEVELOPMENT_TEAM = BBVZV8T99P;
 				ENABLE_DEBUG_DYLIB = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
@@ -2280,7 +2286,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -2300,12 +2305,10 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
+				DEVELOPMENT_TEAM = BBVZV8T99P;
 				ENABLE_DEBUG_DYLIB = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
@@ -2327,7 +2330,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
