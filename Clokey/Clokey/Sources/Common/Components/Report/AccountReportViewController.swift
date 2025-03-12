@@ -29,12 +29,7 @@ class AccountReportViewController: UIViewController {
     
     private func setupAction() {
         accountReportView.completeButton.addTarget(self, action: #selector(didTapNextButton), for: .touchUpInside)
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapInfoButton))
-        accountReportView.checkbox2Title.isUserInteractionEnabled = true
-        accountReportView.checkbox2Title.addGestureRecognizer(tapGesture)
     }
-    
     
     // 네비게이션 설정
     private func setupNavigationBar() {
@@ -47,7 +42,6 @@ class AccountReportViewController: UIViewController {
         navBarManager.setTitle(
             to: navigationItem,
             title: "계정 신고하기",
-            //            font: .ptdSemiBoldFont(ofSize: 18),
             font: .systemFont(ofSize: 18, weight: .semibold),
             textColor: .black
         )
@@ -59,30 +53,17 @@ class AccountReportViewController: UIViewController {
     }
     
     @objc private func didTapNextButton() {
-        let nextVC = AccountReportCompleteViewController()
-        self.navigationController?.pushViewController(nextVC, animated: true)
-    }
-    
-    @objc private func didTapInfoButton(_ sender: UIButton) {
-        
-        switch buttonState {
-        case .initial:
-            accountReportView.checkbox2InfoContainer.snp.remakeConstraints {
-                $0.top.equalTo(accountReportView.checkbox2Title.snp.bottom).offset(8)
-                $0.leading.equalTo(accountReportView.checkbox2Title.snp.leading)
-                $0.width.equalTo(324)
-                $0.height.equalTo(0)
-            }
-            buttonState = .transformed
-        case .transformed:
-            accountReportView.checkbox2InfoContainer.snp.remakeConstraints {
-                $0.top.equalTo(accountReportView.checkbox2Title.snp.bottom).offset(8)
-                $0.leading.equalTo(accountReportView.checkbox2Title.snp.leading)
-                $0.width.equalTo(324)
-                $0.height.equalTo(86)
-            }
-            buttonState = .initial
+        // 선택된 신고 이유가 있는지 확인
+        if let selectedReason = accountReportView.getSelectedReportReason() {
+            // 다음 화면으로 이동하면서 선택된 신고 이유 전달
+            let nextVC = AccountReportCompleteViewController()
+            nextVC.selectedReportReason = selectedReason
+            navigationController?.pushViewController(nextVC, animated: true)
+        } else {
+            // 선택된 이유가 없을 경우 알림
+            let alert = UIAlertController(title: "알림", message: "신고 사유를 선택해주세요.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .default))
+            present(alert, animated: true)
         }
     }
-    
 }
