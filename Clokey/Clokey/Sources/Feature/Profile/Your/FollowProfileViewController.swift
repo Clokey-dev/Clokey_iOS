@@ -722,11 +722,10 @@ extension FollowProfileViewController: CustomBottomSheetDelegate {
     
     func didTapDefaultProfile() {
         let bottomSheetVC = CustomBottomSheetViewController()
-        //        bottomSheetVC.hideAnimation()
         bottomSheetVC.dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
             
-            let accountRepoVC = AccountReportViewController()
+            let accountRepoVC = AccountReportViewController(clokeyId: self.followId)
             self.navigationController?.pushViewController(accountRepoVC, animated: true)
         }
     }
