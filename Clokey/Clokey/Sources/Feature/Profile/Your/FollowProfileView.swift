@@ -24,22 +24,6 @@ class FollowProfileView: UIView {
         $0.backgroundColor = .white // 배경색 흰색
     }
     
-    // MARK: - UI Components
-    let backButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        $0.tintColor = .black
-    }
-    
-    let usernameLabel = UILabel().then {
-        $0.text = "cake123(아이디란)"
-        $0.font = UIFont.ptdMediumFont(ofSize: 20)
-        $0.textAlignment = .center
-    }
-    
-    let optionButton = UIButton().then {
-        $0.setImage(UIImage(named: "dot3_icon"), for: .normal)
-        $0.tintColor = UIColor(named: "mainBrown800")
-    }
     
     let backgroundImageView = UIImageView().then {
         $0.image = UIImage(named: "profile_background")
@@ -221,9 +205,7 @@ class FollowProfileView: UIView {
         scrollView.addSubview(contentView)
         
         contentView.addSubview(backgroundImageView)
-        contentView.addSubview(backButton)
-        contentView.addSubview(usernameLabel)
-        contentView.addSubview(optionButton)
+        
         contentView.addSubview(profileContainer)
         profileContainer.addSubview(profileImageView)
         contentView.addSubview(nicknameLabel)
@@ -250,7 +232,8 @@ class FollowProfileView: UIView {
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview() // 화면 전체에 ScrollView
+            make.top.equalTo(safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.bottom.equalToSuperview()
         }
         
         // ContentView 제약 설정
@@ -264,23 +247,6 @@ class FollowProfileView: UIView {
             make.top.equalToSuperview()
             make.centerX.equalToSuperview()
             make.height.width.equalTo(393)
-        }
-        
-        backButton.snp.makeConstraints { make in
-            make.top.equalTo(backgroundImageView.snp.top).offset(60)
-            make.leading.equalToSuperview().offset(20)
-            make.size.equalTo(24)
-        }
-        
-        usernameLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(backButton)
-            make.leading.equalTo(backButton.snp.trailing).offset(15)
-        }
-        
-        optionButton.snp.makeConstraints { make in
-            make.centerY.equalTo(backButton)
-            make.trailing.equalToSuperview().offset(-20)
-            make.size.equalTo(24)
         }
         
         profileContainer.snp.makeConstraints { make in
@@ -406,11 +372,26 @@ class FollowProfileView: UIView {
         }
     }
     
+    func followPrivateState(isPrivate: Bool) {
+        if isPrivate {
+            followButton.isHidden = true
+        } else {
+            followButton.isHidden = false
+        }
+    }
+    
     /// 데이터 상태에 따라 EmptyStackView 표시/숨김
     func updateClothesPrivateState(isPrivate: Bool) {
         if isPrivate {
            
             clothesImageContainerView.addSubview(privateStackView1)
+            
+            clothesImageContainerView.snp.remakeConstraints { make in
+                make.top.equalTo(clothesLabel.snp.bottom).offset(53)
+                make.leading.trailing.equalToSuperview().inset(20)
+                make.height.equalTo(164) // 고정 높이 설정
+            }
+            
             privateStackView1.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
             }
@@ -420,6 +401,12 @@ class FollowProfileView: UIView {
         } else {
             // 데이터가 있으면 EmptyStackView 제거하고 관련 요소 표시
             privateStackView1.removeFromSuperview()
+            
+            clothesImageContainerView.snp.remakeConstraints { make in
+                make.top.equalTo(clothesLabel.snp.bottom).offset(16)
+                make.leading.trailing.equalToSuperview().inset(20)
+                make.height.equalTo(164) // 고정 높이 설정
+            }
 
             bottomButtonLabel.isHidden = false
             bottomArrowIcon.isHidden = false
@@ -430,6 +417,14 @@ class FollowProfileView: UIView {
         if isPrivate {
             
             calendarContainerView.addSubview(privateStackView2)
+            
+            calendarContainerView.snp.remakeConstraints {
+                $0.top.equalTo(recordLabel.snp.bottom).offset(53)
+                $0.leading.trailing.equalToSuperview()
+                $0.height.equalTo(600)
+                $0.bottom.equalToSuperview().offset(20)
+            }
+            
             privateStackView2.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
             }
@@ -437,6 +432,13 @@ class FollowProfileView: UIView {
         } else {
             // 데이터가 있으면 EmptyStackView 제거하고 관련 요소 표시
             privateStackView2.removeFromSuperview()
+            
+            calendarContainerView.snp.remakeConstraints {
+                $0.top.equalTo(recordLabel.snp.bottom)
+                $0.leading.trailing.equalToSuperview()
+                $0.height.equalTo(600)
+                $0.bottom.equalToSuperview().offset(20)
+            }
 
         }
     }

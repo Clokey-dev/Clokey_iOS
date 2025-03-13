@@ -50,6 +50,28 @@ class NavigationBarManager {
         
         navigationItem.titleView = titleLabel
     }
+    
+    func setOption(
+        to navigationItem: UINavigationItem,
+        target: Any?,
+        action: Selector,
+        tintColor: UIColor = .mainBrown800
+    ) {
+        let optionButton = UIButton(type: .system)
+        let backImage = UIImage(named: "dot3_icon")
+        optionButton.setImage(backImage, for: .normal)
+        optionButton.tintColor = tintColor
+        optionButton.addTarget(target, action: action, for: .touchUpInside)
+        optionButton.accessibilityLabel = "옵션"
+        // 버튼 크기 조정
+        optionButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            optionButton.widthAnchor.constraint(equalToConstant: 24),
+            optionButton.heightAnchor.constraint(equalToConstant: 24)
+        ])
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: optionButton)
+    }
 }
 
 extension NavigationBarManager {

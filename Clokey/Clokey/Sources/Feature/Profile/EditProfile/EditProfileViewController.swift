@@ -112,8 +112,7 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
             navBarManager.setTitle(
                 to: navigationItem,
                 title: "프로필 설정",
-                font: .ptdSemiBoldFont(ofSize: 18),
-//                font: .systemFont(ofSize: 18, weight: .semibold),
+                font: .ptdSemiBoldFont(ofSize: 20),
                 textColor: .black
             )
         }

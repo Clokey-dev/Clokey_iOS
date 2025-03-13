@@ -12,16 +12,24 @@ class AccountReportCompleteViewController: UIViewController {
     
     private let accountReportCompleteView = AccountReportCompleteView()
 
+    // 선택된 신고 이유를 저장할 변수
+    var selectedReportReason: ReportReason?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view = accountReportCompleteView
-
+        
         setupNavigationBar()
+        setupAction()
+        
+        // 선택된 신고 이유가 있으면 뷰에 설정
+        if let selectedReason = selectedReportReason {
+            accountReportCompleteView.setReportReason(selectedReason.title)
+        }
     }
     
     private func setupAction() {
         accountReportCompleteView.completeButton.addTarget(self, action: #selector(didTapCompleteButton), for: .touchUpInside)
-        
         
     }
     
@@ -36,7 +44,6 @@ class AccountReportCompleteViewController: UIViewController {
         navBarManager.setTitle(
             to: navigationItem,
             title: "계정 신고하기",
-            //            font: .ptdSemiBoldFont(ofSize: 18),
             font: .systemFont(ofSize: 18, weight: .semibold),
             textColor: .black
         )
@@ -48,11 +55,6 @@ class AccountReportCompleteViewController: UIViewController {
     }
     
     @objc private func didTapCompleteButton() {
-//        guard let viewControllerStack = self.navigationController?.viewControllers else { return }
-//        for viewController in viewControllerStack {
-//            if let followProfileVC = viewController as? FollowProfileViewController {
-//                self.navigationController?.popToViewController(followProfileVC, animated: true)
-//            }
-//        }
+
     }
 }

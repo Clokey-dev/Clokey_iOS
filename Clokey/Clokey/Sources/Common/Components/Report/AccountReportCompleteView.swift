@@ -149,7 +149,7 @@ class AccountReportCompleteView: UIView, UITextFieldDelegate {
         }
         
         warningImage2.snp.makeConstraints {
-            $0.top.equalTo(warningImage1.snp.bottom).offset(40)
+            $0.top.equalTo(warningText1.snp.bottom).offset(12)
             $0.leading.equalToSuperview().offset(20)
             $0.width.height.equalTo(16)
         }
@@ -161,7 +161,7 @@ class AccountReportCompleteView: UIView, UITextFieldDelegate {
         }
         
         warningImage3.snp.makeConstraints {
-            $0.top.equalTo(warningImage2.snp.bottom).offset(62)
+            $0.top.equalTo(warningText2.snp.bottom).offset(12)
             $0.leading.equalToSuperview().offset(20)
             $0.width.height.equalTo(16)
         }
@@ -173,7 +173,7 @@ class AccountReportCompleteView: UIView, UITextFieldDelegate {
         }
         
         completeButton.snp.makeConstraints {
-            $0.bottom.equalTo(safeAreaLayoutGuide)
+            $0.bottom.equalTo(safeAreaLayoutGuide).offset(-10)
             $0.centerX.equalToSuperview()
             $0.height.equalTo(54)
             $0.width.equalTo(353)
@@ -182,6 +182,11 @@ class AccountReportCompleteView: UIView, UITextFieldDelegate {
 
     func getTextContent() -> String {
         return textAddBox.text
+    }
+    
+    // 신고 이유를 설정하는 메서드
+    func setReportReason(_ reason: String) {
+        reasonSubtitle.text = reason
     }
     
     // 키보드 자동조정
