@@ -90,7 +90,7 @@ class AccountReportViewController: UIViewController {
     private func loadReportInfo() {
         showLoadingIndicator()
         
-        reportService.getReportInfo(clokeyId: clokeyId) { [weak self] result in
+        reportService.getProfileReportInfo(clokeyId: clokeyId) { [weak self] result in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
@@ -98,7 +98,6 @@ class AccountReportViewController: UIViewController {
                 
                 switch result {
                 case .success(let response):
-                    // 여기서 response는 ReportResponseDTO 타입입니다.
                     print("신고 정보 로드 성공: \(response)")
                     
                     // ReportReason 배열 생성
@@ -113,7 +112,7 @@ class AccountReportViewController: UIViewController {
                         reasons.append(reason)
                     }
                     
-                    // 뷰에 정보 업데이트
+                    // 뷰 업데이트
                     self.accountReportView.updateUserInfo(
                         clokeyId: response.clokeyId,
                         nickname: response.nickName,
@@ -143,10 +142,10 @@ class AccountReportViewController: UIViewController {
     @objc private func didTapNextButton() {
         // 선택된 신고 이유가 있는지 확인
         if let selectedReason = accountReportView.getSelectedReportReason() {
-            // 다음 화면으로 이동하면서 선택된 신고 이유와 클로키 ID 전달
+            // 다음 화면으로 이동하면서 선택된 신고 이유와 clokeyId 전달
             let nextVC = CustomReportCompleteViewController()
             nextVC.selectedReportReason = selectedReason
-            nextVC.reportedClokeyId = self.clokeyId // 클로키 ID도 전달
+            nextVC.reportedClokeyId = self.clokeyId // clokeyId 전달
             navigationController?.pushViewController(nextVC, animated: true)
         } else {
             // 선택된 이유가 없을 경우 알림
