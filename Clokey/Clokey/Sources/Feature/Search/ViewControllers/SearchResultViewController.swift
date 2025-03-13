@@ -59,7 +59,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         
         setupRefreshControl()
         
-        
+       
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
@@ -102,9 +102,10 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
             
             DispatchQueue.main.async {
                 self.updateIndicatorPosition(selectedButton: self.searchView.hashtagButton)
+                self.loadHistoryData(query: self.query, isNextPage: false)
             }
             // 해시태그 API 호출
-            loadHistoryData(query: query, isNextPage: false)
+            //loadHistoryData(query: query, isNextPage: false)
         } else {
             // 계정 탭 기본 선택 (기존 로직)
             filterUsers(with: query)
@@ -116,21 +117,23 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        navigationController?.setNavigationBarHidden(true, animated: false)
+        
         searchView.hashtagsCollectionView.reloadData()
         searchView.accountsCollectionView.reloadData()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        navigationController?.view.backgroundColor = .white
         searchHistory = searchManager.fetchRecentSearches() //  검색 기록 강제 업데이트
         searchView.accountsCollectionView.reloadData()
         navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.navigationBar.alpha = 0
     }
     
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        navigationController?.view.backgroundColor = .white
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
