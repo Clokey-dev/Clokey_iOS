@@ -10,14 +10,16 @@ import SnapKit
 import Then
 
 class PopupViewController: UIViewController {
+    open var shadowOffset: CGSize = .zero
+    open var shadowOpacity: Float = 0.0
+    open var shadowRadius: CGFloat = 0.0
+    
     var clothId: Int64 = 0 {
         didSet {
             isEditingMode = (clothId != 0) // clothId가 0이면 추가, 0이 아니면 수정 모드
         }
     }
     var isEditingMode: Bool = false
-    
-    
     var clothName: String? // 전달받은 옷 이름
     var categoryName: String?
     var categoryCloth: String?
@@ -128,27 +130,6 @@ class PopupViewController: UIViewController {
         popupView.urlGoButton.addTarget(self, action: #selector(urlGoButtonTapped), for: .touchUpInside)
     
         
-        print(selectedSeasons)
-        
-        if let minTemp = minTemp, let maxTemp = maxTemp {
-            print("min : \(minTemp), max: \(maxTemp)")
-        } else {
-            print("min 또는 max 값이 없습니다.")
-        }
-        
-        if let thickCount = thickCount {
-            print("thickCount : \(thickCount)")
-        } else {
-            print("thickCount 값이 없습니다.")
-        }
-        
-        if let isPublicSelected = isPublicSelected {
-            print("isPublicSelected : \(isPublicSelected)")
-        } else {
-            print("isPublicSelected 값이 없습니다.")
-        }
-    
-        
         setupUI()
        
         addButton.addTarget(self, action: #selector(didTapAddClothButton), for: .touchUpInside)
@@ -175,6 +156,7 @@ class PopupViewController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = .white
+        
         view.addSubview(titleLabel)
         view.addSubview(popupView)
         view.addSubview(addButton)
@@ -187,6 +169,11 @@ class PopupViewController: UIViewController {
         
         popupView.layer.cornerRadius = 30 // 원하는 둥글기 정도 (예: 20)
         popupView.clipsToBounds = true
+//        popupView.layer.shadowOffset = CGSize(width: 310, height: 495)
+        popupView.layer.shadowOffset = CGSize(width: 0, height: 0)
+        popupView.layer.shadowOpacity = 0.15
+        popupView.layer.shadowRadius = 30
+        popupView.layer.masksToBounds = false
         
         popupView.snp.remakeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(65) // 기존 20 -> 40으로 증가

@@ -171,39 +171,39 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
         }
         
         // 로딩 시작 (UI 스레드에서 실행)
-                DispatchQueue.main.async {
-                    self.loadingIndicator.startAnimating()
-                }
-
+        DispatchQueue.main.async {
+            self.loadingIndicator.startAnimating()
+        }
+        
         let categoriesService = CategoriesService()
         
         categoriesService.getRecommendCategory(name: text) { [weak self] result in
-//            DispatchQueue.main.async {
-                guard let self = self else { return }
+            //            DispatchQueue.main.async {
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                self.loadingIndicator.stopAnimating() // 로딩 완료되면 중지
+            }
+            
+            switch result {
+            case .success(let response):
+                let category1Name = response.largeCategoryName
+                let category3Name = response.smallCategoryName
+                let category3Id = response.categoryId
                 
-                DispatchQueue.main.async {
-                    self.loadingIndicator.stopAnimating() // 로딩 완료되면 중지
+                // 카테고리 응답이 비어있을 경우 로그 출력
+                if category1Name.isEmpty || category3Name.isEmpty {
+                    print("추천 카테고리 없음")
+                } else {
+                    //  UI 업데이트
+                    self.updateCategoryTags(category1Name: category1Name, category3Name: category3Name, category3Id: category3Id)
+                    view.endEditing(true)
+                    
                 }
                 
-                switch result {
-                case .success(let response):
-                    let category1Name = response.largeCategoryName
-                    let category3Name = response.smallCategoryName
-                    let category3Id = response.categoryId
-                    
-                    // 카테고리 응답이 비어있을 경우 로그 출력
-                    if category1Name.isEmpty || category3Name.isEmpty {
-                        print("추천 카테고리 없음")
-                    } else {
-                        //  UI 업데이트
-                        self.updateCategoryTags(category1Name: category1Name, category3Name: category3Name, category3Id: category3Id)
-                        
-                    }
-                    
-                case .failure(let error):
-                    print("카테고리 추천 데이터 로드 실패: \(error.localizedDescription)")
-                }
-//            }
+            case .failure(let error):
+                print("카테고리 추천 데이터 로드 실패: \(error.localizedDescription)")
+            }
         }
     }
     
@@ -247,26 +247,33 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.pointOrange800.cgColor
         button.layer.cornerRadius = 5
-        //        button.contentEdgeInsets = UIEdgeInsets(top: 3, left: 14, bottom: 3, right: 14) //  내부 여백 추가
-        //  iOS 15 이상에서 contentInsets 적용
+        
+        // 버튼이 본인의 콘텐츠 크기에 맞춰지도록 설정
+        button.setContentHuggingPriority(.required, for: .horizontal)
+        button.setContentCompressionResistancePriority(.required, for: .horizontal)
+        
+        // contentInsets 조정 (필요 시 값을 조절)
         if #available(iOS 15.0, *) {
             var config = UIButton.Configuration.filled()
-            config.contentInsets = NSDirectionalEdgeInsets(top: 3, leading: 14, bottom: 3, trailing: 14)
-            config.baseBackgroundColor = .clear // 기본 배경 제거
+            config.contentInsets = NSDirectionalEdgeInsets(top: 3, leading: 8, bottom: 3, trailing: 8)
+            config.baseBackgroundColor = .clear
             button.configuration = config
         } else {
-            // iOS 14 이하에서는 기존 방식 유지
-            button.contentEdgeInsets = UIEdgeInsets(top: 3, left: 14, bottom: 3, right: 14)
+            button.contentEdgeInsets = UIEdgeInsets(top: 3, left: 8, bottom: 3, right: 8)
         }
         return button
     }
     
 
     private func makeSeparator() -> UIImageView {
-        let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "chevron.right") // SF Symbol 설정
-        imageView.tintColor = .mainBrown800 // 색상 적용
+        let imageView = UIImageView(image: UIImage(systemName: "chevron.right"))
+        imageView.tintColor = .mainBrown800
         imageView.contentMode = .scaleAspectFit
+        imageView.setContentHuggingPriority(.required, for: .horizontal)
+        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        imageView.snp.makeConstraints {
+            $0.width.equalTo(12)
+        }
         return imageView
     }
     //
@@ -356,7 +363,6 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
                     categoryId: response.categoryId)
                 
                 DispatchQueue.main.async {
-//                    self.updateUIForMode()
                     self.addClothesView.inputField.text = response.name
                 }
             case .failure(let error):
@@ -369,7 +375,6 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
 extension AddClothViewController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer == self.navigationController?.interactivePopGestureRecognizer {
-//            handleBack()
             didTapBackButton()
             return false  // 기본 pop 동작 차단
         }

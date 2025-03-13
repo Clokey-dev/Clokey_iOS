@@ -157,6 +157,17 @@ public final class HistoryService: NetworkManager {
             completion: completion
         )
     }
+    //좋아요한 기록 보기 
+    public func likedHistories(
+            page: Int,
+            completion: @escaping (Result<LikedHistoriesResponseDTO, NetworkError>) -> Void
+        ) {
+            request(
+                target: .likedHistories(page: page),
+                decodingType: LikedHistoriesResponseDTO.self,
+                completion: completion
+            )
+        }
 }
 
 

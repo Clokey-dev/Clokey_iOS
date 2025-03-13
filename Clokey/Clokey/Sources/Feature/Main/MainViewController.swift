@@ -96,6 +96,8 @@ final class MainViewController: UIViewController {
             $0.edges.equalToSuperview()
         }
         viewController.didMove(toParent: self)
+        
+//        navigationController?.setNavigationBarHidden(!(viewController is ProfileViewController), animated: true)
     }
 
     /// AddClothViewController로 네비게이션 전환
@@ -180,6 +182,7 @@ extension MainViewController: TabBarViewDelegate {
             checkNotificationExistence()
         case 4:
             showViewController(profileVC)
+//            navigationController?.pushViewController(profileVC, animated: true)
             mainView.setHeaderViewHidden(true)
             checkNotificationExistence()
         default:

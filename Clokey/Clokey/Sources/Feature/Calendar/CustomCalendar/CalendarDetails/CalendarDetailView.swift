@@ -194,12 +194,22 @@ class CalendarDetailView: UIView {
     
     
     // 해시태그 라벨
-    private let hashtagsLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 14)
-        $0.text = "#연말룩 #파티룩 #원피스 #2025년도 화이팅"
-        $0.textColor = .orange
-    }
-    
+    public let hashtagsTextView: UITextView = {
+        let tv = UITextView()
+        tv.font = .systemFont(ofSize: 14)
+        tv.backgroundColor = .clear
+        tv.textContainerInset = .zero
+        tv.textColor = .pointOrange800
+        tv.textContainer.lineFragmentPadding = 0
+        tv.isEditable = false
+        tv.isScrollEnabled = false
+        tv.dataDetectorTypes = []
+        tv.linkTextAttributes = [
+               .foregroundColor: UIColor.pointOrange800,
+               .font: UIFont.systemFont(ofSize: 14)
+           ]
+        return tv
+    }()
     // 날짜 라벨
     private let dateLabel = UILabel().then {
         $0.text = "2024.11.26 (TUE)"
@@ -256,7 +266,7 @@ class CalendarDetailView: UIView {
         // 하단 영역 구성
         footerStack.addArrangedSubview(heartNLikeContentView)
         footerStack.addArrangedSubview(contentContainerView)
-        footerStack.addArrangedSubview(hashtagsLabel)
+        footerStack.addArrangedSubview(hashtagsTextView)
         footerStack.addArrangedSubview(dateLabel)
         
         // 좋아요/댓글 영역
@@ -420,13 +430,13 @@ class CalendarDetailView: UIView {
             $0.trailing.lessThanOrEqualToSuperview() // 우측 제약 추가
         }
             
-        hashtagsLabel.snp.makeConstraints {
+        hashtagsTextView.snp.makeConstraints {
             $0.top.equalTo(contentLabel.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview()
         }
         
         dateLabel.snp.makeConstraints {
-            $0.top.equalTo(hashtagsLabel.snp.bottom).offset(10)
+            $0.top.equalTo(hashtagsTextView.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
@@ -461,9 +471,24 @@ class CalendarDetailView: UIView {
         pageControl.currentPageIndicatorTintColor = .pointOrange800
     }
     
-    // 리스트 문자열 변환
+    // 리스트 문자열 변환, 해시태그별로 검색 가능하게 변환
     func configureHashtags(_ hashtags: [String]) {
-        hashtagsLabel.text = hashtags.joined(separator: " ")
+        let attributedString = NSMutableAttributedString()
+        for hashtag in hashtags {
+            let textWithoutHash = String(hashtag.dropFirst())
+            // percent-encoding: 허용 문자 집합을 .urlHostAllowed로 설정
+            if let encoded = textWithoutHash.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
+                let linkValue = "hashtag://\(encoded)"
+                let attributes: [NSAttributedString.Key: Any] = [
+                    .foregroundColor: UIColor.pointOrange800,
+                    .font: UIFont.systemFont(ofSize: 14),
+                    .link: linkValue
+                ]
+                let attributedHashtag = NSAttributedString(string: hashtag + " ", attributes: attributes)
+                attributedString.append(attributedHashtag)
+            }
+        }
+        hashtagsTextView.attributedText = attributedString
     }
     
     private func updateContentLabel() {
@@ -572,7 +597,8 @@ extension CalendarDetailView {
         }
         
         // 해시태그 설정
-        hashtagsLabel.text = viewModel.hashtags
+        let hashtagsArray = viewModel.hashtags.components(separatedBy: " ") // 공백으로 분리
+        configureHashtags(hashtagsArray)
         
         // 날짜 설정
         if let date = convertStringToDate(viewModel.date) {
@@ -623,5 +649,18 @@ extension CalendarDetailView {
             self.scrollView.isScrollEnabled = true
             self.layoutIfNeeded()
         }
+    }
+}
+extension CalendarDetailView {
+    func addHashtagTapAction(target: Any, action: Selector) {
+        hashtagsTextView.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: target, action: action)
+        hashtagsTextView.addGestureRecognizer(tapGesture)
+    }
+}
+
+extension CalendarDetailView {
+    func setHashtagsTextViewDelegate(_ delegate: UITextViewDelegate) {
+        hashtagsTextView.delegate = delegate
     }
 }

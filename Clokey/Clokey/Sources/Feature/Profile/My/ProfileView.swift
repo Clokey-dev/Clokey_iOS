@@ -23,6 +23,10 @@ final class ProfileView: UIView {
         $0.backgroundColor = .white // 배경색 흰색
     }
     
+    let topContainer: UIView = UIView().then {
+        $0.backgroundColor = .white // 배경색 흰색
+    }
+    
     let usernameLabel = UILabel().then {
         $0.text = "cake123"
         $0.font = UIFont.ptdSemiBoldFont(ofSize: 20)
@@ -100,7 +104,6 @@ final class ProfileView: UIView {
         $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 15)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.textAlignment = .center
-        //        $0.addTarget(self, action: #selector(followingCountTapped), for: .touchUpInside)
     }
     
     let followingLabel = UILabel().then {
@@ -115,7 +118,6 @@ final class ProfileView: UIView {
         $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 15)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.textAlignment = .center
-        //        $0.addTarget(self, action: #selector(followingCountTapped), for: .touchUpInside)
     }
     
     let descriptionLabel = UILabel().then {
@@ -214,10 +216,12 @@ final class ProfileView: UIView {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
         
+        contentView.addSubview(topContainer)
+        topContainer.addSubview(usernameLabel)
+        topContainer.addSubview(editButton)
+        topContainer.addSubview(settingButton)
+        
         contentView.addSubview(backgroundImageView)
-        contentView.addSubview(usernameLabel)
-        contentView.addSubview(editButton)
-        contentView.addSubview(settingButton)
         contentView.addSubview(profileContainer)
         profileContainer.addSubview(profileImageView)
         contentView.addSubview(nicknameLabel)
@@ -237,7 +241,6 @@ final class ProfileView: UIView {
         contentView.addSubview(bottomButtonLabel)
         contentView.addSubview(bottomArrowIcon)
         contentView.addSubview(recordLabel)
-//        contentView.addSubview(recordContainerView)
         
         contentView.addSubview(calendarContainerView)
 
@@ -254,31 +257,39 @@ final class ProfileView: UIView {
             make.width.equalToSuperview() // 가로 크기는 화면 크기와 동일
         }
         
-        backgroundImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.centerX.equalToSuperview()
-            make.height.width.equalTo(393)
+        topContainer.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(61)
+            make.width.equalToSuperview()
+            make.height.width.equalTo(45)
         }
         
         usernameLabel.snp.makeConstraints {
-            $0.top.equalTo(contentView.safeAreaLayoutGuide.snp.top)
+            $0.centerY.equalTo(topContainer)
             $0.leading.equalToSuperview().offset(20)
             $0.height.equalTo(50)
         }
         
         editButton.snp.makeConstraints {
-            $0.top.equalTo(contentView.safeAreaLayoutGuide.snp.top).offset(10)
+            $0.centerY.equalTo(topContainer)
             $0.trailing.equalToSuperview().inset(67)
             $0.width.equalTo(20)
             $0.height.equalTo(20)
         }
         
         settingButton.snp.makeConstraints {
-            $0.top.equalTo(contentView.safeAreaLayoutGuide.snp.top).offset(10)
+            $0.centerY.equalTo(topContainer)
             $0.trailing.equalToSuperview().inset(20)
             $0.width.equalTo(20)
             $0.height.equalTo(20)
         }
+        
+        backgroundImageView.snp.makeConstraints { make in
+            make.top.equalTo(topContainer.snp.bottom)
+            make.centerX.equalToSuperview()
+            make.height.width.equalTo(393)
+        }
+        
+
         
         profileContainer.snp.makeConstraints { make in
             make.top.equalTo(backgroundImageView.snp.bottom).offset(-50)
