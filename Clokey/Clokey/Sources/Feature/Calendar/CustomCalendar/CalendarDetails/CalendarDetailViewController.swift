@@ -163,6 +163,7 @@ class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegat
 
         let commentVC = Clokey.CalendarCommentViewController(historyId: historyId)
         commentVC.delegate = self
+        commentVC.reportDelegate = self
         commentVC.modalPresentationStyle = .pageSheet
 
         // 모달 닫힘 감지
@@ -298,6 +299,11 @@ extension CalendarDetailViewController: LikeListViewControllerDelegate {
 }
 
 extension CalendarDetailViewController: CalendarCommentDelegate {
+    func commentViewController(_ viewController: CalendarCommentViewController, didRequestReportForComment commentId: Int64) {
+        let commentReportVC = CustomReportViewController(commentId: commentId)
+        self.navigationController?.pushViewController(commentReportVC, animated: true)
+    }
+    
     func CalendarCommentViewController(_ viewController: CalendarCommentViewController, didSelectProfileWith clokeyId: String) {
         // 모달을 닫고 프로필 화면으로 이동
         viewController.dismiss(animated: true) { [weak self] in

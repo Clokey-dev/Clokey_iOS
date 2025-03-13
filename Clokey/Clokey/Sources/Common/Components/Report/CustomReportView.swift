@@ -62,29 +62,29 @@ class CustomReportView: UIView {
     }
     
     // 댓글/게시물 내용 관련 UI 요소들
-    private let contentContainer = UIView().then {
+    let contentContainer = UIView().then {
         $0.isHidden = false
     }
     
-    private let contentTitle = UILabel().then {
+    let contentTitle = UILabel().then {
         $0.text = "기록 내용"
         $0.font = .ptdSemiBoldFont(ofSize: 16)
         $0.textColor = .black
     }
     
-    private let contentTextLabel = UILabel().then {
+    let contentTextLabel = UILabel().then {
         $0.text = "연말 파티 즐거웠다~내용이 추가된다면~~~ 추가된 내용은 아무내용...연말 파티 즐거웠다~내용이 추가된다면~~~ 추가된 내용은 아무내용..."
         $0.font = .ptdRegularFont(ofSize: 12)
         $0.textColor = .black
         $0.numberOfLines = 0
     }
 
-    private let divideLine2 = UIView().then {
+    let divideLine2 = UIView().then {
         $0.backgroundColor = UIColor(hexCode: "#f1f1f1")
     }
     
     // 신고 사유
-    private let reportTitle = UILabel().then {
+    let reportTitle = UILabel().then {
         $0.text = "신고 사유"
         $0.font = .ptdSemiBoldFont(ofSize: 16)
         $0.textColor = .black

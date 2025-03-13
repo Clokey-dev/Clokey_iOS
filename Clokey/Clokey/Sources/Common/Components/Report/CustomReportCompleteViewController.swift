@@ -8,6 +8,13 @@
 import UIKit
 
 class CustomReportCompleteViewController: UIViewController {
+    
+    enum ReportType {
+        case profile
+        case comment
+        case history
+    }
+    
     private let navBarManager = NavigationBarManager()
     
     private let customReportCompleteView = CustomReportCompleteView()
@@ -20,6 +27,9 @@ class CustomReportCompleteViewController: UIViewController {
     
     // ReportService 인스턴스
     private let reportService = ReportService()
+    
+    var reportType: ReportType = .profile
+    var reportedCommentId: Int64?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,11 +76,6 @@ class CustomReportCompleteViewController: UIViewController {
             return
         }
         
-        if reportedClokeyId.isEmpty {
-            showAlert(message: "신고할 사용자 정보가 없습니다.")
-            return
-        }
-        
         // 신고 내용 가져오기
         let reportContent = customReportCompleteView.getTextContent()
         
@@ -80,23 +85,35 @@ class CustomReportCompleteViewController: UIViewController {
             return
         }
         
-        // 신고 데이터 생성
-        let reportData = ReportRequestDTO(
-            clokeyId: reportedClokeyId,
-            profileReportType: reportReason.reportType,
-            content: reportContent
-        )
+        switch reportType {
+        case .profile:
+            submitProfileReport(reason: reportReason, content: reportContent)
+        case .comment:
+            submitCommentReport(reason: reportReason, content: reportContent)
+        case .history:
+            // history report handling
+            break
+        }
+    }
+    
+    private func submitProfileReport(reason: ReportReason, content: String) {
+        if reportedClokeyId.isEmpty {
+            showAlert(message: "신고할 사용자 정보가 없습니다.")
+            return
+        }
         
-        // 로딩 인디케이터 표시 (필요 시)
-        showLoadingIndicator()
+        // 신고 데이터 생성
+        let reportData = AccountReportRequestDTO(
+            clokeyId: reportedClokeyId,
+            profileReportType: reason.reportType,
+            content: content
+        )
         
         // 신고 API 호출
         reportService.reportProfile(data: reportData) { [weak self] result in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
-                // 로딩 인디케이터 숨김
-                self.hideLoadingIndicator()
                 
                 switch result {
                 case .success(_):
@@ -111,15 +128,37 @@ class CustomReportCompleteViewController: UIViewController {
             }
         }
     }
-    
-    // 로딩 인디케이터 표시
-    private func showLoadingIndicator() {
-        // 로딩 인디케이터 구현 (필요 시)
-    }
-    
-    // 로딩 인디케이터 숨김
-    private func hideLoadingIndicator() {
-        // 로딩 인디케이터 숨김 구현 (필요 시)
+
+    private func submitCommentReport(reason: ReportReason, content: String) {
+        guard let commentId = reportedCommentId else {
+            showAlert(message: "신고할 댓글 정보가 없습니다.")
+            return
+        }
+        
+        // 신고 데이터 생성
+        let reportData = CommentReportRequestDTO(
+            commentId: Int(commentId), // commentId를 string으로 변환
+            commentReportType: reason.reportType,
+            content: content
+        )
+        
+        // 신고 API 호출
+        reportService.reportComment(data: reportData) { [weak self] result in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                switch result {
+                case .success(_):
+                    // 신고 성공 처리
+                    self.showSuccessAlert()
+                    
+                case .failure(let error):
+                    // 신고 실패 처리
+                    print("댓글 신고 실패: \(error.localizedDescription)")
+                    self.showAlert(message: "신고 제출에 실패했습니다. 다시 시도해주세요.")
+                }
+            }
+        }
     }
     
     // 알림 표시

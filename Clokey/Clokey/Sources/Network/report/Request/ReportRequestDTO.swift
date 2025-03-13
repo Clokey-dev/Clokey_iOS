@@ -9,8 +9,20 @@ import Foundation
 
 // 각 신고 정보 조회 API는 Request 사용 X
 
-// 계정 신고하기
-public struct ReportRequestDTO: Codable {
+// 댓글 신고하기
+public struct CommentReportRequestDTO: Codable {
+    public let commentId: Int
+    public let commentReportType: String
+    public let content: String
+
+    public init(commentId: Int, commentReportType: String, content: String) {
+        self.commentId = commentId
+        self.commentReportType = commentReportType
+        self.content = content
+    }
+}
+
+public struct AccountReportRequestDTO: Codable {
     public let clokeyId: String
     public let profileReportType: String
     public let content: String
@@ -22,4 +34,16 @@ public struct ReportRequestDTO: Codable {
     }
 }
 
+
+public struct HistoryReportRequestDTO: Codable {
+    public let historyId: Int
+    public let historyReportType: String
+    public let content: String
+
+    public init(historyId: Int, historyReportType: String, content: String) {
+        self.historyId = historyId
+        self.historyReportType = historyReportType
+        self.content = content
+    }
+}
 

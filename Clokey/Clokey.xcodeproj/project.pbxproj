@@ -285,7 +285,7 @@
 		A67661AD2D5B3760006AAB63 /* PrivateStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661AC2D5B3760006AAB63 /* PrivateStackView.swift */; };
 		A6FBF9C52D78BA83000FC4EA /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9C42D78BA83000FC4EA /* CheckBox.swift */; };
 		A6FBF9C72D78BAAA000FC4EA /* CustomReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9C62D78BAAA000FC4EA /* CustomReportView.swift */; };
-		A6FBF9C92D78BAC5000FC4EA /* AccountReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9C82D78BAC5000FC4EA /* AccountReportViewController.swift */; };
+		A6FBF9C92D78BAC5000FC4EA /* CustomReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9C82D78BAC5000FC4EA /* CustomReportViewController.swift */; };
 		A6FBF9CB2D78BAE3000FC4EA /* CustomReportCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9CA2D78BAE3000FC4EA /* CustomReportCompleteView.swift */; };
 		A6FBF9CD2D78BB05000FC4EA /* CustomReportCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9CC2D78BB05000FC4EA /* CustomReportCompleteViewController.swift */; };
 /* End PBXBuildFile section */
@@ -558,7 +558,7 @@
 		A67661AC2D5B3760006AAB63 /* PrivateStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateStackView.swift; sourceTree = "<group>"; };
 		A6FBF9C42D78BA83000FC4EA /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
 		A6FBF9C62D78BAAA000FC4EA /* CustomReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReportView.swift; sourceTree = "<group>"; };
-		A6FBF9C82D78BAC5000FC4EA /* AccountReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountReportViewController.swift; sourceTree = "<group>"; };
+		A6FBF9C82D78BAC5000FC4EA /* CustomReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReportViewController.swift; sourceTree = "<group>"; };
 		A6FBF9CA2D78BAE3000FC4EA /* CustomReportCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReportCompleteView.swift; sourceTree = "<group>"; };
 		A6FBF9CC2D78BB05000FC4EA /* CustomReportCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReportCompleteViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1525,8 +1525,8 @@
 		07ECCEAA2D4E835C00AFF486 /* Commnet */ = {
 			isa = PBXGroup;
 			children = (
-				07ECCEA62D4E7ECA00AFF486 /* CalendarCommentViewController.swift */,
 				07ECCEA42D4E7AE400AFF486 /* CalendarCommentView.swift */,
+				07ECCEA62D4E7ECA00AFF486 /* CalendarCommentViewController.swift */,
 				07ECCEA82D4E834300AFF486 /* CommentCell.swift */,
 				07ECCEAB2D4E857B00AFF486 /* Comment.swift */,
 			);
@@ -1887,9 +1887,9 @@
 			children = (
 				A6FBF9C42D78BA83000FC4EA /* CheckBox.swift */,
 				A6FBF9C62D78BAAA000FC4EA /* CustomReportView.swift */,
+				A6FBF9C82D78BAC5000FC4EA /* CustomReportViewController.swift */,
 				A6FBF9CA2D78BAE3000FC4EA /* CustomReportCompleteView.swift */,
 				A6FBF9CC2D78BB05000FC4EA /* CustomReportCompleteViewController.swift */,
-				A6FBF9C82D78BAC5000FC4EA /* AccountReportViewController.swift */,
 				072EB0172D7DBA3F005698DE /* ReportReasonView.swift */,
 				072EB0192D7EAD2F005698DE /* ReportReason.swift */,
 				07EB0BCF2D81139C001F9A7C /* ReportSuccessView.swift */,
@@ -2216,7 +2216,7 @@
 				A676619A2D5B367B006AAB63 /* DeleteAccountView.swift in Sources */,
 				A67661A92D5B367B006AAB63 /* ProfileModel.swift in Sources */,
 				A648ACE02D5CECF50094C126 /* CategoriesService.swift in Sources */,
-				A6FBF9C92D78BAC5000FC4EA /* AccountReportViewController.swift in Sources */,
+				A6FBF9C92D78BAC5000FC4EA /* CustomReportViewController.swift in Sources */,
 				A67661AA2D5B367B006AAB63 /* ProfileView.swift in Sources */,
 				A67661AD2D5B3760006AAB63 /* PrivateStackView.swift in Sources */,
 				A67661AB2D5B367B006AAB63 /* ProfileViewController.swift in Sources */,

@@ -60,7 +60,7 @@ public final class ReportService: NetworkManager {
     
     // 프로필 신고 POST API
     public func reportProfile(
-        data: ReportRequestDTO,
+        data: AccountReportRequestDTO,
         completion: @escaping (Result<AccountReportReasonDTO, NetworkError>) -> Void
     ) {
         request(
@@ -72,7 +72,7 @@ public final class ReportService: NetworkManager {
     
     // 댓글 신고 POST API
     public func reportComment(
-        data: ReportRequestDTO,
+        data: CommentReportRequestDTO,
         completion: @escaping (Result<CommentReportReasonDTO, NetworkError>) -> Void
     ) {
         request(
@@ -84,7 +84,7 @@ public final class ReportService: NetworkManager {
 
     // 기록 신고 POST API
     public func reportHistory(
-        data: ReportRequestDTO,
+        data: HistoryReportRequestDTO,
         completion: @escaping (Result<HistoryReportReasonDTO, NetworkError>) -> Void
     ) {
         request(

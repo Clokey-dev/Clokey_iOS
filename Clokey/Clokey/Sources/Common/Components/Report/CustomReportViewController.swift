@@ -1,5 +1,5 @@
 //
-//  AccountReportViewController.swift
+//  CustomReportViewController.swift
 //  Report
 //
 //  Created by 한금준 on 3/5/25.
@@ -12,7 +12,7 @@ enum ButtonState {
     case transformed
 }
 
-class AccountReportViewController: UIViewController {
+class CustomReportViewController: UIViewController {
     private let navBarManager = NavigationBarManager()
     
     private let accountReportView = CustomReportView()
@@ -21,6 +21,8 @@ class AccountReportViewController: UIViewController {
     
     // 신고할 사용자의 클로키 ID
     var clokeyId: String = ""
+    var commentId: Int64?
+
     
     // ReportService 인스턴스
     private let reportService = ReportService()
@@ -28,8 +30,9 @@ class AccountReportViewController: UIViewController {
     // 로딩 인디케이터
     private var loadingIndicator: UIActivityIndicatorView?
     
-    init(clokeyId: String = "") {
+    init(clokeyId: String = "", commentId: Int64? = nil) {
         self.clokeyId = clokeyId
+        self.commentId = commentId
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -44,9 +47,11 @@ class AccountReportViewController: UIViewController {
         setupNavigationBar()
         setupAction()
         
-        // 클로키 ID가 있으면 신고 정보 로드
+        // 신고정보 로드
         if !clokeyId.isEmpty {
-            loadReportInfo()
+            loadProfileReportInfo()
+        } else if let commentId = commentId {
+            loadCommentReportInfo(commentId: commentId)
         }
     }
     
@@ -87,7 +92,7 @@ class AccountReportViewController: UIViewController {
     }
     
     // API를 통해 신고 정보 로드
-    private func loadReportInfo() {
+    private func loadProfileReportInfo() {
         showLoadingIndicator()
         
         reportService.getProfileReportInfo(clokeyId: clokeyId) { [weak self] result in
@@ -128,6 +133,70 @@ class AccountReportViewController: UIViewController {
         }
     }
     
+    // 댓글 신고 정보 로드
+    private func loadCommentReportInfo(commentId: Int64) {
+        showLoadingIndicator()
+        
+        reportService.getCommentReportInfo(commentId: String(commentId)) { [weak self] result in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                self.hideLoadingIndicator()
+                
+                switch result {
+                case .success(let response):
+                    print("댓글 신고 정보 로드 성공: \(response)")
+                    
+                    // ReportReason 배열 생성
+                    var reasons = [ReportReason]()
+                    
+                    for typeResult in response.reportTypeResults {
+                        let reason = ReportReason(
+                            reportType: typeResult.reportType,
+                            title: typeResult.title,
+                            reportContents: typeResult.reportContents
+                        )
+                        reasons.append(reason)
+                    }
+                    
+                    // 댓글 내용 표시 (contentContainer 활성화)
+                    if let content = response.commentContent {
+                        self.accountReportView.contentContainer.isHidden = false
+                        self.accountReportView.divideLine2.isHidden = false
+                        self.accountReportView.contentTitle.text = "댓글 내용"
+                        self.accountReportView.contentTextLabel.text = content
+                        
+                        // 제약조건 수정 - 신고 사유 타이틀의 위치를 변경
+                        self.accountReportView.reportTitle.snp.remakeConstraints {
+                            $0.top.equalTo(self.accountReportView.divideLine2.snp.bottom).offset(12)
+                            $0.leading.equalToSuperview().offset(20)
+                        }
+                    }
+                    
+                    // 뷰 업데이트
+                    self.accountReportView.updateUserInfo(
+                        clokeyId: response.clokeyId,
+                        nickname: response.nickName,
+                        profileImageUrl: response.userProfile
+                    )
+                    self.accountReportView.updateReportReasons(reasons: reasons)
+                    
+                    // 네비게이션 타이틀 변경
+                    self.navBarManager.setTitle(
+                        to: self.navigationItem,
+                        title: "댓글 신고하기",
+                        font: .systemFont(ofSize: 18, weight: .semibold),
+                        textColor: .black
+                    )
+                    
+                case .failure(let error):
+                    print("댓글 신고 정보를 불러오는 데 실패했습니다: \(error.localizedDescription)")
+                    self.showErrorAlert()
+                }
+            }
+        }
+    }
+    
     private func showErrorAlert() {
         let alert = UIAlertController(title: "오류", message: "신고 정보를 불러오는 데 실패했습니다.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default))
@@ -142,10 +211,18 @@ class AccountReportViewController: UIViewController {
     @objc private func didTapNextButton() {
         // 선택된 신고 이유가 있는지 확인
         if let selectedReason = accountReportView.getSelectedReportReason() {
-            // 다음 화면으로 이동하면서 선택된 신고 이유와 clokeyId 전달
+            // 다음 화면으로 이동하면서 선택된 신고 이유와 ID 전달
             let nextVC = CustomReportCompleteViewController()
             nextVC.selectedReportReason = selectedReason
-            nextVC.reportedClokeyId = self.clokeyId // clokeyId 전달
+            
+            if !clokeyId.isEmpty {
+                nextVC.reportedClokeyId = self.clokeyId // 프로필 신고
+                nextVC.reportType = .profile
+            } else if let commentId = commentId {
+                nextVC.reportedCommentId = commentId // 댓글 신고
+                nextVC.reportType = .comment
+            }
+            
             navigationController?.pushViewController(nextVC, animated: true)
         } else {
             // 선택된 이유가 없을 경우 알림

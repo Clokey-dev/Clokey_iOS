@@ -725,7 +725,7 @@ extension FollowProfileViewController: CustomBottomSheetDelegate {
         bottomSheetVC.dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
             
-            let accountRepoVC = AccountReportViewController(clokeyId: self.followId)
+            let accountRepoVC = CustomReportViewController(clokeyId: self.followId)
             self.navigationController?.pushViewController(accountRepoVC, animated: true)
         }
     }

@@ -13,9 +13,9 @@ public enum ReportEndpoint {
     case getCommentReportInfo(commentId: String)
     case getHistoryReportInfo(historyId: String)
     
-    case reportProfile(data: ReportRequestDTO)
-    case reportComment(data: ReportRequestDTO)
-    case reportHistory(data: ReportRequestDTO)
+    case reportProfile(data: AccountReportRequestDTO)
+    case reportComment(data: CommentReportRequestDTO)
+    case reportHistory(data: HistoryReportRequestDTO)
 }
 
 extension ReportEndpoint: TargetType {
@@ -62,7 +62,11 @@ extension ReportEndpoint: TargetType {
             return .requestParameters(parameters: ["commentId": commentId], encoding: URLEncoding.queryString)
         case .getHistoryReportInfo(let historyId):
             return .requestParameters(parameters: ["historyId": historyId], encoding: URLEncoding.queryString)
-        case .reportProfile(let data), .reportComment(let data), .reportHistory(let data):
+        case .reportProfile(let data):
+            return .requestJSONEncodable(data)
+        case .reportComment(let data):
+            return .requestJSONEncodable(data)
+        case .reportHistory(let data):
             return .requestJSONEncodable(data)
         }
     }
