@@ -34,8 +34,12 @@ class LikeHistoryViewController: UIViewController {
         likeHistoryView.collectionView.dataSource = self
         likeHistoryView.collectionView.delegate = self
         
-        setupEdgePanGesture()
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+           navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+       // setupEdgePanGesture()
         fetchLikedPosts(page: 1)
+        //setupEdgePanGesture()
+       
         
         
     
@@ -49,22 +53,27 @@ class LikeHistoryViewController: UIViewController {
                 dismiss(animated: true, completion: nil)
             }
         }
-    private func setupEdgePanGesture() {
-            let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleEdgePan(_:)))
-            edgePan.edges = .left
-            view.addGestureRecognizer(edgePan)
-        }
+   
     
-    @objc private func handleEdgePan(_ gesture: UIScreenEdgePanGestureRecognizer) {
-        let translation = gesture.translation(in: view)
-        if gesture.state == .ended && translation.x > 100 {
-            if let nav = navigationController {
-                nav.popViewController(animated: true)
-            } else {
-                dismiss(animated: true, completion: nil)
-            }
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.view.backgroundColor = .white
+       
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.navigationBar.alpha = 0
     }
+    
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.view.backgroundColor = .white
+        if navigationController?.viewControllers.contains(self) == false {
+                navigationController?.setNavigationBarHidden(false, animated: animated)
+            }
+    }
+    
+    
     private func fetchLikedPosts(page: Int) {
             guard !isLoading else { return }
             isLoading = true
@@ -89,6 +98,22 @@ class LikeHistoryViewController: UIViewController {
                 }
             }
         }
+  /*  private func setupEdgePanGesture() {
+        let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleEdgePan(_:)))
+        edgePan.edges = .left
+        view.addGestureRecognizer(edgePan)
+    }
+
+    @objc private func handleEdgePan(_ gesture: UIScreenEdgePanGestureRecognizer) {
+        let translation = gesture.translation(in: view)
+        if gesture.state == .ended && translation.x > 100 {
+            if let nav = navigationController {
+                nav.popViewController(animated: true)
+            } else {
+                dismiss(animated: true, completion: nil)
+            }
+        }
+    }*/
     }
 
     extension LikeHistoryViewController: UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate {
@@ -133,3 +158,9 @@ class LikeHistoryViewController: UIViewController {
             }
         }
     }
+
+extension LikeHistoryViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return navigationController?.viewControllers.count ?? 0 > 1
+    }
+}
