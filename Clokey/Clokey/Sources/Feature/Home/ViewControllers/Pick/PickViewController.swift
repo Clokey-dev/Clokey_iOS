@@ -274,7 +274,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                         print("유효하지 않은 이미지 URL: \(response.imageUrl)")
                     }
                     if response.visibility == "PUBLIC" {
-                        popUpView.publicButton.setImage(UIImage(named: "lock_off"), for: .normal)
+                        popUpView.publicButton.setImage(UIImage(named: "public_icon"), for: .normal)
                     } else {
                         popUpView.publicButton.setImage(UIImage(named: "lock_on"), for: .normal)
                     }
@@ -293,28 +293,28 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                             //                                configureButton(popUpView.springButton, title: "봄")
                             popUpView.springButton.setTitleColor(.white, for: .normal)
                             popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.springButton.layer.cornerRadius = 5
                             popUpView.springButton.layer.borderWidth = 1
                         } else if response.seasons[0] == "SUMMER" {
                             //                                configureButton(popUpView.summerButton, title: "여름")
                             popUpView.summerButton.setTitleColor(.white, for: .normal)
                             popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.summerButton.layer.cornerRadius = 5
                             popUpView.summerButton.layer.borderWidth = 1
                         } else if response.seasons[0] == "FALL" {
                             //                                configureButton(popUpView.fallButton, title: "가을")
                             popUpView.fallButton.setTitleColor(.white, for: .normal)
                             popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.fallButton.layer.cornerRadius = 5
                             popUpView.fallButton.layer.borderWidth = 1
                         } else if response.seasons[0] == "WINTER" {
                             //                                configureButton(popUpView.winterButton, title: "겨울")
                             popUpView.winterButton.setTitleColor(.white, for: .normal)
                             popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.winterButton.layer.cornerRadius = 5
                             popUpView.winterButton.layer.borderWidth = 1
                         }
@@ -325,28 +325,28 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                             //                                configureButton(popUpView.springButton, title: "봄")
                             popUpView.springButton.setTitleColor(.white, for: .normal)
                             popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.springButton.layer.cornerRadius = 5
                             popUpView.springButton.layer.borderWidth = 1
                         } else if response.seasons[1] == "SUMMER" {
                             //                                configureButton(popUpView.summerButton, title: "여름")
                             popUpView.summerButton.setTitleColor(.white, for: .normal)
                             popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.summerButton.layer.cornerRadius = 5
                             popUpView.summerButton.layer.borderWidth = 1
                         } else if response.seasons[1] == "FALL" {
                             //                                configureButton(popUpView.fallButton, title: "가을")
                             popUpView.fallButton.setTitleColor(.white, for: .normal)
                             popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.fallButton.layer.cornerRadius = 5
                             popUpView.fallButton.layer.borderWidth = 1
                         } else if response.seasons[1] == "WINTER" {
                             //                                configureButton(popUpView.winterButton, title: "겨울")
                             popUpView.winterButton.setTitleColor(.white, for: .normal)
                             popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.winterButton.layer.cornerRadius = 5
                             popUpView.winterButton.layer.borderWidth = 1
                         }
@@ -357,28 +357,28 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                             //                                configureButton(popUpView.springButton, title: "봄")
                             popUpView.springButton.setTitleColor(.white, for: .normal)
                             popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.springButton.layer.cornerRadius = 5
                             popUpView.springButton.layer.borderWidth = 1
                         } else if response.seasons[2] == "SUMMER" {
                             //                                configureButton(popUpView.summerButton, title: "여름")
                             popUpView.summerButton.setTitleColor(.white, for: .normal)
                             popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.summerButton.layer.cornerRadius = 5
                             popUpView.summerButton.layer.borderWidth = 1
                         } else if response.seasons[2] == "FALL" {
                             //                                configureButton(popUpView.fallButton, title: "가을")
                             popUpView.fallButton.setTitleColor(.white, for: .normal)
                             popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.fallButton.layer.cornerRadius = 5
                             popUpView.fallButton.layer.borderWidth = 1
                         } else if response.seasons[2] == "WINTER" {
                             //                                configureButton(popUpView.winterButton, title: "겨울")
                             popUpView.winterButton.setTitleColor(.white, for: .normal)
                             popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.winterButton.layer.cornerRadius = 5
                             popUpView.winterButton.layer.borderWidth = 1
                         }
@@ -389,28 +389,28 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                             //                                configureButton(popUpView.springButton, title: "봄")
                             popUpView.springButton.setTitleColor(.white, for: .normal)
                             popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.springButton.layer.cornerRadius = 5
                             popUpView.springButton.layer.borderWidth = 1
                         } else if response.seasons[3] == "SUMMER" {
                             //                                configureButton(popUpView.summerButton, title: "여름")
                             popUpView.summerButton.setTitleColor(.white, for: .normal)
                             popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.summerButton.layer.cornerRadius = 5
                             popUpView.summerButton.layer.borderWidth = 1
                         } else if response.seasons[3] == "FALL" {
                             //                                configureButton(popUpView.fallButton, title: "가을")
                             popUpView.fallButton.setTitleColor(.white, for: .normal)
                             popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.fallButton.layer.cornerRadius = 5
                             popUpView.fallButton.layer.borderWidth = 1
                         } else if response.seasons[3] == "WINTER" {
                             //                                configureButton(popUpView.winterButton, title: "겨울")
                             popUpView.winterButton.setTitleColor(.white, for: .normal)
                             popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.winterButton.layer.cornerRadius = 5
                             popUpView.winterButton.layer.borderWidth = 1
                         }

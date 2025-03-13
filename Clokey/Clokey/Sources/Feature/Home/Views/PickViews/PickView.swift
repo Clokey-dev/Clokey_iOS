@@ -256,6 +256,7 @@ class PickView: UIView {
         locationIconView.snp.makeConstraints { make in
             make.centerY.equalTo(timeLabel.snp.centerY)
             make.trailing.equalToSuperview().offset(-20)
+            make.width.height.equalTo(24)
         }
         
         weatherIconView.snp.makeConstraints { make in
