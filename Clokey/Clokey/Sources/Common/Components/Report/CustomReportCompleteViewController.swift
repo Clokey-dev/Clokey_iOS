@@ -30,6 +30,7 @@ class CustomReportCompleteViewController: UIViewController {
     
     var reportType: ReportType = .profile
     var reportedCommentId: Int64?
+    var reportedHistoryId: Int64?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,8 +92,7 @@ class CustomReportCompleteViewController: UIViewController {
         case .comment:
             submitCommentReport(reason: reportReason, content: reportContent)
         case .history:
-            // history report handling
-            break
+            submitHistoryReport(reason: reportReason, content: reportContent)
         }
     }
     
@@ -155,6 +155,38 @@ class CustomReportCompleteViewController: UIViewController {
                 case .failure(let error):
                     // 신고 실패 처리
                     print("댓글 신고 실패: \(error.localizedDescription)")
+                    self.showAlert(message: "신고 제출에 실패했습니다. 다시 시도해주세요.")
+                }
+            }
+        }
+    }
+    
+    private func submitHistoryReport(reason: ReportReason, content: String) {
+        guard let historyId = reportedHistoryId else {
+            showAlert(message: "신고할 기록 정보가 없습니다.")
+            return
+        }
+        
+        // 신고 데이터 생성
+        let reportData = HistoryReportRequestDTO(
+            historyId: Int(historyId),
+            historyReportType: reason.reportType,
+            content: content
+        )
+        
+        // 신고 API 호출
+        reportService.reportHistory(data: reportData) { [weak self] result in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                switch result {
+                case .success(_):
+                    // 신고 성공 처리
+                    self.showSuccessAlert()
+                    
+                case .failure(let error):
+                    // 신고 실패 처리
+                    print("히스토리 신고 실패: \(error.localizedDescription)")
                     self.showAlert(message: "신고 제출에 실패했습니다. 다시 시도해주세요.")
                 }
             }

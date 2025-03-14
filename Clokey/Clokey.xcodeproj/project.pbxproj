@@ -1492,9 +1492,9 @@
 				07CF63E42D55DE6900CCF9F4 /* CalendarDetailViewModel.swift */,
 				07ECCEA22D4E79C000AFF486 /* CalendarImageCell.swift */,
 				07ECCEAD2D4EAA2400AFF486 /* CustomActionSheetViewController.swift */,
+				07703AB32D77173900F704C9 /* FriendsActionSheetViewController.swift */,
 				07ECCB342D4E34DF00AFF486 /* CalendarDetailViewController.swift */,
 				07CB2E9F2D65169F00B3F9B7 /* FriendsCalendarDetailViewController.swift */,
-				07703AB32D77173900F704C9 /* FriendsActionSheetViewController.swift */,
 			);
 			path = CalendarDetails;
 			sourceTree = "<group>";

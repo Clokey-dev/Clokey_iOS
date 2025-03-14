@@ -21,7 +21,7 @@ public struct CommentReportRequestDTO: Codable {
         self.content = content
     }
 }
-
+// 계정 신고하기
 public struct AccountReportRequestDTO: Codable {
     public let clokeyId: String
     public let profileReportType: String
@@ -33,8 +33,7 @@ public struct AccountReportRequestDTO: Codable {
         self.content = content
     }
 }
-
-
+// 기록 신고하기
 public struct HistoryReportRequestDTO: Codable {
     public let historyId: Int
     public let historyReportType: String

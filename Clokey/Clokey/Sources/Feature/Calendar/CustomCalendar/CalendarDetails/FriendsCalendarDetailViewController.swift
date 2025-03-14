@@ -319,7 +319,13 @@ extension FriendsCalendarDetailViewController: CalendarCommentDelegate {
 
 extension FriendsCalendarDetailViewController: FriendsActionSheetDelegate {
     func didReportUser() {
-        print("사용자가 신고됨")
+        guard let viewModel = viewModel else { return }
+        let historyId = Int(viewModel.historyId)
+        
+        let historyIdInt64 = Int64(historyId)
+        let reportVC = CustomReportViewController(historyId: historyIdInt64)
+        reportVC.historyId = historyIdInt64
+        navigationController?.pushViewController(reportVC, animated: true)
     }
 
     func didBlockUser() {

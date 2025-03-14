@@ -22,6 +22,7 @@ class CustomReportViewController: UIViewController {
     // 신고할 사용자의 클로키 ID
     var clokeyId: String = ""
     var commentId: Int64?
+    var historyId: Int64?
 
     
     // ReportService 인스턴스
@@ -30,9 +31,10 @@ class CustomReportViewController: UIViewController {
     // 로딩 인디케이터
     private var loadingIndicator: UIActivityIndicatorView?
     
-    init(clokeyId: String = "", commentId: Int64? = nil) {
+    init(clokeyId: String = "", commentId: Int64? = nil, historyId: Int64? = nil) {
         self.clokeyId = clokeyId
         self.commentId = commentId
+        self.historyId = historyId
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -52,6 +54,8 @@ class CustomReportViewController: UIViewController {
             loadProfileReportInfo()
         } else if let commentId = commentId {
             loadCommentReportInfo(commentId: commentId)
+        } else if let historyId = historyId {
+            loadHistoryReportInfo(historyId: historyId)
         }
     }
     
@@ -91,7 +95,9 @@ class CustomReportViewController: UIViewController {
         loadingIndicator?.stopAnimating()
     }
     
-    // API를 통해 신고 정보 로드
+    // MARK: - API
+    
+    // 계정 신고 정보 로드
     private func loadProfileReportInfo() {
         showLoadingIndicator()
         
@@ -197,6 +203,70 @@ class CustomReportViewController: UIViewController {
         }
     }
     
+    // 기록 신고 정보 로드
+    private func loadHistoryReportInfo(historyId: Int64) {
+        showLoadingIndicator()
+        
+        reportService.getHistoryReportInfo(historyId: String(historyId)) { [weak self] result in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                self.hideLoadingIndicator()
+                
+                switch result {
+                case .success(let response):
+                    print("히스토리 신고 정보 로드 성공: \(response)")
+                    
+                    // ReportReason 배열 생성
+                    var reasons = [ReportReason]()
+                    
+                    for typeResult in response.reportTypeResults {
+                        let reason = ReportReason(
+                            reportType: typeResult.reportType,
+                            title: typeResult.title,
+                            reportContents: typeResult.reportContents
+                        )
+                        reasons.append(reason)
+                    }
+                    
+                    // 히스토리 내용 표시
+                    if let content = response.historyContent {
+                        self.accountReportView.contentContainer.isHidden = false
+                        self.accountReportView.divideLine2.isHidden = false
+                        self.accountReportView.contentTitle.text = "기록 내용"
+                        self.accountReportView.contentTextLabel.text = content
+                        
+                        // 제약조건 수정
+                        self.accountReportView.reportTitle.snp.remakeConstraints {
+                            $0.top.equalTo(self.accountReportView.divideLine2.snp.bottom).offset(12)
+                            $0.leading.equalToSuperview().offset(20)
+                        }
+                    }
+                    
+                    // 뷰 업데이트
+                    self.accountReportView.updateUserInfo(
+                        clokeyId: response.clokeyId,
+                        nickname: response.nickName,
+                        profileImageUrl: response.userProfile
+                    )
+                    self.accountReportView.updateReportReasons(reasons: reasons)
+                    
+                    // 네비게이션 타이틀 변경
+                    self.navBarManager.setTitle(
+                        to: self.navigationItem,
+                        title: "기록 신고하기",
+                        font: .systemFont(ofSize: 18, weight: .semibold),
+                        textColor: .black
+                    )
+                    
+                case .failure(let error):
+                    print("히스토리 신고 정보를 불러오는 데 실패했습니다: \(error.localizedDescription)")
+                    self.showErrorAlert()
+                }
+            }
+        }
+    }
+    
     private func showErrorAlert() {
         let alert = UIAlertController(title: "오류", message: "신고 정보를 불러오는 데 실패했습니다.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default))
@@ -221,6 +291,9 @@ class CustomReportViewController: UIViewController {
             } else if let commentId = commentId {
                 nextVC.reportedCommentId = commentId // 댓글 신고
                 nextVC.reportType = .comment
+            } else if let historyId = historyId {
+                nextVC.reportedHistoryId = historyId // 기록 신고 추가
+                nextVC.reportType = .history
             }
             
             navigationController?.pushViewController(nextVC, animated: true)

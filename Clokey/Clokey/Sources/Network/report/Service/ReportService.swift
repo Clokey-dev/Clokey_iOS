@@ -22,7 +22,7 @@ public final class ReportService: NetworkManager {
         self.provider = provider ?? MoyaProvider<ReportEndpoint>(plugins: plugins)
     }
     
-    // 계전 신고 정보 조회 GET API
+    // 계정 신고 정보 조회 GET API
     public func getProfileReportInfo(
         clokeyId: String,
         completion: @escaping (Result<ReportResponseDTO<ProfileAdditionalData>, NetworkError>) -> Void

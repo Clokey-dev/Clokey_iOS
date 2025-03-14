@@ -170,8 +170,8 @@ class FriendsActionSheetViewController: UIViewController {
     
     // 신고 버튼
     @objc private func reportButtonTapped() {
-//        hideSheet()
-//        delegate?.didReportUser()
+        hideSheet()
+        delegate?.didReportUser()
         print("신고해~")
     }
     
