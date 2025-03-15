@@ -189,7 +189,7 @@ final class ClosetView: UIView {
         bannerStackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalToSuperview().offset(5)
-            make.height.equalTo(95)
+            make.height.equalTo(86)
             make.width.equalToSuperview().multipliedBy(2)
         }
         

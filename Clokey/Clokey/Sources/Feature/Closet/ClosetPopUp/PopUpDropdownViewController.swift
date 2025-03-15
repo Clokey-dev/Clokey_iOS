@@ -20,7 +20,7 @@ class PopUpDropdownViewController: UIViewController, PopUpDropdownViewDelegate, 
         popUpDropdownView.delegate = self
         
         popUpDropdownView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(300)
+            make.top.equalToSuperview().offset(270)
             make.trailing.equalToSuperview().inset(75)
             make.width.equalTo(92)
             make.height.equalTo(64)

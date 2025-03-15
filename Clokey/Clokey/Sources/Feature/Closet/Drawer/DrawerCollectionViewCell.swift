@@ -18,7 +18,7 @@ class DrawerCollectionViewCell: UICollectionViewCell {
     
     // 폴더명
     let folderLabel = UILabel().then {
-        $0.font = UIFont.ptdMediumFont(ofSize: 12)
+        $0.font = UIFont.ptdSemiBoldFont(ofSize: 14)
         $0.textColor = .black
         $0.textAlignment = .center
     }
@@ -26,7 +26,7 @@ class DrawerCollectionViewCell: UICollectionViewCell {
     // 속한 아이템 수 라벨
     let itemCountLabel = UILabel().then {
         $0.font = UIFont.ptdRegularFont(ofSize: 12)
-        $0.textColor = .black
+        $0.textColor = UIColor(named: "textGray600")
         $0.textAlignment = .center
     }
     

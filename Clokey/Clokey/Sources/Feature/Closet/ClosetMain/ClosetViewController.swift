@@ -140,11 +140,11 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
     }
     
     private func setupActions() {
-        let actions: [(UIButton, Selector)] = [
+        let actions: [(UIControl, Selector)] = [
             (closetView.seeAllButton, #selector(seeAllButtonTapped)),
             (closetView.editDrawerButton, #selector(editDrawerButtonTapped)),
-            (closetView.banner1.bannerButton, #selector(bannerButtonTapped)),
-            (closetView.banner2.bannerButton, #selector(bannerButton2Tapped))
+            (closetView.banner1, #selector(bannerButtonTapped)),
+            (closetView.banner2, #selector(bannerButton2Tapped))
         ]
         
         actions.forEach { button, selector in
