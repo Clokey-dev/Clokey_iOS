@@ -19,7 +19,7 @@ class ClosetPopupView: UIView {
     
     let publicButton = UIButton().then {
         $0.setImage(UIImage(named: "public_icon"), for: .normal)
-        $0.tintColor = UIColor(named: "mainBrown600")
+        $0.tintColor = UIColor(named: "mainBrown800")
     }
     
     let imageView = UIImageView().then {
@@ -41,11 +41,13 @@ class ClosetPopupView: UIView {
         $0.layer.cornerRadius = 4
         $0.layer.borderWidth = 1
         $0.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
+        $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+        $0.sizeToFit()
     }
     
     let frontButton = UIButton().then {
         $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
-        $0.tintColor = UIColor(named: "mainBrown600")
+        $0.tintColor = UIColor(named: "mainBrown800")
     }
     
     
@@ -53,7 +55,6 @@ class ClosetPopupView: UIView {
         $0.setTitle("후드티", for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-        
         $0.backgroundColor = UIColor.clear
         $0.layer.cornerRadius = 4
         $0.layer.borderWidth = 1
@@ -72,7 +73,8 @@ class ClosetPopupView: UIView {
         $0.setTitle("봄", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 12)
-        $0.backgroundColor = UIColor(named: "mainBrown600")
+        $0.backgroundColor = UIColor(named: "mainBrown800")
+        $0.layer.cornerRadius = 5
     }
 
     let summerButton = UIButton().then {
@@ -87,7 +89,7 @@ class ClosetPopupView: UIView {
         $0.setTitle("가을", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 12)
-        $0.backgroundColor = UIColor(named: "mainBrown600")
+        $0.backgroundColor = UIColor(named: "mainBrown800")
         $0.layer.cornerRadius = 5
 
     }
@@ -96,7 +98,7 @@ class ClosetPopupView: UIView {
         $0.setTitle("겨울", for: .normal)
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 12)
-        $0.backgroundColor = UIColor(named: "mainBrown600")
+        $0.backgroundColor = UIColor(named: "mainBrown800")
         $0.layer.cornerRadius = 5
 
         
@@ -106,7 +108,7 @@ class ClosetPopupView: UIView {
     
     let wearCountLabel: UILabel = {
         let label = UILabel()
-        label.text = "착용횟수 :"
+        label.text = "착용횟수"
         label.font = UIFont.ptdRegularFont(ofSize: 16)
         label.textColor = .black
         return label
@@ -116,13 +118,13 @@ class ClosetPopupView: UIView {
         $0.setTitle("", for: .normal) // 초기 빈값
         $0.setTitleColor(.white, for: .normal)
         $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 12)
-        $0.backgroundColor = UIColor(named: "mainBrown600")
+        $0.backgroundColor = UIColor(named: "mainBrown800")
         $0.layer.cornerRadius = 5
     }
     
     let brandLabel: UILabel = {
         let label = UILabel()
-        label.text = "브랜드 :"
+        label.text = "브랜드"
         label.font = UIFont.ptdRegularFont(ofSize: 16)
         label.textColor = .black
         return label
@@ -138,7 +140,7 @@ class ClosetPopupView: UIView {
     
     let urlLabel: UILabel = {
         let label = UILabel()
-        label.text = "url :"
+        label.text = "url"
         label.font = UIFont.ptdRegularFont(ofSize: 16)
         label.textColor = .black
         return label
@@ -160,27 +162,27 @@ class ClosetPopupView: UIView {
     // Group horizontal stack views
     private lazy var wearStackView = UIStackView(arrangedSubviews: [wearCountLabel, wearCountButton]).then {
         $0.axis = .horizontal
-        $0.spacing = 8
+        $0.spacing = 10
         $0.alignment = .center
         
     }
     
     private lazy var brandStackView = UIStackView(arrangedSubviews: [brandLabel, brandNameLabel]).then {
         $0.axis = .horizontal
-        $0.spacing = 8
+        $0.spacing = 10
         $0.alignment = .center
     }
     
     private lazy var urlStackView = UIStackView(arrangedSubviews: [urlLabel, urlGoButton]).then {
         $0.axis = .horizontal
-        $0.spacing = 8
+        $0.spacing = 10
         $0.alignment = .center
     }
     
     // Vertical stack view to hold all grouped info
     private lazy var infoStackView = UIStackView(arrangedSubviews: [wearStackView, brandStackView, urlStackView]).then {
         $0.axis = .vertical
-        $0.spacing = 8
+        $0.spacing = 10
         $0.alignment = .center
     }
     
@@ -247,31 +249,31 @@ class ClosetPopupView: UIView {
     private func setupConstraints() {
         closeButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(26)
-            make.trailing.equalToSuperview().offset(-18)
-            make.size.equalTo(30)
+            make.trailing.equalToSuperview().offset(-25)
+            make.size.equalTo(24)
         }
         
         nameLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(58)
+            make.top.equalToSuperview().offset(62)
             make.centerX.equalToSuperview()
         }
         
         imageView.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(8)
+            make.top.equalTo(nameLabel.snp.bottom).offset(12)
             make.centerX.equalToSuperview()
-            make.width.equalTo(140)
-            make.height.equalTo(167)
+            make.width.equalTo(138)
+            make.height.equalTo(183)
         }
         
         leftArrowButton.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.top).offset(72)
-            make.leading.equalToSuperview().offset(21)
+            make.top.equalTo(imageView.snp.top).offset(80)
+            make.leading.equalToSuperview().offset(25)
             make.size.equalTo(24)
         }
         
         rightArrowButton.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.top).offset(72)
-            make.trailing.equalToSuperview().offset(-21)
+            make.top.equalTo(imageView.snp.top).offset(80)
+            make.trailing.equalToSuperview().offset(-25)
             make.size.equalTo(24)
         }
         
@@ -282,18 +284,18 @@ class ClosetPopupView: UIView {
         }
         
         optionButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(67)
-            make.trailing.equalToSuperview().offset(-21)
+            make.top.equalToSuperview().offset(60)
+            make.trailing.equalToSuperview().offset(-25)
             make.size.equalTo(24)
         }
         
         categoryStackView.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(10)
+            make.top.equalTo(imageView.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
         }
         
         categoryButton1.snp.makeConstraints { make in
-            make.width.equalTo(43)
+//            make.width.equalTo(43)
             make.height.equalTo(22)
         }
         
@@ -312,7 +314,7 @@ class ClosetPopupView: UIView {
         }
         
         seasonStackView.snp.makeConstraints { make in
-            make.top.equalTo(categoryStackView.snp.bottom).offset(10)
+            make.top.equalTo(categoryStackView.snp.bottom).offset(15)
             make.centerX.equalToSuperview()
         }
         
@@ -330,7 +332,7 @@ class ClosetPopupView: UIView {
         
         // infoStackView 제약 조건
         infoStackView.snp.makeConstraints { make in
-            make.top.equalTo(seasonStackView.snp.bottom).offset(10)
+            make.top.equalTo(seasonStackView.snp.bottom).offset(15)
             make.centerX.equalToSuperview()
         }
     }

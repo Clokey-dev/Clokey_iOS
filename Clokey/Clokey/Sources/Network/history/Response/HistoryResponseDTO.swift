@@ -100,3 +100,17 @@ public struct HistoryLikeListResponseDTO: Codable {
 public struct HistoryCreateResponseDTO: Codable {
     public let historyId: Int64
 }
+
+public struct LikedHistoriesResponseDTO: Codable {
+    public let historyPreviews: [HistoryPreviewDTO]
+    public let totalPage: Int
+    public let totalElements: Int
+    public let isFirst: Bool
+    public let isLast: Bool
+    
+    public struct HistoryPreviewDTO: Codable {
+        public let id: Int
+        public let imageUrl: String
+    }
+    
+}

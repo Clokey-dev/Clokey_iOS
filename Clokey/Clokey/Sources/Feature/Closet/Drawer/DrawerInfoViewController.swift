@@ -60,8 +60,6 @@ class DrawerInfoViewController: UIViewController, UICollectionViewDelegate, UICo
         setupCollectionView()
         setupActions()
         
-        // (예시) API를 통해 옷 데이터를 추가로 불러와 products를 갱신
-        // 만약 이전 화면에서 받은 selectedClothes만 표시하려면 이 호출을 생략하세요.
         loadClothesData()
         
         // 폴더 생성 vs 수정에 따라 네비게이션 타이틀 설정
@@ -70,6 +68,7 @@ class DrawerInfoViewController: UIViewController, UICollectionViewDelegate, UICo
         } else {
             navigationItem.title = "서랍 생성"
         }
+        drawerInfoView.errorText.isHidden = true
     }
     
     // MARK: - UI Setup
@@ -108,11 +107,26 @@ class DrawerInfoViewController: UIViewController, UICollectionViewDelegate, UICo
     // MARK: - Actions
     
     @objc private func folderTextFieldChanged(_ textField: UITextField) {
-        let text = textField.text ?? ""
-        let isFilled = !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-        createButton.isEnabled = isFilled
-        createButton.tintColor = isFilled ? .black : .clear
+        // 좌우 공백 제거
+        let text = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        
+        // 한글이 포함되어 있는지 체크 (정규식 이용)
+        let containsKorean = text.range(of: "\\p{Hangul}", options: .regularExpression) != nil
+        // 한글이면 7글자, 아니면 10글자 제한 (이상일 때 비활성화)
+        let limit = containsKorean ? 7 : 10
+        
+        // 폴더명이 비어있지 않고, 글자 수가 제한 미만일 때만 활성화
+        let isFilled = !text.isEmpty
+        let isWithinLimit = text.count < limit
+        
+        let enable = isFilled && isWithinLimit
+        createButton.isEnabled = enable
+        createButton.tintColor = enable ? UIColor(named: "pointOrange800") : .clear
+        
+        // 에러 메시지 표시 여부 (제한 초과시 보이도록)
+        drawerInfoView.errorText.isHidden = isWithinLimit
     }
+
     
     @objc private func backButtonTapped() {
         navigationController?.popViewController(animated: true)

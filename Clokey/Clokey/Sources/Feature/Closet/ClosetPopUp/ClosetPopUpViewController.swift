@@ -12,6 +12,8 @@ final class PopUpViewController: UIViewController {
             fetchPopUpClothesDetail()
         }
     }
+    var clokeyId: String = ""  // 추가된 프로퍼티
+
     
     /// 전체 옷 모델 배열 (clothPreviews)
     var clothPreviews: [ClothPreview] = []
@@ -43,6 +45,12 @@ final class PopUpViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupActions()
+        
+        if !clokeyId.isEmpty {
+            popupView.optionButton.isHidden = true
+        } else {
+            popupView.optionButton.isHidden = false
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -64,11 +72,15 @@ final class PopUpViewController: UIViewController {
             make.edges.equalToSuperview()
         }
         
+        // 추가: dimmingView 탭 제스처 추가
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dimmingViewTapped))
+        dimmingView.addGestureRecognizer(tapGesture)
+        
         view.addSubview(popupView)
         popupView.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.width.equalTo(290)
-            make.height.equalTo(448)
+            make.height.equalTo(489)
         }
     }
     
@@ -117,6 +129,11 @@ final class PopUpViewController: UIViewController {
         updateArrowButtonStates()
     }
     
+    // 추가: dimmingView 탭 시 dismiss 처리
+    @objc private func dimmingViewTapped() {
+        dismissPopup()
+    }
+    
     private func updateArrowButtonStates() {
         // 왼쪽 화살표 업데이트: currentIndex가 0이면 비활성화, 아니면 활성화
         if currentIndex == 0 {
@@ -136,7 +153,6 @@ final class PopUpViewController: UIViewController {
             popupView.rightArrowButton.tintColor = UIColor(named: "mainBrown800")
         }
     }
-
     
     private func dismissPopup() {
         UIView.animate(withDuration: 0.3, animations: {
@@ -186,47 +202,47 @@ final class PopUpViewController: UIViewController {
         
         // 계절 버튼 업데이트
         if detail.seasons.contains("SPRING") {
-            popupView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+            popupView.springButton.backgroundColor = UIColor(named: "mainBrown800")
             popupView.springButton.setTitleColor(.white, for: .normal)
             popupView.springButton.layer.borderWidth = 0
         } else {
             popupView.springButton.backgroundColor = UIColor(named: "mainBrown50")
             popupView.springButton.setTitleColor(.black, for: .normal)
             popupView.springButton.layer.borderWidth = 1
-            popupView.springButton.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+            popupView.springButton.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
         }
         
         if detail.seasons.contains("SUMMER") {
-            popupView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+            popupView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
             popupView.summerButton.setTitleColor(.white, for: .normal)
             popupView.summerButton.layer.borderWidth = 0
         } else {
             popupView.summerButton.backgroundColor = UIColor(named: "mainBrown50")
             popupView.summerButton.setTitleColor(.black, for: .normal)
             popupView.summerButton.layer.borderWidth = 1
-            popupView.summerButton.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+            popupView.summerButton.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
         }
         
         if detail.seasons.contains("FALL") {
-            popupView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+            popupView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
             popupView.fallButton.setTitleColor(.white, for: .normal)
             popupView.fallButton.layer.borderWidth = 0
         } else {
             popupView.fallButton.backgroundColor = UIColor(named: "mainBrown50")
             popupView.fallButton.setTitleColor(.black, for: .normal)
             popupView.fallButton.layer.borderWidth = 1
-            popupView.fallButton.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+            popupView.fallButton.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
         }
         
         if detail.seasons.contains("WINTER") {
-            popupView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+            popupView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
             popupView.winterButton.setTitleColor(.white, for: .normal)
             popupView.winterButton.layer.borderWidth = 0
         } else {
             popupView.winterButton.backgroundColor = UIColor(named: "mainBrown50")
             popupView.winterButton.setTitleColor(.black, for: .normal)
             popupView.winterButton.layer.borderWidth = 1
-            popupView.winterButton.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
+            popupView.winterButton.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
         }
         
         // WearNum

@@ -18,7 +18,7 @@ extension DrawerModel {
         self.id = dto.folderId
         self.title = dto.folderName
         self.imageUrl = dto.imageUrl
-        self.itemCountText = "아이템 : \(dto.itemCount)개"
+        self.itemCountText = "\(dto.itemCount)개"
     }
 }
 
