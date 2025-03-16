@@ -115,7 +115,7 @@ class PopupViewController: UIViewController {
         popupView.imageView.image = cloth
         
         if isPublicSelected == true {
-            popupView.publicButton.setImage(UIImage(named: "lock_off"), for: .normal)
+            popupView.publicButton.setImage(UIImage(named: "public_icon"), for: .normal)
         }else {
             popupView.publicButton.setImage(UIImage(named: "lock_on"), for: .normal)
         }
@@ -179,7 +179,7 @@ class PopupViewController: UIViewController {
             $0.top.equalTo(titleLabel.snp.bottom).offset(65) // 기존 20 -> 40으로 증가
             $0.centerX.equalToSuperview()
             $0.width.equalTo(290)
-            $0.height.greaterThanOrEqualTo(448) // 최소 높이 증가
+            $0.height.greaterThanOrEqualTo(485) // 최소 높이 증가
         }
    
         addButton.snp.makeConstraints {

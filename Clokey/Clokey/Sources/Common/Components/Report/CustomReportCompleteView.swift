@@ -7,13 +7,16 @@
 
 import UIKit
 
-protocol AccountReportCompleteViewDelegate: AnyObject {
-    func contentInputView(_ view: AccountReportCompleteView, shouldMoveWithKeyboard offset: CGFloat)
-    func contentInputView(_ view: AccountReportCompleteView, didUpdateText text: String)
+protocol CustomReportCompleteViewDelegate: AnyObject {
+    func contentInputView(_ view: CustomReportCompleteView, shouldMoveWithKeyboard offset: CGFloat)
+    func contentInputView(_ view: CustomReportCompleteView, didUpdateText text: String)
 }
 
-class AccountReportCompleteView: UIView, UITextFieldDelegate {
-    weak var delegate: AccountReportCompleteViewDelegate?
+class CustomReportCompleteView: UIView, UITextFieldDelegate {
+   
+    weak var delegate: CustomReportCompleteViewDelegate?
+
+    // MARK: - UI Component
 
     private let reasonTitle = UILabel().then {
         $0.text = "신고 사유"
@@ -87,6 +90,8 @@ class AccountReportCompleteView: UIView, UITextFieldDelegate {
 //        $0.isEnabled = false
     }
     
+    // MARK: - Init
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -102,6 +107,9 @@ class AccountReportCompleteView: UIView, UITextFieldDelegate {
         setupConstraints()
         setupKeyboardNotifications()
     }
+    
+    // MARK: - Method
+
     
     private func setupView() {
         backgroundColor = .white
@@ -195,6 +203,8 @@ class AccountReportCompleteView: UIView, UITextFieldDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    // MARK: - Action
+
     @objc func keyboardWillShow(_ notification: Notification) {
         guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
 
@@ -242,7 +252,7 @@ class AccountReportCompleteView: UIView, UITextFieldDelegate {
     }
 }
 
-extension AccountReportCompleteView: UITextViewDelegate {
+extension CustomReportCompleteView: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == .placeholderText {
             textView.text = nil

@@ -15,13 +15,16 @@ protocol CalendarCommentDelegate: AnyObject {
     func didUpdateComment(count: Int)  // 댓글 수 업데이트
     func didDeleteComment()  // 댓글 삭제됨
     func CalendarCommentViewController(_ viewController: CalendarCommentViewController, didSelectProfileWith clokeyId: String)
+    func commentViewController(_ viewController: CalendarCommentViewController, didRequestReportForComment commentId: Int64)
+
 
 }
 
 class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     
     weak var delegate: CalendarCommentDelegate?
-    
+    weak var reportDelegate: CalendarCommentDelegate?
+
     private let backgroundView = UIView().then {
         $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         $0.alpha = 0
@@ -166,9 +169,11 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
 
     // TODO: - 신고 API 함수 구현 필요
     func didTapReport(commentId: Int64) {
-        let alert = UIAlertController(title: "신고 접수", message: "신고가 접수되었습니다.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default))
-        present(alert, animated: true)
+        print("신고 버튼 클릭")
+        self.dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            self.delegate?.commentViewController(self, didRequestReportForComment: commentId)
+        }
     }
     
     // 차단 API 함수

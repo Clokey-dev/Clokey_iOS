@@ -20,37 +20,7 @@ class UpdateFriendClothesView: UIView {
     let contentView: UIView = UIView().then {
         $0.backgroundColor = .white // 배경색 흰색
     }
-    
-    let backButton = UIButton().then {
-        $0.setImage(UIImage(named: "back_icon"), for: .normal)
-        $0.tintColor = .black
-    }
-    
-    let titleLabel: UILabel = UILabel().then {
-        let fullText = "친구의 옷장 업데이트 소식"
-        let targetText = "옷장"
-        let attributedString = NSMutableAttributedString(string: fullText)
-        
-        // 전체 텍스트 스타일
-        attributedString.addAttributes([
-            .font: UIFont.ptdMediumFont(ofSize: 20),
-            .foregroundColor: UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0)
-        ], range: NSRange(location: 0, length: fullText.count))
-        
-        // "캘린더"에 다른 스타일 적용
-        if let targetRange = fullText.range(of: targetText) {
-            let nsRange = NSRange(targetRange, in: fullText)
-            attributedString.addAttributes([
-                .font: UIFont.ptdSemiBoldFont(ofSize: 20), // 예시로 굵게 처리
-                .foregroundColor: UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0) // 색상을 변경하려면 여기 설정
-            ], range: nsRange)
-        }
-        
-        $0.attributedText = attributedString
-    }
-    
-    
-    
+
     let updateFriendClothesCollectionView: UICollectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout().then {
@@ -81,16 +51,15 @@ class UpdateFriendClothesView: UIView {
         // ScrollView와 ContentView 추가
         addSubview(scrollView)
         scrollView.addSubview(contentView)
-        
-        contentView.addSubview(backButton)
-        contentView.addSubview(titleLabel)
         contentView.addSubview(updateFriendClothesCollectionView)
 
     }
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview() // 화면 전체에 ScrollView
+//            make.edges.equalToSuperview() // 화면 전체에 ScrollView
+            make.top.equalTo(safeAreaLayoutGuide)
+            make.leading.trailing.bottom.equalToSuperview()
         }
         
         // ContentView 제약 설정
@@ -100,20 +69,9 @@ class UpdateFriendClothesView: UIView {
             make.bottom.equalTo(updateFriendClothesCollectionView.snp.bottom).offset(20)
         }
         
-        backButton.snp.makeConstraints { make in
-            make.top.equalTo(contentView.safeAreaLayoutGuide).offset(20)
-            make.leading.equalToSuperview().offset(20)
-            make.width.equalTo(10)
-            make.height.equalTo(20)
-        }
-        
-        titleLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(backButton)
-            make.leading.equalTo(backButton.snp.trailing).offset(20)
-        }
         
         updateFriendClothesCollectionView.snp.makeConstraints{ make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(20)
+            make.top.equalToSuperview().offset(10)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(300) // 초기 높이 (1로 설정하여 콘텐츠 크기 업데이트 유도)
 

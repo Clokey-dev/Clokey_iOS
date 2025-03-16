@@ -11,6 +11,7 @@ import UIKit
 import Kingfisher
 
 class UpdateFriendCalendarViewController: UIViewController, UIGestureRecognizerDelegate,  UICollectionViewDelegate {
+    private let navBarManager = NavigationBarManager()
     
     private let updateFriendCalendarView = UpdateFriendCalendarView()
     private var modelData: [UpdateFriendCalendarModel] = []
@@ -22,23 +23,17 @@ class UpdateFriendCalendarViewController: UIViewController, UIGestureRecognizerD
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = updateFriendCalendarView
+        setupNavigationBar()
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         setupDelegate()
         loadData()
-        
-        updateFriendCalendarView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
-    }
-    
-
-    @objc private func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
         
         DispatchQueue.main.async {
             self.updateFriendCalendarView.updateFriendCalendarCollectionView.reloadData()
@@ -48,7 +43,49 @@ class UpdateFriendCalendarViewController: UIViewController, UIGestureRecognizerD
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    // 네비게이션 설정
+    private func setupNavigationBar() {
+        let backButton = UIButton(type: .system)
+        let config = UIImage.SymbolConfiguration(weight: .bold)
+        let backImage = UIImage(systemName: "chevron.left", withConfiguration: config)
+        backButton.setImage(backImage, for: .normal)
+        backButton.tintColor = .mainBrown800
+        backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+        
+        let titleLabel: UILabel = UILabel().then {
+            let fullText = "친구의 캘린더 업데이트 소식"
+            let targetText = "캘린더"
+            let attributedString = NSMutableAttributedString(string: fullText)
+            
+            // 전체 텍스트 스타일
+            attributedString.addAttributes([
+                .font: UIFont.ptdMediumFont(ofSize: 20),
+                .foregroundColor: UIColor.black
+            ], range: NSRange(location: 0, length: fullText.count))
+            
+            // "옷장"에 다른 스타일 적용
+            if let targetRange = fullText.range(of: targetText) {
+                let nsRange = NSRange(targetRange, in: fullText)
+                attributedString.addAttributes([
+                    .font: UIFont.ptdSemiBoldFont(ofSize: 20), // 예시로 굵게 처리
+                    .foregroundColor: UIColor.black // 색상을 변경하려면 여기 설정
+                ], range: nsRange)
+            }
+            
+            $0.attributedText = attributedString
+        }
+        
+        let titleItem = UIBarButtonItem(customView: titleLabel)
+        
+        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: backButton), titleItem]
+    }
+    
+    // 뒤로가기
+    @objc private func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
     }
     
     private func updateCollectionViewHeight() {
@@ -61,9 +98,6 @@ class UpdateFriendCalendarViewController: UIViewController, UIGestureRecognizerD
         }
     }
     
-//    private func setupDelegate() {
-//        updateFriendCalendarView.updateFriendCalendarCollectionView.dataSource = self
-//    }
     private func setupDelegate() {
         updateFriendCalendarView.updateFriendCalendarCollectionView.dataSource = self
         updateFriendCalendarView.updateFriendCalendarCollectionView.delegate = self
@@ -88,22 +122,22 @@ class UpdateFriendCalendarViewController: UIViewController, UIGestureRecognizerD
                     DispatchQueue.main.async {
                         self.updateFriendCalendarView.subTitle.text = item.date
                     }
-
+                    
                     guard let eventImageURLString = item.imageUrl,
                           let eventImageURL = URL(string: eventImageURLString) else {
                         print("Invalid event image URL for item: \(item.clokeyId)")
                         return nil
                     }
-
+                    
                     let profileImageURL = URL(string: item.profileImage)
-
+                    
                     return UpdateFriendCalendarModel(
                         imageUrl: eventImageURL,
                         name: item.clokeyId,
                         profileImage: profileImageURL
                     )
                 }
-
+                
                 if isNextPage {
                     self.modelData.append(contentsOf: newResult)
                     self.currentPage = nextPage
@@ -111,14 +145,14 @@ class UpdateFriendCalendarViewController: UIViewController, UIGestureRecognizerD
                     self.modelData = newResult
                     self.currentPage = 1
                 }
-
-                self.hasMorePages = !newResult.isEmpty 
-
+                
+                self.hasMorePages = !newResult.isEmpty
+                
                 DispatchQueue.main.async {
                     self.updateFriendCalendarView.updateFriendCalendarCollectionView.reloadData()
                     self.updateCollectionViewHeight()
                 }
-
+                
             case .failure(let error):
                 print("Failed to load calendar data: \(error)")
             }

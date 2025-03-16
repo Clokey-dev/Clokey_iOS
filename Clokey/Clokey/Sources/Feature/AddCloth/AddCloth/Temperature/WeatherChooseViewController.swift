@@ -228,7 +228,9 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
         temperatureIcon.snp.makeConstraints {
             $0.top.equalTo(buttonStack.snp.bottom).offset(30)
             $0.centerX.equalToSuperview()
-            $0.width.height.equalTo(80)
+//            $0.width.height.equalTo(80)
+            $0.width.equalTo(73.94)
+            $0.height.equalTo(96.69)
         }
         
         slider.snp.makeConstraints {
