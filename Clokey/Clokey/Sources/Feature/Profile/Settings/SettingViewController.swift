@@ -94,6 +94,8 @@ class SettingViewController: UIViewController, UIGestureRecognizerDelegate {
         setupButtonActions(for: settingView.inquiryContainer, action: #selector(didTapInquiry))
         setupButtonActions(for: settingView.logoutContainer, action: #selector(didTapLogout))
         setupButtonActions(for: settingView.deleteContainer, action: #selector(didTapDeleteAccount))
+        //좋아요기록
+        setupButtonActions(for: settingView.LikedHistoryContainer, action: #selector(didTapLikedHistory))
     }
     
     private func setupButtonActions(for container: UIView, action: Selector) {
@@ -214,4 +216,15 @@ class SettingViewController: UIViewController, UIGestureRecognizerDelegate {
         deleteAccountViewController.modalPresentationStyle = .fullScreen
         present(deleteAccountViewController, animated: true, completion: nil)
     }
+    
+    @objc private func didTapLikedHistory() {
+        let likeHistoryVC = LikeHistoryViewController()
+        if let navigationController = navigationController {
+            navigationController.pushViewController(likeHistoryVC, animated: true)
+        } else {
+            likeHistoryVC.modalPresentationStyle = .fullScreen
+            present(likeHistoryVC, animated: true, completion: nil)
+        }
+    }
+       
 }

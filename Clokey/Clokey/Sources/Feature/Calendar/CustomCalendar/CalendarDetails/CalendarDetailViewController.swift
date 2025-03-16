@@ -33,11 +33,17 @@ class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegat
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("CalendarDetailViewController - navigationController: \(String(describing: navigationController))")
         setupUI()
         setupNavigationBar()
         if let id = historyId {
-           print("받은 historyId: \(id)")
-       }
+               print("받은 historyId: \(id)")
+               refreshHistoryDetail()  // historyId를 기반으로 상세 데이터를 불러옴
+           } else {
+               print("historyId가 nil")
+           }
+           
+        
         updateView()
         
         navBarManager.setupWhiteNavigationBar(for: navigationController)
@@ -119,12 +125,12 @@ class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegat
     
     // 댓글 업데이트를 위한 API
     private func refreshHistoryDetail() {
-        guard let viewModel = viewModel else { return }
-        let historyId = Int(viewModel.historyId)
-
-        print("댓글 변경 감지 → 최신 히스토리 데이터 가져오는 중...")
-
-        historyService.historyDetail(historyId: historyId) { [weak self] result in
+        guard let id = historyId else {
+            print("historyId가 nil입니다.")
+            return
+        }
+        print("API 호출: historyId \(id)")
+        historyService.historyDetail(historyId: id) { [weak self] result in
             switch result {
             case .success(let response):
                 DispatchQueue.main.async {
@@ -133,11 +139,10 @@ class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegat
                     print("최신 댓글 데이터 업데이트 완료!")
                 }
             case .failure(let error):
-                print("댓글 데이터 업데이트 실패: \(error)")
+                print("댓글 데이터 업데이트 실패: \(error.localizedDescription)")
             }
         }
     }
-
 
     
     // MARK: - Action
@@ -220,7 +225,11 @@ class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegat
     
     // 뒤로가기
     @objc private func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
+        if let nav = navigationController, nav.viewControllers.count > 1 {
+            nav.popViewController(animated: true)
+        } else {
+            dismiss(animated: true, completion: nil)
+        }
     }
     
     // MARK: - Method
@@ -286,6 +295,7 @@ class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegat
             }
         }
     }
+    
 }
 
 extension CalendarDetailViewController: LikeListViewControllerDelegate {

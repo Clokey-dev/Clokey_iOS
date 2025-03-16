@@ -120,7 +120,7 @@ class PopUpDropdownView: UIView, UITableViewDelegate, UITableViewDataSource {
         // 옵션 라벨
         private let titleLabel = UILabel().then {
             $0.textColor = .black
-            $0.font = UIFont.ptdMediumFont(ofSize: 12)
+            $0.font = UIFont.ptdRegularFont(ofSize: 12)
         }
         
         // 리스트 구분선
@@ -153,13 +153,13 @@ class PopUpDropdownView: UIView, UITableViewDelegate, UITableViewDataSource {
             iconImageView.snp.makeConstraints { make in
                         make.centerY.equalToSuperview()
                         make.leading.equalToSuperview().offset(10)
-                        make.width.height.equalTo(20) // 아이콘 크기 조정 가능
+                        make.width.height.equalTo(12) // 아이콘 크기 조정 가능
                     }
             
             // 옵션 라벨 제약
             titleLabel.snp.makeConstraints { make in
                 make.centerY.equalToSuperview()
-                make.leading.equalTo(iconImageView.snp.trailing).offset(9)
+                make.leading.equalToSuperview().offset(38)
             }
             
             // 구분선 제약 (마지막 셀인 경우 숨김)

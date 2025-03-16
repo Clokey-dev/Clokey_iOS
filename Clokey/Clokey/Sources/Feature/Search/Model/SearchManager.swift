@@ -90,4 +90,6 @@ class SearchManager {
             NotificationCenter.default.post(name: NSNotification.Name("SearchHistoryUpdated"), object: nil)
         }
     }
+    
 }
+

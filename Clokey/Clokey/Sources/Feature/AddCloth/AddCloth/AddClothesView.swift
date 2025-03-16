@@ -76,8 +76,9 @@ class AddClothesView: UIView {
     let categoryTagsContainer: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
+        stackView.alignment = .leading
+        stackView.distribution = .fill
         stackView.spacing = 8
-        stackView.alignment = .center
         return stackView
     }()
     
@@ -157,11 +158,16 @@ class AddClothesView: UIView {
         inputContainer.addSubview(inputField)
         inputContainer.addSubview(inputButton)
         inputContainer.addSubview(underlineView)  //  밑줄 추가
-        
+        //
+       
         addSubview(categoryContainer)
+      
         categoryContainer.addSubview(categoryTagsContainer)
         categoryContainer.addSubview(reclassifyLabel)
         categoryContainer.addSubview(reclassifyButton)
+        
+        categoryTagsContainer.setContentHuggingPriority(.required, for: .horizontal)
+        categoryTagsContainer.setContentCompressionResistancePriority(.required, for: .horizontal)
         
         addSubview(nextButton)
         
@@ -209,15 +215,16 @@ class AddClothesView: UIView {
         
         categoryContainer.snp.makeConstraints {
             $0.top.equalTo(underlineView.snp.bottom).offset(13)
-            $0.leading.trailing.equalToSuperview().inset(20)
-            $0.height.greaterThanOrEqualTo(80) //  최소 높이 설정
+            $0.leading.equalToSuperview().inset(20)
+            $0.trailing.lessThanOrEqualToSuperview().inset(20)
+            $0.height.greaterThanOrEqualTo(80)
         }
-        
+
         categoryTagsContainer.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.leading.equalToSuperview()
+            $0.trailing.lessThanOrEqualToSuperview()
         }
-        
         reclassifyLabel.snp.makeConstraints {
             $0.top.equalTo(categoryTagsContainer.snp.bottom).offset(25)
             $0.leading.equalToSuperview()

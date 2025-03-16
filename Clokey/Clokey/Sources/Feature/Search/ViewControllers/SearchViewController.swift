@@ -23,7 +23,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
         
         view.backgroundColor = .white
         
-        
+        navigationController?.setNavigationBarHidden(true, animated: false)
         searchView.delegate = self
         //  검색 기록 변경 시 자동 업데이트
         NotificationCenter.default.addObserver(self, selector: #selector(updateSearchHistory), name: NSNotification.Name("SearchHistoryUpdated"), object: nil)
@@ -56,7 +56,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
     //   viewWillAppear()에서 불필요한 NotificationCenter 등록 정리
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        navigationController?.view.backgroundColor = .white
         navigationController?.setNavigationBarHidden(true, animated: false)
         searchView.searchField.textField.text = "" //  검색어 입력 필드 초기화
         
