@@ -12,4 +12,5 @@ public struct API {
     static let homeURL = "\(baseURL)/home"
     static let historyURL = "\(baseURL)/histories"
     static let notificationURL = "\(baseURL)/notifications"
+    static let reportURL = "\(baseURL)/report"
 }
