@@ -53,12 +53,9 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         
         updateTimeLabel() // 현재 시간 업데이트
         
-//        fetchVisualCrossingWeatherData(for: "Seoul") // 기본 위치: 서울
         fetchVisualCrossingWeatherData(for: englishAddress)
         updateYesterdayWeatherUI()
-//        fetchWeatherData() // 날씨 데이터 가져오기
         setupBottomLabelTap()
-        //        bindData()
         
         if isDataLoaded {
             if loadingOverlay != nil {
@@ -92,9 +89,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        
-       
-//        fetchWeatherData()
+    
         updateYesterdayWeatherUI()
         fetchWeatherRecommendations()
         loadRecapData()
@@ -536,7 +531,6 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     
     // MARK: - 날씨 데이터 가져오기
     func fetchWeatherData(for location: String) {
-//        WeatherAPI.shared.fetchWeather(for: "Seoul") { [weak self] weatherData in
         WeatherAPI.shared.fetchWeather(for: location) { [weak self] weatherData in
             DispatchQueue.main.async {
                 if let weather = weatherData {
@@ -611,17 +605,14 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
 //                    if let locality = placemark.locality {
 //                        englishSubAddress += " " + locality
 //                    }
-//                    DispatchQueue.main.async {
+                    DispatchQueue.main.async {
                         self.englishAddress = englishSubAddress
                         print("English Address: \(englishSubAddress)")
                         
                         self.fetchVisualCrossingWeatherData(for: self.englishAddress)
-                        
                         self.fetchWeatherData(for: self.englishAddress)
-                //        fetchVisualCrossingWeatherData(for: "Seoul")
-//                        fetchWeatherRecommendations()
                         self.updateYesterdayWeatherUI()
-//                    }
+                    }
                 }
             }
     }
@@ -722,7 +713,6 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     
     func updateYesterdayWeatherUI() {
         // WeatherAPI에서 fetchTemperatureChange를 호출하고 결과를 처리
-//        WeatherAPI.shared.fetchTemperatureChange(for: "Seoul") { [weak self] resultText in
         WeatherAPI.shared.fetchTemperatureChange(for: englishAddress) { [weak self] resultText in
             guard let self = self else { return }
             
@@ -818,14 +808,9 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     //새로고침 함수
     @objc private func didPullToRefresh() {
         // 필요에 따라 여러 API 호출을 재실행합니다.
-//        fetchWeatherData()
-//        fetchVisualCrossingWeatherData(for: "Seoul")
-//        fetchVisualCrossingWeatherData(for: englishAddress)
         fetchWeatherRecommendations()
         updateYesterdayWeatherUI()
         loadRecapData()
-        
-        // 만약 다른 업데이트 작업이 필요하다면 추가
         
         // 약간의 지연 후 refreshControl 종료
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
