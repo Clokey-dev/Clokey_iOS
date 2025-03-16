@@ -18,35 +18,63 @@ final class CustomBottomSheetViewController: UIViewController {
     // MARK: - UI Elements
     private let containerView = UIView().then {
         $0.backgroundColor = .white
-        $0.layer.cornerRadius = 16
-        $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner] // 상단 모서리만 둥글게
+        $0.layer.cornerRadius = 20
+        $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        $0.clipsToBounds = true
     }
     
-     let closeButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "xmark"), for: .normal)
-        $0.tintColor = .black
-    }
+//     let closeButton = UIButton().then {
+//        $0.setImage(UIImage(systemName: "xmark"), for: .normal)
+//        $0.tintColor = .black
+//    }
     
-     let defaultProfileButton = UIButton().then {
-        var configuration = UIButton.Configuration.plain()
-        configuration.image = UIImage(systemName: "person.fill")
-        configuration.title = " 기본 프로필"
-        configuration.imagePadding = 20 // 이미지와 텍스트 간격
-        configuration.baseForegroundColor = .black // 텍스트 및 이미지 색상
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 22, bottom: 0, trailing: 0) // 버튼 내부 여백
-        $0.configuration = configuration
-        $0.contentHorizontalAlignment = .leading // 왼쪽 정렬
-    }
+     let defaultProfileButton = {
+         var configuration = UIButton.Configuration.plain()
+         configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0)
+         configuration.image = UIImage(systemName: "person.fill")?.resized(to: CGSize(width: 36, height: 36))
+         configuration.imagePadding = 8
+
+         // 폰트 & 텍스트 크기 조절
+         let titleFont = UIFont.ptdMediumFont(ofSize: 18)
+         let attributedString = NSAttributedString(
+             string: "기본 프로필",
+             attributes: [
+                 .font: titleFont,
+                 .foregroundColor: UIColor.black
+             ]
+         )
+         configuration.attributedTitle = AttributedString(attributedString)
+
+         let button = UIButton(configuration: configuration)
+         button.contentHorizontalAlignment = .leading
+         return button
+    }()
     
-     let choosePhotoButton = UIButton().then {
-        var configuration = UIButton.Configuration.plain()
-        configuration.image = UIImage(systemName: "photo")
-        configuration.title = "사진 선택"
-        configuration.imagePadding = 20 // 이미지와 텍스트 간격
-        configuration.baseForegroundColor = .black // 텍스트 및 이미지 색상
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 22, bottom: 0, trailing: 0) // 버튼 내부 여백
-        $0.configuration = configuration
-        $0.contentHorizontalAlignment = .leading // 왼쪽 정렬
+     let choosePhotoButton = {
+         
+         var configuration = UIButton.Configuration.plain()
+         configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0)
+         configuration.image = UIImage(systemName: "photo")?.resized(to: CGSize(width: 36, height: 36))
+         configuration.imagePadding = 8
+
+         // 폰트 & 텍스트 크기 조절
+         let titleFont = UIFont.ptdMediumFont(ofSize: 18)
+         let attributedString = NSAttributedString(
+             string: "사진 선택",
+             attributes: [
+                 .font: titleFont,
+                 .foregroundColor: UIColor.black
+             ]
+         )
+         configuration.attributedTitle = AttributedString(attributedString)
+
+         let button = UIButton(configuration: configuration)
+         button.contentHorizontalAlignment = .leading
+         return button
+    }()
+    
+    private let dimmedView = UIView().then {
+        $0.backgroundColor = UIColor.black.withAlphaComponent(0.3)
     }
     
    
@@ -57,74 +85,81 @@ final class CustomBottomSheetViewController: UIViewController {
         
         setupUI()
         setupActions()
-        setupBackgroundTapGesture()
     }
     
-    //    override func viewWillAppear(_ animated: Bool) {
-    //        super.viewWillAppear(animated)
-    //        showAnimation() // 하단에서 올라오는 애니메이션
-    //    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        showSheet()
+    }
+
     
     // MARK: - UI Setup
     private func setupUI() {
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.5) // 배경 반투명
-//        view.backgroundColor = .clear
+        view.backgroundColor = .clear
+        view.addSubview(dimmedView)
         view.addSubview(containerView)
         
-        containerView.addSubviews(closeButton, defaultProfileButton, choosePhotoButton)
+        containerView.addSubviews(defaultProfileButton, choosePhotoButton)
+        
+        dimmedView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
         
         containerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
-            make.height.equalTo(185) // 카드 높이
+            make.left.right.bottom.equalToSuperview()
+            make.height.equalTo(140)
         }
         
-        closeButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
-            make.size.equalTo(16)
-        }
+//        closeButton.snp.makeConstraints { make in
+//            make.top.equalToSuperview().offset(16)
+//            make.trailing.equalToSuperview().offset(-16)
+//            make.size.equalTo(16)
+//        }
         
         defaultProfileButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(48)
-            make.leading.equalToSuperview().offset(3)
-            make.trailing.equalToSuperview().offset(-22)
-            make.height.equalTo(32)
+            make.top.equalToSuperview().offset(20)
+            make.left.right.equalToSuperview()
+            make.height.equalTo(44)
         }
     
         choosePhotoButton.snp.makeConstraints { make in
-            make.top.equalTo(defaultProfileButton.snp.bottom).offset(21)
-//            make.leading.equalToSuperview()
-            make.leading.equalToSuperview().offset(3)
-            make.trailing.equalToSuperview().offset(-22)
-            make.height.equalTo(32)
+            make.top.equalTo(defaultProfileButton.snp.bottom)
+            make.left.right.equalToSuperview()
+            make.height.equalTo(44)
         }
+        
+        // 처음에는 시트를 화면 밖에 위치시킴
+        containerView.transform = CGAffineTransform(translationX: 0, y: 180)
     }
-    
-    // 화면 배경 터치 감지 추가
-    private func setupBackgroundTapGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleBackgroundTap))
-        tapGesture.cancelsTouchesInView = false // 버튼 클릭 이벤트도 전달
-        view.addGestureRecognizer(tapGesture)
-    }
-
-    @objc private func handleBackgroundTap(_ gesture: UITapGestureRecognizer) {
-        let location = gesture.location(in: view)
-        if !containerView.frame.contains(location) { // containerView 외부를 터치한 경우만 실행
-            dismissBottomSheet()
-        }
-    }
-    
     
     private func setupActions() {
-        closeButton.addTarget(self, action: #selector(dismissBottomSheet), for: .touchUpInside)
+//        closeButton.addTarget(self, action: #selector(dismissBottomSheet), for: .touchUpInside)
+        let dimmedTap = UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped))
+        dimmedView.addGestureRecognizer(dimmedTap)
+        
         defaultProfileButton.addTarget(self, action: #selector(didTapDefaultProfileButton), for: .touchUpInside)
         choosePhotoButton.addTarget(self, action: #selector(didTapChoosePhotoButton), for: .touchUpInside)
     }
     
+    private func showSheet() {
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseOut) {
+            self.containerView.transform = .identity
+            self.dimmedView.alpha = 1.0
+        }
+    }
+    
+    private func hideSheet(completion: (() -> Void)? = nil) {
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn) {
+            self.containerView.transform = CGAffineTransform(translationX: 0, y: self.containerView.frame.height)
+            self.dimmedView.alpha = 0.0
+        } completion: { _ in
+            self.dismiss(animated: false, completion: completion)
+        }
+    }
+    
     // MARK: - Actions
-    @objc private func dismissBottomSheet() {
-        hideAnimation()
+    @objc private func dimmedViewTapped() {
+        hideSheet()
     }
     
     @objc private func didTapDefaultProfileButton() {
@@ -139,11 +174,4 @@ final class CustomBottomSheetViewController: UIViewController {
         }
     }
     
-    func hideAnimation() {
-        UIView.animate(withDuration: 0.0, animations: {
-            self.containerView.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height)
-        }, completion: { _ in
-            self.dismiss(animated: false)
-        })
-    }
 }
