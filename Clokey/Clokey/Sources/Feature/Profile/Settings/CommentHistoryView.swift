@@ -9,17 +9,9 @@ import Foundation
 import UIKit
 import SnapKit
 import Then
+import Kingfisher
 
 final class CommentHistoryView: UIView {
-    
-    private let scrollView = UIScrollView().then {
-        $0.showsVerticalScrollIndicator = false
-        $0.backgroundColor = .white
-    }
-    
-    private let contentView = UIView().then {
-        $0.backgroundColor = .white
-    }
     
     // 댓글 목록을 표시할 테이블 뷰
     let tableView = UITableView().then {
@@ -27,9 +19,17 @@ final class CommentHistoryView: UIView {
         $0.backgroundColor = .white
         $0.showsVerticalScrollIndicator = false
         $0.rowHeight = UITableView.automaticDimension
-        $0.estimatedRowHeight = 80
+        $0.estimatedRowHeight = 120
         $0.register(CommentHistoryCell.self, forCellReuseIdentifier: "CommentHistoryCell")
         $0.tableFooterView = UIView()
+        // 테이블뷰 상하 여백 추가
+        $0.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+    }
+    
+    // 로딩 인디케이터
+    let activityIndicator = UIActivityIndicatorView(style: .medium).then {
+        $0.hidesWhenStopped = true
+        $0.color = .gray
     }
     
     // MARK: - Init
@@ -47,30 +47,29 @@ final class CommentHistoryView: UIView {
     private func setupUI() {
         backgroundColor = .white
         
-        addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        contentView.addSubview(tableView)
+        addSubview(tableView)
+        addSubview(activityIndicator)
     }
     
     private func setupConstraints() {
-        // 스크롤 뷰
-        scrollView.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide)
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
-        }
-        
-        contentView.snp.makeConstraints {
-            $0.top.leading.trailing.bottom.equalToSuperview()
-            $0.width.equalTo(scrollView)
-        }
-        
-        // 테이블 뷰 크기 지정
+        // 테이블 뷰 직접 배치
         tableView.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
-            $0.height.greaterThanOrEqualTo(UIScreen.main.bounds.height - 100)
+            $0.top.equalTo(safeAreaLayoutGuide)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        // 로딩 인디케이터
+        activityIndicator.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+    }
+    
+    // 로딩 상태 설정
+    func setLoading(_ isLoading: Bool) {
+        if isLoading {
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
         }
     }
 }
@@ -78,17 +77,16 @@ final class CommentHistoryView: UIView {
 // 댓글 셀 구현
 class CommentHistoryCell: UITableViewCell {
     
-    // 프로필 이미지
-    let profileImageView = UIImageView().then {
+    // 기록 대표 이미지
+    let historyImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-        $0.layer.cornerRadius = 20
+        $0.layer.cornerRadius = 8
         $0.backgroundColor = .lightGray
-        $0.image = UIImage(systemName: "person.circle.fill")
     }
     
-    // 사용자 이름
-    let nameLabel = UILabel().then {
+    // 닉네임 추가
+    let nickNameLabel = UILabel().then {
         $0.font = UIFont.ptdSemiBoldFont(ofSize: 14)
         $0.textColor = .black
     }
@@ -100,16 +98,47 @@ class CommentHistoryCell: UITableViewCell {
         $0.textAlignment = .right
     }
     
-    // 댓글 내용
-    let commentBubble = UIView().then {
-        $0.backgroundColor = .systemGray6
-        $0.layer.cornerRadius = 12
+    // 댓글 컨테이너 스택뷰
+    let commentsStackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 10
+        $0.distribution = .fillProportionally
     }
     
-    let commentLabel = UILabel().then {
-        $0.font = UIFont.ptdRegularFont(ofSize: 14)
-        $0.textColor = .black
-        $0.numberOfLines = 0
+    // 댓글 행 생성 함수는 동일
+    private func createCommentRow(comment: CommentModel) -> UIView {
+        let rowContainer = UIView()
+        
+        let commentIcon = UIImageView().then {
+            $0.image = UIImage(named: "message_icon")
+            $0.tintColor = .gray
+            $0.contentMode = .scaleAspectFit
+        }
+        
+        let commentLabel = UILabel().then {
+            $0.font = UIFont.ptdRegularFont(ofSize: 14)
+            $0.textColor = .black
+            $0.numberOfLines = 0
+            $0.text = comment.content
+        }
+        
+        rowContainer.addSubview(commentIcon)
+        rowContainer.addSubview(commentLabel)
+        
+        commentIcon.snp.makeConstraints {
+            $0.leading.equalToSuperview()
+            $0.top.equalToSuperview()
+            $0.size.equalTo(CGSize(width: 22, height: 22))
+        }
+        
+        commentLabel.snp.makeConstraints {
+            $0.leading.equalTo(commentIcon.snp.trailing).offset(10)
+            $0.top.equalToSuperview().offset(2)
+            $0.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+        
+        return rowContainer
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -127,70 +156,92 @@ class CommentHistoryCell: UITableViewCell {
     }
     
     private func setupUI() {
-        contentView.addSubview(profileImageView)
-        contentView.addSubview(nameLabel)
+        contentView.addSubview(historyImageView)
+        contentView.addSubview(nickNameLabel) // 닉네임 추가
         contentView.addSubview(dateLabel)
-        contentView.addSubview(commentBubble)
-        commentBubble.addSubview(commentLabel)
+        contentView.addSubview(commentsStackView)
     }
     
     private func setupConstraints() {
-        profileImageView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(16)
+        historyImageView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(18)
             $0.leading.equalToSuperview().offset(20)
-            $0.size.equalTo(CGSize(width: 40, height: 40))
+            $0.size.equalTo(CGSize(width: 40, height: 40)) // 이미지 크기 조정
         }
         
-        nameLabel.snp.makeConstraints {
-            $0.top.equalTo(profileImageView)
-            $0.leading.equalTo(profileImageView.snp.trailing).offset(12)
+        // 닉네임 위치 설정
+        nickNameLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(28)
+            $0.leading.equalTo(historyImageView.snp.trailing).offset(12)
         }
         
+        // 날짜를 오른쪽으로 위치시킴
         dateLabel.snp.makeConstraints {
-            $0.centerY.equalTo(nameLabel)
+            $0.centerY.equalTo(nickNameLabel)
             $0.trailing.equalToSuperview().offset(-20)
-            $0.width.equalTo(70)
+            $0.leading.greaterThanOrEqualTo(nickNameLabel.snp.trailing).offset(8) // 닉네임과 겹치지 않도록
         }
         
-        commentBubble.snp.makeConstraints {
-            $0.top.equalTo(nameLabel.snp.bottom).offset(8)
-            $0.leading.equalTo(nameLabel)
-            $0.trailing.lessThanOrEqualToSuperview().offset(-80)
-            $0.bottom.equalToSuperview().offset(-16)
-        }
-        
-        commentLabel.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12))
+        // 댓글 스택뷰 위치 조정
+        commentsStackView.snp.makeConstraints {
+            $0.top.equalTo(nickNameLabel.snp.bottom).offset(15) // 닉네임 아래
+            $0.leading.equalTo(historyImageView.snp.trailing).offset(12)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.bottom.equalToSuperview().offset(-16).priority(.high)
         }
     }
     
-    func configure(with comment: CommentModel) {
-        nameLabel.text = comment.userName
-        dateLabel.text = comment.date
-        commentLabel.text = comment.content
+    func configure(with history: HistoryModel) {
+        // 닉네임 설정
+        nickNameLabel.text = "\(history.nickname)님의 기록"
         
-        // 프로필 이미지 설정
-        if let imageUrl = comment.profileImageUrl, let url = URL(string: imageUrl) {
+        // 날짜 형식 변환 (YYYY-MM-DD → YYYY.MM.DD)
+        let dateComponents = history.date.split(separator: "-").map { String($0) }
+        if dateComponents.count == 3 {
+            dateLabel.text = dateComponents.joined(separator: ".")
         } else {
-            profileImageView.image = UIImage(systemName: "person.circle.fill")
+            dateLabel.text = history.date
+        }
+        
+        // 이미지 설정 - Kingfisher 사용
+        if let url = URL(string: history.imageUrl) {
+            historyImageView.kf.setImage(
+                with: url,
+                placeholder: UIImage(named: "placeholder_image"),
+                options: [
+                    .transition(.fade(0.2)),
+                    .cacheOriginalImage
+                ],
+                completionHandler: { result in
+                    switch result {
+                    case .success(_):
+                        break
+                    case .failure(let error):
+                        print("이미지 로딩 실패: \(error.localizedDescription)")
+                    }
+                }
+            )
+        } else {
+            historyImageView.image = UIImage(named: "placeholder_image")
+        }
+        
+        // 기존 댓글 뷰 제거
+        commentsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        
+        // 댓글 추가
+        for comment in history.comments {
+            let commentView = createCommentRow(comment: comment)
+            commentsStackView.addArrangedSubview(commentView)
         }
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         // 셀 재사용 전 초기화
-        profileImageView.image = UIImage(systemName: "person.circle.fill")
-        nameLabel.text = nil
+        historyImageView.kf.cancelDownloadTask()
+        historyImageView.image = nil
+        nickNameLabel.text = nil
         dateLabel.text = nil
-        commentLabel.text = nil
+        commentsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
     }
-}
-
-// 댓글 모델
-struct CommentModel {
-    let id: String
-    let userName: String
-    let date: String
-    let content: String
-    let profileImageUrl: String?
 }

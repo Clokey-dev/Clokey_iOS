@@ -11,11 +11,18 @@ import UIKit
 class CommentHistoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
     
     private let navBarManager = NavigationBarManager()
+    private let historyService = HistoryService()
     
     private let commentHistoryView = CommentHistoryView()
     
-    // 댓글 데이터 배열
-    private var comments: [CommentModel] = []
+    // 댓글 데이터 배열 수정
+    private var histories: [HistoryModel] = []
+    
+    // 페이지네이션 관련 변수
+    private var currentPage = 1
+    private var totalPages = 1
+    private var isLastPage = false
+    private var isLoading = false
     
     // MARK: - Lifecycle
     override func loadView() {
@@ -30,21 +37,11 @@ class CommentHistoryViewController: UIViewController, UITableViewDelegate, UITab
         commentHistoryView.tableView.delegate = self
         commentHistoryView.tableView.dataSource = self
         
-        // 제스처 인식기 설정
+        // 제스처 설정
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
-        // 샘플 데이터 로드
-        loadSampleData()
-        
-        // 디버그 로그 추가
-        print("viewDidLoad 완료: \(comments.count)개의 댓글 로드됨")
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // 화면이 나타날 때마다 데이터 리로드
-        commentHistoryView.tableView.reloadData()
-        print("viewWillAppear: 테이블 뷰 리로드")
+        // 데이터 로드
+        loadCommentHistories()
     }
     
     // 네비게이션 설정
@@ -71,70 +68,60 @@ class CommentHistoryViewController: UIViewController, UITableViewDelegate, UITab
         navigationController?.popViewController(animated: true)
     }
     
-    // 샘플 데이터 로드
-    private func loadSampleData() {
-        comments = [
-            CommentModel(
-                id: "1",
-                userName: "OO님의 기록",
-                date: "20xx.xx.xx",
-                content: "이 코디 진짜 이뻐요",
-                profileImageUrl: nil
-            ),
-            CommentModel(
-                id: "2",
-                userName: "OO님의 기록",
-                date: "20xx.xx.xx",
-                content: "링링이가 좋아요",
-                profileImageUrl: nil
-            ),
-            CommentModel(
-                id: "3",
-                userName: "OO님의 기록",
-                date: "20xx.xx.xx",
-                content: "댓글을 여러 개 남겼을 경우에도 이런 식으로",
-                profileImageUrl: nil
-            ),
-            CommentModel(
-                id: "4",
-                userName: "OO님의 기록",
-                date: "20xx.xx.xx",
-                content: "금자 좋아가 최고임 덕에가는 경험이...",
-                profileImageUrl: nil
-            )
-        ]
+    // 댓글 불렁오기 API
+    private func loadCommentHistories(page: Int = 1) {
+        isLoading = true
+        commentHistoryView.setLoading(true)
         
-        // 메인 스레드에서 UI 업데이트 (안전하게)
-        DispatchQueue.main.async { [weak self] in
+        historyService.getMyCommentHistories(page: page) { [weak self] result in
             guard let self = self else { return }
-            self.commentHistoryView.tableView.reloadData()
-            print("loadSampleData: 데이터 로드됨 - \(self.comments.count)개 항목")
+            
+            DispatchQueue.main.async {
+                self.isLoading = false
+                self.commentHistoryView.setLoading(false)
+                
+                switch result {
+                case .success(let response):
+                    print("서버 응답 확인: \(response)")
+                    
+                    if page == 1 {
+                        self.histories = response.histories
+                    } else {
+                        self.histories.append(contentsOf: response.histories)
+                    }
+                    
+                    self.totalPages = response.totalPage
+                    self.isLastPage = response.isLast
+                    self.currentPage = page
+                    
+                    self.commentHistoryView.tableView.reloadData()
+                    
+                case .failure(let error):
+                    print("Error fetching comment histories: \(error)")
+                }
+            }
         }
     }
     
     // MARK: - UITableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("numberOfRowsInSection 호출: \(comments.count)개 항목")
-        return comments.count
+        return histories.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("cellForRowAt 호출: row \(indexPath.row)")
-        
-        // 셀 등록 확인
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CommentHistoryCell", for: indexPath) as? CommentHistoryCell else {
-            print("CommentHistoryCell 등록 실패")
             return UITableViewCell()
         }
         
-        // 안전한 인덱스 검사
-        if indexPath.row < comments.count {
-            let comment = comments[indexPath.row]
-            cell.configure(with: comment)
-            print("셀 구성 완료: \(comment.content)")
-        } else {
-            print("잘못된 인덱스: \(indexPath.row), 댓글 수: \(comments.count)")
+        if indexPath.row < histories.count {
+            let history = histories[indexPath.row]
+            cell.configure(with: history)
+            
+            // 마지막 셀에 도달하고 더 많은 페이지가 있는 경우 다음 페이지 로드
+            if indexPath.row == histories.count - 1 && !isLastPage && !isLoading {
+                loadCommentHistories(page: currentPage + 1)
+            }
         }
         
         return cell
@@ -143,35 +130,33 @@ class CommentHistoryViewController: UIViewController, UITableViewDelegate, UITab
     // MARK: - UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // 댓글 클릭 시 해당 게시물로 이동하는 등의 동작 추가 가능
-        if indexPath.row < comments.count {
-            print("댓글 선택: \(comments[indexPath.row].content)")
+        if indexPath.row < histories.count {
+            let selectedHistory = histories[indexPath.row]
+            
+            // 선택한 기록의 상세 페이지로 이동
+            navigateToHistoryDetail(historyId: selectedHistory.historyId)
+            print("기록 선택: ID \(selectedHistory.historyId)")
         }
     }
     
-    // 테이블 뷰의 높이를 명시적으로 설정
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-    
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
-    }
-    
-    // 스와이프 액션 - 삭제 기능 (필요 시 구현)
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { [weak self] (_, _, completion) in
+    // 기록 상세 페이지로 이동
+    private func navigateToHistoryDetail(historyId: Int) {
+        let historyService = HistoryService()
+        
+        historyService.historyDetail(historyId: historyId) { [weak self] result in
             guard let self = self else { return }
             
-            // 서버에 삭제 요청 후 성공 시 로컬 데이터 업데이트
-            if indexPath.row < self.comments.count {
-                self.comments.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .automatic)
+            switch result {
+            case .success(let response):
+                print("히스토리 상세 조회 성공: \(response)")
+                
+                let detailVC = FriendsCalendarDetailViewController()
+                detailVC.setDetailData(response)
+                self.navigationController?.pushViewController(detailVC, animated: true)
+                
+            case .failure(let error):
+                print("히스토리 상세 조회 실패: \(error.localizedDescription)")
             }
-            
-            completion(true)
         }
-        
-        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 }
