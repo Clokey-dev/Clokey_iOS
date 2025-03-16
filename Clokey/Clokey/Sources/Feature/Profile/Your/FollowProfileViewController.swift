@@ -707,8 +707,13 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
 extension FollowProfileViewController: FollowProfileActionDelegate {
     func didReportUser() {
         print("사용자가 신고됨")
-        let accountRepoVC = AccountReportViewController()
-        self.navigationController?.pushViewController(accountRepoVC, animated: true)
+        let bottomSheetVC = CustomBottomSheetViewController()
+        bottomSheetVC.dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            
+            let accountRepoVC = CustomReportViewController(clokeyId: self.followId)
+            self.navigationController?.pushViewController(accountRepoVC, animated: true)
+        }
     }
 
     func didBlockUser() {
@@ -719,14 +724,14 @@ extension FollowProfileViewController: FollowProfileActionDelegate {
         followProfileView.updateCloseAccount(isClosed: true)
     }
     
-    func didTapDefaultProfile() {
-        let bottomSheetVC = CustomBottomSheetViewController()
-        bottomSheetVC.dismiss(animated: true) { [weak self] in
-            guard let self = self else { return }
-            
-            let accountRepoVC = CustomReportViewController(clokeyId: self.followId)
-            self.navigationController?.pushViewController(accountRepoVC, animated: true)
-        }
-    }
+//    func didTapDefaultProfile() {
+//        let bottomSheetVC = CustomBottomSheetViewController()
+//        bottomSheetVC.dismiss(animated: true) { [weak self] in
+//            guard let self = self else { return }
+//            
+//            let accountRepoVC = CustomReportViewController(clokeyId: self.followId)
+//            self.navigationController?.pushViewController(accountRepoVC, animated: true)
+//        }
+//    }
 }
 

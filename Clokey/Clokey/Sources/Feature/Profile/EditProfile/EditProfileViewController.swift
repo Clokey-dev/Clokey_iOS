@@ -224,11 +224,22 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
     
     func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
         print("사용자가 크롭을 취소했습니다.")
-//        isSelectingProfileImage = false //  프로필 이미지 선택 상태 해제
         if isSelectingProfileImage {
-            editProfileView.profileImageView.image = UIImage(named: "profile_basic")
+//            editProfileView.profileImageView.image = UIImage(named: "profile_basic")
+            if let existingImage = editProfileView.profileImageView.image {
+                // 기존 이미지가 있으므로 그대로 사용
+            } else {
+                // 기존 이미지가 없으므로 기본 이미지 설정
+                editProfileView.profileImageView.image = UIImage(named: "profile_basic")
+            }
         } else {
-            editProfileView.backgroundImageView.image = UIImage(named: "profile_background")
+//            editProfileView.backgroundImageView.image = UIImage(named: "profile_background")
+            if let existingImage = editProfileView.backgroundImageView.image {
+                // 기존 이미지가 있으므로 그대로 사용
+            } else {
+                // 기존 이미지가 없으므로 기본 이미지 설정
+                editProfileView.backgroundImageView.image = UIImage(named: "profile_background")
+            }
         } //  기존 이미지 유지 또는 nil 처리
         cropViewController.dismiss(animated: true)
     }
@@ -248,10 +259,6 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
         editProfileView.privateButton.addTarget(self, action: #selector(selectPrivateAccount), for: .touchUpInside)
         editProfileView.completeButton.addTarget(self, action: #selector(didTapCompleteButton), for: .touchUpInside)
     }
-    
-//    @objc private func didTapBackButton() {
-//        navigationController?.popViewController(animated: true)
-//    }
     
     // 텍스트 필드 변경 시 호출되는 메서드
     @objc private func textFieldDidChange(_ textField: UITextField) {
@@ -448,12 +455,6 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
                     self.navigationController?.popViewController(animated: true)
                 }
             case .failure(let error):
-//                if let response = (error as? MoyaError)?.response {
-//                    let responseBody = String(data: response.data, encoding: .utf8) ?? "응답 데이터 없음"
-//                    print("프로필 업데이트 실패 - 상태 코드: \(response.statusCode), 응답: \(responseBody)")
-//                } else {
-//                    print("프로필 업데이트 실패 - 네트워크 오류: \(error.localizedDescription)")
-//                }
                 print("프로필 업데이트 실패 - 네트워크 오류: \(error.localizedDescription)")
             }
         }

@@ -53,9 +53,10 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         
         updateTimeLabel() // 현재 시간 업데이트
         
-        fetchVisualCrossingWeatherData(for: "Seoul") // 기본 위치: 서울
+//        fetchVisualCrossingWeatherData(for: "Seoul") // 기본 위치: 서울
+        fetchVisualCrossingWeatherData(for: englishAddress)
         updateYesterdayWeatherUI()
-        fetchWeatherData() // 날씨 데이터 가져오기
+//        fetchWeatherData() // 날씨 데이터 가져오기
         setupBottomLabelTap()
         //        bindData()
         
@@ -93,7 +94,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         navigationController?.setNavigationBarHidden(true, animated: animated)
         
        
-        fetchWeatherData()
+//        fetchWeatherData()
         updateYesterdayWeatherUI()
         fetchWeatherRecommendations()
         loadRecapData()
@@ -534,8 +535,9 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     // MARK: - 날씨 데이터 가져오기
-    func fetchWeatherData() {
-        WeatherAPI.shared.fetchWeather(for: "Seoul") { [weak self] weatherData in
+    func fetchWeatherData(for location: String) {
+//        WeatherAPI.shared.fetchWeather(for: "Seoul") { [weak self] weatherData in
+        WeatherAPI.shared.fetchWeather(for: location) { [weak self] weatherData in
             DispatchQueue.main.async {
                 if let weather = weatherData {
                     print("API 응답 받음: \(weather)")
@@ -557,6 +559,8 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     
     // address 값을 저장할 변수
     private var address: String = "" // 기본값 설정
+    
+    private var englishAddress: String = ""
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
@@ -591,6 +595,35 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                 }
             }
         }
+        
+        // 영어 주소도 얻기 위한 추가 reverse geocoding 호출
+            let geocoderEnglish = CLGeocoder()
+            geocoderEnglish.reverseGeocodeLocation(location, preferredLocale: Locale(identifier: "en_US")) { (placemarks, error) in
+                if let error = error {
+                    print("English Geocoding error: \(error.localizedDescription)")
+                    return
+                }
+                if let placemark = placemarks?.first {
+                    var englishSubAddress = ""
+                    if let administrativeArea = placemark.administrativeArea {
+                        englishSubAddress += administrativeArea
+                    }
+//                    if let locality = placemark.locality {
+//                        englishSubAddress += " " + locality
+//                    }
+//                    DispatchQueue.main.async {
+                        self.englishAddress = englishSubAddress
+                        print("English Address: \(englishSubAddress)")
+                        
+                        self.fetchVisualCrossingWeatherData(for: self.englishAddress)
+                        
+                        self.fetchWeatherData(for: self.englishAddress)
+                //        fetchVisualCrossingWeatherData(for: "Seoul")
+//                        fetchWeatherRecommendations()
+                        self.updateYesterdayWeatherUI()
+//                    }
+                }
+            }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -689,7 +722,8 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     
     func updateYesterdayWeatherUI() {
         // WeatherAPI에서 fetchTemperatureChange를 호출하고 결과를 처리
-        WeatherAPI.shared.fetchTemperatureChange(for: "Seoul") { [weak self] resultText in
+//        WeatherAPI.shared.fetchTemperatureChange(for: "Seoul") { [weak self] resultText in
+        WeatherAPI.shared.fetchTemperatureChange(for: englishAddress) { [weak self] resultText in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
@@ -701,8 +735,8 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     
     // MARK: - 에러 처리
     func showError() {
-        pickView.temperatureLabel.text = "데이터를 가져올 수 없음"
-        pickView.tempDetailsLabel.text = "최고/최저 기온 없음"
+        pickView.temperatureLabel.text = "데이터를 가져오는 중입니다."
+        pickView.tempDetailsLabel.text = "최고/최저 기온을 가져오는 중입니다."
         pickView.weatherIconView.image = nil
     }
     private func setupBottomLabelTap() {
@@ -784,8 +818,9 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     //새로고침 함수
     @objc private func didPullToRefresh() {
         // 필요에 따라 여러 API 호출을 재실행합니다.
-        fetchWeatherData()
-        fetchVisualCrossingWeatherData(for: "Seoul")
+//        fetchWeatherData()
+//        fetchVisualCrossingWeatherData(for: "Seoul")
+//        fetchVisualCrossingWeatherData(for: englishAddress)
         fetchWeatherRecommendations()
         updateYesterdayWeatherUI()
         loadRecapData()

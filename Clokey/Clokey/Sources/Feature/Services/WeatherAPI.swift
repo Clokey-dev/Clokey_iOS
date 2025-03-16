@@ -125,7 +125,7 @@ class WeatherAPI {
         // 모든 데이터가 완료되면 결과 계산
         dispatchGroup.notify(queue: .main) {
             guard let currentMinTemp = currentMinTemp, let yesterdayMinTemp = yesterdayMinTemp else {
-                completion("온도 데이터를 가져오지 못했습니다.")
+                completion("온도 데이터를 가져오는 중입니다.")
                 return
             }
 

@@ -288,9 +288,6 @@
 		A67661AA2D5B367B006AAB63 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661A62D5B367B006AAB63 /* ProfileView.swift */; };
 		A67661AB2D5B367B006AAB63 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661A72D5B367B006AAB63 /* ProfileViewController.swift */; };
 		A67661AD2D5B3760006AAB63 /* PrivateStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661AC2D5B3760006AAB63 /* PrivateStackView.swift */; };
-		A6DB5F412D85E33400B64B59 /* ReportEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DB5F402D85E33400B64B59 /* ReportEndpoint.swift */; };
-		A6DB5F432D85E34F00B64B59 /* ReportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DB5F422D85E34F00B64B59 /* ReportService.swift */; };
-		A6DB5F452D85E6B100B64B59 /* ReportResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DB5F442D85E6B100B64B59 /* ReportResponseDTO.swift */; };
 		A6FBF9C52D78BA83000FC4EA /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9C42D78BA83000FC4EA /* CheckBox.swift */; };
 		A6FBF9C72D78BAAA000FC4EA /* CustomReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9C62D78BAAA000FC4EA /* CustomReportView.swift */; };
 		A6FBF9C92D78BAC5000FC4EA /* CustomReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9C82D78BAC5000FC4EA /* CustomReportViewController.swift */; };
@@ -1008,6 +1005,9 @@
 		07649BE22D4DDAE600B6B2B2 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
+				A6DB5F402D85E33400B64B59 /* ReportEndpoint.swift */,
+				A6DB5F442D85E6B100B64B59 /* ReportResponseDTO.swift */,
+				A6DB5F422D85E34F00B64B59 /* ReportService.swift */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1903,48 +1903,6 @@
 			path = My;
 			sourceTree = "<group>";
 		};
-		A6DB5F3B2D85E2EC00B64B59 /* report */ = {
-			isa = PBXGroup;
-			children = (
-				A6DB5F3C2D85E2F600B64B59 /* Endpoints */,
-				A6DB5F3D2D85E30000B64B59 /* Request */,
-				A6DB5F3E2D85E30700B64B59 /* Response */,
-				A6DB5F3F2D85E30E00B64B59 /* Service */,
-			);
-			path = report;
-			sourceTree = "<group>";
-		};
-		A6DB5F3C2D85E2F600B64B59 /* Endpoints */ = {
-			isa = PBXGroup;
-			children = (
-				A6DB5F402D85E33400B64B59 /* ReportEndpoint.swift */,
-			);
-			path = Endpoints;
-			sourceTree = "<group>";
-		};
-		A6DB5F3D2D85E30000B64B59 /* Request */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Request;
-			sourceTree = "<group>";
-		};
-		A6DB5F3E2D85E30700B64B59 /* Response */ = {
-			isa = PBXGroup;
-			children = (
-				A6DB5F442D85E6B100B64B59 /* ReportResponseDTO.swift */,
-			);
-			path = Response;
-			sourceTree = "<group>";
-		};
-		A6DB5F3F2D85E30E00B64B59 /* Service */ = {
-			isa = PBXGroup;
-			children = (
-				A6DB5F422D85E34F00B64B59 /* ReportService.swift */,
-			);
-			path = Service;
-			sourceTree = "<group>";
-		};
 		A6FBF9C32D78BA5B000FC4EA /* Report */ = {
 			isa = PBXGroup;
 			children = (
@@ -2148,7 +2106,6 @@
 				1EF33C6C2D665FFB00142954 /* SmartSummationBannerView.swift in Sources */,
 				1EF33C6D2D665FFB00142954 /* DrawerViewController.swift in Sources */,
 				1EF33C6E2D665FFB00142954 /* PopUpDropdownView.swift in Sources */,
-				A6DB5F412D85E33400B64B59 /* ReportEndpoint.swift in Sources */,
 				1EF33C6F2D665FFB00142954 /* PopUpDropdownViewController.swift in Sources */,
 				1EF33C702D665FFB00142954 /* DrawerInfoViewController.swift in Sources */,
 				1EF33C8E2D66613500142954 /* FolderEndpoint.swift in Sources */,
@@ -2220,7 +2177,6 @@
 				07F8599F2D61D73500DD5BF8 /* NotificationViewModel.swift in Sources */,
 				07F859A02D61D73500DD5BF8 /* NotificationViewController.swift in Sources */,
 				07F859A12D61D73500DD5BF8 /* NotificationCell.swift in Sources */,
-				A6DB5F452D85E6B100B64B59 /* ReportResponseDTO.swift in Sources */,
 				07F859A22D61D73500DD5BF8 /* NotificationView.swift in Sources */,
 				07E1CB602D36A10000F86BB8 /* CustomButtonTextField.swift in Sources */,
 				07649EE32D4DE58900B6B2B2 /* CookiePlugin.swift in Sources */,
@@ -2272,7 +2228,6 @@
 				074401202D5CB9EB00E60282 /* AddCategoryModel.swift in Sources */,
 				074401212D5CB9EB00E60282 /* AddCategoryHeaderView.swift in Sources */,
 				074401222D5CB9EB00E60282 /* AddCategoryViewCollectionViewCell.swift in Sources */,
-				A6DB5F432D85E34F00B64B59 /* ReportService.swift in Sources */,
 				07649EEC2D4DE58900B6B2B2 /* HistoryRequestDTO.swift in Sources */,
 				48FB77812D803E06008607B7 /* LikeHistoryCell.swift in Sources */,
 				07649EED2D4DE58900B6B2B2 /* NetworkManager+Protocol.swift in Sources */,
