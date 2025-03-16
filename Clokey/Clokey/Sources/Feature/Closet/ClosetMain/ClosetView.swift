@@ -18,10 +18,10 @@ final class ClosetView: UIView {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 10
         layout.minimumLineSpacing = 20
-        layout.sectionInset = .zero
+        layout.sectionInset = .zero  // 섹션 인셋 0으로 설정해 왼쪽부터 배치
         layout.estimatedItemSize = .zero
-        let totalMargin: CGFloat = 40
-        let interitemSpacing: CGFloat = 10 * 2
+        let totalMargin: CGFloat = 40   // 좌우 inset 20씩
+        let interitemSpacing: CGFloat = 10 * 2 // 아이템 간 간격 10씩 2칸
         let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing
         let itemWidth = availableWidth / 3
         layout.itemSize = CGSize(width: itemWidth, height: 167)
@@ -88,11 +88,11 @@ final class ClosetView: UIView {
         layout.minimumLineSpacing = 12
         layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         layout.estimatedItemSize = .zero
-        
-        let horizontalSpacing = layout.minimumInteritemSpacing
-        let totalMargin: CGFloat = 20 + 20
+
+        let horizontalSpacing = layout.minimumInteritemSpacing // 7 포인트
+        let totalMargin: CGFloat = 20 + 20  // 좌우 margin 합계 40 포인트
         let availableWidth = UIScreen.main.bounds.width - totalMargin - horizontalSpacing
-        let itemWidth = availableWidth / 2
+        let itemWidth = availableWidth / 2  // 두 개로 나누어 배치
         layout.itemSize = CGSize(width: itemWidth, height: 77)
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -103,7 +103,7 @@ final class ClosetView: UIView {
         return cv
     }()
     
-    // drawerCollectionView 높이 제약을 업데이트하기 위한 참조
+    // drawerCollectionView 높이를 동적으로 업데이트하기 위한 Constraint 참조
     var drawerCollectionViewHeightConstraint: Constraint?
     
     // MARK: - Init
@@ -147,8 +147,7 @@ final class ClosetView: UIView {
         contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.width.equalToSuperview() // 가로 스크롤 방지
-            // drawerCollectionView의 바텀을 포함하도록 설정
-            make.bottom.equalTo(drawerCollectionView.snp.bottom).offset(30)
+            make.bottom.greaterThanOrEqualTo(drawerCollectionView.snp.bottom).offset(30)
         }
         
         customTotalSegmentView.snp.makeConstraints { make in
@@ -205,11 +204,11 @@ final class ClosetView: UIView {
             make.width.height.equalTo(15)
         }
         
-        // drawerCollectionView의 높이 제약을 동적으로 업데이트하기 위해 Constraint 참조를 저장
         drawerCollectionView.snp.makeConstraints { make in
             make.top.equalTo(drawerTitle.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview()
-            self.drawerCollectionViewHeightConstraint = make.height.equalTo(0).constraint
+            // 기존 고정값 대신 Constraint 참조를 저장하여 나중에 업데이트 할 수 있게 함
+            self.drawerCollectionViewHeightConstraint = make.height.equalTo(255).constraint
         }
     }
 }

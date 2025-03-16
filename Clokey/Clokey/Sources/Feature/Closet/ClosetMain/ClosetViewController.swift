@@ -250,10 +250,7 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
                 }
                 self.closetItems = newItems
                 DispatchQueue.main.async {
-                    self.closetView.drawerCollectionView.reloadData()
-                    self.closetView.drawerCollectionView.layoutIfNeeded()
-                    // 업데이트: collectionView의 contentSize.height로 제약을 변경
-                    self.closetView.drawerCollectionViewHeightConstraint?.update(offset: self.closetView.drawerCollectionView.contentSize.height)
+                    self.closetView.collectionView.reloadData()
                     self.updateEmptyStates()
                 }
 
@@ -267,7 +264,7 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
         guard !isLoadingDrawers && (hasMoreDrawerPages || !isNextPage) else { return }
         isLoadingDrawers = true
         let page = isNextPage ? currentDrawerPage + 1 : 1
-        
+
         folderService.folderAll(page: page) { [weak self] result in
             DispatchQueue.main.async {
                 guard let self = self else { return }
@@ -284,6 +281,10 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
                     }
                     self.hasMoreDrawerPages = !newDrawers.isEmpty
                     self.closetView.drawerCollectionView.reloadData()
+                    // 동적으로 높이 업데이트
+                    self.closetView.drawerCollectionView.layoutIfNeeded()
+                    let newHeight = self.closetView.drawerCollectionView.contentSize.height
+                    self.closetView.drawerCollectionViewHeightConstraint?.update(offset: newHeight)
                     self.updateEmptyStates()
                 case .failure(let error):
                     self.showError(error)
@@ -291,6 +292,7 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
             }
         }
     }
+
     
     private func showError(_ error: Error) {
         let alert = UIAlertController(title: "오류",
