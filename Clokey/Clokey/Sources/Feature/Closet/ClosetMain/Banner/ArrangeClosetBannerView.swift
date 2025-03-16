@@ -54,11 +54,13 @@ class ArrangeClosetBannerView: UIControl {
         bannerTitle.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(23)
             make.leading.equalToSuperview().offset(33)
+            make.height.equalTo(20)
         }
         
         bannerDescription.snp.makeConstraints { make in
             make.top.equalTo(bannerTitle.snp.bottom).offset(2)
             make.leading.equalToSuperview().offset(33)
+            make.height.equalTo(20)
         }
     }
 }
