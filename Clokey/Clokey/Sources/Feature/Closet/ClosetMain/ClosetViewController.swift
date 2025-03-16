@@ -10,6 +10,12 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
     // Drawer(폴더) 데이터
     private var drawerItems: [DrawerModel] = []
     
+    // 페이징 관련 변수 (폴더)
+    private var currentDrawerPage = 1
+    private let drawerPageSize = 12  // 서버에서 사용하는 페이지 크기에 맞게 설정
+    private var isLoadingDrawers = false
+    private var hasMoreDrawerPages = true
+    
     // 정렬 옵션
     private enum SortOption: String {
         case wear = "WEAR"
@@ -48,8 +54,8 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
         
         // 초기 제품 데이터 로드 (첫 번째 세그먼트)
         loadInitialData()
-        // 폴더 데이터 로드
-        loadDrawers()
+        // 폴더 데이터 로드 (초기 로드)
+        loadDrawers(isNextPage: false)
         
         // Delegate 설정 (CustomTotalSegmentViewDelegate 등)
         closetView.customTotalSegmentView.delegate = self
@@ -72,7 +78,6 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
     }
     
     @objc private func handleClothEdit(_ notification: Notification) {
-        //        loadClothesData(categoryId: currentMainCategoryId)
         if let clothIdValue = notification.userInfo?["clothId"] {
             print("clothId value: \(clothIdValue) and its type: \(type(of: clothIdValue))")
         } else {
@@ -91,8 +96,7 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         // 새로 추가된 폴더가 있을 경우 최신 데이터를 불러옵니다.
-        loadDrawers()
-        
+        loadDrawers(isNextPage: false)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -249,26 +253,46 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
                     self.closetView.collectionView.reloadData()
                     self.updateEmptyStates()
                 }
+
             case .failure(let error):
                 print("Error loading clothes: \(error)")
             }
         }
     }
     
-    private func loadDrawers() {
-        folderService.folderAll(page: 1) { [weak self] result in
+    private func loadDrawers(isNextPage: Bool = false) {
+        guard !isLoadingDrawers && (hasMoreDrawerPages || !isNextPage) else { return }
+        isLoadingDrawers = true
+        let page = isNextPage ? currentDrawerPage + 1 : 1
+
+        folderService.folderAll(page: page) { [weak self] result in
             DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.isLoadingDrawers = false
                 switch result {
                 case .success(let responseDTO):
-                    self?.drawerItems = responseDTO.folders.toDrawerItems()
-                    self?.closetView.drawerCollectionView.reloadData()
-                    self?.updateEmptyStates()
+                    let newDrawers = responseDTO.folders.toDrawerItems()
+                    if isNextPage {
+                        self.drawerItems.append(contentsOf: newDrawers)
+                        self.currentDrawerPage = page
+                    } else {
+                        self.drawerItems = newDrawers
+                        self.currentDrawerPage = 1
+                    }
+                    self.hasMoreDrawerPages = !newDrawers.isEmpty
+                    self.closetView.drawerCollectionView.reloadData()
+                    // 동적으로 높이 업데이트
+                    self.closetView.drawerCollectionView.layoutIfNeeded()
+                    let newHeight = self.closetView.drawerCollectionView.contentSize.height
+                    self.closetView.drawerCollectionViewHeightConstraint?.update(offset: newHeight)
+                    self.updateEmptyStates()
                 case .failure(let error):
-                    self?.showError(error)
+                    self.showError(error)
                 }
             }
         }
     }
+
     
     private func showError(_ error: Error) {
         let alert = UIAlertController(title: "오류",
@@ -367,7 +391,7 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == closetView.collectionView {
             let popUpVC = PopUpViewController()
-            // closetItems를 ClothPreview 모델 배열로 변환해서 전달 (클래스 이름은 실제 모델에 맞게 변경)
+            // closetItems를 ClothPreview 모델 배열로 변환해서 전달
             popUpVC.clothPreviews = closetItems.map { ClothPreview(id: $0.id, name: $0.name, wearNum: $0.count, imageUrl: $0.image) }
             popUpVC.currentIndex = indexPath.item
             popUpVC.clothId = Int64(popUpVC.clothPreviews[indexPath.item].id)
@@ -381,6 +405,17 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
         }
     }
     
+    // MARK: - UIScrollView Delegate (drawer 페이징 처리)
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView == closetView.drawerCollectionView {
+            let offsetY = scrollView.contentOffset.y
+            let contentHeight = scrollView.contentSize.height
+            let screenHeight = scrollView.frame.size.height
+            if offsetY > contentHeight - screenHeight - 100 {
+                loadDrawers(isNextPage: true)
+            }
+        }
+    }
 }
 
 // MARK: - CustomTotalSegmentViewDelegate

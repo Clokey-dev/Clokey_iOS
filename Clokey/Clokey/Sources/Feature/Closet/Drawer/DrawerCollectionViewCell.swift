@@ -65,11 +65,14 @@ class DrawerCollectionViewCell: UICollectionViewCell {
         folderLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(19)//레이아웃이 넓어서 확인해야함
             $0.leading.equalTo(productImageView.snp.trailing).offset(9)
+            $0.height.equalTo(22)
+
         }
         
         itemCountLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(37)//레이아웃이 넓어서 확인해야함
+            $0.top.equalTo(folderLabel.snp.bottom)//레이아웃이 넓어서 확인해야함
             $0.leading.equalTo(productImageView.snp.trailing).offset(9)
+            $0.height.equalTo(22)
         }
         
         setupShadow()

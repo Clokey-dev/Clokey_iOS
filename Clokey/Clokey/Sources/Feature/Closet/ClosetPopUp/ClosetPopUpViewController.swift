@@ -29,7 +29,7 @@ final class PopUpViewController: UIViewController {
     // MARK: - UI Components
     private let dimmingView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
         view.alpha = 0
         return view
     }()
