@@ -94,7 +94,9 @@ class PickView: UIView {
     let weatherImageName1: UILabel = UILabel().then {
         $0.font = UIFont.ptdRegularFont(ofSize: 12)
         $0.textColor = .black // 텍스트 색상
-        $0.textAlignment = .center // 텍스트 중앙 정렬
+        $0.textAlignment = .left // 텍스트 중앙 정렬
+        $0.numberOfLines = 0
+        $0.lineBreakMode = .byCharWrapping
         $0.text = "" // 기본 텍스트
     }
 
@@ -110,7 +112,9 @@ class PickView: UIView {
     let weatherImageName2: UILabel = UILabel().then {
         $0.font = UIFont.ptdRegularFont(ofSize: 12)
         $0.textColor = .black // 텍스트 색상
-        $0.textAlignment = .center // 텍스트 중앙 정렬
+        $0.textAlignment = .left // 텍스트 중앙 정렬
+        $0.numberOfLines = 0
+        $0.lineBreakMode = .byCharWrapping
         $0.text = "" // 기본 텍스트
     }
 
@@ -126,7 +130,9 @@ class PickView: UIView {
     let weatherImageName3: UILabel = UILabel().then {
         $0.font = UIFont.ptdRegularFont(ofSize: 12)
         $0.textColor = .black // 텍스트 색상
-        $0.textAlignment = .center // 텍스트 중앙 정렬
+        $0.textAlignment = .left // 텍스트 중앙 정렬
+        $0.numberOfLines = 0
+        $0.lineBreakMode = .byCharWrapping
         $0.text = "" // 기본 텍스트
     }
     

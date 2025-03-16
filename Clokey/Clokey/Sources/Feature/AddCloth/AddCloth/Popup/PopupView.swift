@@ -11,9 +11,11 @@ import Then
 class PopupView: UIView {
     // MARK: - UI Components
     var nameLabel = UILabel().then {
-        $0.text = "회색 레터링 후드티"
+        $0.text = ""
         $0.font = UIFont.ptdMediumFont(ofSize: 16)
         $0.textColor = .black
+        $0.numberOfLines = 0
+        $0.lineBreakMode = .byCharWrapping
     }
     
     let publicButton = UIButton().then {
@@ -133,8 +135,10 @@ class PopupView: UIView {
     
     var brandNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "나이키"
+        label.text = ""
         label.font = UIFont.ptdMediumFont(ofSize: 16)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byCharWrapping
         return label
     }()
     

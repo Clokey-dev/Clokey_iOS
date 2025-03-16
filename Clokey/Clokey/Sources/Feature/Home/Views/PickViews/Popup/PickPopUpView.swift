@@ -16,6 +16,8 @@ class PickPopUpView: UIView {
         $0.text = ""
         $0.font = UIFont.ptdSemiBoldFont(ofSize: 16)
         $0.textColor = .black
+        $0.numberOfLines = 0
+        $0.lineBreakMode = .byCharWrapping
     }
     
     let deleteButton = UIButton().then {
@@ -142,8 +144,10 @@ class PickPopUpView: UIView {
     
     var brandNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "나이키"
+        label.text = ""
         label.font = UIFont.ptdMediumFont(ofSize: 16)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byCharWrapping
         return label
     }()
     

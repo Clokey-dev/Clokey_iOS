@@ -742,9 +742,10 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     if historyResult.isMine {
                         if imageUrls.isEmpty {
                             print("사진이 없습니다")
-                            self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님의 기록이 없어요!"
-                            self.pickView.recapNotMe(hidden: false)
-                            self.pickView.recapSubtitleLabel2.text = "1년 전 오늘, 다른 사용자들의 기록도 없어요!"
+                            self.pickView.recapSubtitleLabel1.text = "\(nickName)과 팔로워들의 과거의 기록들을 확인해보세요!"
+                            self.pickView.recapNotMe(hidden: true)
+//                            self.pickView.recapNotMe(hidden: false)
+//                            self.pickView.recapSubtitleLabel2.text = "1년 전 오늘, 다른 사용자들의 기록도 없어요!"
                         } else {
                             self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님은 이 옷을 착용하셨네요!"
                             self.pickView.recapNotMe(hidden: true)
@@ -762,7 +763,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                         self.pickView.recapSubtitleLabel2.text = "\(nickName)님의 1년 전 오늘을 확인해보세요!"
                         
                         if imageUrls.isEmpty {
-                            print("📷 사진이 없습니다")
+                            print("사진이 없습니다")
                         } else {
                             if imageUrls.count > 0 {
                                 self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
