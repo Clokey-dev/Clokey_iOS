@@ -75,7 +75,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setupNavigationBar()
+//        setupNavigationBar()
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
@@ -290,15 +290,10 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
 
     
     @objc private func didTapReportButton(_ sender: UIButton) {
-        
-        let bottomSheetVC = CustomBottomSheetViewController()
-        bottomSheetVC.delegate = self // Delegate 연결
-        bottomSheetVC.defaultProfileButton.configuration?.image = UIImage(systemName: "exclamationmark.circle")
-        bottomSheetVC.defaultProfileButton.configuration?.title = "신고하기"
-        bottomSheetVC.choosePhotoButton.configuration?.image = UIImage(systemName: "nosign")
-        bottomSheetVC.choosePhotoButton.configuration?.title = "차단하기"
-        bottomSheetVC.modalPresentationStyle = .overFullScreen
-        present(bottomSheetVC, animated: false)
+        let actionSheet = FollowProfileActionViewController(clokeyId: followId)
+        actionSheet.delegate = self
+        actionSheet.modalPresentationStyle = .overFullScreen
+        present(actionSheet, animated: false)
     }
     
     // MARK: - 팔로우 버튼 이벤트
@@ -709,18 +704,9 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     
 }
 
-extension FollowProfileViewController: CustomBottomSheetDelegate {
-    func didTapChoosePhoto() {
-        let bottomSheetVC = CustomBottomSheetViewController()
-        bottomSheetVC.hideAnimation()
-        
-        followProfileView.followButton.setTitle("차단 해제", for: .normal)
-        followProfileView.followButton.backgroundColor = .mainBrown800
-        followProfileView.followButton.setTitleColor(.white, for: .normal)
-        followProfileView.updateCloseAccount(isClosed: true)
-    }
-    
-    func didTapDefaultProfile() {
+extension FollowProfileViewController: FollowProfileActionDelegate {
+    func didReportUser() {
+        print("사용자가 신고됨")
         let bottomSheetVC = CustomBottomSheetViewController()
         bottomSheetVC.dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
@@ -729,4 +715,23 @@ extension FollowProfileViewController: CustomBottomSheetDelegate {
             self.navigationController?.pushViewController(accountRepoVC, animated: true)
         }
     }
+
+    func didBlockUser() {
+        print("사용자가 차단됨")
+        followProfileView.followButton.setTitle("차단 해제", for: .normal)
+        followProfileView.followButton.backgroundColor = .mainBrown800
+        followProfileView.followButton.setTitleColor(.white, for: .normal)
+        followProfileView.updateCloseAccount(isClosed: true)
+    }
+    
+//    func didTapDefaultProfile() {
+//        let bottomSheetVC = CustomBottomSheetViewController()
+//        bottomSheetVC.dismiss(animated: true) { [weak self] in
+//            guard let self = self else { return }
+//            
+//            let accountRepoVC = CustomReportViewController(clokeyId: self.followId)
+//            self.navigationController?.pushViewController(accountRepoVC, animated: true)
+//        }
+//    }
 }
+

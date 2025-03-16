@@ -6,38 +6,31 @@
 //
 
 import UIKit
+import WebKit
+
+/// 약관동의 case
+enum AgreementType {
+    case termsOfService
+    case privacyPolicy
+    case locationPolicy
+    case marketingPolicy
+    case pushPolicy
+    case nothing
+}
 
 class AgreementDetailViewController: UIViewController {
-    
-    // MARK: - Properties
+    private let navBarManager = NavigationBarManager()
+    private let webView: WKWebView!
     private let agreementTitle: String
-    private let agreementContent: String //  내용을 받을 프로퍼티 추가
-    
-    // MARK: - UI Components
-    private lazy var contentTextView: UITextView = { // UILabel → UITextView로 변경 (스크롤 지원)
-        let textView = UITextView()
-        textView.text = agreementContent //  초기화 시 내용 주입
-        textView.font = .systemFont(ofSize: 16)
-        textView.isEditable = false
-        textView.textColor = .black
-        return textView
-    }()
-    
-    private lazy var closeButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("닫기", for: .normal)
-        button.setTitleColor(.systemBlue, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 16)
-        button.addTarget(self, action: #selector(didTapClose), for: .touchUpInside)
-        return button
-    }()
-    
-    // MARK: - Initializers
-    init(title: String, content: String) {
+
+    init(title: String, agreementType: AgreementType) {
         self.agreementTitle = title
-        self.agreementContent = content // 내용 저장
+        let configuration = WKWebViewConfiguration()
+        self.webView = WKWebView(frame: .zero, configuration: configuration)
         super.init(nibName: nil, bundle: nil)
+        connectWebLink(agreementType: agreementType)
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -46,44 +39,86 @@ class AgreementDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        setupNavigationBar()
         setupUI()
     }
     
-    // MARK: - Setup
-    private func setupUI() {
-        // 제목 레이블
-        let titleLabel = UILabel()
-        titleLabel.text = agreementTitle
-        titleLabel.font = .ptdBoldFont(ofSize: 18)
-        titleLabel.textAlignment = .center
-        titleLabel.textColor = .black
-        view.addSubview(titleLabel)
+    // 네비게이션 설정
+    private func setupNavigationBar() {
+        navBarManager.addBackButton(
+            to: navigationItem,
+            target: self,
+            action: #selector(didTapBackButton)
+        )
         
-        // 닫기 버튼
-        view.addSubview(closeButton)
-        
-        // 내용 텍스트뷰
-        view.addSubview(contentTextView) //  UILabel 대신 UITextView 사용
-        
-        // 제약조건
-        titleLabel.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(16)
-            $0.centerX.equalToSuperview()
-        }
-        
-        closeButton.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(16)
-            $0.trailing.equalToSuperview().inset(16)
-        }
-        
-        contentTextView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(20)
-            $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide).inset(16) //  하단까지 확장
-        }
+        navBarManager.setTitle(
+            to: navigationItem,
+            title: agreementTitle,
+            font: .ptdSemiBoldFont(ofSize: 18),
+            textColor: .black
+        )
     }
     
-    // MARK: - Actions
-    @objc private func didTapClose() {
-        dismiss(animated: true)
+    // 뒤로가기
+    @objc private func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    /// webView 레이아웃 설정
+    private func setupUI() {
+        view.addSubview(webView)
+        webView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.bottom.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(10)
+        }
+    }
+
+    /// 약관동의 깃헙 연결 함수
+    private func connectWebLink(agreementType: AgreementType) {
+        switch agreementType {
+        case .termsOfService:
+            if let termsOfServiceURL = URL(string: "https://namu.wiki/w/서비스") {
+                let request = URLRequest(url: termsOfServiceURL)
+                webView.load(request)
+            } else {
+                
+            }
+        case .privacyPolicy:
+            if let privacyPolicyURL = URL(string: "https://namu.wiki/w/개인정보") {
+                let request = URLRequest(url: privacyPolicyURL)
+                webView.load(request)
+            } else {
+                
+            }
+        case .locationPolicy:
+            if let termsOfServiceURL = URL(string: "https://namu.wiki/w/위치") {
+                let request = URLRequest(url: termsOfServiceURL)
+                webView.load(request)
+            } else {
+                
+            }
+        case .marketingPolicy:
+            if let termsOfServiceURL = URL(string: "https://namu.wiki/w/마케팅") {
+                let request = URLRequest(url: termsOfServiceURL)
+                webView.load(request)
+            } else {
+               
+            }
+        case .pushPolicy:
+            if let termsOfServiceURL = URL(string: "https://namu.wiki/w/푸시") {
+                let request = URLRequest(url: termsOfServiceURL)
+                webView.load(request)
+            } else {
+               
+            }
+        case .nothing:
+            if let termsOfServiceURL = URL(string: "https://namu.wiki/w/논") {
+                let request = URLRequest(url: termsOfServiceURL)
+                webView.load(request)
+            } else {
+                
+            }
+        }
     }
 }

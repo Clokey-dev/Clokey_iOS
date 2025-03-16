@@ -269,6 +269,7 @@
 		A6548E532D3F47DE00F79B66 /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */; };
 		A66BA3352D636AD400E69A4F /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66BA3342D636AD400E69A4F /* ProfileViewModel.swift */; };
 		A672AEB72D572A6E003EF3FF /* EmptyStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */; };
+		A67577392D81C53C009880F1 /* FollowProfileActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67577382D81C53C009880F1 /* FollowProfileActionViewController.swift */; };
 		A67661892D5B367B006AAB63 /* CustomBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661852D5B367B006AAB63 /* CustomBottomSheetViewController.swift */; };
 		A676618A2D5B367B006AAB63 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661862D5B367B006AAB63 /* EditProfileView.swift */; };
 		A676618B2D5B367B006AAB63 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661872D5B367B006AAB63 /* EditProfileViewController.swift */; };
@@ -546,6 +547,7 @@
 		A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
 		A66BA3342D636AD400E69A4F /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStackView.swift; sourceTree = "<group>"; };
+		A67577382D81C53C009880F1 /* FollowProfileActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowProfileActionViewController.swift; sourceTree = "<group>"; };
 		A67661852D5B367B006AAB63 /* CustomBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomSheetViewController.swift; sourceTree = "<group>"; };
 		A67661862D5B367B006AAB63 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		A67661872D5B367B006AAB63 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
@@ -564,6 +566,9 @@
 		A67661A62D5B367B006AAB63 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		A67661A72D5B367B006AAB63 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		A67661AC2D5B3760006AAB63 /* PrivateStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateStackView.swift; sourceTree = "<group>"; };
+		A6DB5F402D85E33400B64B59 /* ReportEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportEndpoint.swift; sourceTree = "<group>"; };
+		A6DB5F422D85E34F00B64B59 /* ReportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportService.swift; sourceTree = "<group>"; };
+		A6DB5F442D85E6B100B64B59 /* ReportResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportResponseDTO.swift; sourceTree = "<group>"; };
 		A6FBF9C42D78BA83000FC4EA /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
 		A6FBF9C62D78BAAA000FC4EA /* CustomReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReportView.swift; sourceTree = "<group>"; };
 		A6FBF9C82D78BAC5000FC4EA /* CustomReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReportViewController.swift; sourceTree = "<group>"; };
@@ -1000,6 +1005,9 @@
 		07649BE22D4DDAE600B6B2B2 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
+				A6DB5F402D85E33400B64B59 /* ReportEndpoint.swift */,
+				A6DB5F442D85E6B100B64B59 /* ReportResponseDTO.swift */,
+				A6DB5F422D85E34F00B64B59 /* ReportService.swift */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1879,6 +1887,7 @@
 				A676619F2D5B367B006AAB63 /* FollowProfileView.swift */,
 				A67661A02D5B367B006AAB63 /* FollowProfileViewController.swift */,
 				A646C4D72D662DE800993FA5 /* FollowCalendarViewController.swift */,
+				A67577382D81C53C009880F1 /* FollowProfileActionViewController.swift */,
 			);
 			path = Your;
 			sourceTree = "<group>";
@@ -2251,6 +2260,7 @@
 				0744FFC82D5B1D8B00E60282 /* NewsViewController.swift in Sources */,
 				0744FFC92D5B1D8B00E60282 /* ImageViewController.swift in Sources */,
 				A648ACDE2D5CECF00094C126 /* CategoriesResponseDTO.swift in Sources */,
+				A67577392D81C53C009880F1 /* FollowProfileActionViewController.swift in Sources */,
 				0744FFCA2D5B1D8B00E60282 /* HomeViewController.swift in Sources */,
 				0744FFCB2D5B1D8B00E60282 /* PickViewController.swift in Sources */,
 				0744FFCC2D5B1D8B00E60282 /* UpdateFriendClothesViewController.swift in Sources */,
@@ -2298,6 +2308,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
 				ENABLE_DEBUG_DYLIB = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
