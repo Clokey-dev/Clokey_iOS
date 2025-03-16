@@ -2,41 +2,95 @@
 //  ReportService.swift
 //  Clokey
 //
-//  Created by 한금준 on 3/16/25.
+//  Created by 황상환 on 3/12/25.
 //
 
 import Foundation
 import Moya
 
-public final class ReportService : NetworkManager {
+public final class ReportService: NetworkManager {
     typealias Endpoint = ReportEndpoint
     
-    // MARK: - Provider 설정
     let provider: MoyaProvider<ReportEndpoint>
     
     public init(provider: MoyaProvider<ReportEndpoint>? = nil) {
-        // 플러그인 추가
         let plugins: [PluginType] = [
-            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)), // 로그 플러그인
-            AccessTokenPlugin()
+            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)),
+            AccessTokenPlugin(),
+            TokenRefreshPlugin()
         ]
-        
-        // provider 초기화
         self.provider = provider ?? MoyaProvider<ReportEndpoint>(plugins: plugins)
     }
     
-    func getProfileReportInformation(
+    // 계정 신고 정보 조회 GET API
+    public func getProfileReportInfo(
         clokeyId: String,
-        completion: @escaping (Result<getProfileReportInformationResponseDTO, NetworkError>) -> Void
+        completion: @escaping (Result<ReportResponseDTO<ProfileAdditionalData>, NetworkError>) -> Void
     ) {
         request(
-            target: .getProfileReportInformation(clokeyId: clokeyId),
-            decodingType: getProfileReportInformationResponseDTO.self,
+            target: .getProfileReportInfo(clokeyId: clokeyId),
+            decodingType: ReportResponseDTO<ProfileAdditionalData>.self,
             completion: completion
         )
     }
     
+    // 댓글 신고 정보 조회 GET API
+    public func getCommentReportInfo(
+        commentId: String,
+        completion: @escaping (Result<ReportResponseDTO<CommentAdditionalData>, NetworkError>) -> Void
+    ) {
+        request(
+            target: .getCommentReportInfo(commentId: commentId),
+            decodingType: ReportResponseDTO<CommentAdditionalData>.self,
+            completion: completion
+        )
+    }
     
-   
-}
+    // 기록 신고 정보 조회 GET API
+    public func getHistoryReportInfo(
+        historyId: String,
+        completion: @escaping (Result<ReportResponseDTO<HistoryAdditionalData>, NetworkError>) -> Void
+    ) {
+        request(
+            target: .getHistoryReportInfo(historyId: historyId),
+            decodingType: ReportResponseDTO<HistoryAdditionalData>.self,
+            completion: completion
+        )
+    }
+    
+    // 프로필 신고 POST API
+    public func reportProfile(
+        data: AccountReportRequestDTO,
+        completion: @escaping (Result<AccountReportReasonDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .reportProfile(data: data),
+            decodingType: AccountReportReasonDTO.self,
+            completion: completion
+        )
+    }
+    
+    // 댓글 신고 POST API
+    public func reportComment(
+        data: CommentReportRequestDTO,
+        completion: @escaping (Result<CommentReportReasonDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .reportComment(data: data),
+            decodingType: CommentReportReasonDTO.self,
+            completion: completion
+        )
+    }
 
+    // 기록 신고 POST API
+    public func reportHistory(
+        data: HistoryReportRequestDTO,
+        completion: @escaping (Result<HistoryReportReasonDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .reportHistory(data: data),
+            decodingType: HistoryReportReasonDTO.self,
+            completion: completion
+        )
+    }
+}

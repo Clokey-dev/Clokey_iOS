@@ -1,5 +1,5 @@
 //
-//  AccountReportView.swift
+//  CustomReportView.swift
 //  Report
 //
 //  Created by 한금준 on 3/5/25.
@@ -8,8 +8,11 @@
 import UIKit
 import SnapKit
 import Then
+import Kingfisher
 
-class AccountReportView: UIView {
+class CustomReportView: UIView {
+    
+    // MARK: - UI Component
 
     // 계정 정보
     private let infoTitle = UILabel().then {
@@ -55,11 +58,33 @@ class AccountReportView: UIView {
     }
 
     private let divideLine = UIView().then {
-        $0.backgroundColor = .lightGray
+        $0.backgroundColor = UIColor(hexCode: "#f1f1f1")
+    }
+    
+    // 댓글/게시물 내용 관련 UI 요소들
+    let contentContainer = UIView().then {
+        $0.isHidden = false
+    }
+    
+    let contentTitle = UILabel().then {
+        $0.text = "기록 내용"
+        $0.font = .ptdSemiBoldFont(ofSize: 16)
+        $0.textColor = .black
+    }
+    
+    let contentTextLabel = UILabel().then {
+        $0.text = "연말 파티 즐거웠다~내용이 추가된다면~~~ 추가된 내용은 아무내용...연말 파티 즐거웠다~내용이 추가된다면~~~ 추가된 내용은 아무내용..."
+        $0.font = .ptdRegularFont(ofSize: 12)
+        $0.textColor = .black
+        $0.numberOfLines = 0
     }
 
+    let divideLine2 = UIView().then {
+        $0.backgroundColor = UIColor(hexCode: "#f1f1f1")
+    }
+    
     // 신고 사유
-    private let reportTitle = UILabel().then {
+    let reportTitle = UILabel().then {
         $0.text = "신고 사유"
         $0.font = .ptdSemiBoldFont(ofSize: 16)
         $0.textColor = .black
@@ -73,42 +98,8 @@ class AccountReportView: UIView {
         $0.layer.cornerRadius = 10
     }
 
-    // 서버 데이터 예시
-    private var reasons: [ReportReason] = [
-        ReportReason(
-            reportType: "FAKE_ACCOUNT",
-            title: "허위 계정 또는 사칭입니다.",
-            reportContents: [
-                "타인을 사칭하거나 거짓 정보를 이용해 만든 계정",
-                "공식 브랜드, 인플루언서 등을 사칭한 경우",
-                "가짜 계정을 만들어 커뮤니티를 교란하는 경우"
-            ]
-        ),
-        ReportReason(
-            reportType: "SPAM",
-            title: "스팸 홍보 및 도배 계정입니다.",
-            reportContents: [
-                "광고성 메시지를 지속적으로 보내는 계정",
-                "홍보 목적의 프로필 (상업적 링크 다수 포함)",
-                "동일한 내용의 글을 반복적으로 게시하는 계정"
-            ]
-        ),
-        ReportReason(
-            reportType: "INAPPROPRIATE_PROFILE",
-            title: "부적절한 프로필 정보입니다.",
-            reportContents: [
-                "음란물, 혐오 표현, 폭력적인 이미지를 프로필 사진으로 설정한 경우",
-                "닉네임 또는 상태 메시지에 욕설, 차별적인 표현이 포함된 경우"
-            ]
-        ),
-        ReportReason(
-            reportType: "OTHER",
-            title: "기타 (직접 입력 가능)",
-            reportContents: [
-                "위 신고 항목에 해당하지 않지만, 부적절하다고 판단되는 프로필"
-            ]
-        )
-    ]
+    // 서버 데이터를 저장할 배열
+    private var reasons: [ReportReason] = []
 
     private var reportViews: [ReportReasonView] = []
     private var selectedReportViewIndex: Int? = nil
@@ -138,9 +129,45 @@ class AccountReportView: UIView {
         infoTextStackView.addArrangedSubview(infoIdLabel)
         infoTextStackView.addArrangedSubview(infoNameLabel)
         addSubview(divideLine)
+        
+        addSubview(contentContainer)
+        contentContainer.addSubview(contentTitle)
+        contentContainer.addSubview(contentTextLabel)
+        addSubview(divideLine2)
 
         addSubview(reportTitle)
-        // 체크리스트
+        
+        // 콘텐츠 컨테이너 기본 숨김 처리 (계정 신고 시에는 필요없음)
+        contentContainer.isHidden = true
+        divideLine2.isHidden = true
+
+        addSubview(completeButton)
+    }
+    
+    // 서버에서 받은 사용자 정보 업데이트
+    func updateUserInfo(clokeyId: String, nickname: String, profileImageUrl: String) {
+        infoIdLabel.text = clokeyId
+        infoNameLabel.text = nickname
+        
+        if let url = URL(string: profileImageUrl) {
+            infoImage.kf.setImage(with: url, placeholder: UIImage(named: "default_profile"))
+        } else {
+            infoImage.image = UIImage(named: "default_profile")
+        }
+    }
+    
+    // 서버에서 받은 신고 사유 업데이트
+    func updateReportReasons(reasons: [ReportReason]) {
+        // 기존 신고 사유 뷰 제거
+        for view in reportViews {
+            view.removeFromSuperview()
+        }
+        reportViews.removeAll()
+        
+        // 서버에서 받은 신고 사유로 업데이트
+        self.reasons = reasons
+        
+        // 체크리스트 다시 생성
         for (index, reason) in reasons.enumerated() {
             let reportView = ReportReasonView(title: reason.title, contents: reason.reportContents)
             reportView.tag = index
@@ -148,8 +175,9 @@ class AccountReportView: UIView {
             addSubview(reportView)
             reportViews.append(reportView)
         }
-
-        addSubview(completeButton)
+        
+        // 제약 조건 업데이트
+        updateConstraintsForReportViews()
     }
 
     private func setupConstraints() {
@@ -185,27 +213,34 @@ class AccountReportView: UIView {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(1)
         }
+        
+        // 댓글/게시물 내용 UI 제약조건
+        contentContainer.snp.makeConstraints {
+            $0.top.equalTo(divideLine.snp.bottom).offset(12)
+            $0.leading.trailing.equalToSuperview().inset(20)
+        }
+       
+        contentTitle.snp.makeConstraints {
+            $0.top.leading.equalToSuperview()
+        }
+       
+        contentTextLabel.snp.makeConstraints {
+            $0.top.equalTo(contentTitle.snp.bottom).offset(8)
+            $0.leading.trailing.equalToSuperview()
+        }
+       
+        divideLine2.snp.makeConstraints {
+            $0.top.equalTo(contentTextLabel.snp.bottom).offset(12)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(1)
+        }
 
         // 신고 사유
         reportTitle.snp.makeConstraints {
-            $0.top.equalTo(divideLine.snp.bottom).offset(12)
+            $0.top.equalTo(divideLine.snp.bottom).offset(12) // 콘텐츠 없을 때는 첫 번째 divideLine 기준
             $0.leading.equalToSuperview().offset(20)
         }
 
-        var previousView: UIView = reportTitle
-
-        for (index, reportView) in reportViews.enumerated() {
-            reportView.snp.makeConstraints {
-                if index == 0 {
-                    $0.top.equalTo(reportTitle.snp.bottom).offset(12)
-                } else {
-                    let spacing = reportViews[index - 1].isChecked ? 20 : 8
-                    $0.top.equalTo(previousView.snp.bottom).offset(spacing)
-                }
-                $0.leading.trailing.equalToSuperview()
-            }
-            previousView = reportView
-        }
         completeButton.snp.makeConstraints {
             $0.bottom.equalTo(safeAreaLayoutGuide).offset(-10)
             $0.centerX.equalToSuperview()
@@ -221,10 +256,30 @@ class AccountReportView: UIView {
         }
         return nil
     }
+    
+    // 신고 사유 제약 조건 업데이트
+    private func updateConstraintsForReportViews() {
+        var previousView: UIView = reportTitle
+        
+        for (index, reportView) in reportViews.enumerated() {
+            reportView.snp.makeConstraints {
+                if index == 0 {
+                    $0.top.equalTo(reportTitle.snp.bottom).offset(12)
+                } else {
+                    let spacing = reportViews[index - 1].isChecked ? 20 : 12
+                    $0.top.equalTo(previousView.snp.bottom).offset(spacing)
+                }
+                $0.leading.trailing.equalToSuperview()
+            }
+            previousView = reportView
+        }
+        
+        self.layoutIfNeeded()
+    }
 }
 
 // MARK: - ReportReasonViewDelegate
-extension AccountReportView: ReportReasonViewDelegate {
+extension CustomReportView: ReportReasonViewDelegate {
     func didToggleCheck(reportView: ReportReasonView, isChecked: Bool) {
         let selectedIndex = reportView.tag
         
@@ -243,23 +298,5 @@ extension AccountReportView: ReportReasonViewDelegate {
         }
         
         updateConstraintsForReportViews()
-    }
-    
-    private func updateConstraintsForReportViews() {
-        var previousView: UIView = reportTitle
-        
-        for (index, reportView) in reportViews.enumerated() {
-            reportView.snp.updateConstraints {
-                if index == 0 {
-                    $0.top.equalTo(reportTitle.snp.bottom).offset(12)
-                } else {
-                    let spacing = reportViews[index - 1].isChecked ? 20 : 8
-                    $0.top.equalTo(previousView.snp.bottom).offset(spacing)
-                }
-            }
-            previousView = reportView
-        }
-        
-        self.layoutIfNeeded()
     }
 }

@@ -718,5 +718,15 @@ extension FollowProfileViewController: FollowProfileActionDelegate {
         followProfileView.followButton.setTitleColor(.white, for: .normal)
         followProfileView.updateCloseAccount(isClosed: true)
     }
+    
+    func didTapDefaultProfile() {
+        let bottomSheetVC = CustomBottomSheetViewController()
+        bottomSheetVC.dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            
+            let accountRepoVC = CustomReportViewController(clokeyId: self.followId)
+            self.navigationController?.pushViewController(accountRepoVC, animated: true)
+        }
+    }
 }
 

@@ -297,6 +297,11 @@ extension FriendsCalendarDetailViewController: LikeListViewControllerDelegate {
 }
 
 extension FriendsCalendarDetailViewController: CalendarCommentDelegate {
+    func commentViewController(_ viewController: CalendarCommentViewController, didRequestReportForComment commentId: Int64) {
+        let commentReportVC = CustomReportViewController(commentId: commentId)
+        self.navigationController?.pushViewController(commentReportVC, animated: true)
+    }
+    
     func CalendarCommentViewController(_ viewController: CalendarCommentViewController, didSelectProfileWith clokeyId: String) {
         // 모달을 닫고 프로필 화면으로 이동
         viewController.dismiss(animated: true) { [weak self] in
@@ -322,7 +327,13 @@ extension FriendsCalendarDetailViewController: CalendarCommentDelegate {
 
 extension FriendsCalendarDetailViewController: FriendsActionSheetDelegate {
     func didReportUser() {
-        print("사용자가 신고됨")
+        guard let viewModel = viewModel else { return }
+        let historyId = Int(viewModel.historyId)
+        
+        let historyIdInt64 = Int64(historyId)
+        let reportVC = CustomReportViewController(historyId: historyIdInt64)
+        reportVC.historyId = historyIdInt64
+        navigationController?.pushViewController(reportVC, animated: true)
     }
 
     func didBlockUser() {

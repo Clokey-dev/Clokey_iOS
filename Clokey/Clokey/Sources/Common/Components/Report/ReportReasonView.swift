@@ -17,6 +17,8 @@ class ReportReasonView: UIView {
     
     weak var delegate: ReportReasonViewDelegate?
     
+    // MARK: - UI Component
+    
     private let checkBox = CheckBox()
     private let titleLabel = UILabel().then {
         $0.font = .ptdMediumFont(ofSize: 15)
@@ -48,7 +50,6 @@ class ReportReasonView: UIView {
             
             updateLayout()
             
-            // 델리게이트에 알림
             delegate?.didToggleCheck(reportView: self, isChecked: isChecked)
         }
     }
@@ -63,6 +64,8 @@ class ReportReasonView: UIView {
         updateLayout()
     }
 
+    // MARK: - Init
+    
     init(title: String, contents: [String]) {
         super.init(frame: .zero)
         self.titleLabel.text = title
@@ -87,6 +90,8 @@ class ReportReasonView: UIView {
         }
     }
 
+    // MARK: -Init
+    
     private func setupView() {
         addSubviews(checkBox, titleLabel, infoContainer)
         infoContainer.addSubview(infoStackView)
