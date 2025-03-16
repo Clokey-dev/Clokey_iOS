@@ -121,7 +121,7 @@ class CustomGalleryViewController: UIViewController, UIGestureRecognizerDelegate
        
         // 이미지 컬렉션 뷰
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(headerView.snp.bottom).offset(8)
+            $0.top.equalTo(headerView.snp.bottom).offset(10)
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }
@@ -342,16 +342,22 @@ class GalleryCell: UICollectionViewCell {
         $0.backgroundColor = UIColor.black.withAlphaComponent(0.7)
         $0.textAlignment = .center
         $0.isHidden = true  // 기본적으로 숨김
+        $0.clipsToBounds = true
     }
 
     // 카메라 아이콘
     private let cameraIconView = UIImageView().then {
         $0.image = UIImage(systemName: "camera.fill")
         $0.tintColor = .white
-        $0.contentMode = .center
-        $0.backgroundColor = UIColor.black.withAlphaComponent(0.6)
-        $0.layer.cornerRadius = 8
+        $0.contentMode = .scaleAspectFit // .center에서 변경
+        $0.backgroundColor = UIColor.gray // 배경색 변경
+        $0.isHidden = true
         $0.clipsToBounds = true
+    }
+    
+    // 선택 상태 표시 오버레이
+    private let selectionOverlay = UIView().then {
+        $0.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         $0.isHidden = true
     }
     
@@ -367,46 +373,65 @@ class GalleryCell: UICollectionViewCell {
     
     private func setupUI() {
         contentView.addSubview(imageView)
+        contentView.addSubview(selectionOverlay)
         contentView.addSubview(orderLabel)
         contentView.addSubview(cameraIconView)
 
         imageView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        selectionOverlay.snp.makeConstraints { $0.edges.equalToSuperview() }
         orderLabel.snp.makeConstraints {
-            $0.top.leading.equalToSuperview().offset(8)
+            $0.top.leading.equalToSuperview()
             $0.width.height.equalTo(24)
         }
-        cameraIconView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        
+        // 카메라 아이콘은 가장자리까지 확장
+        cameraIconView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.width.height.equalToSuperview().multipliedBy(0.3) // 셀 크기의 40%
+        }
     }
+
     
     // 카메라 셀 구분
     func configure(with image: UIImage?, isCameraCell: Bool = false) {
         if isCameraCell {
+            // 카메라 셀 설정
+            contentView.backgroundColor = .gray // 셀 배경 설정
             cameraIconView.isHidden = false
             imageView.isHidden = true
+            selectionOverlay.isHidden = true
         } else {
+            // 이미지 셀 설정
+            contentView.backgroundColor = nil // 이미지 셀은 배경색 초기화
             cameraIconView.isHidden = true
             imageView.isHidden = false
             imageView.image = image
         }
     }
 
-    // 선택 순서 라벨 유지
+
+    // 선택 순서 라벨 유지 및 선택 상태 표시
     func setSelectionOrder(_ order: Int?) {
         if let order = order {
             orderLabel.text = "\(order)"
             orderLabel.isHidden = false
+            selectionOverlay.isHidden = false
         } else {
             orderLabel.isHidden = true
+            selectionOverlay.isHidden = true
         }
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
+        contentView.backgroundColor = nil
         imageView.image = nil
         orderLabel.isHidden = true
         cameraIconView.isHidden = true
+        selectionOverlay.isHidden = true
     }
 }
+
 // 카메라 기능
 extension CustomGalleryViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
