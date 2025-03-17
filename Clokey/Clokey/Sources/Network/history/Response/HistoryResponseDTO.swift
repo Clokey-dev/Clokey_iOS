@@ -114,3 +114,24 @@ public struct LikedHistoriesResponseDTO: Codable {
     }
     
 }
+
+// 내가 남긴 댓글
+public struct CommentHistoryResponse: Codable {
+    let histories: [HistoryModel]
+    let totalPage: Int
+    let totalElements: Int
+    let isFirst: Bool
+    let isLast: Bool
+}
+
+public struct HistoryModel: Codable {
+    let comments: [CommentModel]
+    let historyId: Int
+    let nickname: String
+    let imageUrl: String
+    let date: String
+}
+
+public struct CommentModel: Codable {
+    let content: String
+}
