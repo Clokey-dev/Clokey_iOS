@@ -78,28 +78,28 @@ class AgreementDetailViewController: UIViewController {
     private func connectWebLink(agreementType: AgreementType) {
         switch agreementType {
         case .termsOfService:
-            if let termsOfServiceURL = URL(string: "https://namu.wiki/w/서비스") {
+            if let termsOfServiceURL = URL(string: "https://github.com/Clokey-dev/Clokey_iOS/wiki/Clokey-서비스-이용약관") {
                 let request = URLRequest(url: termsOfServiceURL)
                 webView.load(request)
             } else {
                 
             }
         case .privacyPolicy:
-            if let privacyPolicyURL = URL(string: "https://namu.wiki/w/개인정보") {
+            if let privacyPolicyURL = URL(string: "https://github.com/Clokey-dev/Clokey_iOS/wiki/Clokey-개인정보처리방침") {
                 let request = URLRequest(url: privacyPolicyURL)
                 webView.load(request)
             } else {
                 
             }
         case .locationPolicy:
-            if let termsOfServiceURL = URL(string: "https://namu.wiki/w/위치") {
+            if let termsOfServiceURL = URL(string: "https://github.com/Clokey-dev/Clokey_iOS/wiki/Clokey-위치기반서비스-이용약관") {
                 let request = URLRequest(url: termsOfServiceURL)
                 webView.load(request)
             } else {
                 
             }
         case .marketingPolicy:
-            if let termsOfServiceURL = URL(string: "https://namu.wiki/w/마케팅") {
+            if let termsOfServiceURL = URL(string: "https://github.com/Clokey-dev/Clokey_iOS/wiki/Clokey-마케팅-정보-수신동의-약관") {
                 let request = URLRequest(url: termsOfServiceURL)
                 webView.load(request)
             } else {
@@ -113,7 +113,7 @@ class AgreementDetailViewController: UIViewController {
                
             }
         case .nothing:
-            if let termsOfServiceURL = URL(string: "https://namu.wiki/w/논") {
+            if let termsOfServiceURL = URL(string: "") {
                 let request = URLRequest(url: termsOfServiceURL)
                 webView.load(request)
             } else {
