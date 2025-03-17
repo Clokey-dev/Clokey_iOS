@@ -14,7 +14,6 @@ enum AgreementType {
     case privacyPolicy
     case locationPolicy
     case marketingPolicy
-    case pushPolicy
     case nothing
 }
 
@@ -100,13 +99,6 @@ class AgreementDetailViewController: UIViewController {
             }
         case .marketingPolicy:
             if let termsOfServiceURL = URL(string: "https://github.com/Clokey-dev/Clokey_iOS/wiki/Clokey-마케팅-정보-수신동의-약관") {
-                let request = URLRequest(url: termsOfServiceURL)
-                webView.load(request)
-            } else {
-               
-            }
-        case .pushPolicy:
-            if let termsOfServiceURL = URL(string: "https://namu.wiki/w/푸시") {
                 let request = URLRequest(url: termsOfServiceURL)
                 webView.load(request)
             } else {
