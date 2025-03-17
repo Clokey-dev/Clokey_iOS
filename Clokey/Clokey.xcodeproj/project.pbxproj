@@ -138,6 +138,8 @@
 		0794EA8B2D81A6C500D204B6 /* ReportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794EA882D81A6C500D204B6 /* ReportService.swift */; };
 		0794EA8C2D81A6C500D204B6 /* ReportRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794EA842D81A6C500D204B6 /* ReportRequestDTO.swift */; };
 		0794EA8D2D81A6C500D204B6 /* ReportEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794EA822D81A6C500D204B6 /* ReportEndpoint.swift */; };
+		0794EA902D86ABB800D204B6 /* CommentHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794EA8F2D86ABB800D204B6 /* CommentHistoryView.swift */; };
+		0794EA922D86ABCD00D204B6 /* CommentHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794EA912D86ABCD00D204B6 /* CommentHistoryViewController.swift */; };
 		07B8824E2D661A89006ABD4F /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 07B8824D2D661A89006ABD4F /* Config.xcconfig */; };
 		07CB2EA02D65169F00B3F9B7 /* FriendsCalendarDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CB2E9F2D65169F00B3F9B7 /* FriendsCalendarDetailViewController.swift */; };
 		07CF63E52D55DE6900CCF9F4 /* CalendarDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF63E42D55DE6900CCF9F4 /* CalendarDetailViewModel.swift */; };
@@ -414,6 +416,8 @@
 		0794EA842D81A6C500D204B6 /* ReportRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRequestDTO.swift; sourceTree = "<group>"; };
 		0794EA862D81A6C500D204B6 /* ReportResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportResponseDTO.swift; sourceTree = "<group>"; };
 		0794EA882D81A6C500D204B6 /* ReportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportService.swift; sourceTree = "<group>"; };
+		0794EA8F2D86ABB800D204B6 /* CommentHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHistoryView.swift; sourceTree = "<group>"; };
+		0794EA912D86ABCD00D204B6 /* CommentHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHistoryViewController.swift; sourceTree = "<group>"; };
 		07B8824D2D661A89006ABD4F /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		07CB2E9F2D65169F00B3F9B7 /* FriendsCalendarDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsCalendarDetailViewController.swift; sourceTree = "<group>"; };
 		07CF63E42D55DE6900CCF9F4 /* CalendarDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDetailViewModel.swift; sourceTree = "<group>"; };
@@ -1383,6 +1387,18 @@
 			path = Service;
 			sourceTree = "<group>";
 		};
+		0794EA8E2D86A9D900D204B6 /* LikeHistory */ = {
+			isa = PBXGroup;
+			children = (
+				48FB777C2D803DC0008607B7 /* LikeHistoryViewController.swift */,
+				48FB777E2D803DE5008607B7 /* LikeHistoryView.swift */,
+				48FB77802D803E06008607B7 /* LikeHistoryCell.swift */,
+				48FB77842D803E1C008607B7 /* LikeHistoryViewDelegate.swift */,
+				48FB77822D803E11008607B7 /* LikeHistoryManager.swift */,
+			);
+			path = LikeHistory;
+			sourceTree = "<group>";
+		};
 		07CF63E62D55F0B200CCF9F4 /* tagClothList */ = {
 			isa = PBXGroup;
 			children = (
@@ -1867,15 +1883,13 @@
 		A67661992D5B367B006AAB63 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				0794EA8E2D86A9D900D204B6 /* LikeHistory */,
 				A67661952D5B367B006AAB63 /* DeleteAccountView.swift */,
 				A67661962D5B367B006AAB63 /* DeleteAccountViewController.swift */,
 				A67661972D5B367B006AAB63 /* SettingView.swift */,
-				48FB777C2D803DC0008607B7 /* LikeHistoryViewController.swift */,
-				48FB777E2D803DE5008607B7 /* LikeHistoryView.swift */,
-				48FB77802D803E06008607B7 /* LikeHistoryCell.swift */,
-				48FB77842D803E1C008607B7 /* LikeHistoryViewDelegate.swift */,
-				48FB77822D803E11008607B7 /* LikeHistoryManager.swift */,
 				A67661982D5B367B006AAB63 /* SettingViewController.swift */,
+				0794EA8F2D86ABB800D204B6 /* CommentHistoryView.swift */,
+				0794EA912D86ABCD00D204B6 /* CommentHistoryViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -2071,6 +2085,7 @@
 				077DC91C2D62085100C02FA4 /* TokenManager.swift in Sources */,
 				A6FBF9CB2D78BAE3000FC4EA /* CustomReportCompleteView.swift in Sources */,
 				077DC91D2D62085100C02FA4 /* JWTHelper.swift in Sources */,
+				0794EA902D86ABB800D204B6 /* CommentHistoryView.swift in Sources */,
 				07ECCB5D2D4E351E00AFF486 /* CustomSearchField.swift in Sources */,
 				48FB777F2D803DE5008607B7 /* LikeHistoryView.swift in Sources */,
 				07F8598B2D61D73500DD5BF8 /* ImageCell.swift in Sources */,
@@ -2258,6 +2273,7 @@
 				0744FFC72D5B1D8B00E60282 /* UpdateFriendCalendarViewController.swift in Sources */,
 				0769733C2D63687800AEA5D1 /* NotificationRequest.swift in Sources */,
 				0744FFC82D5B1D8B00E60282 /* NewsViewController.swift in Sources */,
+				0794EA922D86ABCD00D204B6 /* CommentHistoryViewController.swift in Sources */,
 				0744FFC92D5B1D8B00E60282 /* ImageViewController.swift in Sources */,
 				A648ACDE2D5CECF00094C126 /* CategoriesResponseDTO.swift in Sources */,
 				A67577392D81C53C009880F1 /* FollowProfileActionViewController.swift in Sources */,
@@ -2304,11 +2320,9 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
+				DEVELOPMENT_TEAM = BBVZV8T99P;
 				ENABLE_DEBUG_DYLIB = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
@@ -2330,7 +2344,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -2350,12 +2363,10 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
+				DEVELOPMENT_TEAM = BBVZV8T99P;
 				ENABLE_DEBUG_DYLIB = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
@@ -2377,7 +2388,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

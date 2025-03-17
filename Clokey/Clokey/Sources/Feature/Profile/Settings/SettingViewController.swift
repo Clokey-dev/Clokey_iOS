@@ -94,8 +94,11 @@ class SettingViewController: UIViewController, UIGestureRecognizerDelegate {
         setupButtonActions(for: settingView.inquiryContainer, action: #selector(didTapInquiry))
         setupButtonActions(for: settingView.logoutContainer, action: #selector(didTapLogout))
         setupButtonActions(for: settingView.deleteContainer, action: #selector(didTapDeleteAccount))
-        //좋아요기록
+        // 좋아요기록
         setupButtonActions(for: settingView.LikedHistoryContainer, action: #selector(didTapLikedHistory))
+        // 내가 쓴 댓글
+        setupButtonActions(for: settingView.HistoryCommentContainer, action: #selector(didTapHistoryComment))
+
     }
     
     private func setupButtonActions(for container: UIView, action: Selector) {
@@ -224,6 +227,16 @@ class SettingViewController: UIViewController, UIGestureRecognizerDelegate {
         } else {
             likeHistoryVC.modalPresentationStyle = .fullScreen
             present(likeHistoryVC, animated: true, completion: nil)
+        }
+    }
+    
+    @objc private func didTapHistoryComment() {
+        let HistoryCommentVC = CommentHistoryViewController()
+        if let navigationController = navigationController {
+            navigationController.pushViewController(HistoryCommentVC, animated: true)
+        } else {
+            HistoryCommentVC.modalPresentationStyle = .fullScreen
+            present(HistoryCommentVC, animated: true, completion: nil)
         }
     }
        

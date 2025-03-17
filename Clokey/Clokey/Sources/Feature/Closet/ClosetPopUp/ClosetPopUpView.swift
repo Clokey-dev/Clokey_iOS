@@ -218,7 +218,7 @@ class ClosetPopupView: UIView {
     
     // MARK: - Setup UI
     private func setupUI() {
-        backgroundColor = .mainBrown50
+        backgroundColor = UIColor(red: 255/255, green: 254/255, blue: 252/255, alpha: 1)
         layer.cornerRadius = 30
         addSubview(nameLabel)
         addSubview(imageView)
@@ -335,5 +335,17 @@ class ClosetPopupView: UIView {
             make.top.equalTo(seasonStackView.snp.bottom).offset(15)
             make.centerX.equalToSuperview()
         }
+
+        // 각 서브 스택뷰의 높이를 22로 고정 (팝업창 UI 변경 - 조금 더 수정 반영)
+        wearStackView.snp.makeConstraints { make in
+            make.height.equalTo(22)
+        }
+        brandStackView.snp.makeConstraints { make in
+            make.height.equalTo(22)
+        }
+        urlStackView.snp.makeConstraints { make in
+            make.height.equalTo(22)
+        }
+
     }
 }
