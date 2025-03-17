@@ -370,6 +370,21 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
             }
         }
     }
+    
+    // 최대 10글자까지만 허용
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        
+        // 현재 텍스트
+        guard let currentText = textField.text else { return true }
+        
+        // 바뀐 후의 전체 문자열 길이 계산
+        let newLength = currentText.count + string.count - range.length
+        
+        // 10글자를 초과하면 입력 거부
+        return newLength <= 10
+    }
 }
 
 extension AddClothViewController: UIGestureRecognizerDelegate {
