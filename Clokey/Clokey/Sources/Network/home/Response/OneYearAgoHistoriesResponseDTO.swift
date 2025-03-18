@@ -9,13 +9,14 @@ import Foundation
 
 // Recap
 public struct OneYearAgoHistoriesResponseDTO: Codable {
-    let isMine: Bool
+    let isMine: Bool?
     let historyId: Int64?
     let nickName: String
+    let date: String
     let imageUrls: [String] // 기존 코드
 
     enum CodingKeys: String, CodingKey {
-        case isMine, historyId, nickName, imageUrls
+        case isMine, historyId, nickName, date,imageUrls
     }
 
     public init(from decoder: Decoder) throws {
@@ -23,6 +24,7 @@ public struct OneYearAgoHistoriesResponseDTO: Codable {
         isMine = try container.decode(Bool.self, forKey: .isMine)
         historyId = try container.decodeIfPresent(Int64.self, forKey: .historyId)
         nickName = try container.decode(String.self, forKey: .nickName)
+        date = try container.decode(String.self, forKey: .date)
         imageUrls = try container.decodeIfPresent([String].self, forKey: .imageUrls) ?? [] // null이면 빈 배열로 처리
     }
 }
