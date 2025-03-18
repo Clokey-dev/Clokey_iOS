@@ -84,10 +84,19 @@ class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegat
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        navigationController?.setNavigationBarHidden(false, animated: animated)
-        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.setNavigationBarHidden(false, animated: false)
+        navigationController?.navigationBar.alpha = 1
     }
-
+   /* override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+        navigationController?.navigationBar.alpha = 1
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.view.backgroundColor = .white
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }*/
     // MARK: - Setup
     
     func setDetailData(_ data: HistoryDetailResponseDTO) {
