@@ -178,5 +178,22 @@ public final class MembersService: NetworkManager {
             completion: completion
         )
     }
-
+    
+    /// 차단/하제 POST API
+    public func blockOrUnblock(
+        clokeyId: String,
+        completion: @escaping (Result<Void, NetworkError>) -> Void
+    ) {
+        requestStatusCode(
+            target: .blockMember(clokeyId: clokeyId),
+            completion: { result in
+                switch result {
+                case .success:
+                    completion(.success(())) // 성공 처리
+                case .failure(let error):
+                    completion(.failure(error)) // 실패 처리
+                }
+            }
+        )
+    }
 }

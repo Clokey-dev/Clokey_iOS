@@ -22,6 +22,7 @@ public enum MembersEndpoint {
     case getAgreedTerms
     case optionalTermAgree(data: OptionalTermAgreeRequestDTO)
     case getFollowPeople(clokeyId: String, page: Int, isFollowing: Bool)
+    case blockMember(clokeyId: String)
     // 추가적인 API는 여기 케이스로 정의
 }
 
@@ -60,13 +61,15 @@ extension MembersEndpoint: TargetType {
             return "users/terms/optional"
         case .getFollowPeople(let clokeyId, _, _):
             return "/users/\(clokeyId)/follow"
+        case .blockMember(let clokeyId):
+            return "/users/block/\(clokeyId)"
         }
     }
     
     // HTTP 메서드
     public var method: Moya.Method {
         switch self {
-        case .SocialLogin, .ReissueToken, .agreeToTerms, .followUser, .optionalTermAgree:
+        case .SocialLogin, .ReissueToken, .agreeToTerms, .followUser, .optionalTermAgree, .blockMember:
             return .post
         case .updateProfile:
             return .patch
@@ -144,6 +147,8 @@ extension MembersEndpoint: TargetType {
                 "isFollowing": isFollowing
             ]
             return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
+        case .blockMember(_):
+            return .requestPlain
         }
     }
     

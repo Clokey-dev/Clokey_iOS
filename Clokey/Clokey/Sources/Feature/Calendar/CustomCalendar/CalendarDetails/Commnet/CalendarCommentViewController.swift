@@ -167,7 +167,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     }
 
 
-    // TODO: - 신고 API 함수 구현 필요
+    // 신고 API 함수
     func didTapReport(commentId: Int64) {
         print("신고 버튼 클릭")
         self.dismiss(animated: true) { [weak self] in
@@ -184,7 +184,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     }
     
     @objc func dismissView() {
-        print("📌 X 버튼으로 닫힘!")  // 로그 확인용
+        print("X 버튼으로 닫힘!")  // 로그 확인용
         self.dismiss(animated: true) {
             if let presentationController = self.presentationController {
                 self.presentationController?.delegate?.presentationControllerDidDismiss?(presentationController)
