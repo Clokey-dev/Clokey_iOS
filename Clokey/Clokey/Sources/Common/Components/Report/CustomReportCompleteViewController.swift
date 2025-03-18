@@ -38,6 +38,7 @@ class CustomReportCompleteViewController: UIViewController {
         
         setupNavigationBar()
         setupAction()
+        setupTapGesture()
         
         // 선택된 신고 이유가 있으면 뷰에 설정
         if let selectedReason = selectedReportReason {
@@ -208,5 +209,17 @@ class CustomReportCompleteViewController: UIViewController {
             self?.navigationController?.popToRootViewController(animated: true)
         })
         present(alert, animated: true)
+    }
+    
+    // 탭 제스처 설정 함수 추가
+    private func setupTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+
+    // 키보드 내리는 함수 추가
+    @objc internal override func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
