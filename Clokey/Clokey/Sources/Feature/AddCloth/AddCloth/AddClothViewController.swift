@@ -178,7 +178,6 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
         let categoriesService = CategoriesService()
         
         categoriesService.getRecommendCategory(name: text) { [weak self] result in
-            //            DispatchQueue.main.async {
             guard let self = self else { return }
             
             DispatchQueue.main.async {

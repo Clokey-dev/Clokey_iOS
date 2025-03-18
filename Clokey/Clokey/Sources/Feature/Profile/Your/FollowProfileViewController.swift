@@ -275,6 +275,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     private func setupActions() {
         
         followProfileView.followButton.addTarget(self, action: #selector(didTapFollowButton), for: .touchUpInside)
+        followProfileView.blockButton.addTarget(self, action: #selector(didTapBlockButton), for: .touchUpInside)
         followProfileView.followerCountButton.addTarget(self, action: #selector(didTapFollowerButton), for: .touchUpInside)
         followProfileView.followingCountButton.addTarget(self, action: #selector(didTapFollowingButton), for: .touchUpInside)
         
@@ -333,6 +334,12 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
             }
         }
     }
+    
+    @objc private func didTapBlockButton() {
+        followProfileView.blockButton(isBlock: false)
+        followProfileView.updateCloseAccount(isClosed: false)
+    }
+    
     
     // 팔로우 알림 보내기
     private func sendFollowNotification(clokeyId: String) {
@@ -718,20 +725,8 @@ extension FollowProfileViewController: FollowProfileActionDelegate {
 
     func didBlockUser() {
         print("사용자가 차단됨")
-        followProfileView.followButton.setTitle("차단 해제", for: .normal)
-        followProfileView.followButton.backgroundColor = .mainBrown800
-        followProfileView.followButton.setTitleColor(.white, for: .normal)
+        followProfileView.blockButton(isBlock: true)
         followProfileView.updateCloseAccount(isClosed: true)
     }
-    
-//    func didTapDefaultProfile() {
-//        let bottomSheetVC = CustomBottomSheetViewController()
-//        bottomSheetVC.dismiss(animated: true) { [weak self] in
-//            guard let self = self else { return }
-//            
-//            let accountRepoVC = CustomReportViewController(clokeyId: self.followId)
-//            self.navigationController?.pushViewController(accountRepoVC, animated: true)
-//        }
-//    }
 }
 

@@ -314,7 +314,6 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
             switch result {
             case .success(let response):
                 let newResult: [YourFollowerUserModel] = response.members.compactMap { item -> YourFollowerUserModel? in
-//                    let profileImageURL = URL(string: item.profileImage)
                     return YourFollowerUserModel(
                         userId: item.clokeyId,
                         nickname: item.nickname,
