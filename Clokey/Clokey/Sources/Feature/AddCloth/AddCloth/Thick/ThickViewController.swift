@@ -75,7 +75,7 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         button.contentHorizontalAlignment = .left //  텍스트가 왼쪽 정렬되도록 설정
         button.setContentHuggingPriority(.defaultHigh, for: .horizontal) //  크기 줄어들지 않도록 설정
-        button.addTarget(self, action: #selector(didTapInfoButton), for: .touchUpInside)
+        //button.addTarget(self, action: #selector(didTapInfoButton), for: .touchUpInside) viewdidload에 추가
         return button
     }()
     
@@ -181,7 +181,7 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
         button.layer.borderColor = UIColor.mainBrown800.cgColor
         button.layer.cornerRadius = 10
         button.backgroundColor = .clear
-        button.addTarget(self, action: #selector(didTapVisibilityButton(_:)), for: .touchUpInside)
+       // button.addTarget(self, action: #selector(didTapVisibilityButton(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -195,7 +195,7 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
         button.layer.borderColor = UIColor.mainBrown800.cgColor
         button.layer.cornerRadius = 10
         button.backgroundColor = .clear
-        button.addTarget(self, action: #selector(didTapVisibilityButton(_:)), for: .touchUpInside)
+       // button.addTarget(self, action: #selector(didTapVisibilityButton(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -207,7 +207,7 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
         button.backgroundColor = UIColor.mainBrown400
         button.layer.cornerRadius = 10
         button.isEnabled = false // 기본적으로 비활성화
-        button.addTarget(self, action: #selector(didTapNextButton), for: .touchUpInside)
+       // button.addTarget(self, action: #selector(didTapNextButton), for: .touchUpInside) viewdidload에 추가
         return button
     }()
     
@@ -229,6 +229,11 @@ class ThickViewController: UIViewController, UIGestureRecognizerDelegate {
         
         
         applyExistingValues()
+        thicknessInfoButton.addTarget(self, action: #selector(didTapInfoButton), for: .touchUpInside)
+        nextButton.addTarget(self, action: #selector(didTapNextButton), for: .touchUpInside)
+        publicButton.addTarget(self, action: #selector(didTapVisibilityButton), for: .touchUpInside)
+        privateButton.addTarget(self, action: #selector(didTapVisibilityButton), for: .touchUpInside)
+        
         
     }
     

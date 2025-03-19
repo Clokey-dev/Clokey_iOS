@@ -196,9 +196,12 @@ class SearchView: UIView {
             button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
             button.backgroundColor = UIColor(red: 255/255, green: 231/255, blue: 210/255, alpha: 1)
             button.layer.cornerRadius = 16
-            button.contentEdgeInsets = UIEdgeInsets(top: 5, left: 12, bottom: 5, right: 12)
-            
-            
+
+            // UIButtonConfiguration을 사용하여 contentInsets를 설정
+            var config = UIButton.Configuration.plain()
+            config.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 12, bottom: 5, trailing: 12)
+            button.configuration = config
+
             button.addTarget(self, action: #selector(recommendedKeywordTapped(_:)), for: .touchUpInside)
             
             recommendedStackView.addArrangedSubview(button)
