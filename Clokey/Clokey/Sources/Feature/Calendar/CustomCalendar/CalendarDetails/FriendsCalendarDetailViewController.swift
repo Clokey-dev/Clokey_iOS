@@ -409,8 +409,7 @@ extension FriendsCalendarDetailViewController: UIAdaptivePresentationControllerD
 extension FriendsCalendarDetailViewController {
     func textView(_ textView: UITextView,
                   shouldInteractWith URL: URL,
-                  in characterRange: NSRange,
-                  interaction: UITextItemInteraction) -> Bool {
+                  in characterRange: NSRange) -> Bool {
         if URL.scheme == "hashtag" {
             // URL.host에는 '#' 제거한 값이 들어갑니다.
             let tappedHashtag = URL.host?.removingPercentEncoding ?? ""

@@ -197,8 +197,9 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
     private func fetchHistoryDetail(historyId: Int) {
         let historyService = HistoryService()
         
-        historyService.historyDetail(historyId: historyId) { [weak self] result in
-            guard let self = self else { return }
+        historyService.historyDetail(historyId: historyId) { //[weak self]
+            result in
+            //guard let self = self else { return }
             
             switch result {
             case .success(let response):
@@ -208,8 +209,8 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
                     let detailVC = FriendsCalendarDetailViewController()
                     detailVC.setDetailData(response)
                     
-                    // window를 통해 네비게이션 컨트롤러에 접근 (혹은 self.navigationController 사용)
-                    if let navController = UIApplication.shared.windows.first?.rootViewController as? UINavigationController {
+                    if let windowScene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
+                       let navController = windowScene.windows.first?.rootViewController as? UINavigationController {
                         navController.pushViewController(detailVC, animated: true)
                     }
                 }
@@ -227,14 +228,13 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
     
     private func navigateToFollowProfile(clokeyId: String) {
         DispatchQueue.main.async {
-            guard let navController = UIApplication.shared.windows.first?.rootViewController as? UINavigationController else {
+            guard let windowScene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
+                  let navController = windowScene.windows.first?.rootViewController as? UINavigationController else {
                 print("네비게이션 컨트롤러가 없음")
                 return
             }
             
             let followProfileVC = FollowProfileViewController(followId: clokeyId)
-            // FollowProfileViewController에서는 followId 혹은 clokey_Id를 사용하므로,
-            // userID 대신 followId(또는 clokey_Id)에 값을 할당합니다.
             followProfileVC.followId = clokeyId
             navController.pushViewController(followProfileVC, animated: true)
         }
@@ -279,7 +279,7 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
     func updateEmptyState() {
         let unreadCount = viewModel.notifications.filter { !$0.isRead }.count
         let readCount = viewModel.notifications.filter { $0.isRead }.count
-        let totalCount = unreadCount + readCount
+        let _ = unreadCount + readCount
         
         // 1) backgroundView 라벨 처리
         if unreadCount == 0 && readCount == 0 {
