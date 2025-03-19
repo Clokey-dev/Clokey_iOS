@@ -101,6 +101,7 @@ class RecordOOTDViewController: UIViewController, UIGestureRecognizerDelegate {
     // 설정된 해시태그에 따라 컬렉션 뷰의 높이 설정
     private func updateCollectionViewHeight(_ hasImages: Bool) {
         mainView.updateCollectionViewHeight(hasImages)
+        mainView.photoTagView.imageCollectionView.reloadData()
     }
     
     // 수정할 기록 데이터 불러오기
@@ -349,15 +350,11 @@ extension RecordOOTDViewController {
 */
 extension RecordOOTDViewController: CustomGalleryViewControllerDelegate {
     func galleryViewController(_ viewController: CustomGalleryViewController, didSelect images: [UIImage]) {
-        // 이미지를 선택하고 닫기
         viewController.dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
-            
-            // 해당 이미지들을 PhotoEditViewController에서 열기
             let editVC = PhotoEditViewController()
             editVC.delegate = self
             editVC.configure(with: images)
-            
             let navController = UINavigationController(rootViewController: editVC)
             navController.modalPresentationStyle = .fullScreen
             self.present(navController, animated: true)
@@ -369,7 +366,6 @@ extension RecordOOTDViewController: CustomGalleryViewControllerDelegate {
 // 이미지 편집 완료 결과 처리
 extension RecordOOTDViewController: PhotoEditViewControllerDelegate {
     func photoEditViewController(_ viewController: PhotoEditViewController, didFinishEditing images: [UIImage]) {
-        
         selectedImages = images
         mainView.photoTagView.imageCollectionView.setContentOffset(.zero, animated: false)
 
