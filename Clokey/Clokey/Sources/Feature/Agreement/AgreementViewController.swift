@@ -228,9 +228,10 @@ class AgreementViewController: UIViewController {
     
     // 가입 완료 버튼 상태 업데이트
     private func updateAgreeButtonState() {
-        let allRequiredCheckd = agreements.filter{ $0.isRequired }.allSatisfy { $0.isChecked }
+        let _ = agreements.filter{ $0.isRequired }.allSatisfy { $0.isChecked }
         agreeButton.isEnabled = areAllRequiredChecked // 필수 항목이 체크되었는지에 따라 활성화 여부 설정
         agreeButton.backgroundColor = areAllRequiredChecked ? .mainBrown800 : .mainBrown400 // 버튼 색상 변경
+        
     }
     
     // 약관 상세보기 화면 표시
@@ -278,8 +279,9 @@ class AgreementViewController: UIViewController {
         let requestData = prepareAgreementData() // 약관 데이터 준비
 
         let membersService = MembersService()
-        membersService.agreeToTerms(data: requestData) { [weak self] result in
-            guard let self = self else { return }
+        membersService.agreeToTerms(data: requestData) { //[weak self]
+            result in
+            //guard let self = self else { return }
 
             DispatchQueue.main.async {
                 switch result {

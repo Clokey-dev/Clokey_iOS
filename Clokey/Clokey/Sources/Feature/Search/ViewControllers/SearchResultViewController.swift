@@ -256,7 +256,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
     private func loadMemberData(query: String, isNextPage: Bool = false) {
         guard hasMorePages else { return }
         
-        let page = isNextPage ? currentPage + 1 : 1
+        _ = isNextPage ? currentPage + 1 : 1
         
         
         SearchService().searchMember(by :"id-and-nickname", keyword: query, page: 1, size: 20) { [weak self] result in
