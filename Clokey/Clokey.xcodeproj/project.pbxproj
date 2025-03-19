@@ -216,6 +216,8 @@
 		07F859B42D62021700DD5BF8 /* Onboarding_no.json in Resources */ = {isa = PBXBuildFile; fileRef = 07F859B12D62021700DD5BF8 /* Onboarding_no.json */; };
 		07F859B52D62021700DD5BF8 /* Onboarding_yes.json in Resources */ = {isa = PBXBuildFile; fileRef = 07F859B22D62021700DD5BF8 /* Onboarding_yes.json */; };
 		07F859B82D62024300DD5BF8 /* LottieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F859B62D62024300DD5BF8 /* LottieViewController.swift */; };
+		1EC980D62D8A8B7800AA3450 /* BlockUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC980D52D8A8B7800AA3450 /* BlockUserModel.swift */; };
+		1EC980D82D8A8F8C00AA3450 /* BlockUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC980D72D8A8F8C00AA3450 /* BlockUserCell.swift */; };
 		1EF33C692D665FFB00142954 /* ArrangeClosetBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C482D665FFB00142954 /* ArrangeClosetBannerView.swift */; };
 		1EF33C6A2D665FFB00142954 /* DisplayAllViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C5C2D665FFB00142954 /* DisplayAllViewController.swift */; };
 		1EF33C6C2D665FFB00142954 /* SmartSummationBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C4B2D665FFB00142954 /* SmartSummationBannerView.swift */; };
@@ -495,6 +497,8 @@
 		07F859B12D62021700DD5BF8 /* Onboarding_no.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Onboarding_no.json; sourceTree = "<group>"; };
 		07F859B22D62021700DD5BF8 /* Onboarding_yes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Onboarding_yes.json; sourceTree = "<group>"; };
 		07F859B62D62024300DD5BF8 /* LottieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieViewController.swift; sourceTree = "<group>"; };
+		1EC980D52D8A8B7800AA3450 /* BlockUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserModel.swift; sourceTree = "<group>"; };
+		1EC980D72D8A8F8C00AA3450 /* BlockUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserCell.swift; sourceTree = "<group>"; };
 		1EF33C482D665FFB00142954 /* ArrangeClosetBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeClosetBannerView.swift; sourceTree = "<group>"; };
 		1EF33C492D665FFB00142954 /* ArrangeClosetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeClosetView.swift; sourceTree = "<group>"; };
 		1EF33C4A2D665FFB00142954 /* ArrangeClosetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeClosetViewController.swift; sourceTree = "<group>"; };
@@ -1671,6 +1675,15 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
+		1EC980D42D8A8B5700AA3450 /* block */ = {
+			isa = PBXGroup;
+			children = (
+				1EC980D52D8A8B7800AA3450 /* BlockUserModel.swift */,
+				1EC980D72D8A8F8C00AA3450 /* BlockUserCell.swift */,
+			);
+			path = block;
+			sourceTree = "<group>";
+		};
 		1EF33C4F2D665FFB00142954 /* Banner */ = {
 			isa = PBXGroup;
 			children = (
@@ -1876,6 +1889,7 @@
 				48FB77842D803E1C008607B7 /* LikeHistoryViewDelegate.swift */,
 				48FB77822D803E11008607B7 /* LikeHistoryManager.swift */,
 				A67661982D5B367B006AAB63 /* SettingViewController.swift */,
+				1EC980D42D8A8B5700AA3450 /* block */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -2216,6 +2230,7 @@
 				07649EE92D4DE58900B6B2B2 /* NetworkManager+Extension.swift in Sources */,
 				0744FFD42D5B1D9C00E60282 /* HomeView.swift in Sources */,
 				07F859A82D61D95000DD5BF8 /* SearchService.swift in Sources */,
+				1EC980D62D8A8B7800AA3450 /* BlockUserModel.swift in Sources */,
 				0744FFD52D5B1D9C00E60282 /* PickView.swift in Sources */,
 				070916512D58BEE1008DC9EE /* HomeEndPoint.swift in Sources */,
 				070916522D58BEE1008DC9EE /* OneYearAgoHistoriesResponseDTO.swift in Sources */,
@@ -2237,6 +2252,7 @@
 				07649EF12D4DE58900B6B2B2 /* MembersInfoResponseDTO.swift in Sources */,
 				A676619A2D5B367B006AAB63 /* DeleteAccountView.swift in Sources */,
 				A67661A92D5B367B006AAB63 /* ProfileModel.swift in Sources */,
+				1EC980D82D8A8F8C00AA3450 /* BlockUserCell.swift in Sources */,
 				A648ACE02D5CECF50094C126 /* CategoriesService.swift in Sources */,
 				A6FBF9C92D78BAC5000FC4EA /* CustomReportViewController.swift in Sources */,
 				A67661AA2D5B367B006AAB63 /* ProfileView.swift in Sources */,
