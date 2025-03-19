@@ -133,7 +133,6 @@ class CommentCell: UITableViewCell {
         replyButton.isHidden = !isLastReply
         self.tag = Int(commentId)
         self.storedClokeyId = clokeyId
-
     }
     
     func setSelected(_ selected: Bool) {
@@ -165,10 +164,11 @@ class CommentCell: UITableViewCell {
     
     @objc private func cellTapped() {
         if let clokeyId = storedClokeyId {
+            print("프로필 선택됨: \(clokeyId)")  // 디버깅용 로그
             delegate?.didTapProfile(with: clokeyId)
         }
-        print("프로필 선택되었어요.")
     }
+
 }
 
 // 댓글 꾹 누를 시, 효과 처리

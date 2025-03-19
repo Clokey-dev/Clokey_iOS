@@ -445,6 +445,7 @@ extension CustomGalleryViewController: UIImagePickerControllerDelegate, UINaviga
     private func savePhotoToLibrary(_ image: UIImage) {
         PHPhotoLibrary.shared().performChanges({
             let request = PHAssetChangeRequest.creationRequestForAsset(from: image)
+            print(request)
         }) { success, error in
             if success {
                 DispatchQueue.main.async {
