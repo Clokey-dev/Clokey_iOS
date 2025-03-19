@@ -25,6 +25,8 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     private let followCalendarViewController = FollowCalendarViewController()
     
     var followId: String = ""
+    var isMe: Bool = false
+    
     var clokey_Id: String = ""
     var followerCount: Int = 0
     var followingCount: Int = 0
@@ -71,6 +73,8 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         loadData()
         setupActions()
         setupPopupActions()
+        
+        followProfileView.touchMyProfile(isMine: isMe)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -107,12 +111,12 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
 
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: backButton), titleItem]
         
-        navBarManager.setOption(
-            to: navigationItem,
-            target: self,
-            action: #selector(didTapReportButton))
-        
-        
+        if !isMe {
+            navBarManager.setOption(
+                to: navigationItem,
+                target: self,
+                action: #selector(didTapReportButton))
+        }
     }
     
     // 뒤로가기
@@ -275,6 +279,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     private func setupActions() {
         
         followProfileView.followButton.addTarget(self, action: #selector(didTapFollowButton), for: .touchUpInside)
+        followProfileView.blockButton.addTarget(self, action: #selector(didTapBlockButton), for: .touchUpInside)
         followProfileView.followerCountButton.addTarget(self, action: #selector(didTapFollowerButton), for: .touchUpInside)
         followProfileView.followingCountButton.addTarget(self, action: #selector(didTapFollowingButton), for: .touchUpInside)
         
@@ -333,6 +338,67 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
             }
         }
     }
+    
+    @objc private func didTapBlockButton() {
+        didunBlockUser()
+        followProfileView.blockButton(isBlock: false)
+        followProfileView.updateCloseAccount(isClosed: false)
+        
+    }
+    
+    func didunBlockUser() {
+        print("사용자가 차단해제됨")
+        
+        let clokeyId = self.followId
+
+        print("\(clokeyId) 는 ?? ")
+
+        // 액션 시트 닫기
+        dismiss(animated: false) { [weak self] in
+            // Alert 표시
+            let alert = UIAlertController(
+                title: "사용자 차단 해제",
+                message: "정말 이 사용자를 차단 해제하시겠습니까?",
+                preferredStyle: .alert
+            )
+
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            let confirmAction = UIAlertAction(title: "차단해제", style: .destructive) { _ in
+                self?.unBlockMember(clokeyId: clokeyId)
+            }
+
+            alert.addAction(cancelAction)
+            alert.addAction(confirmAction)
+
+            // 현재 뷰 컨트롤러에서 Alert 띄우기
+            if let topViewController = UIApplication.shared.connectedScenes
+                .compactMap({ $0 as? UIWindowScene })
+                .flatMap({ $0.windows })
+                .first(where: { $0.isKeyWindow })?
+                .rootViewController {
+                topViewController.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    // 차단 API
+    private func unBlockMember(clokeyId: String) {
+        let membersService = MembersService()
+        
+        membersService.blockOrUnblock(clokeyId: clokeyId) { result in
+            switch result {
+            case .success:
+                print("\(clokeyId) 차단 해제 성공")
+                DispatchQueue.main.async {
+                    self.followProfileView.blockButton(isBlock: true)
+                    self.followProfileView.updateCloseAccount(isClosed: true)
+                }
+            case .failure(let error):
+                print("차단 해제 실패: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     
     // 팔로우 알림 보내기
     private func sendFollowNotification(clokeyId: String) {
@@ -456,7 +522,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview()
             make.width.equalTo(290)
-            make.height.equalTo(448)
+            make.height.equalTo(489)
         }
         
         // 팝업 애니메이션 효과
@@ -506,28 +572,28 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                             //                                configureButton(popUpView.springButton, title: "봄")
                             popUpView.springButton.setTitleColor(.white, for: .normal)
                             popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.springButton.layer.cornerRadius = 5
                             popUpView.springButton.layer.borderWidth = 1
                         } else if response.seasons[0] == "SUMMER" {
                             //                                configureButton(popUpView.summerButton, title: "여름")
                             popUpView.summerButton.setTitleColor(.white, for: .normal)
                             popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.summerButton.layer.cornerRadius = 5
                             popUpView.summerButton.layer.borderWidth = 1
                         } else if response.seasons[0] == "FALL" {
                             //                                configureButton(popUpView.fallButton, title: "가을")
                             popUpView.fallButton.setTitleColor(.white, for: .normal)
                             popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.fallButton.layer.cornerRadius = 5
                             popUpView.fallButton.layer.borderWidth = 1
                         } else if response.seasons[0] == "WINTER" {
                             //                                configureButton(popUpView.winterButton, title: "겨울")
                             popUpView.winterButton.setTitleColor(.white, for: .normal)
                             popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.winterButton.layer.cornerRadius = 5
                             popUpView.winterButton.layer.borderWidth = 1
                         }
@@ -538,28 +604,28 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                             //                                configureButton(popUpView.springButton, title: "봄")
                             popUpView.springButton.setTitleColor(.white, for: .normal)
                             popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.springButton.layer.cornerRadius = 5
                             popUpView.springButton.layer.borderWidth = 1
                         } else if response.seasons[1] == "SUMMER" {
                             //                                configureButton(popUpView.summerButton, title: "여름")
                             popUpView.summerButton.setTitleColor(.white, for: .normal)
                             popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.summerButton.layer.cornerRadius = 5
                             popUpView.summerButton.layer.borderWidth = 1
                         } else if response.seasons[1] == "FALL" {
                             //                                configureButton(popUpView.fallButton, title: "가을")
                             popUpView.fallButton.setTitleColor(.white, for: .normal)
                             popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.fallButton.layer.cornerRadius = 5
                             popUpView.fallButton.layer.borderWidth = 1
                         } else if response.seasons[1] == "WINTER" {
                             //                                configureButton(popUpView.winterButton, title: "겨울")
                             popUpView.winterButton.setTitleColor(.white, for: .normal)
                             popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.winterButton.layer.cornerRadius = 5
                             popUpView.winterButton.layer.borderWidth = 1
                         }
@@ -570,28 +636,28 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                             //                                configureButton(popUpView.springButton, title: "봄")
                             popUpView.springButton.setTitleColor(.white, for: .normal)
                             popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.springButton.layer.cornerRadius = 5
                             popUpView.springButton.layer.borderWidth = 1
                         } else if response.seasons[2] == "SUMMER" {
                             //                                configureButton(popUpView.summerButton, title: "여름")
                             popUpView.summerButton.setTitleColor(.white, for: .normal)
                             popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.summerButton.layer.cornerRadius = 5
                             popUpView.summerButton.layer.borderWidth = 1
                         } else if response.seasons[2] == "FALL" {
                             //                                configureButton(popUpView.fallButton, title: "가을")
                             popUpView.fallButton.setTitleColor(.white, for: .normal)
                             popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.fallButton.layer.cornerRadius = 5
                             popUpView.fallButton.layer.borderWidth = 1
                         } else if response.seasons[2] == "WINTER" {
                             //                                configureButton(popUpView.winterButton, title: "겨울")
                             popUpView.winterButton.setTitleColor(.white, for: .normal)
                             popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.winterButton.layer.cornerRadius = 5
                             popUpView.winterButton.layer.borderWidth = 1
                         }
@@ -602,28 +668,28 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                             //                                configureButton(popUpView.springButton, title: "봄")
                             popUpView.springButton.setTitleColor(.white, for: .normal)
                             popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.springButton.layer.cornerRadius = 5
                             popUpView.springButton.layer.borderWidth = 1
                         } else if response.seasons[3] == "SUMMER" {
                             //                                configureButton(popUpView.summerButton, title: "여름")
                             popUpView.summerButton.setTitleColor(.white, for: .normal)
                             popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.summerButton.layer.cornerRadius = 5
                             popUpView.summerButton.layer.borderWidth = 1
                         } else if response.seasons[3] == "FALL" {
                             //                                configureButton(popUpView.fallButton, title: "가을")
                             popUpView.fallButton.setTitleColor(.white, for: .normal)
                             popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.fallButton.layer.cornerRadius = 5
                             popUpView.fallButton.layer.borderWidth = 1
                         } else if response.seasons[3] == "WINTER" {
                             //                                configureButton(popUpView.winterButton, title: "겨울")
                             popUpView.winterButton.setTitleColor(.white, for: .normal)
                             popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.winterButton.layer.cornerRadius = 5
                             popUpView.winterButton.layer.borderWidth = 1
                         }
@@ -718,20 +784,55 @@ extension FollowProfileViewController: FollowProfileActionDelegate {
 
     func didBlockUser() {
         print("사용자가 차단됨")
-        followProfileView.followButton.setTitle("차단 해제", for: .normal)
-        followProfileView.followButton.backgroundColor = .mainBrown800
-        followProfileView.followButton.setTitleColor(.white, for: .normal)
-        followProfileView.updateCloseAccount(isClosed: true)
+        
+        let clokeyId = self.followId
+
+        print("\(clokeyId) 는 ?? ")
+
+        // 액션 시트 닫기
+        dismiss(animated: false) { [weak self] in
+            // Alert 표시
+            let alert = UIAlertController(
+                title: "사용자 차단",
+                message: "정말 이 사용자를 차단하시겠습니까?",
+                preferredStyle: .alert
+            )
+
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            let confirmAction = UIAlertAction(title: "차단", style: .destructive) { _ in
+                self?.blockMember(clokeyId: clokeyId)
+            }
+
+            alert.addAction(cancelAction)
+            alert.addAction(confirmAction)
+
+            // 현재 뷰 컨트롤러에서 Alert 띄우기
+            if let topViewController = UIApplication.shared.connectedScenes
+                .compactMap({ $0 as? UIWindowScene })
+                .flatMap({ $0.windows })
+                .first(where: { $0.isKeyWindow })?
+                .rootViewController {
+                topViewController.present(alert, animated: true, completion: nil)
+            }
+        }
     }
     
-//    func didTapDefaultProfile() {
-//        let bottomSheetVC = CustomBottomSheetViewController()
-//        bottomSheetVC.dismiss(animated: true) { [weak self] in
-//            guard let self = self else { return }
-//            
-//            let accountRepoVC = CustomReportViewController(clokeyId: self.followId)
-//            self.navigationController?.pushViewController(accountRepoVC, animated: true)
-//        }
-//    }
+    // 차단 API
+    private func blockMember(clokeyId: String) {
+        let membersService = MembersService()
+        
+        membersService.blockOrUnblock(clokeyId: clokeyId) { result in
+            switch result {
+            case .success:
+                print("\(clokeyId) 차단 성공")
+                DispatchQueue.main.async {
+                    self.followProfileView.blockButton(isBlock: true)
+                    self.followProfileView.updateCloseAccount(isClosed: true)
+                }
+            case .failure(let error):
+                print("차단 실패: \(error.localizedDescription)")
+            }
+        }
+    }
 }
 

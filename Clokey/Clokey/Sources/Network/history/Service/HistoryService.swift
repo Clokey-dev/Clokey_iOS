@@ -157,17 +157,30 @@ public final class HistoryService: NetworkManager {
             completion: completion
         )
     }
-    //좋아요한 기록 보기 
+    
+    //좋아요한 기록 보기
     public func likedHistories(
             page: Int,
             completion: @escaping (Result<LikedHistoriesResponseDTO, NetworkError>) -> Void
         ) {
-            request(
-                target: .likedHistories(page: page),
-                decodingType: LikedHistoriesResponseDTO.self,
-                completion: completion
-            )
-        }
+        request(
+            target: .likedHistories(page: page),
+            decodingType: LikedHistoriesResponseDTO.self,
+            completion: completion
+        )
+    }
+    
+    // 내가 남긴 댓글 목록 조회 API
+    public func getMyCommentHistories(
+        page: Int,
+        completion: @escaping (Result<CommentHistoryResponse, NetworkError>) -> Void
+    ) {
+        request(
+            target: .historyCommentList(page: page),
+            decodingType: CommentHistoryResponse.self,
+            completion: completion
+        )
+    }
 }
 
 

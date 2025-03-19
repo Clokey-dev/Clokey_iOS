@@ -26,6 +26,8 @@ class PopupView: UIView {
     var imageView = UIImageView().then {
         $0.image = UIImage(named: "top")
         $0.contentMode = .scaleAspectFit
+        $0.layer.cornerRadius = 5
+        $0.clipsToBounds = true
     }
     
     private let categoryStackView = UIStackView().then {
@@ -111,7 +113,8 @@ class PopupView: UIView {
     let wearCountLabel: UILabel = {
         let label = UILabel()
         label.text = "착용 횟수"
-        label.font = UIFont.ptdMediumFont(ofSize: 16)
+        label.font = UIFont.ptdMediumFont(ofSize: 12)
+        label.textColor = .gray
         return label
     }()
 
@@ -129,14 +132,15 @@ class PopupView: UIView {
     let brandLabel: UILabel = {
         let label = UILabel()
         label.text = "브랜드"
-        label.font = UIFont.ptdMediumFont(ofSize: 16)
+        label.font = UIFont.ptdMediumFont(ofSize: 12)
+        label.textColor = .gray
         return label
     }()
     
     var brandNameLabel: UILabel = {
         let label = UILabel()
         label.text = ""
-        label.font = UIFont.ptdMediumFont(ofSize: 16)
+        label.font = UIFont.ptdMediumFont(ofSize: 12)
         label.numberOfLines = 0
         label.lineBreakMode = .byCharWrapping
         return label
@@ -145,7 +149,8 @@ class PopupView: UIView {
     let urlLabel: UILabel = {
         let label = UILabel()
         label.text = "URL"
-        label.font = UIFont.ptdMediumFont(ofSize: 16)
+        label.font = UIFont.ptdMediumFont(ofSize: 12)
+        label.textColor = .gray
         return label
     }()
     
@@ -154,7 +159,7 @@ class PopupView: UIView {
         let attributes: [NSAttributedString.Key: Any] = [
             .underlineStyle: NSUnderlineStyle.single.rawValue,
             .foregroundColor: UIColor.mainBrown800,
-            .font: UIFont.ptdMediumFont(ofSize: 16)
+            .font: UIFont.ptdMediumFont(ofSize: 12)
         ]
         let attributedTitle = NSAttributedString(string: title, attributes: attributes)
         $0.setAttributedTitle(attributedTitle, for: .normal)
@@ -201,7 +206,7 @@ class PopupView: UIView {
     // MARK: - Setup Constraints
     private func setupConstraints() {
         nameLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(64)
+            make.top.equalToSuperview().offset(55)
             make.centerX.equalToSuperview()
         }
         publicButton.snp.makeConstraints { make in
@@ -211,10 +216,10 @@ class PopupView: UIView {
         }
 
         imageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(101)
+            make.top.equalTo(nameLabel.snp.bottom).offset(12)
             make.centerX.equalToSuperview()
-            make.width.equalTo(140)
-            make.height.equalTo(167)
+            make.width.equalTo(138)
+            make.height.equalTo(183)
         }
         
         categoryStackView.snp.makeConstraints { make in
@@ -269,7 +274,7 @@ class PopupView: UIView {
         
         
         brandContainerView.snp.makeConstraints { make in
-            make.top.equalTo(wearCountLabel.snp.bottom).offset(20)
+            make.top.equalTo(wearCountLabel.snp.bottom).offset(24)
             make.leading.greaterThanOrEqualToSuperview().offset(20) // 고정이 아닌 최소값 설정 (왼쪽 이동 가능)
             make.trailing.lessThanOrEqualToSuperview().offset(-20) // 너무 길어지지 않도록 제한
             make.centerX.equalToSuperview() //  중앙 정렬 유지 (왼쪽으로 이동할 수 있도록)
@@ -287,7 +292,7 @@ class PopupView: UIView {
         }
         
         urlLabel.snp.makeConstraints { make in
-            make.top.equalTo(brandContainerView.snp.bottom).offset(20)
+            make.top.equalTo(brandContainerView.snp.bottom).offset(24)
             make.leading.equalToSuperview().offset(92)
         }
         

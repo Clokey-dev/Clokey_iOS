@@ -104,18 +104,18 @@ class CustomGalleryViewController: UIViewController, UIGestureRecognizerDelegate
         headerView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(22)
+            $0.height.equalTo(35)
         }
         
         // 최근 항목 라벨
         recentPicLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
+            $0.centerY.equalToSuperview().offset(8)
             $0.leading.equalToSuperview().offset(20)
         }
         
         // 완료 버튼
         completeButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
+            $0.centerY.equalToSuperview().offset(8)
             $0.trailing.equalToSuperview().offset(-20)
         }
        
@@ -445,6 +445,7 @@ extension CustomGalleryViewController: UIImagePickerControllerDelegate, UINaviga
     private func savePhotoToLibrary(_ image: UIImage) {
         PHPhotoLibrary.shared().performChanges({
             let request = PHAssetChangeRequest.creationRequestForAsset(from: image)
+            print(request)
         }) { success, error in
             if success {
                 DispatchQueue.main.async {

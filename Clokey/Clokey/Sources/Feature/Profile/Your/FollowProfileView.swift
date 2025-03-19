@@ -120,6 +120,16 @@ class FollowProfileView: UIView {
         $0.layer.borderColor = UIColor.mainBrown800.cgColor
     }
     
+    let blockButton = UIButton().then {
+        $0.setTitle("차단 해제", for: .normal)
+        $0.setTitleColor(.white, for: .normal)
+        $0.backgroundColor = .mainBrown800
+        $0.layer.cornerRadius = 10
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.mainBrown800.cgColor
+        $0.isHidden = true
+    }
+    
     let clothesLabel = UILabel().then {
         $0.text = "옷장"
         $0.font = UIFont.ptdRegularFont(ofSize: 20)
@@ -467,6 +477,44 @@ class FollowProfileView: UIView {
             
             recordLabel.isHidden = false
             calendarContainerView.isHidden = false
+        }
+    }
+    
+    /// 차단 해제 버튼 생성
+    func blockButton(isBlock: Bool) {
+        if isBlock {
+            if blockButton.superview == nil {
+                contentView.addSubview(blockButton)
+            }
+            
+            followButton.isHidden = true
+            
+            blockButton.snp.remakeConstraints { make in
+                make.top.equalTo(descriptionLabel.snp.bottom).offset(13)
+                make.centerX.equalToSuperview()
+                make.width.equalTo(86)
+                make.height.equalTo(30)
+            }
+            blockButton.isHidden = false
+        } else {
+            followButton.isHidden = false
+            blockButton.removeFromSuperview()
+        }
+    }
+    
+    func touchMyProfile(isMine:Bool){
+        if isMine {
+            followButton.isHidden = true
+            clothesLabel.snp.remakeConstraints { make in
+                make.top.equalTo(descriptionLabel.snp.bottom).offset(20)
+                make.leading.equalToSuperview().offset(20)
+            }
+        } else {
+            followButton.isHidden = false
+            clothesLabel.snp.remakeConstraints { make in
+                make.top.equalTo(followButton.snp.bottom).offset(36)
+                make.leading.equalToSuperview().offset(20)
+            }
         }
     }
 }

@@ -213,9 +213,7 @@ class FriendsCalendarDetailViewController: UIViewController, UIGestureRecognizer
         actionSheet.modalPresentationStyle = .overFullScreen
         present(actionSheet, animated: false)
     }
-    //해시태그 탭 했을때 검색결과 화면으로 push
-   
-    
+       
     // MARK: - Method
     
     // 좋아요
@@ -336,8 +334,65 @@ extension FriendsCalendarDetailViewController: FriendsActionSheetDelegate {
         navigationController?.pushViewController(reportVC, animated: true)
     }
 
+    // 차단하기
     func didBlockUser() {
-        print("사용자가 차단됨")
+        guard let viewModel = viewModel else { return }
+        let clokeyId = viewModel.clokeyId
+
+        print("\(clokeyId) 는 ?? ")
+
+        // 액션 시트 닫기
+        dismiss(animated: false) { [weak self] in
+            // Alert 표시
+            let alert = UIAlertController(
+                title: "사용자 차단",
+                message: "정말 이 사용자를 차단하시겠습니까?",
+                preferredStyle: .alert
+            )
+
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            let confirmAction = UIAlertAction(title: "차단", style: .destructive) { _ in
+                self?.blockMember(clokeyId: clokeyId)
+            }
+
+            alert.addAction(cancelAction)
+            alert.addAction(confirmAction)
+
+            // 현재 뷰 컨트롤러에서 Alert 띄우기
+            if let topViewController = UIApplication.shared.connectedScenes
+                .compactMap({ $0 as? UIWindowScene })
+                .flatMap({ $0.windows })
+                .first(where: { $0.isKeyWindow })?
+                .rootViewController {
+                topViewController.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    // 차단 API
+    private func blockMember(clokeyId: String) {
+        let membersService = MembersService()
+        
+        membersService.blockOrUnblock(clokeyId: clokeyId) { result in
+            switch result {
+            case .success:
+                print("\(clokeyId) 차단 성공")
+                DispatchQueue.main.async {
+                    if let navigationController = UIApplication.shared.connectedScenes
+                        .compactMap({ $0 as? UIWindowScene })
+                        .flatMap({ $0.windows })
+                        .first(where: { $0.isKeyWindow })?
+                        .rootViewController as? UINavigationController {
+                        
+                        navigationController.popViewController(animated: true)
+                    } else {
+                        print("네비게이션 컨트롤러를 찾을 수 없음")
+                    }
+                }
+            case .failure(let error):
+                print("차단 실패: \(error.localizedDescription)")
+            }
+        }
     }
 }
 
@@ -354,8 +409,7 @@ extension FriendsCalendarDetailViewController: UIAdaptivePresentationControllerD
 extension FriendsCalendarDetailViewController {
     func textView(_ textView: UITextView,
                   shouldInteractWith URL: URL,
-                  in characterRange: NSRange,
-                  interaction: UITextItemInteraction) -> Bool {
+                  in characterRange: NSRange) -> Bool {
         if URL.scheme == "hashtag" {
             // URL.host에는 '#' 제거한 값이 들어갑니다.
             let tappedHashtag = URL.host?.removingPercentEncoding ?? ""

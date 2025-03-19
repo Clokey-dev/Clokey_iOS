@@ -16,7 +16,7 @@ protocol CommentCellDelegate: AnyObject {
     func didTapProfile(with clokeyId: String)
     func didTapDelete(commentId: Int64) 
     func didTapReport(commentId: Int64)
-    func didTapBlock(commentId: Int64)
+    func didTapBlock(clokeyId: String)
 }
 
 class CommentCell: UITableViewCell {
@@ -133,7 +133,6 @@ class CommentCell: UITableViewCell {
         replyButton.isHidden = !isLastReply
         self.tag = Int(commentId)
         self.storedClokeyId = clokeyId
-
     }
     
     func setSelected(_ selected: Bool) {
@@ -165,10 +164,11 @@ class CommentCell: UITableViewCell {
     
     @objc private func cellTapped() {
         if let clokeyId = storedClokeyId {
+            print("프로필 선택됨: \(clokeyId)")  // 디버깅용 로그
             delegate?.didTapProfile(with: clokeyId)
         }
-        print("프로필 선택되었어요.")
     }
+
 }
 
 // 댓글 꾹 누를 시, 효과 처리
@@ -184,7 +184,11 @@ extension CommentCell: UIContextMenuInteractionDelegate {
             }
             
             let blockAction = UIAction(title: "차단하기", image: UIImage(systemName: "nosign")) { _ in
-                self.delegate?.didTapBlock(commentId: Int64(self.tag))
+                if let clokeyId = self.storedClokeyId {
+                    self.delegate?.didTapBlock(clokeyId: clokeyId)
+                } else {
+                    print("clokeyId를 찾을 수 없음")
+                }
             }
 
             return UIMenu(title: "", children: [deleteAction, reportAction, blockAction])

@@ -211,9 +211,10 @@ class AgreementViewController: UIViewController {
     
     // 가입 완료 버튼 상태 업데이트
     private func updateAgreeButtonState() {
-        let allRequiredCheckd = agreements.filter{ $0.isRequired }.allSatisfy { $0.isChecked }
+        let _ = agreements.filter{ $0.isRequired }.allSatisfy { $0.isChecked }
         agreeButton.isEnabled = areAllRequiredChecked // 필수 항목이 체크되었는지에 따라 활성화 여부 설정
         agreeButton.backgroundColor = areAllRequiredChecked ? .mainBrown800 : .mainBrown400 // 버튼 색상 변경
+        
     }
     
     // 약관 상세보기 화면 표시
@@ -239,49 +240,22 @@ class AgreementViewController: UIViewController {
                 agreementType = .locationPolicy        // 예: 위치기반 서비스 약관
             case 4:
                 agreementType = .marketingPolicy       // 예: 마케팅 정보 수신 동의
-            case 5:
-                agreementType = .pushPolicy            // 예: Push 알림 동의
             default:
                 agreementType = .nothing
             }
         
         let detailVC = AgreementDetailViewController(title: agreement.title, agreementType: agreementType)
         navigationController?.pushViewController(detailVC, animated: true)
-//        let membersService = MembersService()
-//        
-//        membersService.getTerms { [weak self] result in
-//            guard let self = self else { return }
-//            
-//            DispatchQueue.main.async {
-//                switch result {
-//                case .success(let response):
-//                    //  서버 응답에서 특정 약관을 찾음
-//                    if let fetchedTerm = response.first(where: { $0.termId == agreement.termId }) {
-//                        
-//                        let detailVC = AgreementDetailViewController(
-//                            title: fetchedTerm.title,
-//                            content: fetchedTerm.content //  서버에서 불러온 내용 전달
-//                        )
-//                        detailVC.modalPresentationStyle = .overFullScreen
-//                        self.present(detailVC, animated: true)
-//                        
-//                    } else {
-//                        print("🚨 해당 약관 ID에 대한 데이터 없음")
-//                    }
-//                    
-//                case .failure(let error):
-//                    print("❌ 약관 데이터 가져오기 실패: \(error.localizedDescription)")
-//                }
-//            }
-//        }
+
     }
     
     private func sendTermsToServer() {
         let requestData = prepareAgreementData() // 약관 데이터 준비
 
         let membersService = MembersService()
-        membersService.agreeToTerms(data: requestData) { [weak self] result in
-            guard let self = self else { return }
+        membersService.agreeToTerms(data: requestData) { //[weak self]
+            result in
+            //guard let self = self else { return }
 
             DispatchQueue.main.async {
                 switch result {
@@ -358,8 +332,14 @@ extension AgreementViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         //  화살표 액션 수정: agreement 전체 전달
-        cell.onArrowButtonTapped = { [weak self] in
-            self?.showAgreementDetail(for: agreement) //  현재 셀의 agreement 전달
+        if agreement.termId == 5 {
+            cell.arrowButton.isHidden = true
+            cell.onArrowButtonTapped = nil
+        } else {
+            cell.arrowButton.isHidden = false
+            cell.onArrowButtonTapped = { [weak self] in
+                self?.showAgreementDetail(for: agreement) //  현재 셀의 agreement 전달
+            }
         }
         
         return cell

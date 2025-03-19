@@ -46,10 +46,10 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         definesPresentationContext = true // 현재 컨텍스트에서 새로운 뷰 표시
-        // 새로고침 기능 추가 
+        // 새로고침 기능 추가
         pickView.scrollView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
-//        NotificationCenter.default.addObserver(self, selector: #selector(didPullToRefresh), name: NSNotification.Name("RefreshHomeNotification"), object: nil)
+        //        NotificationCenter.default.addObserver(self, selector: #selector(didPullToRefresh), name: NSNotification.Name("RefreshHomeNotification"), object: nil)
         
         
         setupActions()
@@ -71,10 +71,10 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         }
         
         NotificationCenter.default.addObserver(self,
-                                                   selector: #selector(handleHideLoadingOverlay),
-                                                   name: NSNotification.Name("HideLoadingOverlayNotification"),
-                                                   object: nil)
-       
+                                               selector: #selector(handleHideLoadingOverlay),
+                                               name: NSNotification.Name("HideLoadingOverlayNotification"),
+                                               object: nil)
+        
         
         locationManager.delegate = self
         locationManager.distanceFilter = kCLDistanceFilterNone
@@ -91,18 +91,21 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-    
+        
         self.updateYesterdayWeatherUI(for: latitude, longitude: longitude)
         fetchWeatherRecommendations()
+        
+        self.pickView.recapImageView1.image = nil
+        self.pickView.recapImageView2.image = nil
         loadRecapData()
         
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
         
-
+        
     }
     
     var clothId1:Int64?
@@ -189,7 +192,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
             fetchHistoryDetail(historyId: id)
         }
     }
-
+    
     
     
     @objc private func handleImageTap(_ sender: UITapGestureRecognizer) {
@@ -257,7 +260,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         
         let clotehsService = ClothesService()
         
-        // ✅ checkPopUpClothes API 호출 및 UI 업데이트
+        // checkPopUpClothes API 호출 및 UI 업데이트
         clotehsService.checkPopUpClothes(clothId: clothId) { [weak self] result in
             guard let self = self else { return }
             
@@ -414,7 +417,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                         }
                     }
                     
-//                    popUpView.wearCountButton.titleLabel?.text = "\(response.wearNum)"
+                    //                    popUpView.wearCountButton.titleLabel?.text = "\(response.wearNum)"
                     popUpView.wearCountButton.setTitle("\(response.wearNum)회", for: .normal)
                     popUpView.brandNameLabel.text = (response.brand?.isEmpty ?? true) ? "지정 없음" : response.brand
                     self.url = response.clothUrl ?? ""
@@ -456,7 +459,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-
+    
     func fetchWeatherRecommendations() {
         
         guard let nowTemp = nowTemp,
@@ -519,27 +522,27 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     // MARK: - 날씨 데이터 요청
     func fetchVisualCrossingWeatherData(for latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
         WeatherAPI.shared.fetchVisualCrossingWeather(for: latitude, longitude: longitude) { [weak self] weatherResponse in
-                DispatchQueue.main.async {
-                    if let weatherResponse = weatherResponse, let todayWeather = weatherResponse.days.first {
-                        self?.updateWeatherHighLowUI(weather: todayWeather)
-                    } else {
-                        self?.showError()
-                    }
+            DispatchQueue.main.async {
+                if let weatherResponse = weatherResponse, let todayWeather = weatherResponse.days.first {
+                    self?.updateWeatherHighLowUI(weather: todayWeather)
+                } else {
+                    self?.showError()
                 }
             }
+        }
     }
     
     // MARK: - 날씨 데이터 가져오기
     func fetchWeatherData(for latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
         WeatherAPI.shared.fetchWeather(for: latitude, longitude: longitude) { [weak self] weatherData in
-                DispatchQueue.main.async {
-                    if let weather = weatherData {
-                        self?.updateTemperatureUI(weather: weather)
-                    } else {
-                        print("API 호출 실패 또는 weatherData가 nil입니다.")
-                    }
+            DispatchQueue.main.async {
+                if let weather = weatherData {
+                    self?.updateTemperatureUI(weather: weather)
+                } else {
+                    print("API 호출 실패 또는 weatherData가 nil입니다.")
                 }
             }
+        }
     }
     
     // MARK: - 시간 업데이트
@@ -593,32 +596,32 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         }
         
         // 좌표 값 추출
-            let latitude = location.coordinate.latitude
-            let longitude = location.coordinate.longitude
+        let latitude = location.coordinate.latitude
+        let longitude = location.coordinate.longitude
         let geocoderEnglish = CLGeocoder()
-            // (옵션) 주소 업데이트를 위해 reverse geocoding 수행
+        // (옵션) 주소 업데이트를 위해 reverse geocoding 수행
         geocoderEnglish.reverseGeocodeLocation(location) { (placemarks, error) in
-                if let placemark = placemarks?.first {
-                    var subAddress = ""
-                    if let administrativeArea = placemark.administrativeArea {
-                        subAddress += administrativeArea
-                    }
-                    if let locality = placemark.locality {
-                        subAddress += " " + locality
-                    }
-                    DispatchQueue.main.async {
-                        self.englishAddress = subAddress
-                        self.updateTimeLabel()
-                        self.latitude = latitude
-                        self.longitude = longitude
-                                        self.fetchVisualCrossingWeatherData(for: latitude, longitude: longitude)
-                                        self.fetchWeatherData(for: latitude, longitude: longitude)
-                                        self.updateYesterdayWeatherUI(for: latitude, longitude: longitude)
-                    }
+            if let placemark = placemarks?.first {
+                var subAddress = ""
+                if let administrativeArea = placemark.administrativeArea {
+                    subAddress += administrativeArea
                 }
-
-            
+                if let locality = placemark.locality {
+                    subAddress += " " + locality
+                }
+                DispatchQueue.main.async {
+                    self.englishAddress = subAddress
+                    self.updateTimeLabel()
+                    self.latitude = latitude
+                    self.longitude = longitude
+                    self.fetchVisualCrossingWeatherData(for: latitude, longitude: longitude)
+                    self.fetchWeatherData(for: latitude, longitude: longitude)
+                    self.updateYesterdayWeatherUI(for: latitude, longitude: longitude)
+                }
             }
+            
+            
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -694,7 +697,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         nowTemp = Int(weather.main.temp)
         
         isDataLoaded = true
-            hideLoadingOverlay()
+        hideLoadingOverlay()
         
         // 아이콘 가져오기
         if let icon = weather.weather.first?.icon {
@@ -717,10 +720,10 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     
     func updateYesterdayWeatherUI(for latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
         WeatherAPI.shared.fetchTemperatureChange(for: latitude, longitude: longitude) { [weak self] resultText in
-                DispatchQueue.main.async {
-                    self?.pickView.temperatureChangeLabel.text = resultText
-                }
+            DispatchQueue.main.async {
+                self?.pickView.temperatureChangeLabel.text = resultText
             }
+        }
     }
     
     // MARK: - 에러 처리
@@ -757,41 +760,53 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     
                     if imageUrls.count > 0 {
                         self.recapHistoryId1 = Int(historyId!) // 첫 번째 이미지에 대한 historyId
-                    }
-                    // 두 번째 이미지는 같은 historyId를 사용하거나 필요에 따라 다르게 처리
-                    if imageUrls.count > 1 {
-                        self.recapHistoryId2 = Int(historyId!) // 두 번째 이미지에 대한 historyId
+                        // 두 번째 이미지는 같은 historyId를 사용하거나 필요에 따라 다르게 처리
+                        if imageUrls.count > 1 {
+                            self.recapHistoryId2 = Int(historyId!) // 두 번째 이미지에 대한 historyId
+                        }
                     }
                     
-                    if historyResult.isMine {
-                        if imageUrls.isEmpty {
-                            print("사진이 없습니다")
-                            self.pickView.recapSubtitleLabel1.text = "\(nickName)과 팔로워들의 과거의 기록들을 확인해보세요!"
-                            self.pickView.recapNotMe(hidden: true)
-//                            self.pickView.recapNotMe(hidden: false)
-//                            self.pickView.recapSubtitleLabel2.text = "1년 전 오늘, 다른 사용자들의 기록도 없어요!"
-                        } else {
-                            self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님은 이 옷을 착용하셨네요!"
-                            self.pickView.recapNotMe(hidden: true)
-                            
-                            if imageUrls.count > 0 {
-                                self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
+                    
+                    if let isMine = historyResult.isMine {
+                        if isMine {
+                            // isMine == true
+                            if imageUrls.isEmpty {
+                                print("사진이 없습니다")
+                            } else {
+                                self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님은 이 옷을 착용하셨네요!"
+                                self.pickView.recapNotMe(hidden: true)
+                                
+                                if imageUrls.count > 0 {
+                                    self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
+                                    if imageUrls.count > 1 {
+                                        self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
+                                    }
+                                }
+                                
                             }
-                            if imageUrls.count > 1 {
-                                self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
+                        } else {
+                            // isMine == false
+                            if imageUrls.isEmpty {
+                                print("사진이 없습니다")
+                            } else {
+                                self.pickView.recapSubtitleLabel1.text = "1년 전 오늘의 기록이 없어요!"
+                                self.pickView.recapNotMe(hidden: false)
+                                self.pickView.recapSubtitleLabel2.text = "\(nickName)님의 1년 전 오늘을 확인해보세요!"
+                                if imageUrls.count > 0 {
+                                    self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
+                                    if imageUrls.count > 1 {
+                                        self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
+                                    }
+                                }
                             }
                         }
                     } else {
-                        self.pickView.recapSubtitleLabel1.text = "1년 전 오늘의 기록이 없어요!"
-                        self.pickView.recapNotMe(hidden: false)
-                        self.pickView.recapSubtitleLabel2.text = "\(nickName)님의 1년 전 오늘을 확인해보세요!"
+                        // historyResult.isMine == nil 일 때 처리
+                        self.pickView.recapSubtitleLabel1.text = "\(nickName)과 팔로워들의 과거의 기록들을 확인해보세요!"
+                        self.pickView.recapNotMe(hidden: true)
                         
-                        if imageUrls.isEmpty {
-                            print("사진이 없습니다")
-                        } else {
-                            if imageUrls.count > 0 {
-                                self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
-                            }
+                        if imageUrls.count > 0 {
+                            self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
                             if imageUrls.count > 1 {
                                 self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
                             }
@@ -811,6 +826,8 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         fetchWeatherRecommendations()
         
         self.updateYesterdayWeatherUI(for: latitude, longitude: longitude)
+        self.pickView.recapImageView1.image = nil
+        self.pickView.recapImageView2.image = nil
         loadRecapData()
         
         // 약간의 지연 후 refreshControl 종료
