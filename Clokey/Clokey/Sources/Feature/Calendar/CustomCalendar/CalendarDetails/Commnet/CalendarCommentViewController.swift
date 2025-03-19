@@ -354,7 +354,10 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     
     // 프로필 이미지로 clokeyId 전달
     func didTapProfile(with clokeyId: String) {
-        handleProfile(clokeyId: clokeyId)
+        print("프로필 클릭됨: \(clokeyId)")
+        DispatchQueue.main.async {
+            self.navigateToProfile(clokeyId: clokeyId)
+        }
     }
     
     private func findIndexPath(for commentId: Int64) -> IndexPath? {
@@ -392,7 +395,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
                     let replies = comment.replyResults.map { reply in
                         Comment(
                             id: reply.commentId,
-                            clokeyId: comment.clokeyId,
+                            clokeyId: reply.clokeyId,
                             nickName: reply.nickName,
                             imageUrl: reply.userImageUrl,
                             content: reply.content,
@@ -477,6 +480,7 @@ extension CalendarCommentViewController: UITableViewDataSource, UITableViewDeleg
         
         let comment = comments[indexPath.row]
         let isReply = comment.parentCommentId != nil
+        let parentComment = comments.first { $0.id == comment.parentCommentId }
 
         cell.configure(
             profileImage: comment.imageUrl,
