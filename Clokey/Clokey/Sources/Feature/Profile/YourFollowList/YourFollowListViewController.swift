@@ -299,6 +299,7 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
         }
     }
     
+    
     private func loadFollowerData(isNextPage: Bool = false) {
         guard !isLoading && (hasMorePages || !isNextPage) else { return }
         isLoading = true
@@ -314,7 +315,6 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
             switch result {
             case .success(let response):
                 let newResult: [YourFollowerUserModel] = response.members.compactMap { item -> YourFollowerUserModel? in
-//                    let profileImageURL = URL(string: item.profileImage)
                     return YourFollowerUserModel(
                         userId: item.clokeyId,
                         nickname: item.nickname,
@@ -323,6 +323,8 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
                         isMe: item.isMe
                     )
                 }
+                
+                
                 
                 if isNextPage {
                     self.followerusers.append(contentsOf: newResult)
@@ -454,12 +456,14 @@ extension YourFollowListViewController: UICollectionViewDataSource, UICollection
             print("팔로워 선택됨: \(selectedUser.nickname)")
             
             let followProfileVC = FollowProfileViewController(followId: selectedUser.userId)
+            followProfileVC.isMe = selectedUser.isMe
             navigationController?.pushViewController(followProfileVC, animated: false)
         } else if collectionView == followingCollectionView {
             let selectedUser = followingusers[indexPath.item]
             print("팔로잉 선택됨: \(selectedUser.nickname)")
             
             let followProfileVC = FollowProfileViewController(followId: selectedUser.userId)
+            followProfileVC.isMe = selectedUser.isMe
             navigationController?.pushViewController(followProfileVC, animated: false)
         }
     }

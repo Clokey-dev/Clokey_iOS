@@ -925,6 +925,24 @@ class NewsViewController: UIViewController {
         }
     }
     
+    func shouldFetchData(serverDateString: String) -> Bool {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC") // 서버 날짜의 타임존에 맞춰 조정 가능
+        
+        guard let serverDate = dateFormatter.date(from: serverDateString) else {
+            print("서버 날짜 변환 실패")
+            return false
+        }
+        
+        let currentDate = Date()
+        let calendar = Calendar.current
+        guard let difference = calendar.dateComponents([.day], from: serverDate, to: currentDate).day else {
+            return false
+        }
+        
+        return difference >= 14
+    }
     
 }
 
