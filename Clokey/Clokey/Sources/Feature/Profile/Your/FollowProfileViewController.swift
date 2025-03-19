@@ -25,6 +25,8 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     private let followCalendarViewController = FollowCalendarViewController()
     
     var followId: String = ""
+    var isMe: Bool = false
+    
     var clokey_Id: String = ""
     var followerCount: Int = 0
     var followingCount: Int = 0
@@ -71,6 +73,8 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         loadData()
         setupActions()
         setupPopupActions()
+        
+        followProfileView.touchMyProfile(isMine: isMe)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -107,12 +111,12 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
 
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: backButton), titleItem]
         
-        navBarManager.setOption(
-            to: navigationItem,
-            target: self,
-            action: #selector(didTapReportButton))
-        
-        
+        if !isMe {
+            navBarManager.setOption(
+                to: navigationItem,
+                target: self,
+                action: #selector(didTapReportButton))
+        }
     }
     
     // 뒤로가기

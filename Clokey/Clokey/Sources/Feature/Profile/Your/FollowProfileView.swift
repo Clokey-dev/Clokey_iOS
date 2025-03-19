@@ -501,4 +501,20 @@ class FollowProfileView: UIView {
             blockButton.removeFromSuperview()
         }
     }
+    
+    func touchMyProfile(isMine:Bool){
+        if isMine {
+            followButton.isHidden = true
+            clothesLabel.snp.remakeConstraints { make in
+                make.top.equalTo(descriptionLabel.snp.bottom).offset(20)
+                make.leading.equalToSuperview().offset(20)
+            }
+        } else {
+            followButton.isHidden = false
+            clothesLabel.snp.remakeConstraints { make in
+                make.top.equalTo(followButton.snp.bottom).offset(36)
+                make.leading.equalToSuperview().offset(20)
+            }
+        }
+    }
 }
