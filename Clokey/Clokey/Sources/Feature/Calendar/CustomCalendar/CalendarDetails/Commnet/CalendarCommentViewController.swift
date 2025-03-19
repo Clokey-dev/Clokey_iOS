@@ -15,13 +15,14 @@ protocol CalendarCommentDelegate: AnyObject {
     func didUpdateComment(count: Int)  // 댓글 수 업데이트
     func didDeleteComment()  // 댓글 삭제됨
     func CalendarCommentViewController(_ viewController: CalendarCommentViewController, didSelectProfileWith clokeyId: String)
-
+    func commentViewController(_ viewController: CalendarCommentViewController, didRequestReportForComment commentId: Int64)
 }
 
 class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     
     weak var delegate: CalendarCommentDelegate?
-    
+    weak var reportDelegate: CalendarCommentDelegate?
+
     private let backgroundView = UIView().then {
         $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         $0.alpha = 0
@@ -164,22 +165,77 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     }
 
 
-    // TODO: - 신고 API 함수 구현 필요
+    // 신고 API 함수
     func didTapReport(commentId: Int64) {
-        let alert = UIAlertController(title: "신고 접수", message: "신고가 접수되었습니다.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default))
-        present(alert, animated: true)
+        print("신고 버튼 클릭")
+        self.dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            self.delegate?.commentViewController(self, didRequestReportForComment: commentId)
+        }
     }
     
     // 차단 API 함수
-    func didTapBlock(commentId: Int64) {
-        let alert = UIAlertController(title: "차단", message: "차단이 접수되었습니다.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default))
-        present(alert, animated: true)
+    func didTapBlock(clokeyId: String) {
+        print("\(clokeyId) 입니다요")
+
+        let confirmAlert = UIAlertController(
+            title: "사용자 차단",
+            message: "정말 이 사용자를 차단하시겠습니까?",
+            preferredStyle: .alert
+        )
+
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        let confirmAction = UIAlertAction(title: "차단", style: .destructive) { [weak self] _ in
+            self?.executeBlockRequest(clokeyId: clokeyId)
+        }
+
+        confirmAlert.addAction(cancelAction)
+        confirmAlert.addAction(confirmAction)
+
+        present(confirmAlert, animated: true)
     }
+    // 차단 API
+    private func executeBlockRequest(clokeyId: String) {
+        let membersService = MembersService()
+
+        membersService.blockOrUnblock(clokeyId: clokeyId) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success:
+                print("\(clokeyId) 차단 성공")
+
+                let successAlert = UIAlertController(
+                    title: "차단 완료",
+                    message: "해당 사용자가 차단되었습니다.",
+                    preferredStyle: .alert
+                )
+                successAlert.addAction(UIAlertAction(title: "확인", style: .default))
+
+                DispatchQueue.main.async {
+                    self.present(successAlert, animated: true, completion: nil)
+                }
+
+            case .failure(let error):
+                print("차단 실패: \(error.localizedDescription)")
+
+                let failureAlert = UIAlertController(
+                    title: "차단 실패",
+                    message: "차단 요청을 처리하는 중 오류가 발생했습니다.",
+                    preferredStyle: .alert
+                )
+                failureAlert.addAction(UIAlertAction(title: "확인", style: .default))
+
+                DispatchQueue.main.async {
+                    self.present(failureAlert, animated: true, completion: nil)
+                }
+            }
+        }
+    }
+
     
     @objc func dismissView() {
-        print("📌 X 버튼으로 닫힘!")  // 로그 확인용
+        print("X 버튼으로 닫힘!")  // 로그 확인용
         self.dismiss(animated: true) {
             if let presentationController = self.presentationController {
                 self.presentationController?.delegate?.presentationControllerDidDismiss?(presentationController)

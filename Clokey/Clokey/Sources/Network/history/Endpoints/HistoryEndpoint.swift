@@ -21,7 +21,7 @@ public enum HistoryEndpoint {
     case historyCreate(data: HistoryCreateRequestDTO, images: [Data])
     //좋아요한 게시물
     case likedHistories(page: Int)
-    
+    case historyCommentList(page: Int)
     
     // 추가적인 API는 여기 케이스로 정의
 }
@@ -58,8 +58,9 @@ extension HistoryEndpoint: TargetType {
         case .historyCreate:
             return "/histories"
         case .likedHistories:
-            return "/histories/liked"  // 엔드포인트 URL (명세에 따라)
-            
+            return "/histories/liked"
+        case .historyCommentList:
+            return "/histories/my-comments"
         }
     }
     
@@ -70,7 +71,7 @@ extension HistoryEndpoint: TargetType {
             return .post
         case .historyCommentUpdate:
             return .patch
-        case .historyMonth, .historyDetail, .historyComments, .historyLikeList, .likedHistories:
+        case .historyMonth, .historyDetail, .historyComments, .historyLikeList, .likedHistories, .historyCommentList:
             return .get
         case .historyCommentDelete, .historyDelete:
             return .delete
@@ -120,15 +121,15 @@ extension HistoryEndpoint: TargetType {
             return .uploadMultipart(formData)
         case .likedHistories(let page):
             return .requestParameters(parameters: ["page": page], encoding: URLEncoding.queryString)
-        
+        case .historyCommentList(let page):
+            return .requestParameters(parameters: ["page": page], encoding: URLEncoding.queryString)
+        }
     }
     
+    public var headers: [String: String]? {
+        return [
+            "Content-Type": "application/json"
+        ]
+    }
 }
 
-
-public var headers: [String: String]? {
-    return [
-        "Content-Type": "application/json"
-    ]
-}
-}

@@ -338,11 +338,15 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == displayAllView.collectionView {
+            
             let popUpVC = PopUpViewController()
             // closetItems를 ClothPreview 모델 배열로 변환해서 전달
             popUpVC.clothPreviews = clothItems.map { ClothPreview(id: $0.id, name: $0.name, wearNum: $0.count, imageUrl: $0.image) }
             popUpVC.currentIndex = indexPath.item
             popUpVC.clothId = Int64(popUpVC.clothPreviews[indexPath.item].id)
+            
+            popUpVC.clokeyId = self.clokeyId
+
             popUpVC.modalPresentationStyle = .overCurrentContext
             popUpVC.modalTransitionStyle = .crossDissolve
             present(popUpVC, animated: true)

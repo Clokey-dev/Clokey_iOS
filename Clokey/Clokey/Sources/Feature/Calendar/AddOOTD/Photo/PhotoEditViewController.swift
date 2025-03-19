@@ -163,6 +163,7 @@ class PhotoEditViewController: UIViewController, UIGestureRecognizerDelegate {
     // 편집 뷰를 열 때, 선택된 이미지를 전달받아 설정
     func configure(with images: [UIImage]) {
         self.selectedImages = images
+        self.currentEditingIndex = 0 // 첫 번째 이미지로 초기화
         thumbnailCollectionView.reloadData()
         updateMainImage()
     }
@@ -268,7 +269,8 @@ extension PhotoEditViewController: UICollectionViewDataSource, UICollectionViewD
             withReuseIdentifier: ImageCollectionViewCell.identifier,
             for: indexPath
         ) as! ImageCollectionViewCell
-        cell.configure(with: selectedImages[indexPath.item])
+        let image = selectedImages[indexPath.item] // 순서 반영
+        cell.configure(with: image)
         cell.hideDeleteButton()
         return cell
     }

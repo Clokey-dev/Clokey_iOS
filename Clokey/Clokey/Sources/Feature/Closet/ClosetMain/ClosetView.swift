@@ -13,19 +13,17 @@ final class ClosetView: UIView {
     
     let customTotalSegmentView = CustomTotalSegmentView(items: ["전체", "상의", "하의", "아우터", "기타"])
     
-    // 새롭게 FlowLayout을 생성하여 셀 크기 고정 및 왼쪽 정렬
+    // 옷 데이터 컬렉션 뷰 (셀 크기 고정 및 왼쪽 정렬)
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 10
         layout.minimumLineSpacing = 20
         layout.sectionInset = .zero  // 섹션 인셋 0으로 설정해 왼쪽부터 배치
         layout.estimatedItemSize = .zero
-        // 한 줄에 3개씩 배치하려면:
         let totalMargin: CGFloat = 40   // 좌우 inset 20씩
         let interitemSpacing: CGFloat = 10 * 2 // 아이템 간 간격 10씩 2칸
         let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing
         let itemWidth = availableWidth / 3
-        // 높이는 167로 고정하거나, 원하는 비율(예: 4:3 이미지, 레이블 높이 등)로 설정 가능
         layout.itemSize = CGSize(width: itemWidth, height: 167)
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -39,7 +37,7 @@ final class ClosetView: UIView {
         $0.setTitle("전체보기", for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 12)
-        $0.contentHorizontalAlignment = .left  // 왼쪽 정렬
+        $0.contentHorizontalAlignment = .left
     }
     
     let frontIconView = UIImageView().then {
@@ -88,17 +86,13 @@ final class ClosetView: UIView {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 7
         layout.minimumLineSpacing = 12
-        // 좌우 margin 20씩(총 40)
         layout.sectionInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         layout.estimatedItemSize = .zero
 
         let horizontalSpacing = layout.minimumInteritemSpacing // 7 포인트
         let totalMargin: CGFloat = 20 + 20  // 좌우 margin 합계 40 포인트
-        // availableWidth는 전체 너비에서 섹션 인셋과 아이템 간 간격을 뺀 값
         let availableWidth = UIScreen.main.bounds.width - totalMargin - horizontalSpacing
         let itemWidth = availableWidth / 2  // 두 개로 나누어 배치
-
-        // 높이는 77로 고정 (필요 시 조절)
         layout.itemSize = CGSize(width: itemWidth, height: 77)
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -108,8 +102,9 @@ final class ClosetView: UIView {
         cv.register(DrawerCollectionViewCell.self, forCellWithReuseIdentifier: DrawerCollectionViewCell.identifier)
         return cv
     }()
-
-
+    
+    // drawerCollectionView 높이를 동적으로 업데이트하기 위한 Constraint 참조
+    var drawerCollectionViewHeightConstraint: Constraint?
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -152,7 +147,7 @@ final class ClosetView: UIView {
         contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.width.equalToSuperview() // 가로 스크롤 방지
-            make.bottom.equalTo(drawerCollectionView.snp.bottom).offset(30) // 전체 높이 확보
+            make.bottom.greaterThanOrEqualTo(drawerCollectionView.snp.bottom).offset(30)
         }
         
         customTotalSegmentView.snp.makeConstraints { make in
@@ -189,7 +184,7 @@ final class ClosetView: UIView {
         bannerStackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalToSuperview().offset(5)
-            make.height.equalTo(95)
+            make.height.equalTo(86)
             make.width.equalToSuperview().multipliedBy(2)
         }
         
@@ -212,15 +207,18 @@ final class ClosetView: UIView {
         drawerCollectionView.snp.makeConstraints { make in
             make.top.equalTo(drawerTitle.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview()
-            
-            make.height.equalTo(255)
+            // 기존 고정값 대신 Constraint 참조를 저장하여 나중에 업데이트 할 수 있게 함
+            self.drawerCollectionViewHeightConstraint = make.height.equalTo(255).constraint
         }
     }
 }
 
+// MARK: - UIScrollViewDelegate (배너 페이지 컨트롤)
 extension ClosetView: UIScrollViewDelegate {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let pageIndex = Int(round(scrollView.contentOffset.x / scrollView.frame.width))
-        pageControl.currentPage = pageIndex
+        if scrollView == bannerScrollView {
+            let pageIndex = Int(round(scrollView.contentOffset.x / scrollView.frame.width))
+            pageControl.currentPage = pageIndex
+        }
     }
 }

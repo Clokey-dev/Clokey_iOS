@@ -170,27 +170,15 @@ class FriendsActionSheetViewController: UIViewController {
     
     // 신고 버튼
     @objc private func reportButtonTapped() {
-//        hideSheet()
-//        delegate?.didReportUser()
+        hideSheet()
+        delegate?.didReportUser()
         print("신고해~")
     }
     
     // 차단 버튼
     @objc private func blockButtonTapped() {
-//        historyService.historyDelete(historyId: historyId) { [weak self] result in
-//            guard let self = self else { return }
-//
-//            switch result {
-//            case .success:
-//                DispatchQueue.main.async {
-//                    self.hideSheet { [weak self] in
-//                        self?.delegate?.didBlockUser()
-//                    }
-//                }
-//            case .failure(let error):
-//                print("기록 삭제 에러: \(error.localizedDescription)")
-//            }
-//        }
+        hideSheet()
+        delegate?.didBlockUser()
         print("차단해~")
     }
 }

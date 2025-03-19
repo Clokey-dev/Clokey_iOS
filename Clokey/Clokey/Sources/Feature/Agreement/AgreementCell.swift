@@ -24,14 +24,6 @@ class AgreementCell: UITableViewCell {
         view.isHidden = true
         return view
     }()
-
-//    private let titleLabel: UILabel = {
-//        let label = UILabel()
-//        label.font = UIFont.systemFont(ofSize: 16)
-//        label.textColor = .black
-//        label.numberOfLines = 1
-//        return label
-//    }()
     
     private let titleLabel: UIButton = {
         let button = UIButton()
@@ -42,7 +34,7 @@ class AgreementCell: UITableViewCell {
         return button
     }()
 
-    private let arrowButton: UIButton = {
+    let arrowButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "chevron.right"), for: .normal)
         button.tintColor = .gray
@@ -100,7 +92,6 @@ class AgreementCell: UITableViewCell {
             string: " \(agreement.title)",
             attributes: [.font: UIFont.systemFont(ofSize: 16), .foregroundColor: UIColor.black]
         ))
-//        titleLabel.attributedText = attributedString
         titleLabel.setAttributedTitle(attributedString, for: .normal) //  수정된 부분
 
 

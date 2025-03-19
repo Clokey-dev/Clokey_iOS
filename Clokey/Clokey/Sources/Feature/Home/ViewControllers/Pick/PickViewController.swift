@@ -17,6 +17,9 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     
     private var backgroundView: UIView?// 배경 어둡게 하기 위해 선언
     
+    var latitude : Double = 0
+    var longitude : Double = 0
+    
     var nowTemp: Int?
     var maxTemp: Int?
     var minTemp: Int?
@@ -43,21 +46,18 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         definesPresentationContext = true // 현재 컨텍스트에서 새로운 뷰 표시
-        // 새로고침 기능 추가 
+        // 새로고침 기능 추가
         pickView.scrollView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
-//        NotificationCenter.default.addObserver(self, selector: #selector(didPullToRefresh), name: NSNotification.Name("RefreshHomeNotification"), object: nil)
+        //        NotificationCenter.default.addObserver(self, selector: #selector(didPullToRefresh), name: NSNotification.Name("RefreshHomeNotification"), object: nil)
         
         
         setupActions()
         
         updateTimeLabel() // 현재 시간 업데이트
-        
-        fetchVisualCrossingWeatherData(for: "Seoul") // 기본 위치: 서울
-        updateYesterdayWeatherUI()
-        fetchWeatherData() // 날씨 데이터 가져오기
+        self.fetchVisualCrossingWeatherData(for: latitude, longitude: longitude)
+        self.updateYesterdayWeatherUI(for: latitude, longitude: longitude)
         setupBottomLabelTap()
-        //        bindData()
         
         if isDataLoaded {
             if loadingOverlay != nil {
@@ -71,10 +71,10 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         }
         
         NotificationCenter.default.addObserver(self,
-                                                   selector: #selector(handleHideLoadingOverlay),
-                                                   name: NSNotification.Name("HideLoadingOverlayNotification"),
-                                                   object: nil)
-       
+                                               selector: #selector(handleHideLoadingOverlay),
+                                               name: NSNotification.Name("HideLoadingOverlayNotification"),
+                                               object: nil)
+        
         
         locationManager.delegate = self
         locationManager.distanceFilter = kCLDistanceFilterNone
@@ -92,19 +92,20 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         
-       
-        fetchWeatherData()
-        updateYesterdayWeatherUI()
+        self.updateYesterdayWeatherUI(for: latitude, longitude: longitude)
         fetchWeatherRecommendations()
+        
+        self.pickView.recapImageView1.image = nil
+        self.pickView.recapImageView2.image = nil
         loadRecapData()
         
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
         
-
+        
     }
     
     var clothId1:Int64?
@@ -191,7 +192,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
             fetchHistoryDetail(historyId: id)
         }
     }
-
+    
     
     
     @objc private func handleImageTap(_ sender: UITapGestureRecognizer) {
@@ -274,7 +275,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                         print("유효하지 않은 이미지 URL: \(response.imageUrl)")
                     }
                     if response.visibility == "PUBLIC" {
-                        popUpView.publicButton.setImage(UIImage(named: "lock_off"), for: .normal)
+                        popUpView.publicButton.setImage(UIImage(named: "public_icon"), for: .normal)
                     } else {
                         popUpView.publicButton.setImage(UIImage(named: "lock_on"), for: .normal)
                     }
@@ -293,28 +294,28 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                             //                                configureButton(popUpView.springButton, title: "봄")
                             popUpView.springButton.setTitleColor(.white, for: .normal)
                             popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.springButton.layer.cornerRadius = 5
                             popUpView.springButton.layer.borderWidth = 1
                         } else if response.seasons[0] == "SUMMER" {
                             //                                configureButton(popUpView.summerButton, title: "여름")
                             popUpView.summerButton.setTitleColor(.white, for: .normal)
                             popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.summerButton.layer.cornerRadius = 5
                             popUpView.summerButton.layer.borderWidth = 1
                         } else if response.seasons[0] == "FALL" {
                             //                                configureButton(popUpView.fallButton, title: "가을")
                             popUpView.fallButton.setTitleColor(.white, for: .normal)
                             popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.fallButton.layer.cornerRadius = 5
                             popUpView.fallButton.layer.borderWidth = 1
                         } else if response.seasons[0] == "WINTER" {
                             //                                configureButton(popUpView.winterButton, title: "겨울")
                             popUpView.winterButton.setTitleColor(.white, for: .normal)
                             popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.winterButton.layer.cornerRadius = 5
                             popUpView.winterButton.layer.borderWidth = 1
                         }
@@ -325,28 +326,28 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                             //                                configureButton(popUpView.springButton, title: "봄")
                             popUpView.springButton.setTitleColor(.white, for: .normal)
                             popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.springButton.layer.cornerRadius = 5
                             popUpView.springButton.layer.borderWidth = 1
                         } else if response.seasons[1] == "SUMMER" {
                             //                                configureButton(popUpView.summerButton, title: "여름")
                             popUpView.summerButton.setTitleColor(.white, for: .normal)
                             popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.summerButton.layer.cornerRadius = 5
                             popUpView.summerButton.layer.borderWidth = 1
                         } else if response.seasons[1] == "FALL" {
                             //                                configureButton(popUpView.fallButton, title: "가을")
                             popUpView.fallButton.setTitleColor(.white, for: .normal)
                             popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.fallButton.layer.cornerRadius = 5
                             popUpView.fallButton.layer.borderWidth = 1
                         } else if response.seasons[1] == "WINTER" {
                             //                                configureButton(popUpView.winterButton, title: "겨울")
                             popUpView.winterButton.setTitleColor(.white, for: .normal)
                             popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.winterButton.layer.cornerRadius = 5
                             popUpView.winterButton.layer.borderWidth = 1
                         }
@@ -357,28 +358,28 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                             //                                configureButton(popUpView.springButton, title: "봄")
                             popUpView.springButton.setTitleColor(.white, for: .normal)
                             popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.springButton.layer.cornerRadius = 5
                             popUpView.springButton.layer.borderWidth = 1
                         } else if response.seasons[2] == "SUMMER" {
                             //                                configureButton(popUpView.summerButton, title: "여름")
                             popUpView.summerButton.setTitleColor(.white, for: .normal)
                             popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.summerButton.layer.cornerRadius = 5
                             popUpView.summerButton.layer.borderWidth = 1
                         } else if response.seasons[2] == "FALL" {
                             //                                configureButton(popUpView.fallButton, title: "가을")
                             popUpView.fallButton.setTitleColor(.white, for: .normal)
                             popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.fallButton.layer.cornerRadius = 5
                             popUpView.fallButton.layer.borderWidth = 1
                         } else if response.seasons[2] == "WINTER" {
                             //                                configureButton(popUpView.winterButton, title: "겨울")
                             popUpView.winterButton.setTitleColor(.white, for: .normal)
                             popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.winterButton.layer.cornerRadius = 5
                             popUpView.winterButton.layer.borderWidth = 1
                         }
@@ -389,34 +390,34 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                             //                                configureButton(popUpView.springButton, title: "봄")
                             popUpView.springButton.setTitleColor(.white, for: .normal)
                             popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.springButton.layer.cornerRadius = 5
                             popUpView.springButton.layer.borderWidth = 1
                         } else if response.seasons[3] == "SUMMER" {
                             //                                configureButton(popUpView.summerButton, title: "여름")
                             popUpView.summerButton.setTitleColor(.white, for: .normal)
                             popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.summerButton.layer.cornerRadius = 5
                             popUpView.summerButton.layer.borderWidth = 1
                         } else if response.seasons[3] == "FALL" {
                             //                                configureButton(popUpView.fallButton, title: "가을")
                             popUpView.fallButton.setTitleColor(.white, for: .normal)
                             popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.fallButton.layer.cornerRadius = 5
                             popUpView.fallButton.layer.borderWidth = 1
                         } else if response.seasons[3] == "WINTER" {
                             //                                configureButton(popUpView.winterButton, title: "겨울")
                             popUpView.winterButton.setTitleColor(.white, for: .normal)
                             popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.winterButton.layer.cornerRadius = 5
                             popUpView.winterButton.layer.borderWidth = 1
                         }
                     }
                     
-//                    popUpView.wearCountButton.titleLabel?.text = "\(response.wearNum)"
+                    //                    popUpView.wearCountButton.titleLabel?.text = "\(response.wearNum)"
                     popUpView.wearCountButton.setTitle("\(response.wearNum)회", for: .normal)
                     popUpView.brandNameLabel.text = (response.brand?.isEmpty ?? true) ? "지정 없음" : response.brand
                     self.url = response.clothUrl ?? ""
@@ -458,7 +459,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-
+    
     func fetchWeatherRecommendations() {
         
         guard let nowTemp = nowTemp,
@@ -519,28 +520,25 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     // MARK: - 날씨 데이터 요청
-    func fetchVisualCrossingWeatherData(for location: String) {
-        WeatherAPI.shared.fetchVisualCrossingWeather(for: location) { [weak self] weatherResponse in
-            guard let self = self else { return }
-            
+    func fetchVisualCrossingWeatherData(for latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+        WeatherAPI.shared.fetchVisualCrossingWeather(for: latitude, longitude: longitude) { [weak self] weatherResponse in
             DispatchQueue.main.async {
                 if let weatherResponse = weatherResponse, let todayWeather = weatherResponse.days.first {
-                    self.updateWeatherHighLowUI(weather: todayWeather)
+                    self?.updateWeatherHighLowUI(weather: todayWeather)
                 } else {
-                    self.showError()
+                    self?.showError()
                 }
             }
         }
     }
     
     // MARK: - 날씨 데이터 가져오기
-    func fetchWeatherData() {
-        WeatherAPI.shared.fetchWeather(for: "Seoul") { [weak self] weatherData in
+    func fetchWeatherData(for latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+        WeatherAPI.shared.fetchWeather(for: latitude, longitude: longitude) { [weak self] weatherData in
             DispatchQueue.main.async {
                 if let weather = weatherData {
-                    print("API 응답 받음: \(weather)")
                     self?.updateTemperatureUI(weather: weather)
-                }else {
+                } else {
                     print("API 호출 실패 또는 weatherData가 nil입니다.")
                 }
             }
@@ -558,8 +556,13 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     // address 값을 저장할 변수
     private var address: String = "" // 기본값 설정
     
+    private var englishAddress: String = ""
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
+        
+        // 한 번만 업데이트를 받도록 중단
+        locationManager.stopUpdatingLocation()
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
             if let error = error {
@@ -590,6 +593,34 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     self.updateTimeLabel() // 주소 업데이트 후 시간 레이블 갱신
                 }
             }
+        }
+        
+        // 좌표 값 추출
+        let latitude = location.coordinate.latitude
+        let longitude = location.coordinate.longitude
+        let geocoderEnglish = CLGeocoder()
+        // (옵션) 주소 업데이트를 위해 reverse geocoding 수행
+        geocoderEnglish.reverseGeocodeLocation(location) { (placemarks, error) in
+            if let placemark = placemarks?.first {
+                var subAddress = ""
+                if let administrativeArea = placemark.administrativeArea {
+                    subAddress += administrativeArea
+                }
+                if let locality = placemark.locality {
+                    subAddress += " " + locality
+                }
+                DispatchQueue.main.async {
+                    self.englishAddress = subAddress
+                    self.updateTimeLabel()
+                    self.latitude = latitude
+                    self.longitude = longitude
+                    self.fetchVisualCrossingWeatherData(for: latitude, longitude: longitude)
+                    self.fetchWeatherData(for: latitude, longitude: longitude)
+                    self.updateYesterdayWeatherUI(for: latitude, longitude: longitude)
+                }
+            }
+            
+            
         }
     }
     
@@ -666,7 +697,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         nowTemp = Int(weather.main.temp)
         
         isDataLoaded = true
-            hideLoadingOverlay()
+        hideLoadingOverlay()
         
         // 아이콘 가져오기
         if let icon = weather.weather.first?.icon {
@@ -687,22 +718,18 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         fetchWeatherRecommendations()
     }
     
-    func updateYesterdayWeatherUI() {
-        // WeatherAPI에서 fetchTemperatureChange를 호출하고 결과를 처리
-        WeatherAPI.shared.fetchTemperatureChange(for: "Seoul") { [weak self] resultText in
-            guard let self = self else { return }
-            
+    func updateYesterdayWeatherUI(for latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+        WeatherAPI.shared.fetchTemperatureChange(for: latitude, longitude: longitude) { [weak self] resultText in
             DispatchQueue.main.async {
-                // 결과를 temperatureChangeLabel에 표시
-                self.pickView.temperatureChangeLabel.text = resultText
+                self?.pickView.temperatureChangeLabel.text = resultText
             }
         }
     }
     
     // MARK: - 에러 처리
     func showError() {
-        pickView.temperatureLabel.text = "데이터를 가져올 수 없음"
-        pickView.tempDetailsLabel.text = "최고/최저 기온 없음"
+        pickView.temperatureLabel.text = "데이터를 가져오는 중입니다."
+        pickView.tempDetailsLabel.text = "최고/최저 기온을 가져오는 중입니다."
         pickView.weatherIconView.image = nil
     }
     private func setupBottomLabelTap() {
@@ -733,40 +760,53 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     
                     if imageUrls.count > 0 {
                         self.recapHistoryId1 = Int(historyId!) // 첫 번째 이미지에 대한 historyId
-                    }
-                    // 두 번째 이미지는 같은 historyId를 사용하거나 필요에 따라 다르게 처리
-                    if imageUrls.count > 1 {
-                        self.recapHistoryId2 = Int(historyId!) // 두 번째 이미지에 대한 historyId
+                        // 두 번째 이미지는 같은 historyId를 사용하거나 필요에 따라 다르게 처리
+                        if imageUrls.count > 1 {
+                            self.recapHistoryId2 = Int(historyId!) // 두 번째 이미지에 대한 historyId
+                        }
                     }
                     
-                    if historyResult.isMine {
-                        if imageUrls.isEmpty {
-                            print("사진이 없습니다")
-                            self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님의 기록이 없어요!"
-                            self.pickView.recapNotMe(hidden: false)
-                            self.pickView.recapSubtitleLabel2.text = "1년 전 오늘, 다른 사용자들의 기록도 없어요!"
-                        } else {
-                            self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님은 이 옷을 착용하셨네요!"
-                            self.pickView.recapNotMe(hidden: true)
-                            
-                            if imageUrls.count > 0 {
-                                self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
+                    
+                    if let isMine = historyResult.isMine {
+                        if isMine {
+                            // isMine == true
+                            if imageUrls.isEmpty {
+                                print("사진이 없습니다")
+                            } else {
+                                self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님은 이 옷을 착용하셨네요!"
+                                self.pickView.recapNotMe(hidden: true)
+                                
+                                if imageUrls.count > 0 {
+                                    self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
+                                    if imageUrls.count > 1 {
+                                        self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
+                                    }
+                                }
+                                
                             }
-                            if imageUrls.count > 1 {
-                                self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
+                        } else {
+                            // isMine == false
+                            if imageUrls.isEmpty {
+                                print("사진이 없습니다")
+                            } else {
+                                self.pickView.recapSubtitleLabel1.text = "1년 전 오늘의 기록이 없어요!"
+                                self.pickView.recapNotMe(hidden: false)
+                                self.pickView.recapSubtitleLabel2.text = "\(nickName)님의 1년 전 오늘을 확인해보세요!"
+                                if imageUrls.count > 0 {
+                                    self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
+                                    if imageUrls.count > 1 {
+                                        self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
+                                    }
+                                }
                             }
                         }
                     } else {
-                        self.pickView.recapSubtitleLabel1.text = "1년 전 오늘의 기록이 없어요!"
-                        self.pickView.recapNotMe(hidden: false)
-                        self.pickView.recapSubtitleLabel2.text = "\(nickName)님의 1년 전 오늘을 확인해보세요!"
+                        // historyResult.isMine == nil 일 때 처리
+                        self.pickView.recapSubtitleLabel1.text = "\(nickName)과 팔로워들의 과거의 기록들을 확인해보세요!"
+                        self.pickView.recapNotMe(hidden: true)
                         
-                        if imageUrls.isEmpty {
-                            print("📷 사진이 없습니다")
-                        } else {
-                            if imageUrls.count > 0 {
-                                self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
-                            }
+                        if imageUrls.count > 0 {
+                            self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
                             if imageUrls.count > 1 {
                                 self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
                             }
@@ -783,13 +823,12 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     //새로고침 함수
     @objc private func didPullToRefresh() {
         // 필요에 따라 여러 API 호출을 재실행합니다.
-        fetchWeatherData()
-        fetchVisualCrossingWeatherData(for: "Seoul")
         fetchWeatherRecommendations()
-        updateYesterdayWeatherUI()
-        loadRecapData()
         
-        // 만약 다른 업데이트 작업이 필요하다면 추가
+        self.updateYesterdayWeatherUI(for: latitude, longitude: longitude)
+        self.pickView.recapImageView1.image = nil
+        self.pickView.recapImageView2.image = nil
+        loadRecapData()
         
         // 약간의 지연 후 refreshControl 종료
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

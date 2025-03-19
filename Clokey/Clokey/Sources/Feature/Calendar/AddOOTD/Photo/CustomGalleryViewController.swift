@@ -28,8 +28,8 @@ class CustomGalleryViewController: UIViewController, UIGestureRecognizerDelegate
     // PHFetchResult는 사진 라이브러리의 데이터를 배열처럼 관리하는 객체 + 실시간 업데이트 지원
     private var images: PHFetchResult<PHAsset>?
     private let imageManager = PHImageManager.default() // PHAsset으로 부터 이미지 요청 및 처리
-    private var selectedAssets: [PHAsset] = []
-    
+    private var selectedAssets: [(asset: PHAsset, index: Int)] = []
+
     let navBarManager = NavigationBarManager()
     
     // MARK: - UI Components
@@ -104,24 +104,24 @@ class CustomGalleryViewController: UIViewController, UIGestureRecognizerDelegate
         headerView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide)
             $0.leading.trailing.equalToSuperview()
-            $0.height.equalTo(22)
+            $0.height.equalTo(35)
         }
         
         // 최근 항목 라벨
         recentPicLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
+            $0.centerY.equalToSuperview().offset(8)
             $0.leading.equalToSuperview().offset(20)
         }
         
         // 완료 버튼
         completeButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
+            $0.centerY.equalToSuperview().offset(8)
             $0.trailing.equalToSuperview().offset(-20)
         }
        
         // 이미지 컬렉션 뷰
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(headerView.snp.bottom).offset(8)
+            $0.top.equalTo(headerView.snp.bottom).offset(10)
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }
@@ -163,52 +163,51 @@ class CustomGalleryViewController: UIViewController, UIGestureRecognizerDelegate
     
     // 이미지 추가 버튼 + 대기 인디케이터
     @objc private func didTapCompleteButton() {
-        let group = DispatchGroup() // 비동기 작업 처리 그룹
-        var selectedImages: [UIImage] = [] // 불러오기 성공한 이미지 배열
+        let group = DispatchGroup()
+        var selectedImages: [(index: Int, image: UIImage)] = []
 
-        // 로딩 인디케이터 표시
         showLoadingIndicator()
         view.isUserInteractionEnabled = false
 
-        // 선택된 PHAsset을 이미지(UIImage)로 변환하는 비동기 요청
-        for asset in selectedAssets {
-            group.enter() // 비동기 작업 시작
+        for (asset, index) in selectedAssets {
+            group.enter()
             let options = PHImageRequestOptions()
-            options.deliveryMode = .highQualityFormat // 고품질 이미지 요청
-            options.isSynchronous = false // 비동기적으로 이미지 로드
-            options.isNetworkAccessAllowed = true // 클라우드(iCloud)에 저장된 이미지 다운로드 허용
+            options.deliveryMode = .highQualityFormat
+            options.isSynchronous = false
+            options.isNetworkAccessAllowed = true
 
             imageManager.requestImage(
                 for: asset,
-                targetSize: PHImageManagerMaximumSize, // 원본 크기의 이미지 요청
+                targetSize: PHImageManagerMaximumSize,
                 contentMode: .aspectFit,
                 options: options
-            ) { image, info in
+            ) { image, _ in
                 if let image = image {
-                    selectedImages.append(image) // 이미지가 정상적으로 로드되면 배열에 추가
-                } else {
-                    print("이미지 로드 실패: \(asset)") // 디버깅을 위해 실패한 경우 로그 출력
+                    selectedImages.append((index, image))
                 }
-                group.leave() // 해당 이미지 로드 작업 완료
+                group.leave()
             }
         }
 
-        // 모든 비동기 작업이 끝나면 실행되는 코드
         group.notify(queue: .main) { [weak self] in
             guard let self = self else { return }
-            self.hideLoadingIndicator() // 로딩 인디케이터 숨기기
-            self.view.isUserInteractionEnabled = true // 터치 다시 활성화
+            self.hideLoadingIndicator()
+            self.view.isUserInteractionEnabled = true
 
             if selectedImages.isEmpty {
-                self.showErrorAlert() // 모든 이미지 로드 실패 시 경고창 표시
+                self.showErrorAlert()
                 return
             }
+
+            // index 기준으로 정렬 후 PhotoEditViewController로 전달
+            let sortedImages = selectedImages.sorted { $0.index < $1.index }.map { $0.image }
             
-            // 로드된 이미지들을 PhotoEditViewController로 전달
-            self.delegate?.galleryViewController(self, didSelect: selectedImages)
-            self.dismiss(animated: true) // 현재 뷰 닫기
+            let photoEditVC = PhotoEditViewController()
+            photoEditVC.configure(with: sortedImages)
+            self.navigationController?.pushViewController(photoEditVC, animated: true)
         }
     }
+
 
     // 이미지 로드 실패 시 사용자에게 알림 표시
     private func showErrorAlert() {
@@ -254,59 +253,111 @@ extension CustomGalleryViewController: UICollectionViewDataSource, UICollectionV
     
     // 특정 위치(indexPath)에 표시할 셀을 생성하고 데이터를 설정
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        // GalleryCell 재사용
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GalleryCell", for: indexPath) as! GalleryCell
-        
-        if let asset = images?.object(at: indexPath.item) {
+
+        if indexPath.item == 0 {
+            // 첫 번째 셀 - 카메라 버튼
+            cell.configure(with: nil, isCameraCell: true)
+        } else if let asset = images?.object(at: indexPath.item - 1) {
             imageManager.requestImage(for: asset,
-                                   targetSize: CGSize(width: 200, height: 200),
-                                   contentMode: .aspectFill,
-                                   options: nil) { image, _ in
-                cell.imageView.image = image
+                                      targetSize: CGSize(width: 200, height: 200),
+                                      contentMode: .aspectFill,
+                                      options: nil) { image, _ in
+                DispatchQueue.main.async {
+                    if let currentCell = collectionView.cellForItem(at: indexPath) as? GalleryCell {
+                        currentCell.configure(with: image)
+                    }
+                }
+            }
+
+            // 선택 순서 유지
+            if let selectedIndex = selectedAssets.firstIndex(where: { $0.asset == asset }) {
+                let order = selectedAssets[selectedIndex].index
+                cell.setSelectionOrder(order)
+            } else {
+                cell.setSelectionOrder(nil)
             }
         }
-        
+
         return cell
     }
-    
-    // 사용자가 특정 셀을 선택했을 때 실행되는 동작을 정의
+
+    // 특정 셀 선택 시, 기능 관리
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let asset = images?.object(at: indexPath.item) else { return }
-        
-        if let cell = collectionView.cellForItem(at: indexPath) as? GalleryCell {
-            if let index = selectedAssets.firstIndex(of: asset) {
-                selectedAssets.remove(at: index)
-                cell.setSelected(false)
-            } else {
-                selectedAssets.append(asset)
-                cell.setSelected(true)
-            }
-            
-            completeButton.isHidden = selectedAssets.isEmpty
+        if indexPath.item == 0 {
+            openCamera() // 카메라 열기
+            return
         }
+
+        guard let asset = images?.object(at: indexPath.item - 1) else { return }
+
+        var reloadIndexPaths: [IndexPath] = [indexPath]
+
+        if let index = selectedAssets.firstIndex(where: { $0.asset == asset }) {
+            selectedAssets.remove(at: index)
+        } else {
+            let newIndex = selectedAssets.count + 1
+            selectedAssets.append((asset, newIndex))
+        }
+
+        for (i, asset) in selectedAssets.enumerated() {
+            selectedAssets[i] = (asset.asset, i + 1)
+            if let updatedIndex = images?.index(of: asset.asset) {
+                reloadIndexPaths.append(IndexPath(item: updatedIndex + 1, section: 0))
+            }
+        }
+
+        UIView.performWithoutAnimation {
+            collectionView.reloadItems(at: reloadIndexPaths)
+        }
+
+        updateCompleteButtonState()
     }
+
+    private func openCamera() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .camera
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = false
+        present(imagePicker, animated: true)
+    }
+
+    // 완료 버튼 상태 업데이트
+    private func updateCompleteButtonState() {
+        completeButton.isHidden = selectedAssets.isEmpty
+    }
+
+
 }
 
 // MARK: - Gallery Cell
 class GalleryCell: UICollectionViewCell {
     
-    // 이미지 뷰
-    let imageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFill
+    let imageView = UIImageView()
+    
+    // 선택 순서 표시
+    private let orderLabel = UILabel().then {
+        $0.textColor = .white
+        $0.font = .boldSystemFont(ofSize: 14)
+        $0.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        $0.textAlignment = .center
+        $0.isHidden = true  // 기본적으로 숨김
+        $0.clipsToBounds = true
+    }
+
+    // 카메라 아이콘
+    private let cameraIconView = UIImageView().then {
+        $0.image = UIImage(systemName: "camera.fill")
+        $0.tintColor = .white
+        $0.contentMode = .scaleAspectFit // .center에서 변경
+        $0.backgroundColor = UIColor.gray // 배경색 변경
+        $0.isHidden = true
         $0.clipsToBounds = true
     }
     
-    // 사용자가 이미지를 선택했을 경우
-    private let selectedOverlay = UIView().then {
-        $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        $0.isHidden = true
-    }
-    
-    // 이미지 체크 마크
-    private let checkmarkImageView = UIImageView().then {
-        $0.image = UIImage(systemName: "checkmark.circle.fill")
-        $0.tintColor = .white
+    // 선택 상태 표시 오버레이
+    private let selectionOverlay = UIView().then {
+        $0.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         $0.isHidden = true
     }
     
@@ -322,35 +373,86 @@ class GalleryCell: UICollectionViewCell {
     
     private func setupUI() {
         contentView.addSubview(imageView)
-        contentView.addSubview(selectedOverlay)
-        contentView.addSubview(checkmarkImageView)
-        
-        imageView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        
-        selectedOverlay.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-        
-        checkmarkImageView.snp.makeConstraints {
-            $0.top.trailing.equalToSuperview().inset(8)
+        contentView.addSubview(selectionOverlay)
+        contentView.addSubview(orderLabel)
+        contentView.addSubview(cameraIconView)
+
+        imageView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        selectionOverlay.snp.makeConstraints { $0.edges.equalToSuperview() }
+        orderLabel.snp.makeConstraints {
+            $0.top.leading.equalToSuperview()
             $0.width.height.equalTo(24)
         }
         
+        // 카메라 아이콘은 가장자리까지 확장
+        cameraIconView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.width.height.equalToSuperview().multipliedBy(0.3) // 셀 크기의 40%
+        }
     }
 
-    // 선택된 이미지
-    func setSelected(_ isSelected: Bool) {
-        selectedOverlay.isHidden = !isSelected
-        checkmarkImageView.isHidden = !isSelected
-    }
     
-    // 셀 재사용 전 초기화 담당
+    // 카메라 셀 구분
+    func configure(with image: UIImage?, isCameraCell: Bool = false) {
+        if isCameraCell {
+            // 카메라 셀 설정
+            contentView.backgroundColor = .gray // 셀 배경 설정
+            cameraIconView.isHidden = false
+            imageView.isHidden = true
+            selectionOverlay.isHidden = true
+        } else {
+            // 이미지 셀 설정
+            contentView.backgroundColor = nil // 이미지 셀은 배경색 초기화
+            cameraIconView.isHidden = true
+            imageView.isHidden = false
+            imageView.image = image
+        }
+    }
+
+
+    // 선택 순서 라벨 유지 및 선택 상태 표시
+    func setSelectionOrder(_ order: Int?) {
+        if let order = order {
+            orderLabel.text = "\(order)"
+            orderLabel.isHidden = false
+            selectionOverlay.isHidden = false
+        } else {
+            orderLabel.isHidden = true
+            selectionOverlay.isHidden = true
+        }
+    }
+
     override func prepareForReuse() {
         super.prepareForReuse()
+        contentView.backgroundColor = nil
         imageView.image = nil
+        orderLabel.isHidden = true
+        cameraIconView.isHidden = true
+        selectionOverlay.isHidden = true
     }
 }
 
+// 카메라 기능
+extension CustomGalleryViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        picker.dismiss(animated: true) {
+            if let image = info[.originalImage] as? UIImage {
+                self.savePhotoToLibrary(image)
+            }
+        }
+    }
 
+    private func savePhotoToLibrary(_ image: UIImage) {
+        PHPhotoLibrary.shared().performChanges({
+            let request = PHAssetChangeRequest.creationRequestForAsset(from: image)
+        }) { success, error in
+            if success {
+                DispatchQueue.main.async {
+                    self.fetchPhotos() // 사진 추가 후 갤러리 새로고침
+                }
+            } else {
+                print("사진 저장 실패: \(error?.localizedDescription ?? "")")
+            }
+        }
+    }
+}

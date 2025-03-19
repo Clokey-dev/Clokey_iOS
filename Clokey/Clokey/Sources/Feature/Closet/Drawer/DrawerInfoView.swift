@@ -20,6 +20,13 @@ class DrawerInfoView: UIView {
         $0.backgroundColor = UIColor(named: "mainBrown600")
     }
     
+    let errorText = UILabel().then {
+        $0.text = "한글 7글자 이상, 영어 10글자 이상 입력 불가합니다."
+        $0.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.textColor = UIColor(named: "pointOrange600")
+        $0.textAlignment = .left
+    }
+    
     let selectItemLabel = UILabel().then {
         $0.text = "선택한 아이템"
         $0.font = UIFont.ptdMediumFont(ofSize: 16)
@@ -67,6 +74,7 @@ class DrawerInfoView: UIView {
         addSubview(folderUnderline)
         addSubview(selectItemLabel)
         addSubview(collectionView)
+        addSubview(errorText)
         
         folderTextField.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide).offset(32)
@@ -79,6 +87,12 @@ class DrawerInfoView: UIView {
             $0.leading.trailing.equalTo(folderTextField)
             $0.height.equalTo(1)
             
+        }
+        
+        errorText.snp.makeConstraints {
+            $0.top.equalTo(folderUnderline.snp.bottom).offset(5)
+            $0.trailing.leading.equalToSuperview().inset(20)
+            $0.height.equalTo(20)
         }
         
         selectItemLabel.snp.makeConstraints{

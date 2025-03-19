@@ -134,6 +134,12 @@
 		077DC91C2D62085100C02FA4 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077DC91B2D62085100C02FA4 /* TokenManager.swift */; };
 		077DC91D2D62085100C02FA4 /* JWTHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077DC91A2D62085100C02FA4 /* JWTHelper.swift */; };
 		077DC91F2D62092700C02FA4 /* TokenRefreshPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077DC91E2D62092700C02FA4 /* TokenRefreshPlugin.swift */; };
+		0794EA8A2D81A6C500D204B6 /* ReportResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794EA862D81A6C500D204B6 /* ReportResponseDTO.swift */; };
+		0794EA8B2D81A6C500D204B6 /* ReportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794EA882D81A6C500D204B6 /* ReportService.swift */; };
+		0794EA8C2D81A6C500D204B6 /* ReportRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794EA842D81A6C500D204B6 /* ReportRequestDTO.swift */; };
+		0794EA8D2D81A6C500D204B6 /* ReportEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794EA822D81A6C500D204B6 /* ReportEndpoint.swift */; };
+		0794EA902D86ABB800D204B6 /* CommentHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794EA8F2D86ABB800D204B6 /* CommentHistoryView.swift */; };
+		0794EA922D86ABCD00D204B6 /* CommentHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794EA912D86ABCD00D204B6 /* CommentHistoryViewController.swift */; };
 		07B8824E2D661A89006ABD4F /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 07B8824D2D661A89006ABD4F /* Config.xcconfig */; };
 		07CB2EA02D65169F00B3F9B7 /* FriendsCalendarDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CB2E9F2D65169F00B3F9B7 /* FriendsCalendarDetailViewController.swift */; };
 		07CF63E52D55DE6900CCF9F4 /* CalendarDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF63E42D55DE6900CCF9F4 /* CalendarDetailViewModel.swift */; };
@@ -214,7 +220,6 @@
 		07F859B82D62024300DD5BF8 /* LottieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F859B62D62024300DD5BF8 /* LottieViewController.swift */; };
 		1EF33C692D665FFB00142954 /* ArrangeClosetBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C482D665FFB00142954 /* ArrangeClosetBannerView.swift */; };
 		1EF33C6A2D665FFB00142954 /* DisplayAllViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C5C2D665FFB00142954 /* DisplayAllViewController.swift */; };
-		1EF33C6B2D665FFB00142954 /* SmartSummationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C4C2D665FFB00142954 /* SmartSummationModel.swift */; };
 		1EF33C6C2D665FFB00142954 /* SmartSummationBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C4B2D665FFB00142954 /* SmartSummationBannerView.swift */; };
 		1EF33C6D2D665FFB00142954 /* DrawerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C652D665FFB00142954 /* DrawerViewController.swift */; };
 		1EF33C6E2D665FFB00142954 /* PopUpDropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C582D665FFB00142954 /* PopUpDropdownView.swift */; };
@@ -266,6 +271,7 @@
 		A6548E532D3F47DE00F79B66 /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */; };
 		A66BA3352D636AD400E69A4F /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A66BA3342D636AD400E69A4F /* ProfileViewModel.swift */; };
 		A672AEB72D572A6E003EF3FF /* EmptyStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */; };
+		A67577392D81C53C009880F1 /* FollowProfileActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67577382D81C53C009880F1 /* FollowProfileActionViewController.swift */; };
 		A67661892D5B367B006AAB63 /* CustomBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661852D5B367B006AAB63 /* CustomBottomSheetViewController.swift */; };
 		A676618A2D5B367B006AAB63 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661862D5B367B006AAB63 /* EditProfileView.swift */; };
 		A676618B2D5B367B006AAB63 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661872D5B367B006AAB63 /* EditProfileViewController.swift */; };
@@ -285,10 +291,10 @@
 		A67661AB2D5B367B006AAB63 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661A72D5B367B006AAB63 /* ProfileViewController.swift */; };
 		A67661AD2D5B3760006AAB63 /* PrivateStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661AC2D5B3760006AAB63 /* PrivateStackView.swift */; };
 		A6FBF9C52D78BA83000FC4EA /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9C42D78BA83000FC4EA /* CheckBox.swift */; };
-		A6FBF9C72D78BAAA000FC4EA /* AccountReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9C62D78BAAA000FC4EA /* AccountReportView.swift */; };
-		A6FBF9C92D78BAC5000FC4EA /* AccountReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9C82D78BAC5000FC4EA /* AccountReportViewController.swift */; };
-		A6FBF9CB2D78BAE3000FC4EA /* AccountReportCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9CA2D78BAE3000FC4EA /* AccountReportCompleteView.swift */; };
-		A6FBF9CD2D78BB05000FC4EA /* AccountReportCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9CC2D78BB05000FC4EA /* AccountReportCompleteViewController.swift */; };
+		A6FBF9C72D78BAAA000FC4EA /* CustomReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9C62D78BAAA000FC4EA /* CustomReportView.swift */; };
+		A6FBF9C92D78BAC5000FC4EA /* CustomReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9C82D78BAC5000FC4EA /* CustomReportViewController.swift */; };
+		A6FBF9CB2D78BAE3000FC4EA /* CustomReportCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9CA2D78BAE3000FC4EA /* CustomReportCompleteView.swift */; };
+		A6FBF9CD2D78BB05000FC4EA /* CustomReportCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9CC2D78BB05000FC4EA /* CustomReportCompleteViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -406,6 +412,12 @@
 		077DC91A2D62085100C02FA4 /* JWTHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWTHelper.swift; sourceTree = "<group>"; };
 		077DC91B2D62085100C02FA4 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		077DC91E2D62092700C02FA4 /* TokenRefreshPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenRefreshPlugin.swift; sourceTree = "<group>"; };
+		0794EA822D81A6C500D204B6 /* ReportEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportEndpoint.swift; sourceTree = "<group>"; };
+		0794EA842D81A6C500D204B6 /* ReportRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRequestDTO.swift; sourceTree = "<group>"; };
+		0794EA862D81A6C500D204B6 /* ReportResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportResponseDTO.swift; sourceTree = "<group>"; };
+		0794EA882D81A6C500D204B6 /* ReportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportService.swift; sourceTree = "<group>"; };
+		0794EA8F2D86ABB800D204B6 /* CommentHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHistoryView.swift; sourceTree = "<group>"; };
+		0794EA912D86ABCD00D204B6 /* CommentHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentHistoryViewController.swift; sourceTree = "<group>"; };
 		07B8824D2D661A89006ABD4F /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		07CB2E9F2D65169F00B3F9B7 /* FriendsCalendarDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsCalendarDetailViewController.swift; sourceTree = "<group>"; };
 		07CF63E42D55DE6900CCF9F4 /* CalendarDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDetailViewModel.swift; sourceTree = "<group>"; };
@@ -491,7 +503,6 @@
 		1EF33C492D665FFB00142954 /* ArrangeClosetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeClosetView.swift; sourceTree = "<group>"; };
 		1EF33C4A2D665FFB00142954 /* ArrangeClosetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeClosetViewController.swift; sourceTree = "<group>"; };
 		1EF33C4B2D665FFB00142954 /* SmartSummationBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartSummationBannerView.swift; sourceTree = "<group>"; };
-		1EF33C4C2D665FFB00142954 /* SmartSummationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartSummationModel.swift; sourceTree = "<group>"; };
 		1EF33C4D2D665FFB00142954 /* SmartSummationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartSummationView.swift; sourceTree = "<group>"; };
 		1EF33C4E2D665FFB00142954 /* SmartSummationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartSummationViewController.swift; sourceTree = "<group>"; };
 		1EF33C502D665FFB00142954 /* ClosetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -540,6 +551,7 @@
 		A6548E522D3F47DE00F79B66 /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
 		A66BA3342D636AD400E69A4F /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		A672AEA72D572A6D003EF3FF /* EmptyStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStackView.swift; sourceTree = "<group>"; };
+		A67577382D81C53C009880F1 /* FollowProfileActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowProfileActionViewController.swift; sourceTree = "<group>"; };
 		A67661852D5B367B006AAB63 /* CustomBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBottomSheetViewController.swift; sourceTree = "<group>"; };
 		A67661862D5B367B006AAB63 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		A67661872D5B367B006AAB63 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
@@ -558,11 +570,14 @@
 		A67661A62D5B367B006AAB63 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		A67661A72D5B367B006AAB63 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		A67661AC2D5B3760006AAB63 /* PrivateStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateStackView.swift; sourceTree = "<group>"; };
+		A6DB5F402D85E33400B64B59 /* ReportEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportEndpoint.swift; sourceTree = "<group>"; };
+		A6DB5F422D85E34F00B64B59 /* ReportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportService.swift; sourceTree = "<group>"; };
+		A6DB5F442D85E6B100B64B59 /* ReportResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportResponseDTO.swift; sourceTree = "<group>"; };
 		A6FBF9C42D78BA83000FC4EA /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
-		A6FBF9C62D78BAAA000FC4EA /* AccountReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountReportView.swift; sourceTree = "<group>"; };
-		A6FBF9C82D78BAC5000FC4EA /* AccountReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountReportViewController.swift; sourceTree = "<group>"; };
-		A6FBF9CA2D78BAE3000FC4EA /* AccountReportCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountReportCompleteView.swift; sourceTree = "<group>"; };
-		A6FBF9CC2D78BB05000FC4EA /* AccountReportCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountReportCompleteViewController.swift; sourceTree = "<group>"; };
+		A6FBF9C62D78BAAA000FC4EA /* CustomReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReportView.swift; sourceTree = "<group>"; };
+		A6FBF9C82D78BAC5000FC4EA /* CustomReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReportViewController.swift; sourceTree = "<group>"; };
+		A6FBF9CA2D78BAE3000FC4EA /* CustomReportCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReportCompleteView.swift; sourceTree = "<group>"; };
+		A6FBF9CC2D78BB05000FC4EA /* CustomReportCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReportCompleteViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -994,6 +1009,9 @@
 		07649BE22D4DDAE600B6B2B2 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
+				A6DB5F402D85E33400B64B59 /* ReportEndpoint.swift */,
+				A6DB5F442D85E6B100B64B59 /* ReportResponseDTO.swift */,
+				A6DB5F422D85E34F00B64B59 /* ReportService.swift */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1141,45 +1159,6 @@
 				07649ED22D4DE58900B6B2B2 /* Service */,
 			);
 			path = members;
-			sourceTree = "<group>";
-		};
-		07649ED92D4DE58900B6B2B2 /* Endpoints */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Endpoints;
-			sourceTree = "<group>";
-		};
-		07649EDA2D4DE58900B6B2B2 /* Request */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Request;
-			sourceTree = "<group>";
-		};
-		07649EDB2D4DE58900B6B2B2 /* Response */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Response;
-			sourceTree = "<group>";
-		};
-		07649EDC2D4DE58900B6B2B2 /* Service */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Service;
-			sourceTree = "<group>";
-		};
-		07649EDD2D4DE58900B6B2B2 /* recommend */ = {
-			isa = PBXGroup;
-			children = (
-				07649ED92D4DE58900B6B2B2 /* Endpoints */,
-				07649EDA2D4DE58900B6B2B2 /* Request */,
-				07649EDB2D4DE58900B6B2B2 /* Response */,
-				07649EDC2D4DE58900B6B2B2 /* Service */,
-			);
-			path = recommend;
 			sourceTree = "<group>";
 		};
 		07649EDE2D4DE58900B6B2B2 /* Endpoints */ = {
@@ -1350,6 +1329,7 @@
 		076FAB5C2D3020E100FF3979 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				0794EA812D81A6B600D204B6 /* report */,
 				076973312D63680000AEA5D1 /* notification */,
 				070916502D58BEE1008DC9EE /* home */,
 				0709165C2D58BEE1008DC9EE /* Clothes */,
@@ -1359,10 +1339,64 @@
 				07649EC32D4DE58900B6B2B2 /* history */,
 				07649ED32D4DE58900B6B2B2 /* members */,
 				076973332D63681200AEA5D1 /* notification */,
-				07649EDD2D4DE58900B6B2B2 /* recommend */,
 				07649EE22D4DE58900B6B2B2 /* search */,
 			);
 			path = Network;
+			sourceTree = "<group>";
+		};
+		0794EA812D81A6B600D204B6 /* report */ = {
+			isa = PBXGroup;
+			children = (
+				0794EA832D81A6C500D204B6 /* Endpoints */,
+				0794EA852D81A6C500D204B6 /* Request */,
+				0794EA872D81A6C500D204B6 /* Response */,
+				0794EA892D81A6C500D204B6 /* Service */,
+			);
+			path = report;
+			sourceTree = "<group>";
+		};
+		0794EA832D81A6C500D204B6 /* Endpoints */ = {
+			isa = PBXGroup;
+			children = (
+				0794EA822D81A6C500D204B6 /* ReportEndpoint.swift */,
+			);
+			path = Endpoints;
+			sourceTree = "<group>";
+		};
+		0794EA852D81A6C500D204B6 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				0794EA842D81A6C500D204B6 /* ReportRequestDTO.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		0794EA872D81A6C500D204B6 /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				0794EA862D81A6C500D204B6 /* ReportResponseDTO.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
+		0794EA892D81A6C500D204B6 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				0794EA882D81A6C500D204B6 /* ReportService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		0794EA8E2D86A9D900D204B6 /* LikeHistory */ = {
+			isa = PBXGroup;
+			children = (
+				48FB777C2D803DC0008607B7 /* LikeHistoryViewController.swift */,
+				48FB777E2D803DE5008607B7 /* LikeHistoryView.swift */,
+				48FB77802D803E06008607B7 /* LikeHistoryCell.swift */,
+				48FB77842D803E1C008607B7 /* LikeHistoryViewDelegate.swift */,
+				48FB77822D803E11008607B7 /* LikeHistoryManager.swift */,
+			);
+			path = LikeHistory;
 			sourceTree = "<group>";
 		};
 		07CF63E62D55F0B200CCF9F4 /* tagClothList */ = {
@@ -1490,9 +1524,9 @@
 				07CF63E42D55DE6900CCF9F4 /* CalendarDetailViewModel.swift */,
 				07ECCEA22D4E79C000AFF486 /* CalendarImageCell.swift */,
 				07ECCEAD2D4EAA2400AFF486 /* CustomActionSheetViewController.swift */,
+				07703AB32D77173900F704C9 /* FriendsActionSheetViewController.swift */,
 				07ECCB342D4E34DF00AFF486 /* CalendarDetailViewController.swift */,
 				07CB2E9F2D65169F00B3F9B7 /* FriendsCalendarDetailViewController.swift */,
-				07703AB32D77173900F704C9 /* FriendsActionSheetViewController.swift */,
 			);
 			path = CalendarDetails;
 			sourceTree = "<group>";
@@ -1523,8 +1557,8 @@
 		07ECCEAA2D4E835C00AFF486 /* Commnet */ = {
 			isa = PBXGroup;
 			children = (
-				07ECCEA62D4E7ECA00AFF486 /* CalendarCommentViewController.swift */,
 				07ECCEA42D4E7AE400AFF486 /* CalendarCommentView.swift */,
+				07ECCEA62D4E7ECA00AFF486 /* CalendarCommentViewController.swift */,
 				07ECCEA82D4E834300AFF486 /* CommentCell.swift */,
 				07ECCEAB2D4E857B00AFF486 /* Comment.swift */,
 			);
@@ -1660,7 +1694,6 @@
 				1EF33C492D665FFB00142954 /* ArrangeClosetView.swift */,
 				1EF33C4A2D665FFB00142954 /* ArrangeClosetViewController.swift */,
 				1EF33C4B2D665FFB00142954 /* SmartSummationBannerView.swift */,
-				1EF33C4C2D665FFB00142954 /* SmartSummationModel.swift */,
 				1EF33C4D2D665FFB00142954 /* SmartSummationView.swift */,
 				1EF33C4E2D665FFB00142954 /* SmartSummationViewController.swift */,
 			);
@@ -1850,15 +1883,13 @@
 		A67661992D5B367B006AAB63 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				0794EA8E2D86A9D900D204B6 /* LikeHistory */,
 				A67661952D5B367B006AAB63 /* DeleteAccountView.swift */,
 				A67661962D5B367B006AAB63 /* DeleteAccountViewController.swift */,
 				A67661972D5B367B006AAB63 /* SettingView.swift */,
-				48FB777C2D803DC0008607B7 /* LikeHistoryViewController.swift */,
-				48FB777E2D803DE5008607B7 /* LikeHistoryView.swift */,
-				48FB77802D803E06008607B7 /* LikeHistoryCell.swift */,
-				48FB77842D803E1C008607B7 /* LikeHistoryViewDelegate.swift */,
-				48FB77822D803E11008607B7 /* LikeHistoryManager.swift */,
 				A67661982D5B367B006AAB63 /* SettingViewController.swift */,
+				0794EA8F2D86ABB800D204B6 /* CommentHistoryView.swift */,
+				0794EA912D86ABCD00D204B6 /* CommentHistoryViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1870,6 +1901,7 @@
 				A676619F2D5B367B006AAB63 /* FollowProfileView.swift */,
 				A67661A02D5B367B006AAB63 /* FollowProfileViewController.swift */,
 				A646C4D72D662DE800993FA5 /* FollowCalendarViewController.swift */,
+				A67577382D81C53C009880F1 /* FollowProfileActionViewController.swift */,
 			);
 			path = Your;
 			sourceTree = "<group>";
@@ -1889,10 +1921,10 @@
 			isa = PBXGroup;
 			children = (
 				A6FBF9C42D78BA83000FC4EA /* CheckBox.swift */,
-				A6FBF9C62D78BAAA000FC4EA /* AccountReportView.swift */,
-				A6FBF9C82D78BAC5000FC4EA /* AccountReportViewController.swift */,
-				A6FBF9CA2D78BAE3000FC4EA /* AccountReportCompleteView.swift */,
-				A6FBF9CC2D78BB05000FC4EA /* AccountReportCompleteViewController.swift */,
+				A6FBF9C62D78BAAA000FC4EA /* CustomReportView.swift */,
+				A6FBF9C82D78BAC5000FC4EA /* CustomReportViewController.swift */,
+				A6FBF9CA2D78BAE3000FC4EA /* CustomReportCompleteView.swift */,
+				A6FBF9CC2D78BB05000FC4EA /* CustomReportCompleteViewController.swift */,
 				072EB0172D7DBA3F005698DE /* ReportReasonView.swift */,
 				072EB0192D7EAD2F005698DE /* ReportReason.swift */,
 				07EB0BCF2D81139C001F9A7C /* ReportSuccessView.swift */,
@@ -2051,8 +2083,9 @@
 				07649C2A2D4DDD5D00B6B2B2 /* WeatherClothesCollectionViewCell.swift in Sources */,
 				07ECCB5C2D4E351E00AFF486 /* CustomSortDropdownView.swift in Sources */,
 				077DC91C2D62085100C02FA4 /* TokenManager.swift in Sources */,
-				A6FBF9CB2D78BAE3000FC4EA /* AccountReportCompleteView.swift in Sources */,
+				A6FBF9CB2D78BAE3000FC4EA /* CustomReportCompleteView.swift in Sources */,
 				077DC91D2D62085100C02FA4 /* JWTHelper.swift in Sources */,
+				0794EA902D86ABB800D204B6 /* CommentHistoryView.swift in Sources */,
 				07ECCB5D2D4E351E00AFF486 /* CustomSearchField.swift in Sources */,
 				48FB777F2D803DE5008607B7 /* LikeHistoryView.swift in Sources */,
 				07F8598B2D61D73500DD5BF8 /* ImageCell.swift in Sources */,
@@ -2085,13 +2118,16 @@
 				07ECCB412D4E34DF00AFF486 /* CalendarDetailView.swift in Sources */,
 				1EF33C692D665FFB00142954 /* ArrangeClosetBannerView.swift in Sources */,
 				1EF33C6A2D665FFB00142954 /* DisplayAllViewController.swift in Sources */,
-				1EF33C6B2D665FFB00142954 /* SmartSummationModel.swift in Sources */,
 				1EF33C6C2D665FFB00142954 /* SmartSummationBannerView.swift in Sources */,
 				1EF33C6D2D665FFB00142954 /* DrawerViewController.swift in Sources */,
 				1EF33C6E2D665FFB00142954 /* PopUpDropdownView.swift in Sources */,
 				1EF33C6F2D665FFB00142954 /* PopUpDropdownViewController.swift in Sources */,
 				1EF33C702D665FFB00142954 /* DrawerInfoViewController.swift in Sources */,
 				1EF33C8E2D66613500142954 /* FolderEndpoint.swift in Sources */,
+				0794EA8A2D81A6C500D204B6 /* ReportResponseDTO.swift in Sources */,
+				0794EA8B2D81A6C500D204B6 /* ReportService.swift in Sources */,
+				0794EA8C2D81A6C500D204B6 /* ReportRequestDTO.swift in Sources */,
+				0794EA8D2D81A6C500D204B6 /* ReportEndpoint.swift in Sources */,
 				1EF33C8F2D66613500142954 /* FolderResponseDTO.swift in Sources */,
 				1EF33C902D66613500142954 /* FolderRequestDTO.swift in Sources */,
 				1EF33C912D66613500142954 /* FolderService.swift in Sources */,
@@ -2109,7 +2145,7 @@
 				1EF33C7C2D665FFB00142954 /* ClosetCollectionViewCell.swift in Sources */,
 				1EF33C7D2D665FFB00142954 /* ArrangeClosetViewController.swift in Sources */,
 				1EF33C7E2D665FFB00142954 /* DrawerEditViewController.swift in Sources */,
-				A6FBF9CD2D78BB05000FC4EA /* AccountReportCompleteViewController.swift in Sources */,
+				A6FBF9CD2D78BB05000FC4EA /* CustomReportCompleteViewController.swift in Sources */,
 				1EF33C7F2D665FFB00142954 /* ClosetPopUpViewController.swift in Sources */,
 				1EF33C802D665FFB00142954 /* FolderDropdownView.swift in Sources */,
 				1EF33C812D665FFB00142954 /* ArrangeClosetView.swift in Sources */,
@@ -2217,13 +2253,13 @@
 				A676619A2D5B367B006AAB63 /* DeleteAccountView.swift in Sources */,
 				A67661A92D5B367B006AAB63 /* ProfileModel.swift in Sources */,
 				A648ACE02D5CECF50094C126 /* CategoriesService.swift in Sources */,
-				A6FBF9C92D78BAC5000FC4EA /* AccountReportViewController.swift in Sources */,
+				A6FBF9C92D78BAC5000FC4EA /* CustomReportViewController.swift in Sources */,
 				A67661AA2D5B367B006AAB63 /* ProfileView.swift in Sources */,
 				A67661AD2D5B3760006AAB63 /* PrivateStackView.swift in Sources */,
 				A67661AB2D5B367B006AAB63 /* ProfileViewController.swift in Sources */,
 				A676619B2D5B367B006AAB63 /* DeleteAccountViewController.swift in Sources */,
 				A676619C2D5B367B006AAB63 /* SettingView.swift in Sources */,
-				A6FBF9C72D78BAAA000FC4EA /* AccountReportView.swift in Sources */,
+				A6FBF9C72D78BAAA000FC4EA /* CustomReportView.swift in Sources */,
 				48FB77832D803E11008607B7 /* LikeHistoryManager.swift in Sources */,
 				A676619D2D5B367B006AAB63 /* SettingViewController.swift in Sources */,
 				A648ACDA2D5CECA50094C126 /* CategoriesEndPoint.swift in Sources */,
@@ -2237,8 +2273,10 @@
 				0744FFC72D5B1D8B00E60282 /* UpdateFriendCalendarViewController.swift in Sources */,
 				0769733C2D63687800AEA5D1 /* NotificationRequest.swift in Sources */,
 				0744FFC82D5B1D8B00E60282 /* NewsViewController.swift in Sources */,
+				0794EA922D86ABCD00D204B6 /* CommentHistoryViewController.swift in Sources */,
 				0744FFC92D5B1D8B00E60282 /* ImageViewController.swift in Sources */,
 				A648ACDE2D5CECF00094C126 /* CategoriesResponseDTO.swift in Sources */,
+				A67577392D81C53C009880F1 /* FollowProfileActionViewController.swift in Sources */,
 				0744FFCA2D5B1D8B00E60282 /* HomeViewController.swift in Sources */,
 				0744FFCB2D5B1D8B00E60282 /* PickViewController.swift in Sources */,
 				0744FFCC2D5B1D8B00E60282 /* UpdateFriendClothesViewController.swift in Sources */,
@@ -2282,8 +2320,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BBVZV8T99P;
 				ENABLE_DEBUG_DYLIB = NO;
@@ -2307,7 +2344,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -2327,12 +2363,10 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
+				DEVELOPMENT_TEAM = BBVZV8T99P;
 				ENABLE_DEBUG_DYLIB = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
@@ -2354,7 +2388,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

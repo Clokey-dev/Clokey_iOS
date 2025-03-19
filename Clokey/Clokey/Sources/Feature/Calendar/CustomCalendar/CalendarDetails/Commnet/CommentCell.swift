@@ -16,7 +16,7 @@ protocol CommentCellDelegate: AnyObject {
     func didTapProfile(with clokeyId: String)
     func didTapDelete(commentId: Int64) 
     func didTapReport(commentId: Int64)
-    func didTapBlock(commentId: Int64)
+    func didTapBlock(clokeyId: String)
 }
 
 class CommentCell: UITableViewCell {
@@ -184,7 +184,11 @@ extension CommentCell: UIContextMenuInteractionDelegate {
             }
             
             let blockAction = UIAction(title: "차단하기", image: UIImage(systemName: "nosign")) { _ in
-                self.delegate?.didTapBlock(commentId: Int64(self.tag))
+                if let clokeyId = self.storedClokeyId {
+                    self.delegate?.didTapBlock(clokeyId: clokeyId)
+                } else {
+                    print("clokeyId를 찾을 수 없음")
+                }
             }
 
             return UIMenu(title: "", children: [deleteAction, reportAction, blockAction])

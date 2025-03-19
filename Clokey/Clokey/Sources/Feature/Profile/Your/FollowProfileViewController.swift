@@ -75,7 +75,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setupNavigationBar()
+//        setupNavigationBar()
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
@@ -290,15 +290,10 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
 
     
     @objc private func didTapReportButton(_ sender: UIButton) {
-        
-        let bottomSheetVC = CustomBottomSheetViewController()
-        bottomSheetVC.delegate = self // Delegate 연결
-        bottomSheetVC.defaultProfileButton.configuration?.image = UIImage(systemName: "exclamationmark.circle")
-        bottomSheetVC.defaultProfileButton.configuration?.title = "신고하기"
-        bottomSheetVC.choosePhotoButton.configuration?.image = UIImage(systemName: "nosign")
-        bottomSheetVC.choosePhotoButton.configuration?.title = "차단하기"
-        bottomSheetVC.modalPresentationStyle = .overFullScreen
-        present(bottomSheetVC, animated: false)
+        let actionSheet = FollowProfileActionViewController(clokeyId: followId)
+        actionSheet.delegate = self
+        actionSheet.modalPresentationStyle = .overFullScreen
+        present(actionSheet, animated: false)
     }
     
     // MARK: - 팔로우 버튼 이벤트
@@ -461,7 +456,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview()
             make.width.equalTo(290)
-            make.height.equalTo(448)
+            make.height.equalTo(489)
         }
         
         // 팝업 애니메이션 효과
@@ -511,28 +506,28 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                             //                                configureButton(popUpView.springButton, title: "봄")
                             popUpView.springButton.setTitleColor(.white, for: .normal)
                             popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.springButton.layer.cornerRadius = 5
                             popUpView.springButton.layer.borderWidth = 1
                         } else if response.seasons[0] == "SUMMER" {
                             //                                configureButton(popUpView.summerButton, title: "여름")
                             popUpView.summerButton.setTitleColor(.white, for: .normal)
                             popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.summerButton.layer.cornerRadius = 5
                             popUpView.summerButton.layer.borderWidth = 1
                         } else if response.seasons[0] == "FALL" {
                             //                                configureButton(popUpView.fallButton, title: "가을")
                             popUpView.fallButton.setTitleColor(.white, for: .normal)
                             popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.fallButton.layer.cornerRadius = 5
                             popUpView.fallButton.layer.borderWidth = 1
                         } else if response.seasons[0] == "WINTER" {
                             //                                configureButton(popUpView.winterButton, title: "겨울")
                             popUpView.winterButton.setTitleColor(.white, for: .normal)
                             popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.winterButton.layer.cornerRadius = 5
                             popUpView.winterButton.layer.borderWidth = 1
                         }
@@ -543,28 +538,28 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                             //                                configureButton(popUpView.springButton, title: "봄")
                             popUpView.springButton.setTitleColor(.white, for: .normal)
                             popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.springButton.layer.cornerRadius = 5
                             popUpView.springButton.layer.borderWidth = 1
                         } else if response.seasons[1] == "SUMMER" {
                             //                                configureButton(popUpView.summerButton, title: "여름")
                             popUpView.summerButton.setTitleColor(.white, for: .normal)
                             popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.summerButton.layer.cornerRadius = 5
                             popUpView.summerButton.layer.borderWidth = 1
                         } else if response.seasons[1] == "FALL" {
                             //                                configureButton(popUpView.fallButton, title: "가을")
                             popUpView.fallButton.setTitleColor(.white, for: .normal)
                             popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.fallButton.layer.cornerRadius = 5
                             popUpView.fallButton.layer.borderWidth = 1
                         } else if response.seasons[1] == "WINTER" {
                             //                                configureButton(popUpView.winterButton, title: "겨울")
                             popUpView.winterButton.setTitleColor(.white, for: .normal)
                             popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.winterButton.layer.cornerRadius = 5
                             popUpView.winterButton.layer.borderWidth = 1
                         }
@@ -575,28 +570,28 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                             //                                configureButton(popUpView.springButton, title: "봄")
                             popUpView.springButton.setTitleColor(.white, for: .normal)
                             popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.springButton.layer.cornerRadius = 5
                             popUpView.springButton.layer.borderWidth = 1
                         } else if response.seasons[2] == "SUMMER" {
                             //                                configureButton(popUpView.summerButton, title: "여름")
                             popUpView.summerButton.setTitleColor(.white, for: .normal)
                             popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.summerButton.layer.cornerRadius = 5
                             popUpView.summerButton.layer.borderWidth = 1
                         } else if response.seasons[2] == "FALL" {
                             //                                configureButton(popUpView.fallButton, title: "가을")
                             popUpView.fallButton.setTitleColor(.white, for: .normal)
                             popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.fallButton.layer.cornerRadius = 5
                             popUpView.fallButton.layer.borderWidth = 1
                         } else if response.seasons[2] == "WINTER" {
                             //                                configureButton(popUpView.winterButton, title: "겨울")
                             popUpView.winterButton.setTitleColor(.white, for: .normal)
                             popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.winterButton.layer.cornerRadius = 5
                             popUpView.winterButton.layer.borderWidth = 1
                         }
@@ -607,28 +602,28 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                             //                                configureButton(popUpView.springButton, title: "봄")
                             popUpView.springButton.setTitleColor(.white, for: .normal)
                             popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.springButton.layer.cornerRadius = 5
                             popUpView.springButton.layer.borderWidth = 1
                         } else if response.seasons[3] == "SUMMER" {
                             //                                configureButton(popUpView.summerButton, title: "여름")
                             popUpView.summerButton.setTitleColor(.white, for: .normal)
                             popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.summerButton.layer.cornerRadius = 5
                             popUpView.summerButton.layer.borderWidth = 1
                         } else if response.seasons[3] == "FALL" {
                             //                                configureButton(popUpView.fallButton, title: "가을")
                             popUpView.fallButton.setTitleColor(.white, for: .normal)
                             popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.fallButton.layer.cornerRadius = 5
                             popUpView.fallButton.layer.borderWidth = 1
                         } else if response.seasons[3] == "WINTER" {
                             //                                configureButton(popUpView.winterButton, title: "겨울")
                             popUpView.winterButton.setTitleColor(.white, for: .normal)
                             popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown600")
+                            popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.winterButton.layer.cornerRadius = 5
                             popUpView.winterButton.layer.borderWidth = 1
                         }
@@ -709,25 +704,34 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     
 }
 
-extension FollowProfileViewController: CustomBottomSheetDelegate {
-    func didTapChoosePhoto() {
+extension FollowProfileViewController: FollowProfileActionDelegate {
+    func didReportUser() {
+        print("사용자가 신고됨")
         let bottomSheetVC = CustomBottomSheetViewController()
-        bottomSheetVC.hideAnimation()
-        
+        bottomSheetVC.dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            
+            let accountRepoVC = CustomReportViewController(clokeyId: self.followId)
+            self.navigationController?.pushViewController(accountRepoVC, animated: true)
+        }
+    }
+
+    func didBlockUser() {
+        print("사용자가 차단됨")
         followProfileView.followButton.setTitle("차단 해제", for: .normal)
         followProfileView.followButton.backgroundColor = .mainBrown800
         followProfileView.followButton.setTitleColor(.white, for: .normal)
         followProfileView.updateCloseAccount(isClosed: true)
     }
     
-    func didTapDefaultProfile() {
-        let bottomSheetVC = CustomBottomSheetViewController()
-        //        bottomSheetVC.hideAnimation()
-        bottomSheetVC.dismiss(animated: true) { [weak self] in
-            guard let self = self else { return }
-            
-            let accountRepoVC = AccountReportViewController()
-            self.navigationController?.pushViewController(accountRepoVC, animated: true)
-        }
-    }
+//    func didTapDefaultProfile() {
+//        let bottomSheetVC = CustomBottomSheetViewController()
+//        bottomSheetVC.dismiss(animated: true) { [weak self] in
+//            guard let self = self else { return }
+//            
+//            let accountRepoVC = CustomReportViewController(clokeyId: self.followId)
+//            self.navigationController?.pushViewController(accountRepoVC, animated: true)
+//        }
+//    }
 }
+

@@ -11,7 +11,7 @@ import SnapKit
 import Kingfisher
 
 class UpdateFriendClothesViewController: UIViewController, UIGestureRecognizerDelegate {
-    
+    private let navBarManager = NavigationBarManager()
     private let updateFriendClothesView = UpdateFriendClothesView()
     
     // MARK: - Properties
@@ -25,18 +25,18 @@ class UpdateFriendClothesViewController: UIViewController, UIGestureRecognizerDe
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = updateFriendClothesView
+        setupNavigationBar()
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         setupDelegate()
         loadData()
         
-        updateFriendClothesView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
         
         DispatchQueue.main.async {
             self.updateFriendClothesView.updateFriendClothesCollectionView.reloadData()
@@ -46,12 +46,51 @@ class UpdateFriendClothesViewController: UIViewController, UIGestureRecognizerDe
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
+    // 네비게이션 설정
+    private func setupNavigationBar() {
+        let backButton = UIButton(type: .system)
+        let config = UIImage.SymbolConfiguration(weight: .bold)
+        let backImage = UIImage(systemName: "chevron.left", withConfiguration: config)
+        backButton.setImage(backImage, for: .normal)
+        backButton.tintColor = .mainBrown800
+        backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+        
+        let titleLabel: UILabel = UILabel().then {
+                let fullText = "친구의 옷장 업데이트 소식"
+                let targetText = "옷장"
+                let attributedString = NSMutableAttributedString(string: fullText)
+        
+                // 전체 텍스트 스타일
+                attributedString.addAttributes([
+                    .font: UIFont.ptdMediumFont(ofSize: 20),
+                    .foregroundColor: UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0)
+                ], range: NSRange(location: 0, length: fullText.count))
+        
+                // "캘린더"에 다른 스타일 적용
+                if let targetRange = fullText.range(of: targetText) {
+                    let nsRange = NSRange(targetRange, in: fullText)
+                    attributedString.addAttributes([
+                        .font: UIFont.ptdSemiBoldFont(ofSize: 20), // 예시로 굵게 처리
+                        .foregroundColor: UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0) // 색상을 변경하려면 여기 설정
+                    ], range: nsRange)
+                }
+        
+                $0.attributedText = attributedString
+            }
+
+        let titleItem = UIBarButtonItem(customView: titleLabel)
+
+        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: backButton), titleItem]
+    }
+    
+    // 뒤로가기
     @objc private func didTapBackButton() {
         navigationController?.popViewController(animated: true)
     }
+    
     
     
     private func updateCollectionViewHeight() {
