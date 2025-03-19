@@ -10,9 +10,9 @@
 import UIKit
 
 class NewsView: UIView {
-    private let emptyStackView1 = EmptyStackView()
-    private let emptyStackView2 = EmptyStackView()
-    private let emptyStackView3 = EmptyStackView()
+     let emptyStackView1 = EmptyStackView()
+     let emptyStackView2 = EmptyStackView()
+     let emptyStackView3 = EmptyStackView()
     
     // MARK: - UI Elements
     let scrollView: UIScrollView = UIScrollView().then {

@@ -260,7 +260,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         
         let clotehsService = ClothesService()
         
-        // ✅ checkPopUpClothes API 호출 및 UI 업데이트
+        // checkPopUpClothes API 호출 및 UI 업데이트
         clotehsService.checkPopUpClothes(clothId: clothId) { [weak self] result in
             guard let self = self else { return }
             
