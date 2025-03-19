@@ -480,7 +480,6 @@ extension CalendarCommentViewController: UITableViewDataSource, UITableViewDeleg
         
         let comment = comments[indexPath.row]
         let isReply = comment.parentCommentId != nil
-        let parentComment = comments.first { $0.id == comment.parentCommentId }
 
         cell.configure(
             profileImage: comment.imageUrl,
