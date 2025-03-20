@@ -79,8 +79,7 @@ extension MembersEndpoint: TargetType {
             return .post
         case .updateProfile:
             return .patch
-        case .checkIdAvailability, .getUserProfile, .getTerms, .getAgreedTerms, .getFollowPeople, .checkMySelf:
-        case .checkIdAvailability, .getUserProfile, .getTerms, .getAgreedTerms, .getFollowPeople, .getBlockMembers:
+        case .checkIdAvailability, .getUserProfile, .getTerms, .getAgreedTerms, .getFollowPeople, .checkMySelf, .getBlockMembers:
             return .get
         case .unfollowUser:
             return .delete

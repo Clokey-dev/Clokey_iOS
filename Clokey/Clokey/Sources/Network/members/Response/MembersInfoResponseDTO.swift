@@ -61,6 +61,8 @@ public struct GetFollowPeopleResponseDTO: Codable {
 // 본인 확인
 public struct CheckMeResponseDTO: Codable {
     public let isMe: Bool
+}
+
 public struct GetBlockMembersResponseDTO: Codable {
     let members: [Members]
     let totalPage: Int
