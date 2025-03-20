@@ -340,8 +340,8 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     
     @objc private func didTapBlockButton() {
         didunBlockUser()
-        followProfileView.blockButton(isBlock: false)
-        followProfileView.updateCloseAccount(isClosed: false)
+//        followProfileView.blockButton(isBlock: false)
+//        followProfileView.updateCloseAccount(isClosed: false)
         
     }
     

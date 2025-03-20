@@ -24,6 +24,7 @@ public enum MembersEndpoint {
     case getFollowPeople(clokeyId: String, page: Int, isFollowing: Bool)
     case blockMember(clokeyId: String)
     case checkMySelf(clokeyId: String)
+    case getBlockMembers(page: Int)
     // 추가적인 API는 여기 케이스로 정의
 }
 
@@ -66,6 +67,8 @@ extension MembersEndpoint: TargetType {
             return "/users/block/\(clokeyId)"
         case .checkMySelf:
             return "users/check-myself"
+        case .getBlockMembers:
+            return "/users/block"
         }
     }
     
@@ -77,6 +80,7 @@ extension MembersEndpoint: TargetType {
         case .updateProfile:
             return .patch
         case .checkIdAvailability, .getUserProfile, .getTerms, .getAgreedTerms, .getFollowPeople, .checkMySelf:
+        case .checkIdAvailability, .getUserProfile, .getTerms, .getAgreedTerms, .getFollowPeople, .getBlockMembers:
             return .get
         case .unfollowUser:
             return .delete
@@ -152,6 +156,10 @@ extension MembersEndpoint: TargetType {
             return .requestPlain
         case .checkMySelf(let clokeyId):
             return .requestParameters(parameters: ["clokeyId": clokeyId], encoding: URLEncoding.queryString)
+        case .getBlockMembers(let page):
+            let parameters: [String: Any] = ["page": page]
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
+
         }
     }
     

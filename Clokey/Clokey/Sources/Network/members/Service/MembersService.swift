@@ -208,4 +208,18 @@ public final class MembersService: NetworkManager {
             completion: completion
         )
     }
+    ///차단 목록 불러오기
+    public func getBlockMembers(
+        page: Int,
+        completion: @escaping (Result<GetBlockMembersResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .getBlockMembers(page: page),
+            decodingType: GetBlockMembersResponseDTO.self,
+            completion: completion
+        )
+    }
+
+
+
 }

@@ -23,7 +23,7 @@ class SmartSummationView: UIView {
     }
     
     let bannerDescription = UILabel().then {
-        $0.text = "지난 7일 간 OO님의 옷 데이터를 모았어요!\n자주 착용한 옷과 착용하지 않은 옷입니다!"
+        $0.text = "지난 7일 간 사용자님의 옷 데이터를 모았어요!\n자주 착용한 옷과 착용하지 않은 옷입니다!"
         $0.font = UIFont.ptdMediumFont(ofSize: 14)
         $0.textColor = .black
         $0.numberOfLines = 2
