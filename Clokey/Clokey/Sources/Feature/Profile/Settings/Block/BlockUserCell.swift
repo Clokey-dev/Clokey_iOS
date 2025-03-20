@@ -27,12 +27,12 @@ class BlockUserCell: UICollectionViewCell {
     }
     
     private let userIdLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 14, weight: .medium)
+        $0.font = .ptdMediumFont(ofSize: 14)
         $0.textColor = .black
     }
     
     private let nicknameLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 12)
+        $0.font = .ptdRegularFont(ofSize: 12)
         $0.textColor = .gray
     }
     
@@ -44,7 +44,7 @@ class BlockUserCell: UICollectionViewCell {
         configuration.cornerStyle = .medium
         
         let button = UIButton(configuration: configuration)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        button.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 16)
         button.titleLabel?.numberOfLines = 1
         button.titleLabel?.lineBreakMode = .byClipping
         if #available(iOS 15.0, *) {

@@ -369,7 +369,7 @@ class NewsViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview()
             make.width.equalTo(290)
-            make.height.equalTo(448)
+            make.height.equalTo(489)
         }
         
         // 팝업 애니메이션 효과
