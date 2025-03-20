@@ -38,9 +38,17 @@ class ImagePickViewController: UIViewController {
         dismissImage()
     }
     
-    private func setupUI(){
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        
+    private func setupUI() {
+        // 블러 이펙트 생성
+        let blurEffect = UIBlurEffect(style: .light)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+
+        // 블러 뷰 추가 (전체 화면)
+        view.addSubview(blurEffectView)
+        blurEffectView.snp.makeConstraints { make in
+            make.edges.equalToSuperview() // 화면 전체
+        }
+
         view.addSubview(profileImageView)
         profileImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
