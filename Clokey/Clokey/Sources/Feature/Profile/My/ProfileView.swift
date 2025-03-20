@@ -122,7 +122,7 @@ final class ProfileView: UIView {
     
     let descriptionLabel = UILabel().then {
         $0.text = "한줄소개란입니다아아아아아아아아"
-        $0.font = UIFont.ptdRegularFont(ofSize: 18)
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .black
         $0.textAlignment = .center
         $0.numberOfLines = 2

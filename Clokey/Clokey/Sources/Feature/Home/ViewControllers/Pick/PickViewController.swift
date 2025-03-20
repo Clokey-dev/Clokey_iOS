@@ -38,7 +38,43 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     private let refreshControl = UIRefreshControl()
     private var isDataLoaded: Bool = false // 데이터 로드 여부 플래그
     private var loadingOverlay: UIView?
+
+    var dateString : String = ""
+    var month: String = ""
+    var date : String = ""
     
+    func dateFormatter() {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+
+        if let date = formatter.date(from: dateString) {
+            formatter.dateFormat = "MM"
+            let month = formatter.string(from: date)
+            self.month = month
+            print(month) // 출력: "03"
+        }
+    }
+    
+    func isOneYearAgo(dateString: String) -> Bool {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.timeZone = TimeZone(abbreviation: "UTC") // 서버 시간이 UTC일 경우
+
+        guard let date = formatter.date(from: dateString) else {
+            print("날짜 변환 실패")
+            return false
+        }
+
+        let calendar = Calendar.current
+        guard let oneYearAgo = calendar.date(byAdding: .year, value: -1, to: Date()) else {
+            print("1년 전 날짜 계산 실패")
+            return false
+        }
+
+        return calendar.isDate(date, inSameDayAs: oneYearAgo)
+    }
+   
+
     override func loadView() {
         self.view = pickView
     }
@@ -757,6 +793,9 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     let imageUrls = historyResult.imageUrls
                     let nickName = historyResult.nickName
                     let historyId = historyResult.historyId
+                    self.dateString = historyResult.date
+                    
+                    self.dateFormatter()
                     
                     if imageUrls.count > 0 {
                         self.recapHistoryId1 = Int(historyId!) // 첫 번째 이미지에 대한 historyId
@@ -766,44 +805,47 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                         }
                     }
                     
-                    
-                    if let isMine = historyResult.isMine {
-                        if isMine {
-                            // isMine == true
-                            if imageUrls.isEmpty {
-                                print("사진이 없습니다")
-                            } else {
-                                self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님은 이 옷을 착용하셨네요!"
-                                self.pickView.recapNotMe(hidden: true)
-                                
-                                if imageUrls.count > 0 {
-                                    self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
-                                    if imageUrls.count > 1 {
-                                        self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
+                    if self.isOneYearAgo(dateString: self.dateString) {
+                        if let isMine = historyResult.isMine {
+                            if isMine {
+                                // isMine == true
+                                if imageUrls.isEmpty {
+                                    print("사진이 없습니다")
+                                } else {
+                                    self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님은 이 옷을 착용하셨네요!"
+                                    self.pickView.recapNotMe(hidden: true)
+                                    
+                                    if imageUrls.count > 0 {
+                                        self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
+                                        if imageUrls.count > 1 {
+                                            self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
+                                        }
                                     }
+                                    
                                 }
-                                
-                            }
-                        } else {
-                            // isMine == false
-                            if imageUrls.isEmpty {
-                                print("사진이 없습니다")
                             } else {
-                                self.pickView.recapSubtitleLabel1.text = "1년 전 오늘의 기록이 없어요!"
-                                self.pickView.recapNotMe(hidden: false)
-                                self.pickView.recapSubtitleLabel2.text = "\(nickName)님의 1년 전 오늘을 확인해보세요!"
-                                if imageUrls.count > 0 {
-                                    self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
-                                    if imageUrls.count > 1 {
-                                        self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
+                                // isMine == false
+                                if imageUrls.isEmpty {
+                                    print("사진이 없습니다")
+                                } else {
+                                    self.pickView.recapSubtitleLabel1.text = "1년 전 오늘의 기록이 없어요!"
+                                    self.pickView.recapNotMe(hidden: false)
+                                    self.pickView.recapSubtitleLabel2.text = "\(nickName)님의 1년 전 오늘을 확인해보세요!"
+                                    if imageUrls.count > 0 {
+                                        self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
+                                        if imageUrls.count > 1 {
+                                            self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
+                                        }
                                     }
                                 }
                             }
                         }
                     } else {
                         // historyResult.isMine == nil 일 때 처리
-                        self.pickView.recapSubtitleLabel1.text = "\(nickName)과 팔로워들의 과거의 기록들을 확인해보세요!"
-                        self.pickView.recapNotMe(hidden: true)
+                        self.pickView.recapSubtitleLabel1.text = "1년 전 오늘의 기록이 없어요!"
+                        self.pickView.recapNotMe(hidden: false)
+                        self.pickView.recapSubtitleLabel2.text = "\(nickName)님의 \(self.month)월의 기록을 확인해보세요."
+                        
                         
                         if imageUrls.count > 0 {
                             self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
@@ -818,6 +860,8 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
             }
         }
     }
+    
+
     
     
     //새로고침 함수

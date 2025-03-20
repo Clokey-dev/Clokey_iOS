@@ -80,6 +80,7 @@ public struct GetIssuesResponseDTO: Codable {
     let closet: [ClosetResponseDTO]
     let calendar: [CalendarResponseDTO]
     let people: [PeopleResponseDTO]
+    let followingCount : Int64
 }
 
 // Recommend 섹션
