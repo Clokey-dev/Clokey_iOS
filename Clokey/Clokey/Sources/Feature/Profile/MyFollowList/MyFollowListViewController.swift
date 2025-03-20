@@ -220,7 +220,6 @@ class MyFollowListViewController: UIViewController, UIGestureRecognizerDelegate 
             }
         
         containerView.snp.makeConstraints {
-//            $0.top.equalTo(indicatorView.snp.bottom).offset(8)
             $0.top.equalToSuperview().offset(8)
             $0.leading.trailing.bottom.equalToSuperview()
         }

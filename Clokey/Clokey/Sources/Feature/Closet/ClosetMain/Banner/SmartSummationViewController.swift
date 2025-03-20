@@ -14,7 +14,7 @@ class SmartSummationViewController: UIViewController {
     private var frequentClothes: [ClothPreviewDTO] = []
     private var infrequentClothes: [ClothPreviewDTO] = []
     
-    // coreCategoryId 외에 전체 정보를 저장 (frequentResult, infrequentResult)
+    // 전체 정보를 저장 (frequentResult, infrequentResult)
     private var frequentResult: SummaryClothPreviewDTO?
     private var infrequentResult: SummaryClothPreviewDTO?
     
@@ -37,6 +37,8 @@ class SmartSummationViewController: UIViewController {
     
     private var currentSort: SortOption = .wear
 
+    weak var delegate: SmartSummationViewControllerDelegate?
+    
     override func loadView() {
         self.view = summationView
     }
@@ -78,7 +80,6 @@ class SmartSummationViewController: UIViewController {
         navigationController?.pushViewController(displayAllVC, animated: true)
     }
 
-    
     // seeAllButton2 (잘 안 착용한 옷)
     @objc private func seeAllButton2Tapped() {
         guard let result = self.frequentResult else { return }
@@ -133,9 +134,46 @@ class SmartSummationViewController: UIViewController {
                     self.infrequentClothes = Array(infrequent.clothPreviews.prefix(3))
                     self.summationView.seeAllButton2.setTitle("옷장 구석에서 \(infrequent.coreCategoryName) 찾아보기", for: .normal)
                     self.summationView.infreCollectionView.reloadData()
+                    
+                    // 데이터가 없다면 EmptyStateView 표시 (배너영역은 유지)
+                    self.updateEmptyState()
                 }
             case .failure(let error):
                 print("스마트 요약 API 호출 실패: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    // API 실패 시 더미 데이터 대신 EmptyStateView 표시
+                    self.updateEmptyState()
+                }
+            }
+        }
+    }
+    
+    // MARK: - Empty State Handling
+    private func updateEmptyState() {
+        // 빈 데이터인 경우에만 EmptyStateView를 표시합니다.
+        if frequentClothes.isEmpty && infrequentClothes.isEmpty {
+            // 기존 EmptyStateView가 있다면 제거
+            for subview in summationView.subviews {
+                if subview is EmptyStateView {
+                    subview.removeFromSuperview()
+                }
+            }
+            // 배너영역은 유지하므로, EmptyStateView의 top은 bannerView의 bottom부터 시작합니다.
+            let emptyView = EmptyStateView(
+                mainMessage: "아직 캘린더에 기록을 추가하지 않았어요!",
+                subMessage: "캘린더에 기록을 추가해 나만의 스타일을 자랑하고,\n 스마트 요약 기능도 이용해 보세요."
+            )
+            summationView.addSubview(emptyView)
+            emptyView.snp.makeConstraints { make in
+                make.top.equalTo(summationView.bannerView.snp.bottom)
+                make.leading.trailing.bottom.equalToSuperview()
+            }
+        } else {
+            // 데이터가 있을 경우, EmptyStateView가 있다면 제거합니다.
+            for subview in summationView.subviews {
+                if subview is EmptyStateView {
+                    subview.removeFromSuperview()
+                }
             }
         }
     }

@@ -16,7 +16,7 @@ class ArrangeClosetView: UIView {
     }
     
     let bannerDescription = UILabel().then {
-        $0.text = "겨울 옷을 정리할 시간입니다!\nOO님의 겨울 옷들을 보여드릴게요."
+        $0.text = "겨울 옷을 정리할 시간입니다!\n사용자님의 겨울 옷들을 보여드릴게요."
         $0.font = UIFont.ptdMediumFont(ofSize: 14)
         $0.textColor = .black
         $0.numberOfLines = 2
