@@ -163,7 +163,6 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
             switch result {
             case .success(let userProfile):
                 DispatchQueue.main.async {
-
                     self.clokey_Id = userProfile.clokeyId
                     self.followProfileView.nicknameLabel.text = userProfile.nickname
                     self.followProfileView.writeCountLabel.text = "\(userProfile.recordCount)"
@@ -333,7 +332,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                         }
                     }
                 case .failure(let error):
-                    print("🚨 팔로우/언팔로우 요청 실패: \(error.localizedDescription)")
+                    print("팔로우/언팔로우 요청 실패: \(error.localizedDescription)")
                 }
             }
         }

@@ -58,4 +58,7 @@ public struct GetFollowPeopleResponseDTO: Codable {
     }
 }
 
-
+// 본인 확인
+public struct CheckMeResponseDTO: Codable {
+    public let isMe: Bool
+}

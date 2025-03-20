@@ -23,6 +23,7 @@ public enum MembersEndpoint {
     case optionalTermAgree(data: OptionalTermAgreeRequestDTO)
     case getFollowPeople(clokeyId: String, page: Int, isFollowing: Bool)
     case blockMember(clokeyId: String)
+    case checkMySelf(clokeyId: String)
     // 추가적인 API는 여기 케이스로 정의
 }
 
@@ -63,6 +64,8 @@ extension MembersEndpoint: TargetType {
             return "/users/\(clokeyId)/follow"
         case .blockMember(let clokeyId):
             return "/users/block/\(clokeyId)"
+        case .checkMySelf:
+            return "users/check-myself"
         }
     }
     
@@ -73,7 +76,7 @@ extension MembersEndpoint: TargetType {
             return .post
         case .updateProfile:
             return .patch
-        case .checkIdAvailability, .getUserProfile, .getTerms, .getAgreedTerms, .getFollowPeople:
+        case .checkIdAvailability, .getUserProfile, .getTerms, .getAgreedTerms, .getFollowPeople, .checkMySelf:
             return .get
         case .unfollowUser:
             return .delete
@@ -121,7 +124,6 @@ extension MembersEndpoint: TargetType {
                     print("📂 Multipart 데이터 추가됨: \(item.name)")
                 }
             }
-            
             return .uploadMultipart(multipartData)
         case .checkIdAvailability(_):
             return .requestPlain
@@ -131,8 +133,7 @@ extension MembersEndpoint: TargetType {
                 parameters["clokey_id"] = clokey_id
             }
             return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
-            //        case .getUser:
-            //            return .requestPlain
+
         case .followUser(_):
             return .requestPlain
         case .unfollowUser(let data):
@@ -149,6 +150,8 @@ extension MembersEndpoint: TargetType {
             return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
         case .blockMember(_):
             return .requestPlain
+        case .checkMySelf(let clokeyId):
+            return .requestParameters(parameters: ["clokeyId": clokeyId], encoding: URLEncoding.queryString)
         }
     }
     

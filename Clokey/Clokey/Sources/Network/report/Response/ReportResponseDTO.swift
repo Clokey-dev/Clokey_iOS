@@ -8,7 +8,6 @@
 import Foundation
 
 // 신고 정보 조회 통합
-// 신고 정보 조회 통합
 public struct ReportResponseDTO<T: Codable>: Codable {
     public let clokeyId: String
     public let nickName: String
