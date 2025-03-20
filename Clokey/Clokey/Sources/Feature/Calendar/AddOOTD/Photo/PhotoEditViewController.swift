@@ -19,7 +19,6 @@ class PhotoEditViewController: UIViewController, UIGestureRecognizerDelegate {
     // MARK: - Properties
     
     // 편집중인 이미지 배열
-    // 편집중인 이미지 배열
     private var selectedImages: [UIImage] = []
     // 현재 편집중인 이미지
     private var currentEditingIndex: Int = 0
