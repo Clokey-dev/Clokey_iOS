@@ -23,6 +23,7 @@ public enum MembersEndpoint {
     case optionalTermAgree(data: OptionalTermAgreeRequestDTO)
     case getFollowPeople(clokeyId: String, page: Int, isFollowing: Bool)
     case blockMember(clokeyId: String)
+    case getBlockMembers(page: Int)
     // 추가적인 API는 여기 케이스로 정의
 }
 
@@ -63,6 +64,8 @@ extension MembersEndpoint: TargetType {
             return "/users/\(clokeyId)/follow"
         case .blockMember(let clokeyId):
             return "/users/block/\(clokeyId)"
+        case .getBlockMembers:
+            return "/users/block"
         }
     }
     
@@ -73,7 +76,7 @@ extension MembersEndpoint: TargetType {
             return .post
         case .updateProfile:
             return .patch
-        case .checkIdAvailability, .getUserProfile, .getTerms, .getAgreedTerms, .getFollowPeople:
+        case .checkIdAvailability, .getUserProfile, .getTerms, .getAgreedTerms, .getFollowPeople, .getBlockMembers:
             return .get
         case .unfollowUser:
             return .delete
@@ -149,6 +152,10 @@ extension MembersEndpoint: TargetType {
             return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
         case .blockMember(_):
             return .requestPlain
+        case .getBlockMembers(let page):
+            let parameters: [String: Any] = ["page": page]
+            return .requestParameters(parameters: parameters, encoding: URLEncoding.default)
+
         }
     }
     
