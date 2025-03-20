@@ -26,6 +26,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     
     var followId: String = ""
     var isMe: Bool = false
+    var profileImage: String = ""
     
     var clokey_Id: String = ""
     var followerCount: Int = 0
@@ -75,6 +76,8 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         setupPopupActions()
         
         followProfileView.touchMyProfile(isMine: isMe)
+        
+        tapProfile()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -117,6 +120,19 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                 target: self,
                 action: #selector(didTapReportButton))
         }
+    }
+    
+    private func tapProfile() {
+        // 예: profileImageView가 프로필 이미지 뷰
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapProfileImage))
+        self.followProfileView.profileImageView.isUserInteractionEnabled = true
+        self.followProfileView.profileImageView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func didTapProfileImage() {
+        let imagePickVC = ImagePickViewController(image: profileImage)
+        imagePickVC.modalPresentationStyle = .overFullScreen
+        present(imagePickVC, animated: false)
     }
     
     // 뒤로가기
@@ -177,6 +193,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                     if let profileImageUrl = userProfile.profileImageUrl,
                        let url = URL(string: profileImageUrl) {
                         self.followProfileView.profileImageView.kf.setImage(with: url)
+                        self.profileImage = profileImageUrl
                     } else {
                         self.followProfileView.profileImageView.image = UIImage(named: "default_background_image") // 기본 이미지 설정
                     }
