@@ -58,4 +58,16 @@ public struct GetFollowPeopleResponseDTO: Codable {
     }
 }
 
+public struct GetBlockMembersResponseDTO: Codable {
+    let members: [Members]
+    let totalPage: Int
+    let totalElements: Int
+    let isFirst: Bool
+    let isLast: Bool
 
+    struct Members: Codable {
+        let nickname: String
+        let clokeyId: String
+        let profileImage: String
+    }
+}
