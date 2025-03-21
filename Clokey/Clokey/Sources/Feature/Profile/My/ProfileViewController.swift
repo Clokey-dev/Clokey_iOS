@@ -97,7 +97,6 @@ final class ProfileViewController: UIViewController {
         calendarViewController.removeFromParent()
     }
     
-    
     var nickname: String = ""
     var profileImage: String = ""
     var backgroundImage: String = ""

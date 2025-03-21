@@ -24,6 +24,7 @@ class FollowCalendarViewController: UIViewController {
     private var historyIdMap: [String: Int] = [:]
     
     var followId: String = ""
+    var isMe: Bool = false // 본인 확인 
     
     // MARK: - UI Components
     
@@ -172,7 +173,7 @@ class FollowCalendarViewController: UIViewController {
 
     
     // MARK: - Calendar Methods
-    private func updateCalendar() {
+    func updateCalendar() {
         
         // CalendarHelper 로 날짜들 생성
         dates = CalendarHelper.generateDates(for: currentMonth)
@@ -248,15 +249,23 @@ extension FollowCalendarViewController: CalendarViewDelegate {
             switch result {
             case .success(let response):
                 print("히스토리 상세 조회 성공: \(response)")
-                let detailVC = FriendsCalendarDetailViewController()
-                detailVC.setDetailData(response) //  상세 데이터 전달
-                self.navigationController?.pushViewController(detailVC, animated: true)
+                
+                if isMe {
+                    // 본인 -> CalendarDetailViewController로
+                    let detailVC = CalendarDetailViewController()
+                    detailVC.setDetailData(response)
+                    self.navigationController?.pushViewController(detailVC, animated: true)
+                } else {
+                    // 타인 -> FriendsCalendarDetailViewController로
+                    let detailVC = FriendsCalendarDetailViewController()
+                    detailVC.setDetailData(response)
+                    self.navigationController?.pushViewController(detailVC, animated: true)
+                }
 
             case .failure(let error):
                 print("히스토리 상세 조회 실패: \(error.localizedDescription)")
             }
         }
     }
-
 }
 

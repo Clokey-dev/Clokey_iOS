@@ -98,7 +98,7 @@ class SettingViewController: UIViewController, UIGestureRecognizerDelegate {
         setupButtonActions(for: settingView.LikedHistoryContainer, action: #selector(didTapLikedHistory))
         // 내가 쓴 댓글
         setupButtonActions(for: settingView.HistoryCommentContainer, action: #selector(didTapHistoryComment))
-        setupButtonActions(for: settingView.blokedAccountButton, action: #selector(didTapBlockButton))
+        setupButtonActions(for: settingView.blokedAccountContainer, action: #selector(didTapBlockButton))
 
     }
     
