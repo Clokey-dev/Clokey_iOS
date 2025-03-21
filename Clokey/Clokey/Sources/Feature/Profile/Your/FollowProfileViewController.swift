@@ -23,7 +23,8 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     private var loadingOverlay: UIView?
     
     private let followCalendarViewController = FollowCalendarViewController()
-    
+    private let calendarViewController = CalendarViewController()
+
     var followId: String = ""
     var isMe: Bool = false
     
@@ -155,7 +156,6 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         
         let membersService = MembersService()
         
-        
         // MARK: - 사용자 정보 받아서 로드하는 API
         membersService.getUserProfile(clokey_id: followId) { [weak self] result in
             guard let self = self else { return }
@@ -163,6 +163,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
             switch result {
             case .success(let userProfile):
                 DispatchQueue.main.async {
+                    self.isMe = userProfile.isMe
                     self.clokey_Id = userProfile.clokeyId
                     self.followProfileView.nicknameLabel.text = userProfile.nickname
                     self.followProfileView.writeCountLabel.text = "\(userProfile.recordCount)"
@@ -184,6 +185,10 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                     }
                     
                     let clothes = userProfile.clothResults
+                    
+                    self.followCalendarViewController.followId = self.followId
+                    self.followCalendarViewController.isMe = self.isMe
+                    self.followCalendarViewController.updateCalendar()
                     
                     self.followProfileView.clothesImageView2.isHidden = clothes.isEmpty || clothes.count < 2
                     self.followProfileView.clothesImageView3.isHidden = clothes.isEmpty || clothes.count < 3
