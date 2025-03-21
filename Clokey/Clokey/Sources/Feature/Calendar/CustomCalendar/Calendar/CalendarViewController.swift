@@ -135,6 +135,16 @@ class CalendarViewController: UIViewController {
         loadingIndicator.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
+        
+        // 스와이프로 캘린더 이동 
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
+        swipeLeft.direction = .left
+        view.addGestureRecognizer(swipeLeft)
+
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
+        swipeRight.direction = .right
+        view.addGestureRecognizer(swipeRight)
+
     }
     
     private func setupBindings() {
@@ -165,6 +175,19 @@ class CalendarViewController: UIViewController {
                     $0.trailing.equalToSuperview().offset(-25)
                 }
             }
+        }
+    }
+    
+    // MARK: - Actions
+
+    @objc private func handleSwipe(_ gesture: UISwipeGestureRecognizer) {
+        switch gesture.direction {
+        case .left:
+            changeMonth(by: 1)
+        case .right:
+            changeMonth(by: -1)
+        default:
+            break
         }
     }
     
