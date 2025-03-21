@@ -99,7 +99,6 @@ class FollowProfileView: UIView {
         $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 15)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.textAlignment = .center
-        //        $0.addTarget(self, action: #selector(followingCountTapped), for: .touchUpInside)
     }
     
     let descriptionLabel = UILabel().then {
