@@ -33,24 +33,27 @@ class ClosetPopupView: UIView {
         $0.alignment = .center
     }
     
-    let categoryButton1 = UIButton().then {
-        $0.setTitle("상의", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
-        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-        $0.backgroundColor = UIColor.clear
-        $0.layer.cornerRadius = 4
-        $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
-        if #available(iOS 15.0, *) {
-            var config = UIButton.Configuration.filled()
-            config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
-            config.baseBackgroundColor = .clear
-            $0.configuration = config
-        } else {
-            $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+    let categoryButton1 = UIButton().then { button in
+        var config = UIButton.Configuration.filled()
+        config.title = ""
+        config.baseBackgroundColor = .clear
+        config.baseForegroundColor = .black
+        config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
+        
+        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = UIFont.ptdMediumFont(ofSize: 12)
+            return outgoing
         }
-        $0.sizeToFit()
+        
+        config.background.strokeColor = UIColor(named: "mainBrown600") ?? .brown
+        config.background.strokeWidth = 1
+        config.background.cornerRadius = 4
+        
+        button.configuration = config
     }
+
+
     
     let frontButton = UIButton().then {
         $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
@@ -58,24 +61,26 @@ class ClosetPopupView: UIView {
     }
     
     
-    let categoryButton2 = UIButton().then {
-        $0.setTitle("후드티", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
-        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-        $0.backgroundColor = UIColor.clear
-        $0.layer.cornerRadius = 4
-        $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
-        if #available(iOS 15.0, *) {
-            var config = UIButton.Configuration.filled()
-            config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
-            config.baseBackgroundColor = .clear
-            $0.configuration = config
-        } else {
-            $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+    let categoryButton2 = UIButton().then { button in
+        var config = UIButton.Configuration.filled()
+        config.title = ""
+        config.baseBackgroundColor = .clear
+        config.baseForegroundColor = .black
+        config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
+        
+        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = UIFont.ptdMediumFont(ofSize: 12)
+            return outgoing
         }
-        $0.sizeToFit()
+        
+        config.background.strokeColor = UIColor(named: "mainBrown600") ?? .brown
+        config.background.strokeWidth = 1
+        config.background.cornerRadius = 4
+        
+        button.configuration = config
     }
+
     
     let seasonStackView = UIStackView().then {
         $0.axis = .horizontal

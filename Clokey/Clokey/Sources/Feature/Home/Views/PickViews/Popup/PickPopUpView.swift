@@ -21,7 +21,7 @@ class PickPopUpView: UIView {
     }
     
     let deleteButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "x.circle.fill"), for: .normal)
+        $0.setImage(UIImage(named: "erase_icon"), for: .normal)
         $0.tintColor = UIColor(named: "mainBrown800")
     }
     
@@ -43,14 +43,24 @@ class PickPopUpView: UIView {
         $0.alignment = .center
     }
     
-    let categoryButton1 = UIButton().then {
-        $0.setTitle("", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
-        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
-        $0.backgroundColor = UIColor.clear
-        $0.layer.cornerRadius = 4
-        $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
+    let categoryButton1 = UIButton().then { button in
+        var config = UIButton.Configuration.filled()
+        config.title = ""
+        config.baseBackgroundColor = .clear
+        config.baseForegroundColor = .black
+        config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
+        
+        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = UIFont.ptdMediumFont(ofSize: 12)
+            return outgoing
+        }
+        
+        config.background.strokeColor = UIColor(named: "mainBrown600") ?? .brown
+        config.background.strokeWidth = 1
+        config.background.cornerRadius = 4
+        
+        button.configuration = config
     }
     
     let frontButton = UIButton().then {
@@ -59,24 +69,24 @@ class PickPopUpView: UIView {
     }
     
     
-    let categoryButton2 = UIButton().then {
-        $0.setTitle("", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
-        $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+    let categoryButton2 = UIButton().then { button in
+        var config = UIButton.Configuration.filled()
+        config.title = ""
+        config.baseBackgroundColor = .clear
+        config.baseForegroundColor = .black
+        config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
         
-        $0.backgroundColor = UIColor.clear
-        $0.layer.cornerRadius = 4
-        $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
-        if #available(iOS 15.0, *) {
-            var config = UIButton.Configuration.filled()
-            config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
-            config.baseBackgroundColor = .clear
-            $0.configuration = config
-        } else {
-            $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = UIFont.ptdMediumFont(ofSize: 12)
+            return outgoing
         }
-        $0.sizeToFit()
+        
+        config.background.strokeColor = UIColor(named: "mainBrown600") ?? .brown
+        config.background.strokeWidth = 1
+        config.background.cornerRadius = 4
+        
+        button.configuration = config
     }
     
     let seasonStackView = UIStackView().then {
@@ -227,7 +237,7 @@ class PickPopUpView: UIView {
         deleteButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
-            make.size.equalTo(30)
+            make.size.equalTo(24)
         }
         
         imageView.snp.makeConstraints { make in
@@ -240,7 +250,7 @@ class PickPopUpView: UIView {
         publicButton.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.top).offset(10)
             make.trailing.equalTo(imageView.snp.trailing).offset(-10)
-            make.size.equalTo(20)
+            make.size.equalTo(24)
         }
         
         categoryStackView.snp.makeConstraints { make in
