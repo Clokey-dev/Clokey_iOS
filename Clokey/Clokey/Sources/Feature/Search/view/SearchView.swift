@@ -44,7 +44,7 @@ class SearchView: UIView {
     let backButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "goback"), for: .normal)
-        button.tintColor = .black
+        button.tintColor = .mainBrown800
         return button
     }()
     
@@ -181,8 +181,7 @@ class SearchView: UIView {
         //   `fetchRecentSearches()` 호출해서 최신 데이터 가져오기
         recentSearches = searchManager.fetchRecentSearches()
 
-        print(" [SearchView] 강제 업데이트된 검색 기록: \(recentSearches)")
-
+        
         DispatchQueue.main.async {
             self.recentSearchTableView.reloadData() //  UI 강제 업데이트
             self.recentSearchTableView.isHidden = self.recentSearches.isEmpty
@@ -193,7 +192,7 @@ class SearchView: UIView {
             let button = UIButton(type: .system)
             button.setTitle(keyword, for: .normal)
             button.setTitleColor(.black, for: .normal)
-            button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
             button.backgroundColor = UIColor(red: 255/255, green: 231/255, blue: 210/255, alpha: 1)
             button.layer.cornerRadius = 16
 

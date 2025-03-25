@@ -18,7 +18,7 @@ import SnapKit
 class NotificationView: UIView {
     
     //  뒤로 가기 버튼
-    let backButton: UIButton = {
+   /* let backButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "goback"), for: .normal)
         button.tintColor = .black
@@ -32,7 +32,7 @@ class NotificationView: UIView {
         label.font = UIFont.ptdBoldFont(ofSize: 20)
         label.textAlignment = .center
         return label
-    }()
+    }()*/
     
     //  테이블 뷰
     let tableView: UITableView = {
@@ -55,11 +55,11 @@ class NotificationView: UIView {
     private func setupUI() {
         backgroundColor = .white
         
-        addSubview(backButton)
-        addSubview(titleLabel)
+        //addSubview(backButton)
+       // addSubview(titleLabel)
         addSubview(tableView)
 
-        backButton.snp.makeConstraints { make in
+        /*backButton.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide).offset(10)
             make.leading.equalToSuperview().offset(20)
             make.width.equalTo(10) //  width 고정
@@ -69,10 +69,10 @@ class NotificationView: UIView {
         titleLabel.snp.makeConstraints { make in
             make.centerY.equalTo(backButton)
             make.leading.equalTo(backButton.snp.trailing).offset(20)
-        }
+        } */
 
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(backButton.snp.bottom).offset(18)
+            make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(28)
             
             make.leading.trailing.bottom.equalToSuperview()
         }

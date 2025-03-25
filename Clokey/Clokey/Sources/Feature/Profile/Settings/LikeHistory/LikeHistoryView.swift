@@ -29,22 +29,26 @@ class LikeHistoryView: UIView {
     // 컬렉션 뷰: 셀 크기를 131×171, 여백 0으로 설정
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 131, height: 171)
+        
+        // 가로 너비를 3등분 (여백 0)
+        let itemWidth = (UIScreen.main.bounds.width) / 3
+        layout.itemSize = CGSize(width: itemWidth, height: 171)
+        
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
         layout.sectionInset = .zero
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .white
-        cv.alwaysBounceVertical = true      // 항상 수직 바운스 활성화
-            cv.isScrollEnabled = true 
+        cv.alwaysBounceVertical = true
+        cv.isScrollEnabled = true
         cv.register(LikeHistoryCell.self, forCellWithReuseIdentifier: LikeHistoryCell.identifier)
+        
         if #available(iOS 11.0, *) {
             cv.contentInsetAdjustmentBehavior = .never
         }
         return cv
     }()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
@@ -78,7 +82,7 @@ class LikeHistoryView: UIView {
         // 컬렉션 뷰: 뒤로가기 버튼 아래, safeArea 하단까지
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(backButton.snp.bottom).offset(25)
-            make.leading.trailing.bottom.equalTo(safeAreaLayoutGuide)
+            make.leading.trailing.bottom.equalToSuperview()
         }
     }
 }

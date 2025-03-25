@@ -247,12 +247,10 @@ class WeatherChooseViewController: UIViewController, UIGestureRecognizerDelegate
         }
         
         thermometerIcon.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(309)
-            $0.bottom.equalToSuperview().offset(-383)
-            $0.leading.equalToSuperview().offset(117)
-            $0.trailing.equalToSuperview().offset(-116)
-            
-            
+            $0.centerX.equalToSuperview() // 가로 중앙 정렬
+            $0.top.equalToSuperview().offset(309) // 기존 top 위치 유지
+            $0.bottom.equalToSuperview().offset(-383) // 기존 bottom 위치 유지
+            $0.width.height.equalTo(160) // 크기 유지
         }
         nextButton.addTarget(self, action: #selector(didTapNextButton), for: .touchUpInside)
     }

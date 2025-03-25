@@ -34,8 +34,15 @@ final class HeaderView: UIView {
     private let logoLabel: UILabel = {
         let label = UILabel()
         label.text = "Clokey"
-        label.font = .ptdBoldFont(ofSize: 22)
-        
+        label.font = UIFont(name: "NotoSansKR-ExtraBold", size: 20)
+        label.textColor = .mainBrown800
+
+        // letterSpacing 적용
+        let attributedString = NSMutableAttributedString(string: "Clokey", attributes: [
+            .kern: 0.8 // letter-spacing 4% (20 * 0.04 = 0.8)
+        ])
+        label.attributedText = attributedString
+
         return label
     }()
     
@@ -80,6 +87,7 @@ final class HeaderView: UIView {
         logoLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.leading.equalTo(20)
+            
         }
         
         // 검색 버튼
