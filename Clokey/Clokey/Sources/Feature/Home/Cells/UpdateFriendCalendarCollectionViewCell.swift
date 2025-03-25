@@ -16,7 +16,7 @@ class UpdateFriendCalendarCollectionViewCell: UICollectionViewCell {
     
     let imageView = UIImageView().then{
         $0.contentMode = .scaleAspectFill
-//        $0.layer.cornerRadius = 8
+        $0.layer.cornerRadius = 5
         $0.clipsToBounds = true
         $0.backgroundColor = .gray
     }
