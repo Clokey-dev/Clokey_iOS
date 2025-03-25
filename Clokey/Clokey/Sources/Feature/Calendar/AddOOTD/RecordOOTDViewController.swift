@@ -207,6 +207,7 @@ class RecordOOTDViewController: UIViewController, UIGestureRecognizerDelegate {
             }
             
             DispatchQueue.main.async {
+                self.mainView.showTouchBlockingView()
                 self.mainView.loadingIndicator.startAnimating()
             }
             
@@ -215,6 +216,7 @@ class RecordOOTDViewController: UIViewController, UIGestureRecognizerDelegate {
                 guard let self = self else { return }
                 
                 DispatchQueue.main.async {
+                    self.mainView.hideTouchBlockingView()
                     self.mainView.loadingIndicator.stopAnimating()
                 }
                 

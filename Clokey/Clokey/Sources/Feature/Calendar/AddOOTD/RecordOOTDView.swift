@@ -38,7 +38,16 @@ class RecordOOTDView: UIView {
         $0.color = UIColor(named: "pointOrange800")
         $0.hidesWhenStopped = true
         $0.backgroundColor = .clear
+        $0.isUserInteractionEnabled = true
     }
+    
+    // 터치 차단을 뷰
+    let touchBlockingView = UIView().then {
+        $0.backgroundColor = UIColor.black.withAlphaComponent(0.1) // 반투명 배경
+        $0.isUserInteractionEnabled = true
+        $0.isHidden = true // 기본적으로 숨김
+    }
+
     
     // MARK: - Init
     
@@ -61,7 +70,8 @@ class RecordOOTDView: UIView {
         addSubview(scrollView)
         addSubview(OOTDButton)  // 스크롤뷰와 별개로 추가
         addSubview(loadingIndicator)
-        
+        addSubview(touchBlockingView)
+
         scrollView.addSubview(contentView)
         
         contentView.addSubview(photoTagView)
@@ -107,6 +117,9 @@ class RecordOOTDView: UIView {
         loadingIndicator.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
+        touchBlockingView.snp.makeConstraints {
+            $0.edges.equalToSuperview() // 전체 화면을 덮음
+        }
     }
     
     
@@ -116,4 +129,15 @@ class RecordOOTDView: UIView {
     func updateCollectionViewHeight(_ hasImages: Bool) {
         photoTagView.updateCollectionViewHeight(hasImages)
     }
+    
+    func showTouchBlockingView() {
+        touchBlockingView.isHidden = false
+        bringSubviewToFront(touchBlockingView) // 최상단으로 올림
+        bringSubviewToFront(loadingIndicator) // 로딩 인디케이터도 같이 보이도록 설정
+    }
+
+    func hideTouchBlockingView() {
+        touchBlockingView.isHidden = true
+    }
+
 }
