@@ -25,6 +25,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     private let followCalendarViewController = FollowCalendarViewController()
     
     var followId: String = ""
+    var isBlocking: Bool = false
     var isMe: Bool = false
     var profileImage: String = ""
     
@@ -75,7 +76,8 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         setupActions()
         setupPopupActions()
         
-        followProfileView.touchMyProfile(isMine: isMe)
+        
+        followProfileView.updateCloseAccount(isClosed: isBlocking)
         
         tapProfile()
     }
@@ -114,12 +116,12 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
 
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: backButton), titleItem]
         
-        if !isMe {
-            navBarManager.setOption(
-                to: navigationItem,
-                target: self,
-                action: #selector(didTapReportButton))
-        }
+//        navBarManager.setOption(
+//            to: navigationItem,
+//            target: self,
+//            action: #selector(didTapReportButton))
+        
+        
     }
     
     private func tapProfile() {
@@ -188,7 +190,17 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                     self.followProfileView.followingCountButton.setTitle("\(userProfile.followingCount)", for: .normal)
                     self.followingCount = userProfile.followingCount
                     self.followProfileView.descriptionLabel.text = userProfile.bio
+//                    self.isBlocking = userProfile.isBlocking
+                    self.isBlocking = userProfile.isBlocking ?? false
+                    self.isMe = userProfile.isMe
                     
+                    self.followProfileView.touchMyProfile(isMine: self.isMe)
+                    if !self.isMe {
+                        self.navBarManager.setOption(
+                            to: self.navigationItem,
+                            target: self,
+                            action: #selector(self.didTapReportButton))
+                    }
                     
                     if let profileImageUrl = userProfile.profileImageUrl,
                        let url = URL(string: profileImageUrl) {
@@ -358,9 +370,6 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     
     @objc private func didTapBlockButton() {
         didunBlockUser()
-//        followProfileView.blockButton(isBlock: false)
-//        followProfileView.updateCloseAccount(isClosed: false)
-        
     }
     
     func didunBlockUser() {
@@ -407,8 +416,8 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
             case .success:
                 print("\(clokeyId) 차단 해제 성공")
                 DispatchQueue.main.async {
-                    self.followProfileView.blockButton(isBlock: true)
-                    self.followProfileView.updateCloseAccount(isClosed: true)
+                    self.followProfileView.blockButton(isBlock: false)
+                    self.followProfileView.updateCloseAccount(isClosed: false)
                 }
             case .failure(let error):
                 print("차단 해제 실패: \(error.localizedDescription)")

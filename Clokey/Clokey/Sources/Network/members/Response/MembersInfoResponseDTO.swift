@@ -22,6 +22,8 @@ public struct MembersInfoResponseDTO: Codable {
     public let visibility: String
     public let clothResults: [ClothResult]
     public let isFollowing: Bool?
+    public let isBlocking: Bool?
+    public let isMe : Bool
     
     public struct ClothResult: Codable {
         public let clothId: Int64?
