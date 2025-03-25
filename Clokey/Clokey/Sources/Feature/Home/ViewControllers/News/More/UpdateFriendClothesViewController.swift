@@ -91,8 +91,6 @@ class UpdateFriendClothesViewController: UIViewController, UIGestureRecognizerDe
         navigationController?.popViewController(animated: true)
     }
     
-    
-    
     private func updateCollectionViewHeight() {
         updateFriendClothesView.updateFriendClothesCollectionView.layoutIfNeeded()
         let contentHeight = updateFriendClothesView.updateFriendClothesCollectionView.contentSize.height
@@ -227,5 +225,11 @@ extension UpdateFriendClothesViewController: UICollectionViewDelegate {
         let displayAllVC = DisplayAllViewController()
         displayAllVC.clokeyId = selectedUpdate.name
         navigationController?.pushViewController(displayAllVC, animated: true)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.item == updates.count - 1 {
+            loadData(isNextPage: true)
+        }
     }
 }

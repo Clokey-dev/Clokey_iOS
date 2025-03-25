@@ -438,6 +438,14 @@ extension YourFollowListViewController: UICollectionViewDataSource, UICollection
         return 0
     }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if collectionView == followerCollectionView && indexPath.item == followerusers.count - 1 {
+            loadFollowerData(isNextPage: true)
+        } else if collectionView == followingCollectionView && indexPath.item == followingusers.count - 1 {
+            loadFollowingData(isNextPage1: true)
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == followerCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: YourFollowerUserCell.identifier, for: indexPath) as! YourFollowerUserCell

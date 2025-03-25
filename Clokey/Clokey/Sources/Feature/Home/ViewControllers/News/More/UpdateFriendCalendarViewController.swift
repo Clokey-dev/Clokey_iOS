@@ -209,4 +209,10 @@ extension UpdateFriendCalendarViewController: UICollectionViewDataSource {
         let followProfileVC = FollowProfileViewController(followId: selectedUpdate.name)
         navigationController?.pushViewController(followProfileVC, animated: true)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.item == modelData.count - 1 {
+            loadData(isNextPage: true)
+        }
+    }
 }
