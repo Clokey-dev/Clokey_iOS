@@ -456,14 +456,14 @@ extension YourFollowListViewController: UICollectionViewDataSource, UICollection
             print("팔로워 선택됨: \(selectedUser.nickname)")
             
             let followProfileVC = FollowProfileViewController(followId: selectedUser.userId)
-            followProfileVC.isMe = selectedUser.isMe
+//            followProfileVC.isMe = selectedUser.isMe
             navigationController?.pushViewController(followProfileVC, animated: false)
         } else if collectionView == followingCollectionView {
             let selectedUser = followingusers[indexPath.item]
             print("팔로잉 선택됨: \(selectedUser.nickname)")
             
             let followProfileVC = FollowProfileViewController(followId: selectedUser.userId)
-            followProfileVC.isMe = selectedUser.isMe
+//            followProfileVC.isMe = selectedUser.isMe
             navigationController?.pushViewController(followProfileVC, animated: false)
         }
     }

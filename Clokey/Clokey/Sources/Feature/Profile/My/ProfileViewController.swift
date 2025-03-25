@@ -56,6 +56,8 @@ final class ProfileViewController: UIViewController {
         loadData()
         setupActions()
         setupPopupActions()
+        
+        tapProfile()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -102,6 +104,19 @@ final class ProfileViewController: UIViewController {
     var backgroundImage: String = ""
     var bio: String = ""
     var visibility: String = ""
+    
+    private func tapProfile() {
+        // 예: profileImageView가 프로필 이미지 뷰
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapProfileImage))
+        self.profileView.profileImageView.isUserInteractionEnabled = true
+        self.profileView.profileImageView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func didTapProfileImage() {
+        let imagePickVC = ImagePickViewController(image: profileImage)
+        imagePickVC.modalPresentationStyle = .overFullScreen
+        present(imagePickVC, animated: false)
+    }
     
     private func loadData() {
         let clokeyId: String = ""
