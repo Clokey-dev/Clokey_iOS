@@ -26,8 +26,10 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
     var thickCount: Int?
     var isPublicSelected: Bool?
     
+    private var previousImage: UIImage?
+    private var selectedImageForCropping: UIImage?
+    
     private let lastAddView = LastAddView()
-    private var isSelectingProfileImage = false
     
     override func loadView() {
         view = lastAddView
@@ -106,7 +108,6 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
               let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
         
         let keyboardHeight = keyboardFrame.height
-        //        let bottomInset = keyboardHeight - view.safeAreaInsets.bottom
         
         if let activeTextField = view.findFirstResponder() as? UITextField {
             let textFieldFrame = activeTextField.convert(activeTextField.bounds, to: view)
@@ -125,7 +126,6 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
     
     // 버튼 액션 설정
     private func setupActions() {
-//        lastAddView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         
         lastAddView.addButton.addTarget(self, action: #selector(didTapAddImageButton(_:)), for: .touchUpInside)
         
@@ -134,7 +134,6 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
     
     
     @objc private func didTapAddImageButton(_ sender: UIButton) {
-        isSelectingProfileImage = true
         showImagePicker() // 이미지 선택 기능 호출
     }
     
@@ -152,9 +151,7 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
         picker.dismiss(animated: true)
         
         if let selectedImage = info[.originalImage] as? UIImage {
-            if isSelectingProfileImage {
-                lastAddView.imageView.image = selectedImage
-            }
+            selectedImageForCropping = selectedImage
             showCropViewController()
         }
     }
@@ -162,8 +159,9 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
     
     // 크롭 화면 호출
     private func showCropViewController() {
-        guard let imageToCrop = lastAddView.imageView.image else { return } // 선택된 이미지 가져오기
+        guard let imageToCrop = selectedImageForCropping else { return }
         
+        previousImage = lastAddView.imageView.image
         let cropViewController = TOCropViewController(croppingStyle: .default, image: imageToCrop)
         cropViewController.delegate = self
         cropViewController.aspectRatioLockEnabled = true
@@ -182,9 +180,13 @@ class LastAddViewController: UIViewController, TOCropViewControllerDelegate, UII
     }
     func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
         print("사용자가 크롭을 취소했습니다.")
-        isSelectingProfileImage = false //  프로필 이미지 선택 상태 해제
-        lastAddView.imageView.image = UIImage(named: "beforeaddimage") //  기존 이미지 유지 또는 nil 처리
-        cropViewController.dismiss(animated: true)
+        if let backup = previousImage {
+                lastAddView.imageView.image = backup
+            } else {
+                lastAddView.imageView.image = UIImage(named: "beforeaddimage")
+            }
+            
+            cropViewController.dismiss(animated: true)
     }
     
     

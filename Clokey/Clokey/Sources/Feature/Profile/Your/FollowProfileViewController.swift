@@ -117,12 +117,6 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
 
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: backButton), titleItem]
         
-//        navBarManager.setOption(
-//            to: navigationItem,
-//            target: self,
-//            action: #selector(didTapReportButton))
-        
-        
     }
     
     private func tapProfile() {
