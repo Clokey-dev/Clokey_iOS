@@ -298,6 +298,7 @@
 		A6FBF9C92D78BAC5000FC4EA /* CustomReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9C82D78BAC5000FC4EA /* CustomReportViewController.swift */; };
 		A6FBF9CB2D78BAE3000FC4EA /* CustomReportCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9CA2D78BAE3000FC4EA /* CustomReportCompleteView.swift */; };
 		A6FBF9CD2D78BB05000FC4EA /* CustomReportCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9CC2D78BB05000FC4EA /* CustomReportCompleteViewController.swift */; };
+		A6FD96DC2D8C4D100059A88D /* ImagePickViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FD96DB2D8C4D100059A88D /* ImagePickViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -586,6 +587,7 @@
 		A6FBF9C82D78BAC5000FC4EA /* CustomReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReportViewController.swift; sourceTree = "<group>"; };
 		A6FBF9CA2D78BAE3000FC4EA /* CustomReportCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReportCompleteView.swift; sourceTree = "<group>"; };
 		A6FBF9CC2D78BB05000FC4EA /* CustomReportCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReportCompleteViewController.swift; sourceTree = "<group>"; };
+		A6FD96DB2D8C4D100059A88D /* ImagePickViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1478,6 +1480,7 @@
 				07ECCB582D4E351E00AFF486 /* CustomSearchField.swift */,
 				07ECCB5A2D4E351E00AFF486 /* CustomTotalSegmentView.swift */,
 				07ECCB5B2D4E351E00AFF486 /* CustomCategoryModel.swift */,
+				A6FD96DB2D8C4D100059A88D /* ImagePickViewController.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2097,6 +2100,7 @@
 				0769733A2D63687200AEA5D1 /* NotificationEndpoints.swift in Sources */,
 				0744FFD92D5B1E0700E60282 /* UpdateFriendCalendarView.swift in Sources */,
 				A62A429E2D4D2ADE00672D3F /* MainView.swift in Sources */,
+				A6FD96DC2D8C4D100059A88D /* ImagePickViewController.swift in Sources */,
 				A62A429F2D4D2ADE00672D3F /* HeaderView.swift in Sources */,
 				A62A42A02D4D2ADE00672D3F /* MainViewController.swift in Sources */,
 				A62A42A12D4D2ADE00672D3F /* TabBarView.swift in Sources */,
@@ -2344,11 +2348,9 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
+				DEVELOPMENT_TEAM = BBVZV8T99P;
 				ENABLE_DEBUG_DYLIB = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
@@ -2370,7 +2372,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -2390,12 +2391,10 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
+				DEVELOPMENT_TEAM = BBVZV8T99P;
 				ENABLE_DEBUG_DYLIB = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
@@ -2417,7 +2416,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

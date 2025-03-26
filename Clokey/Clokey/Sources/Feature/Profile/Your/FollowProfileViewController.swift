@@ -23,9 +23,12 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     private var loadingOverlay: UIView?
     
     private let followCalendarViewController = FollowCalendarViewController()
-    
+    private let calendarViewController = CalendarViewController()
+
     var followId: String = ""
+    var isBlocking: Bool = false
     var isMe: Bool = false
+    var profileImage: String = ""
     
     var clokey_Id: String = ""
     var followerCount: Int = 0
@@ -74,7 +77,10 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         setupActions()
         setupPopupActions()
         
-        followProfileView.touchMyProfile(isMine: isMe)
+        
+        followProfileView.updateCloseAccount(isClosed: isBlocking)
+        
+        tapProfile()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -111,12 +117,25 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
 
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: backButton), titleItem]
         
-        if !isMe {
-            navBarManager.setOption(
-                to: navigationItem,
-                target: self,
-                action: #selector(didTapReportButton))
-        }
+//        navBarManager.setOption(
+//            to: navigationItem,
+//            target: self,
+//            action: #selector(didTapReportButton))
+        
+        
+    }
+    
+    private func tapProfile() {
+        // 예: profileImageView가 프로필 이미지 뷰
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapProfileImage))
+        self.followProfileView.profileImageView.isUserInteractionEnabled = true
+        self.followProfileView.profileImageView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func didTapProfileImage() {
+        let imagePickVC = ImagePickViewController(image: profileImage)
+        imagePickVC.modalPresentationStyle = .overFullScreen
+        present(imagePickVC, animated: false)
     }
     
     // 뒤로가기
@@ -155,7 +174,6 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         
         let membersService = MembersService()
         
-        
         // MARK: - 사용자 정보 받아서 로드하는 API
         membersService.getUserProfile(clokey_id: followId) { [weak self] result in
             guard let self = self else { return }
@@ -163,7 +181,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
             switch result {
             case .success(let userProfile):
                 DispatchQueue.main.async {
-
+                    self.isMe = userProfile.isMe
                     self.clokey_Id = userProfile.clokeyId
                     self.followProfileView.nicknameLabel.text = userProfile.nickname
                     self.followProfileView.writeCountLabel.text = "\(userProfile.recordCount)"
@@ -172,11 +190,22 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                     self.followProfileView.followingCountButton.setTitle("\(userProfile.followingCount)", for: .normal)
                     self.followingCount = userProfile.followingCount
                     self.followProfileView.descriptionLabel.text = userProfile.bio
+//                    self.isBlocking = userProfile.isBlocking
+                    self.isBlocking = userProfile.isBlocking ?? false
+                    self.isMe = userProfile.isMe
                     
+                    self.followProfileView.touchMyProfile(isMine: self.isMe)
+                    if !self.isMe {
+                        self.navBarManager.setOption(
+                            to: self.navigationItem,
+                            target: self,
+                            action: #selector(self.didTapReportButton))
+                    }
                     
                     if let profileImageUrl = userProfile.profileImageUrl,
                        let url = URL(string: profileImageUrl) {
                         self.followProfileView.profileImageView.kf.setImage(with: url)
+                        self.profileImage = profileImageUrl
                     } else {
                         self.followProfileView.profileImageView.image = UIImage(named: "default_background_image") // 기본 이미지 설정
                     }
@@ -185,6 +214,10 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                     }
                     
                     let clothes = userProfile.clothResults
+                    
+                    self.followCalendarViewController.followId = self.followId
+                    self.followCalendarViewController.isMe = self.isMe
+                    self.followCalendarViewController.updateCalendar()
                     
                     self.followProfileView.clothesImageView2.isHidden = clothes.isEmpty || clothes.count < 2
                     self.followProfileView.clothesImageView3.isHidden = clothes.isEmpty || clothes.count < 3
@@ -333,7 +366,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                         }
                     }
                 case .failure(let error):
-                    print("🚨 팔로우/언팔로우 요청 실패: \(error.localizedDescription)")
+                    print("팔로우/언팔로우 요청 실패: \(error.localizedDescription)")
                 }
             }
         }
@@ -341,9 +374,6 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     
     @objc private func didTapBlockButton() {
         didunBlockUser()
-        followProfileView.blockButton(isBlock: false)
-        followProfileView.updateCloseAccount(isClosed: false)
-        
     }
     
     func didunBlockUser() {
@@ -390,8 +420,8 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
             case .success:
                 print("\(clokeyId) 차단 해제 성공")
                 DispatchQueue.main.async {
-                    self.followProfileView.blockButton(isBlock: true)
-                    self.followProfileView.updateCloseAccount(isClosed: true)
+                    self.followProfileView.blockButton(isBlock: false)
+                    self.followProfileView.updateCloseAccount(isClosed: false)
                 }
             case .failure(let error):
                 print("차단 해제 실패: \(error.localizedDescription)")

@@ -254,7 +254,8 @@ final class EditProfileView: UIView {
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.bottom.equalToSuperview()
         }
         
         contentView.snp.makeConstraints { make in
@@ -263,20 +264,9 @@ final class EditProfileView: UIView {
             make.bottom.equalTo(completeButton.snp.bottom)
         }
         
-//        backButton.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().offset(20)
-//            make.top.equalTo(contentView.safeAreaLayoutGuide).offset(11)
-//            make.width.height.equalTo(24)
-//        }
-//        
-//        profileSettingLabel.snp.makeConstraints { make in
-//            make.centerX.equalToSuperview()
-//            make.centerY.equalTo(backButton)
-//        }
-        
         // 4. Background Image
         backgroundImageView.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide).offset(11)
+            make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(393) // 이미지 높이 조정 (원하는 값으로)
         }
