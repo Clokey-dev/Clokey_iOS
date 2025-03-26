@@ -13,6 +13,9 @@ class FolderDropDownViewController: UIViewController, FolderDropdownViewDelegate
     
     /// DrawerViewController에서 계산한 상단 오프셋 (예: 네비게이션바 하단 + 5)
     var dropdownTop: CGFloat = 0
+    //preselectedItems
+    var preselectedItems: [(id: Int, image: UIImage, title: String)] = []
+
     
     // API 서비스 (FolderService)
     private let folderService = FolderService()
@@ -57,19 +60,14 @@ class FolderDropDownViewController: UIViewController, FolderDropdownViewDelegate
     
     // 1) 폴더 편집
     func didSelectEditFolder() {
-        guard let nav = parentNav else {
-            print("❌ 네비게이션 컨트롤러를 찾을 수 없습니다.")
-            return
-        }
-        guard let folderId = self.folderId, folderId != 0 else {
-            print("❌ 폴더 수정에 필요한 folderId가 없습니다.")
-            return
-        }
+        guard let nav = parentNav, let folderId = self.folderId, folderId != 0 else {
+                    print("❌ 폴더 수정에 필요한 정보가 부족합니다.")
+                    return
+                }
         
-        // 모달 닫고, 편집 화면으로 이동 (예시: DrawerEditViewController)
         dismiss(animated: false) {
-            let drawerEditVC = DrawerEditViewController(folderId: folderId)
-            nav.pushViewController(drawerEditVC, animated: true)
+                    let drawerEditVC = DrawerEditViewController(folderId: folderId, preselectedItems: self.preselectedItems)
+                    nav.pushViewController(drawerEditVC, animated: true)
         }
     }
     

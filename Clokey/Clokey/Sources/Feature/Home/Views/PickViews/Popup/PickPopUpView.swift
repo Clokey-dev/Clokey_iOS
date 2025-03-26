@@ -259,7 +259,6 @@ class PickPopUpView: UIView {
         }
         
         categoryButton1.snp.makeConstraints { make in
-            make.width.equalTo(43)
             make.height.equalTo(22)
         }
         
@@ -268,7 +267,6 @@ class PickPopUpView: UIView {
         }
         
         categoryButton2.snp.makeConstraints { make in
-            //            make.width.equalTo(54)
             make.height.equalTo(22)
         }
         

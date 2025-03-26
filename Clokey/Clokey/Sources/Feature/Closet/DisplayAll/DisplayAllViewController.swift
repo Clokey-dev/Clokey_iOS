@@ -69,7 +69,10 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
         configureInitialSetup()
         setupKeyboardDismissGestures() // 키보드 제스처 설정
         setupSortDropdownDismissGesture() // sort dropdown dismiss 제스처 등록
-        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleClothDeleted),
+                                               name: Notification.Name("clothDeleted"),
+                                               object: nil)
         // Delegate 설정
         displayAllView.customTotalSegmentView.delegate = self
         displayAllView.sortDropdownDelegate = self
@@ -82,6 +85,7 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
                               coreCategoryName: core,
                               coreCategoryId: coreId,
                               season: selectedSeason)
+            
         }
         
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
@@ -311,6 +315,12 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
         }
     }
     
+    @objc private func handleClothDeleted() {
+        // 현재 카테고리의 데이터를 새로 로드합니다.
+        loadClothesData(categoryId: currentMainCategoryId, isNextPage: false)
+    }
+
+    
     // MARK: - CollectionView DataSource & Delegate
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return clothItems.count
@@ -534,3 +544,4 @@ extension DisplayAllViewController: SmartSummationViewControllerDelegate {
         displayAllView.searchField.textField.text = ""
     }
 }
+

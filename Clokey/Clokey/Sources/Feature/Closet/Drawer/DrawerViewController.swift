@@ -124,18 +124,32 @@ class DrawerViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     // MARK: - Actions
+    // DrawerViewController.swift
     @objc private func editButtonTapped() {
         guard let navController = navigationController else { return }
         let dropdownTop = navController.navigationBar.frame.maxY + 5
+        
         let dropdownVC = FolderDropDownViewController()
         dropdownVC.dropdownTop = dropdownTop
         dropdownVC.parentNav = navController
+        dropdownVC.folderId = Int64(drawerItem.id)
+        
+        let preselected = clothItems.map { cloth -> (id: Int, image: UIImage, title: String) in
+            let name = cloth.clothName ?? "이름 없음"
+            
+            let placeholder = UIImage(named: "placeholderImage") ?? UIImage()
+            
+            return (id: cloth.clothId, image: placeholder, title: name)
+        }
+        
+        dropdownVC.preselectedItems = preselected
+        
         dropdownVC.modalPresentationStyle = .overCurrentContext
         dropdownVC.modalTransitionStyle = .crossDissolve
+        
         present(dropdownVC, animated: true, completion: nil)
-        dropdownVC.folderId = Int64(drawerItem.id)
     }
-    
+
     @objc func backButtonTapped() {
         // backButtonTapped에서의 커스텀 뒤로가기 동작 (예: tabBarController에서 특정 탭 선택 후 pop)
         if let tabBarController = self.tabBarController {
