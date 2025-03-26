@@ -6,13 +6,6 @@
 //
 
 
-//
-//  NotificationCell.swift
-//  Alarm
-//
-//  Created by 소민준 on 2/8/25.
-//
-
 
 
 import UIKit
