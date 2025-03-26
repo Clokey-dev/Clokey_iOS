@@ -178,8 +178,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
             searchView.updateSelectedKeywordUI()
             searchView.searchField.textField.text = keyword
             performHashtagSearch(with: keyword)
-            let resultVC = SearchResultViewController(query: keyword, results: [], initialTabIsHashtag: true)
-                navigationController?.pushViewController(resultVC, animated: true)
+            
             
         }
       
