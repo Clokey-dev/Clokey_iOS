@@ -196,4 +196,30 @@ public final class MembersService: NetworkManager {
             }
         )
     }
+    
+    // 본인확인 GET API
+    public func checkMySelf(
+        clokeyId: String,
+        completion: @escaping (Result<CheckMeResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .checkMySelf(clokeyId: clokeyId),
+            decodingType: CheckMeResponseDTO.self,
+            completion: completion
+        )
+    }
+    ///차단 목록 불러오기
+    public func getBlockMembers(
+        page: Int,
+        completion: @escaping (Result<GetBlockMembersResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .getBlockMembers(page: page),
+            decodingType: GetBlockMembersResponseDTO.self,
+            completion: completion
+        )
+    }
+
+
+
 }

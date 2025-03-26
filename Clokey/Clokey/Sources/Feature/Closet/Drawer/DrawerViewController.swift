@@ -188,7 +188,7 @@ class DrawerViewController: UIViewController, UICollectionViewDataSource, UIColl
     // MARK: - UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cloth = clothItems[indexPath.item]
-        print("Selected cloth: \(cloth.clothName)")
+        print("Selected cloth: \(String(describing: cloth.clothName))")
     }
 }
 

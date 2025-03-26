@@ -199,12 +199,14 @@ class CustomGalleryViewController: UIViewController, UIGestureRecognizerDelegate
                 return
             }
 
-            // index 기준으로 정렬 후 PhotoEditViewController로 전달
+            // index 기준으로 정렬 후
             let sortedImages = selectedImages.sorted { $0.index < $1.index }.map { $0.image }
             
-            let photoEditVC = PhotoEditViewController()
-            photoEditVC.configure(with: sortedImages)
-            self.navigationController?.pushViewController(photoEditVC, animated: true)
+            // delegate를 통해 이미지 전달
+            self.dismiss(animated: true) { [weak self] in
+                guard let self = self else { return }
+                self.delegate?.galleryViewController(self, didSelect: sortedImages)
+            }
         }
     }
 
@@ -445,6 +447,7 @@ extension CustomGalleryViewController: UIImagePickerControllerDelegate, UINaviga
     private func savePhotoToLibrary(_ image: UIImage) {
         PHPhotoLibrary.shared().performChanges({
             let request = PHAssetChangeRequest.creationRequestForAsset(from: image)
+            print(request)
         }) { success, error in
             if success {
                 DispatchQueue.main.async {

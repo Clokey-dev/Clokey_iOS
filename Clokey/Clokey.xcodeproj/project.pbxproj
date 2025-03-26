@@ -218,6 +218,9 @@
 		07F859B42D62021700DD5BF8 /* Onboarding_no.json in Resources */ = {isa = PBXBuildFile; fileRef = 07F859B12D62021700DD5BF8 /* Onboarding_no.json */; };
 		07F859B52D62021700DD5BF8 /* Onboarding_yes.json in Resources */ = {isa = PBXBuildFile; fileRef = 07F859B22D62021700DD5BF8 /* Onboarding_yes.json */; };
 		07F859B82D62024300DD5BF8 /* LottieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F859B62D62024300DD5BF8 /* LottieViewController.swift */; };
+		1EC980E22D8ACCD400AA3450 /* BlockUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC980DF2D8ACCD400AA3450 /* BlockUserCell.swift */; };
+		1EC980E32D8ACCD400AA3450 /* BlockUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC980E02D8ACCD400AA3450 /* BlockUserModel.swift */; };
+		1EC980E52D8AD38D00AA3450 /* BlockUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC980E42D8AD38B00AA3450 /* BlockUserViewController.swift */; };
 		1EF33C692D665FFB00142954 /* ArrangeClosetBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C482D665FFB00142954 /* ArrangeClosetBannerView.swift */; };
 		1EF33C6A2D665FFB00142954 /* DisplayAllViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C5C2D665FFB00142954 /* DisplayAllViewController.swift */; };
 		1EF33C6C2D665FFB00142954 /* SmartSummationBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C4B2D665FFB00142954 /* SmartSummationBannerView.swift */; };
@@ -307,6 +310,7 @@
 		A6FBF9C92D78BAC5000FC4EA /* CustomReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9C82D78BAC5000FC4EA /* CustomReportViewController.swift */; };
 		A6FBF9CB2D78BAE3000FC4EA /* CustomReportCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9CA2D78BAE3000FC4EA /* CustomReportCompleteView.swift */; };
 		A6FBF9CD2D78BB05000FC4EA /* CustomReportCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FBF9CC2D78BB05000FC4EA /* CustomReportCompleteViewController.swift */; };
+		A6FD96DC2D8C4D100059A88D /* ImagePickViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6FD96DB2D8C4D100059A88D /* ImagePickViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -511,6 +515,11 @@
 		07F859B12D62021700DD5BF8 /* Onboarding_no.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Onboarding_no.json; sourceTree = "<group>"; };
 		07F859B22D62021700DD5BF8 /* Onboarding_yes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Onboarding_yes.json; sourceTree = "<group>"; };
 		07F859B62D62024300DD5BF8 /* LottieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieViewController.swift; sourceTree = "<group>"; };
+		1EC980D52D8A8B7800AA3450 /* BlockUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserModel.swift; sourceTree = "<group>"; };
+		1EC980D72D8A8F8C00AA3450 /* BlockUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserCell.swift; sourceTree = "<group>"; };
+		1EC980DF2D8ACCD400AA3450 /* BlockUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserCell.swift; sourceTree = "<group>"; };
+		1EC980E02D8ACCD400AA3450 /* BlockUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserModel.swift; sourceTree = "<group>"; };
+		1EC980E42D8AD38B00AA3450 /* BlockUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserViewController.swift; sourceTree = "<group>"; };
 		1EF33C482D665FFB00142954 /* ArrangeClosetBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeClosetBannerView.swift; sourceTree = "<group>"; };
 		1EF33C492D665FFB00142954 /* ArrangeClosetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeClosetView.swift; sourceTree = "<group>"; };
 		1EF33C4A2D665FFB00142954 /* ArrangeClosetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeClosetViewController.swift; sourceTree = "<group>"; };
@@ -602,6 +611,7 @@
 		A6FBF9C82D78BAC5000FC4EA /* CustomReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReportViewController.swift; sourceTree = "<group>"; };
 		A6FBF9CA2D78BAE3000FC4EA /* CustomReportCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReportCompleteView.swift; sourceTree = "<group>"; };
 		A6FBF9CC2D78BB05000FC4EA /* CustomReportCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReportCompleteViewController.swift; sourceTree = "<group>"; };
+		A6FD96DB2D8C4D100059A88D /* ImagePickViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1036,6 +1046,8 @@
 				A6DB5F402D85E33400B64B59 /* ReportEndpoint.swift */,
 				A6DB5F442D85E6B100B64B59 /* ReportResponseDTO.swift */,
 				A6DB5F422D85E34F00B64B59 /* ReportService.swift */,
+				1EC980D52D8A8B7800AA3450 /* BlockUserModel.swift */,
+				1EC980D72D8A8F8C00AA3450 /* BlockUserCell.swift */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1493,6 +1505,7 @@
 				07ECCB582D4E351E00AFF486 /* CustomSearchField.swift */,
 				07ECCB5A2D4E351E00AFF486 /* CustomTotalSegmentView.swift */,
 				07ECCB5B2D4E351E00AFF486 /* CustomCategoryModel.swift */,
+				A6FD96DB2D8C4D100059A88D /* ImagePickViewController.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1710,6 +1723,16 @@
 				07F859B62D62024300DD5BF8 /* LottieViewController.swift */,
 			);
 			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		1EC980E12D8ACCD400AA3450 /* Block */ = {
+			isa = PBXGroup;
+			children = (
+				1EC980E42D8AD38B00AA3450 /* BlockUserViewController.swift */,
+				1EC980DF2D8ACCD400AA3450 /* BlockUserCell.swift */,
+				1EC980E02D8ACCD400AA3450 /* BlockUserModel.swift */,
+			);
+			path = Block;
 			sourceTree = "<group>";
 		};
 		1EF33C4F2D665FFB00142954 /* Banner */ = {
@@ -1935,6 +1958,7 @@
 		A67661992D5B367B006AAB63 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				1EC980E12D8ACCD400AA3450 /* Block */,
 				0794EA8E2D86A9D900D204B6 /* LikeHistory */,
 				A67661952D5B367B006AAB63 /* DeleteAccountView.swift */,
 				A67661962D5B367B006AAB63 /* DeleteAccountViewController.swift */,
@@ -2140,6 +2164,7 @@
 				0769733A2D63687200AEA5D1 /* NotificationEndpoints.swift in Sources */,
 				0744FFD92D5B1E0700E60282 /* UpdateFriendCalendarView.swift in Sources */,
 				A62A429E2D4D2ADE00672D3F /* MainView.swift in Sources */,
+				A6FD96DC2D8C4D100059A88D /* ImagePickViewController.swift in Sources */,
 				A62A429F2D4D2ADE00672D3F /* HeaderView.swift in Sources */,
 				A62A42A02D4D2ADE00672D3F /* MainViewController.swift in Sources */,
 				A62A42A12D4D2ADE00672D3F /* TabBarView.swift in Sources */,
@@ -2190,6 +2215,8 @@
 				1EF33C8E2D66613500142954 /* FolderEndpoint.swift in Sources */,
 				0794EA8A2D81A6C500D204B6 /* ReportResponseDTO.swift in Sources */,
 				0794EA8B2D81A6C500D204B6 /* ReportService.swift in Sources */,
+				1EC980E22D8ACCD400AA3450 /* BlockUserCell.swift in Sources */,
+				1EC980E32D8ACCD400AA3450 /* BlockUserModel.swift in Sources */,
 				0794EA8C2D81A6C500D204B6 /* ReportRequestDTO.swift in Sources */,
 				0794EA8D2D81A6C500D204B6 /* ReportEndpoint.swift in Sources */,
 				1EF33C8F2D66613500142954 /* FolderResponseDTO.swift in Sources */,
@@ -2292,6 +2319,7 @@
 				07649EE62D4DE58900B6B2B2 /* MembersLoginRequestDTO.swift in Sources */,
 				07649EE72D4DE58900B6B2B2 /* MembersEndpoint.swift in Sources */,
 				07649EE82D4DE58900B6B2B2 /* HistoryResponseDTO.swift in Sources */,
+				1EC980E52D8AD38D00AA3450 /* BlockUserViewController.swift in Sources */,
 				07649EE92D4DE58900B6B2B2 /* NetworkManager+Extension.swift in Sources */,
 				0744FFD42D5B1D9C00E60282 /* HomeView.swift in Sources */,
 				07F859A82D61D95000DD5BF8 /* SearchService.swift in Sources */,

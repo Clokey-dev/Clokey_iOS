@@ -209,9 +209,19 @@ class NewsViewController: UIViewController {
             case .success(let responseDTO):
                 DispatchQueue.main.async {
                     let closetItems = responseDTO.closet
+                    let followingCount = responseDTO.followingCount
+                    
                     
                     let isEmpty = closetItems.isEmpty
-                    self.newsView.updateFriendClothesEmptyState(isEmpty: isEmpty)
+                    
+                    if followingCount == 0 {
+                        self.newsView.updateFriendClothesEmptyState(isEmpty: isEmpty)
+                    } else {
+                        self.newsView.updateFriendClothesEmptyState(isEmpty: isEmpty)
+                        self.newsView.emptyStackView1.emptyClothesMessageTitle.text = "팔로워한 계정의 옷장 업데이트가 없어요!"
+                        self.newsView.emptyStackView1.emptyClothesMessageSubTitle.text = "다른 사용자들을 팔로우하고\n어떤 옷들이 있는지 옷장을 구경해보세요"
+                    }
+                    
                     
                     if isEmpty {
                         print("Closet 데이터가 없습니다.")
@@ -369,7 +379,7 @@ class NewsViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview()
             make.width.equalTo(290)
-            make.height.equalTo(448)
+            make.height.equalTo(489)
         }
         
         // 팝업 애니메이션 효과
@@ -593,9 +603,18 @@ class NewsViewController: UIViewController {
             case .success(let responseDTO):
                 DispatchQueue.main.async {
                     let calendarItems = responseDTO.calendar
+                    let followingCount = responseDTO.followingCount
                     
                     let isEmpty = calendarItems.isEmpty
                     self.newsView.updateFriendCalendarEmptyState(isEmpty: isEmpty)
+                    
+                    if followingCount == 0 {
+                        self.newsView.updateFriendClothesEmptyState(isEmpty: isEmpty)
+                    } else {
+                        self.newsView.updateFriendClothesEmptyState(isEmpty: isEmpty)
+                        self.newsView.emptyStackView2.emptyClothesMessageTitle.text = "팔로워한 계정의 기록 업데이트가 없어요!"
+                        self.newsView.emptyStackView2.emptyClothesMessageSubTitle.text = "다른 사용자들을 팔로우하고\n어떤 옷들이 있는지 옷장을 구경해보세요"
+                    }
                     
                     
                     if isEmpty {
@@ -925,6 +944,24 @@ class NewsViewController: UIViewController {
         }
     }
     
+    func shouldFetchData(serverDateString: String) -> Bool {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC") // 서버 날짜의 타임존에 맞춰 조정 가능
+        
+        guard let serverDate = dateFormatter.date(from: serverDateString) else {
+            print("서버 날짜 변환 실패")
+            return false
+        }
+        
+        let currentDate = Date()
+        let calendar = Calendar.current
+        guard let difference = calendar.dateComponents([.day], from: serverDate, to: currentDate).day else {
+            return false
+        }
+        
+        return difference >= 14
+    }
     
 }
 

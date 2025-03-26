@@ -224,7 +224,6 @@ extension CalendarCommentView: UITableViewDataSource, UITableViewDelegate {
         
         let comment = comments[indexPath.row]
         let isReply = comment.parentCommentId != nil
-        
         cell.configure(
             profileImage: comment.imageUrl,
             name: comment.nickName,

@@ -98,6 +98,7 @@ class SettingViewController: UIViewController, UIGestureRecognizerDelegate {
         setupButtonActions(for: settingView.LikedHistoryContainer, action: #selector(didTapLikedHistory))
         // 내가 쓴 댓글
         setupButtonActions(for: settingView.HistoryCommentContainer, action: #selector(didTapHistoryComment))
+        setupButtonActions(for: settingView.blokedAccountContainer, action: #selector(didTapBlockButton))
 
     }
     
@@ -238,6 +239,11 @@ class SettingViewController: UIViewController, UIGestureRecognizerDelegate {
             HistoryCommentVC.modalPresentationStyle = .fullScreen
             present(HistoryCommentVC, animated: true, completion: nil)
         }
+    }
+    
+    @objc private func didTapBlockButton() {
+        let blockVC = BlockUserViewController()
+        navigationController?.pushViewController(blockVC, animated: true)
     }
        
 }
