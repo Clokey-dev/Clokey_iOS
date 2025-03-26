@@ -12,8 +12,8 @@ import Then
 
 class SearchResultView: UIView {
     
-    //  뒤로 가기 버튼
-    let backButton = UIButton().then {
+    // 뒤로 가기 버튼
+   let backButton = UIButton().then {
         $0.setImage(UIImage(named: "goback"), for: .normal)
         $0.contentMode = .scaleAspectFit
     }
@@ -126,7 +126,7 @@ class SearchResultView: UIView {
         addSubview(separatorLine)
         
 
-        backButton.snp.makeConstraints { make in
+       backButton.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide.snp.top).offset(10)
             make.leading.equalToSuperview().offset(19)
             make.width.equalTo(10)

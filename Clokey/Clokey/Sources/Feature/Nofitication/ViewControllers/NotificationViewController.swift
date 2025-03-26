@@ -40,30 +40,33 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.isHidden = true
+        // 네비게이션 바 숨김 제거
+        // navigationController?.navigationBar.isHidden = true
         setupTableView()
         navigationItem.hidesBackButton = true
+        setupNavigationBar()
         
-        notificationView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
-        navigationController?.setNavigationBarHidden(true, animated: false)
+        // 네비게이션 바를 보이도록 설정
+        navigationController?.setNavigationBarHidden(false, animated: false)
+        
         refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
-        // 알림 업데이트 감지 후 reload
         NotificationCenter.default.addObserver(self, selector: #selector(reloadNotifications), name: NSNotification.Name("ReloadNotifications"), object: nil)
         notificationView.tableView.alwaysBounceVertical = true
         notificationView.tableView.refreshControl = refreshControl
-        //왼쪽에서 오른쪽 스와이프 하면 뒤로가기
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.fetchNotificationsFromAPI()
         updateEmptyState()
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        navigationController?.view.backgroundColor = .white
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: animated)
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
     @objc private func handleSwipeBack(_ gesture: UISwipeGestureRecognizer) {
         // 시작 위치가 왼쪽 가장자리인지 추가 확인하려면 gesture.location(in: view)를 사용할 수 있습니다.
@@ -91,6 +94,26 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
                 self?.viewModel.fetchNotificationsFromAPI()
             }
         }
+    }
+    private func setupNavigationBar() {
+        
+
+        let backButton = UIButton(type: .system)
+        let config = UIImage.SymbolConfiguration(weight: .bold)
+        let backImage = UIImage(systemName: "chevron.left", withConfiguration: config)
+        backButton.setImage(backImage, for: .normal)
+        backButton.tintColor = .mainBrown800
+        backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+
+        let titleLabel = UILabel()
+        titleLabel.text = "알림"
+        titleLabel.font = UIFont.ptdBoldFont(ofSize: 20)
+        titleLabel.textColor = .black
+
+        let backItem = UIBarButtonItem(customView: backButton)
+        let titleItem = UIBarButtonItem(customView: titleLabel)
+
+        navigationItem.leftBarButtonItems = [backItem, titleItem]
     }
     private func setupTableView() {
         notificationView.tableView.delegate = self

@@ -1,3 +1,4 @@
+
 //
 //  SearchViewController.swift
 //  Clokey
@@ -169,14 +170,18 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
         }
     }
     //  추천 검색어 클릭 시 실행 searchhistory
-    func didTapRecommendedKeyword(_ keyword: String) {
-        selectedKeyword = keyword // 
-        UserDefaults.standard.set(keyword, forKey: "selectedKeyword") //  선택된 키워드 저장
-        
-        searchView.updateSelectedKeywordUI()
-        searchView.searchField.textField.text = keyword
-        performHashtagSearch(with: keyword)
-    }
+    
+        func didTapRecommendedKeyword(_ keyword: String) {
+            selectedKeyword = keyword //
+            UserDefaults.standard.set(keyword, forKey: "selectedKeyword") //  선택된 키워드 저장
+            
+            searchView.updateSelectedKeywordUI()
+            searchView.searchField.textField.text = keyword
+            performHashtagSearch(with: keyword)
+            
+            
+        }
+      
     
     //  검색창에서 "Enter" 키 입력 시 실행 searchmemeberapi 호출
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -224,7 +229,7 @@ class SearchViewController: UIViewController, UITextFieldDelegate, SearchViewDel
             self.searchView.recentSearchTableView.isHidden = true //  UI 즉시 업데이트
         }
     }
-    //해시태그 누르면 계정탭 + 계정 api 호출이 아닌, 기록 호출 , 계정탭 선택 
+    //해시태그 누르면 계정탭 + 계정 api 호출이 아닌, 기록 호출 , 계정탭 선택
     private func performHashtagSearch(with query: String) {
         guard !query.isEmpty else { return }
         
@@ -363,5 +368,4 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         
     }
 }
-
 
