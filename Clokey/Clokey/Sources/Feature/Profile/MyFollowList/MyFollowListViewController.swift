@@ -422,6 +422,12 @@ class MyFollowListViewController: UIViewController, UIGestureRecognizerDelegate 
         // 풀투리프레시 종료 (약간의 딜레이 후)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.refreshControl.endRefreshing()
+            
+            self.followerCount = self.followerusers.count
+            self.followerButton.setTitle("팔로워(\(self.followerCount))", for: .normal)
+            
+            self.followingCount = self.followingusers.count
+            self.followingButton.setTitle("팔로잉(\(self.followingCount))", for: .normal)
         }
     }
 }
