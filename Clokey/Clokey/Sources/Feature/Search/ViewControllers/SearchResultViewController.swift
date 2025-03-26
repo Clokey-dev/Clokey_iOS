@@ -90,9 +90,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
         searchView.searchField.text = query
         filterUsers(with: query)
         addSearchHistory(query)
-        /* DispatchQueue.main.async {
-         self.updateIndicatorPosition(selectedButton: self.searchView.accountButton)
-         }*/
+        
         if initialTabIsHashtag {
             // 해시태그 탭 선택 UI 적용
             searchView.hashtagButton.setTitleColor(UIColor(named: "pointOrange800"), for: .normal)
