@@ -422,6 +422,12 @@ class MyFollowListViewController: UIViewController, UIGestureRecognizerDelegate 
         // 풀투리프레시 종료 (약간의 딜레이 후)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.refreshControl.endRefreshing()
+            
+            self.followerCount = self.followerusers.count
+            self.followerButton.setTitle("팔로워(\(self.followerCount))", for: .normal)
+            
+            self.followingCount = self.followingusers.count
+            self.followingButton.setTitle("팔로잉(\(self.followingCount))", for: .normal)
         }
     }
 }
@@ -436,6 +442,15 @@ extension MyFollowListViewController: UICollectionViewDataSource, UICollectionVi
         }
         return 0
     }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if collectionView == followerCollectionView && indexPath.item == followerusers.count - 1 {
+            loadFollowerData(isNextPage: true)
+        } else if collectionView == followingCollectionView && indexPath.item == followingusers.count - 1 {
+            loadFollowingData(isNextPage1: true)
+        }
+    }
+    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == followerCollectionView {
