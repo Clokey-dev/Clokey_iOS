@@ -117,7 +117,6 @@ class UpdateFriendClothesViewController: UIViewController, UIGestureRecognizerDe
             section: "closet",
             page: nextPage
         ) { (result: Result<GetDetailIssuesClosetResponseDTO, NetworkError>) in
-            defer { self.isLoading = false }
             
             switch result {
             case .success(let responseDTO):
@@ -138,9 +137,10 @@ class UpdateFriendClothesViewController: UIViewController, UIGestureRecognizerDe
                     self.currentPage = 1
                 }
 
-                self.hasMorePages = !newResult.isEmpty
+                self.hasMorePages = nextPage < 3
 
                 DispatchQueue.main.async {
+                    self.isLoading = false
                     self.updateFriendClothesView.updateFriendClothesCollectionView.reloadData()
                     self.updateCollectionViewHeight()
                 }
