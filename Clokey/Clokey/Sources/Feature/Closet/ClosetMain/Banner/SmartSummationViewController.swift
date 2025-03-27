@@ -140,6 +140,7 @@ class SmartSummationViewController: UIViewController {
                 }
             case .failure(let error):
                 print("스마트 요약 API 호출 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 끊겼습니다.")
                 DispatchQueue.main.async {
                     // API 실패 시 더미 데이터 대신 EmptyStateView 표시
                     self.updateEmptyState()
