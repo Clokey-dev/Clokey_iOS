@@ -114,7 +114,6 @@ class UpdateFriendCalendarViewController: UIViewController, UIGestureRecognizerD
             section: "calendar",
             page: nextPage
         ) { (result: Result<GetDetailIssuesCalendarResponseDTO, NetworkError>) in
-            defer { self.isLoading = false }
             
             switch result {
             case .success(let responseDTO):
@@ -146,9 +145,10 @@ class UpdateFriendCalendarViewController: UIViewController, UIGestureRecognizerD
                     self.currentPage = 1
                 }
                 
-                self.hasMorePages = !newResult.isEmpty
+                self.hasMorePages = nextPage < 3
                 
                 DispatchQueue.main.async {
+                    self.isLoading = false
                     self.updateFriendCalendarView.updateFriendCalendarCollectionView.reloadData()
                     self.updateCollectionViewHeight()
                 }
