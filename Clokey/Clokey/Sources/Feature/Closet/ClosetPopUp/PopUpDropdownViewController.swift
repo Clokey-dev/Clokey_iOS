@@ -41,20 +41,7 @@ class PopUpDropdownViewController: UIViewController, PopUpDropdownViewDelegate, 
         return true
     }
     
-    // MARK: - PopUpDropdownViewDelegate 구현
-//    func didSelectEditCloth() {
-//        guard let popUpVC = presentingViewController as? PopUpViewController else { return }
-//        DispatchQueue.main.async {
-//            // 1) 먼저 드롭다운 닫기
-//            self.dismiss(animated: false) {
-//                // 2) 그 후 팝업 닫기
-//                popUpVC.dismiss(animated: true) {
-//                    // 3) 최종적으로 NotificationCenter를 통해 “편집” 알림 전달
-//                    NotificationCenter.default.post(name: Notification.Name("clothEdit"), object: nil)
-//                }
-//            }
-//        }
-//    }
+
     func didSelectEditCloth() {
         guard let popUpVC = presentingViewController as? PopUpViewController,
               let clothId = popUpVC.clothId else { return }
@@ -85,7 +72,12 @@ class PopUpDropdownViewController: UIViewController, PopUpDropdownViewDelegate, 
                         // 2) 그 후 팝업 닫기
                         popUpVC.dismiss(animated: true) {
                             // 3) 최종적으로 NotificationCenter를 통해 “삭제됨” 알림 전달
-                            NotificationCenter.default.post(name: Notification.Name("clothDeleted"), object: nil)
+                            NotificationCenter.default.post(
+                                name: Notification.Name("clothDeleted"),
+                                object: nil,
+                                userInfo: ["clothId": clothId]
+                            )
+
                         }
                     }
                 }

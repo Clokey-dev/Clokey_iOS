@@ -55,6 +55,10 @@ class DrawerEditViewController: UIViewController, UICollectionViewDataSource, UI
     private var isLoading = false
     private var hasMorePages = true
     
+    //편집하기 눌렀을 때 넘길 옷 목록
+    private var preselectedItems: [(id: Int, image: UIImage, title: String)] = []
+
+    
     // Delegate
     weak var delegate: DrawerEditViewControllerDelegate?
     
@@ -73,8 +77,10 @@ class DrawerEditViewController: UIViewController, UICollectionViewDataSource, UI
     private let clothesService = ClothesService()
     
     // MARK: - Initializer
-    init(folderId: Int64? = nil) {
+    init(folderId: Int64? = nil, preselectedItems: [(id: Int, image: UIImage, title: String)] = []) {
         self.folderId = folderId
+        self.preselectedItems = preselectedItems
+        self.selectedItems = preselectedItems
         super.init(nibName: nil, bundle: nil)
     }
     

@@ -252,6 +252,18 @@
 		1EF33C8F2D66613500142954 /* FolderResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C892D66613500142954 /* FolderResponseDTO.swift */; };
 		1EF33C902D66613500142954 /* FolderRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C872D66613500142954 /* FolderRequestDTO.swift */; };
 		1EF33C912D66613500142954 /* FolderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C8B2D66613500142954 /* FolderService.swift */; };
+		486B581A2D92C9FA003CC6AE /* NotoSansKR-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 486B580E2D92C9FA003CC6AE /* NotoSansKR-ExtraBold.ttf */; };
+		486B581B2D92C9FA003CC6AE /* NotoSansKR-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 486B58132D92C9FA003CC6AE /* NotoSansKR-SemiBold.ttf */; };
+		486B581C2D92C9FA003CC6AE /* NotoSansKR-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 486B58142D92C9FA003CC6AE /* NotoSansKR-Thin.ttf */; };
+		486B581D2D92C9FA003CC6AE /* NotoSansKR-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 486B580F2D92C9FA003CC6AE /* NotoSansKR-ExtraLight.ttf */; };
+		486B581E2D92C9FA003CC6AE /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 486B58182D92C9FA003CC6AE /* README.txt */; };
+		486B581F2D92C9FA003CC6AE /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 486B58172D92C9FA003CC6AE /* OFL.txt */; };
+		486B58202D92C9FA003CC6AE /* NotoSansKR-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 486B580D2D92C9FA003CC6AE /* NotoSansKR-Bold.ttf */; };
+		486B58212D92C9FA003CC6AE /* NotoSansKR-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 486B58122D92C9FA003CC6AE /* NotoSansKR-Regular.ttf */; };
+		486B58222D92C9FA003CC6AE /* NotoSansKR-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 486B58162D92C9FA003CC6AE /* NotoSansKR-VariableFont_wght.ttf */; };
+		486B58232D92C9FA003CC6AE /* NotoSansKR-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 486B58102D92C9FA003CC6AE /* NotoSansKR-Light.ttf */; };
+		486B58242D92C9FA003CC6AE /* NotoSansKR-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 486B580C2D92C9FA003CC6AE /* NotoSansKR-Black.ttf */; };
+		486B58252D92C9FA003CC6AE /* NotoSansKR-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 486B58112D92C9FA003CC6AE /* NotoSansKR-Medium.ttf */; };
 		489FCD6C2D64936B0030A185 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 489FCD6B2D64936B0030A185 /* RxGesture */; };
 		48FB777D2D803DC0008607B7 /* LikeHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FB777C2D803DC0008607B7 /* LikeHistoryViewController.swift */; };
 		48FB777F2D803DE5008607B7 /* LikeHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FB777E2D803DE5008607B7 /* LikeHistoryView.swift */; };
@@ -539,6 +551,18 @@
 		1EF33C872D66613500142954 /* FolderRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderRequestDTO.swift; sourceTree = "<group>"; };
 		1EF33C892D66613500142954 /* FolderResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderResponseDTO.swift; sourceTree = "<group>"; };
 		1EF33C8B2D66613500142954 /* FolderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderService.swift; sourceTree = "<group>"; };
+		486B580C2D92C9FA003CC6AE /* NotoSansKR-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Black.ttf"; sourceTree = "<group>"; };
+		486B580D2D92C9FA003CC6AE /* NotoSansKR-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Bold.ttf"; sourceTree = "<group>"; };
+		486B580E2D92C9FA003CC6AE /* NotoSansKR-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-ExtraBold.ttf"; sourceTree = "<group>"; };
+		486B580F2D92C9FA003CC6AE /* NotoSansKR-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-ExtraLight.ttf"; sourceTree = "<group>"; };
+		486B58102D92C9FA003CC6AE /* NotoSansKR-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Light.ttf"; sourceTree = "<group>"; };
+		486B58112D92C9FA003CC6AE /* NotoSansKR-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Medium.ttf"; sourceTree = "<group>"; };
+		486B58122D92C9FA003CC6AE /* NotoSansKR-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Regular.ttf"; sourceTree = "<group>"; };
+		486B58132D92C9FA003CC6AE /* NotoSansKR-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-SemiBold.ttf"; sourceTree = "<group>"; };
+		486B58142D92C9FA003CC6AE /* NotoSansKR-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-Thin.ttf"; sourceTree = "<group>"; };
+		486B58162D92C9FA003CC6AE /* NotoSansKR-VariableFont_wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansKR-VariableFont_wght.ttf"; sourceTree = "<group>"; };
+		486B58172D92C9FA003CC6AE /* OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
+		486B58182D92C9FA003CC6AE /* README.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		48FB777C2D803DC0008607B7 /* LikeHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeHistoryViewController.swift; sourceTree = "<group>"; };
 		48FB777E2D803DE5008607B7 /* LikeHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeHistoryView.swift; sourceTree = "<group>"; };
 		48FB77802D803E06008607B7 /* LikeHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeHistoryCell.swift; sourceTree = "<group>"; };
@@ -1443,6 +1467,7 @@
 		07E1CB2F2D364BD100F86BB8 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				486B58192D92C9FA003CC6AE /* Noto_Sans_KR */,
 				07E1CB302D364BDA00F86BB8 /* Pretendard-Black.otf */,
 				07E1CB312D364BDA00F86BB8 /* Pretendard-Bold.otf */,
 				07E1CB322D364BDA00F86BB8 /* Pretendard-ExtraBold.otf */,
@@ -1816,6 +1841,33 @@
 			path = folder;
 			sourceTree = "<group>";
 		};
+		486B58152D92C9FA003CC6AE /* static */ = {
+			isa = PBXGroup;
+			children = (
+				486B580C2D92C9FA003CC6AE /* NotoSansKR-Black.ttf */,
+				486B580D2D92C9FA003CC6AE /* NotoSansKR-Bold.ttf */,
+				486B580E2D92C9FA003CC6AE /* NotoSansKR-ExtraBold.ttf */,
+				486B580F2D92C9FA003CC6AE /* NotoSansKR-ExtraLight.ttf */,
+				486B58102D92C9FA003CC6AE /* NotoSansKR-Light.ttf */,
+				486B58112D92C9FA003CC6AE /* NotoSansKR-Medium.ttf */,
+				486B58122D92C9FA003CC6AE /* NotoSansKR-Regular.ttf */,
+				486B58132D92C9FA003CC6AE /* NotoSansKR-SemiBold.ttf */,
+				486B58142D92C9FA003CC6AE /* NotoSansKR-Thin.ttf */,
+			);
+			path = static;
+			sourceTree = "<group>";
+		};
+		486B58192D92C9FA003CC6AE /* Noto_Sans_KR */ = {
+			isa = PBXGroup;
+			children = (
+				486B58152D92C9FA003CC6AE /* static */,
+				486B58162D92C9FA003CC6AE /* NotoSansKR-VariableFont_wght.ttf */,
+				486B58172D92C9FA003CC6AE /* OFL.txt */,
+				486B58182D92C9FA003CC6AE /* README.txt */,
+			);
+			path = Noto_Sans_KR;
+			sourceTree = "<group>";
+		};
 		A62A42FE2D4D30F700672D3F /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -2060,6 +2112,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				486B581A2D92C9FA003CC6AE /* NotoSansKR-ExtraBold.ttf in Resources */,
+				486B581B2D92C9FA003CC6AE /* NotoSansKR-SemiBold.ttf in Resources */,
+				486B581C2D92C9FA003CC6AE /* NotoSansKR-Thin.ttf in Resources */,
+				486B581D2D92C9FA003CC6AE /* NotoSansKR-ExtraLight.ttf in Resources */,
+				486B581E2D92C9FA003CC6AE /* README.txt in Resources */,
+				486B581F2D92C9FA003CC6AE /* OFL.txt in Resources */,
+				486B58202D92C9FA003CC6AE /* NotoSansKR-Bold.ttf in Resources */,
+				486B58212D92C9FA003CC6AE /* NotoSansKR-Regular.ttf in Resources */,
+				486B58222D92C9FA003CC6AE /* NotoSansKR-VariableFont_wght.ttf in Resources */,
+				486B58232D92C9FA003CC6AE /* NotoSansKR-Light.ttf in Resources */,
+				486B58242D92C9FA003CC6AE /* NotoSansKR-Black.ttf in Resources */,
+				486B58252D92C9FA003CC6AE /* NotoSansKR-Medium.ttf in Resources */,
 				0744001A2D5B1EFD00E60282 /* GoogleService-Info.plist in Resources */,
 				07E1CB392D364BDA00F86BB8 /* Pretendard-Medium.otf in Resources */,
 				07E1CB3A2D364BDA00F86BB8 /* Pretendard-Thin.otf in Resources */,
@@ -2348,9 +2412,11 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BBVZV8T99P;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
 				ENABLE_DEBUG_DYLIB = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
@@ -2372,6 +2438,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -2391,10 +2458,12 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = BBVZV8T99P;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
 				ENABLE_DEBUG_DYLIB = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
@@ -2416,6 +2485,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -2479,7 +2549,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -2537,7 +2607,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;

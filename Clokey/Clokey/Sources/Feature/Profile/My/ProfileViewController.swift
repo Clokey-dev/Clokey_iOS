@@ -254,7 +254,6 @@ final class ProfileViewController: UIViewController {
 //            sceneDelegate.navigateToMyCloset()
 //        }
         let displayAllVC = DisplayAllViewController()
-        displayAllVC.clokeyId = clokeyId
         navigationController?.pushViewController(displayAllVC, animated: true)
     }
     

@@ -225,16 +225,14 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
     func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
         print("사용자가 크롭을 취소했습니다.")
         if isSelectingProfileImage {
-//            editProfileView.profileImageView.image = UIImage(named: "profile_basic")
-            if let existingImage = editProfileView.profileImageView.image {
+            if editProfileView.profileImageView.image != nil {
                 // 기존 이미지가 있으므로 그대로 사용
             } else {
                 // 기존 이미지가 없으므로 기본 이미지 설정
                 editProfileView.profileImageView.image = UIImage(named: "profile_basic")
             }
         } else {
-//            editProfileView.backgroundImageView.image = UIImage(named: "profile_background")
-            if let existingImage = editProfileView.backgroundImageView.image {
+            if editProfileView.backgroundImageView.image != nil {
                 // 기존 이미지가 있으므로 그대로 사용
             } else {
                 // 기존 이미지가 없으므로 기본 이미지 설정

@@ -96,7 +96,9 @@ extension NotificationEndpoints: TargetType {
                 encoding: URLEncoding.queryString
             )
             
+
         case .notificationRead(_):
+
             return .requestPlain
         case .notificationAllRead:
             return .requestPlain

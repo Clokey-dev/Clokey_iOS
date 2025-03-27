@@ -117,12 +117,6 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
 
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: backButton), titleItem]
         
-//        navBarManager.setOption(
-//            to: navigationItem,
-//            target: self,
-//            action: #selector(didTapReportButton))
-        
-        
     }
     
     private func tapProfile() {
@@ -326,7 +320,6 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         followProfileView.bottomArrowIcon.addGestureRecognizer(bottomArrowTapGesture)
     }
 
-    
     @objc private func didTapReportButton(_ sender: UIButton) {
         let actionSheet = FollowProfileActionViewController(clokeyId: followId)
         actionSheet.delegate = self
@@ -446,7 +439,13 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
     
     @objc private func didTapFollowClothButton() {
         let displayAllVC = DisplayAllViewController()
-        displayAllVC.clokeyId = followId
+        if isMe {
+            // 본인이면 clokeyId를 전달하지 않음 (빈 문자열로 설정)
+            displayAllVC.clokeyId = ""
+        } else {
+            // 타인이면 followId(또는 해당 프로필의 clokeyId)를 전달
+            displayAllVC.clokeyId = followId
+        }
         navigationController?.pushViewController(displayAllVC, animated: true)
     }
     

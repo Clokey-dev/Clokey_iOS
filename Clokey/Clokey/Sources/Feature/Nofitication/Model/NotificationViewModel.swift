@@ -22,7 +22,7 @@ class NotificationViewModel {
                 let newNotifications = response.notificationResults.map { dto in
                     let date = Self.formatDate(dto.createdAt)
                     
-                    let appNotificationType: NotificationType? = {
+                    let _appNotificationType: NotificationType? = {
                         if dto.content.contains("좋아요") {
                             return .like
                         } else if dto.content.contains("팔로우") {

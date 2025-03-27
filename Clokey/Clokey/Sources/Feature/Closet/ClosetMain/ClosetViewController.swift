@@ -283,8 +283,10 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
                     self.closetView.drawerCollectionView.reloadData()
                     // 동적으로 높이 업데이트
                     self.closetView.drawerCollectionView.layoutIfNeeded()
-                    let newHeight = self.closetView.drawerCollectionView.contentSize.height
-                    self.closetView.drawerCollectionViewHeightConstraint?.update(offset: newHeight)
+                    let contentHeight = self.closetView.drawerCollectionView.contentSize.height
+                    // drawerItems가 비어있으면 최소 높이 255, 아니면 contentSize.height 사용
+                    let finalHeight = self.drawerItems.isEmpty ? 255 : contentHeight
+                    self.closetView.drawerCollectionViewHeightConstraint?.update(offset: finalHeight)
                     self.updateEmptyStates()
                 case .failure(let error):
                     self.showError(error)
@@ -292,6 +294,7 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
             }
         }
     }
+
 
     
     private func showError(_ error: Error) {
