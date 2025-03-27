@@ -77,9 +77,6 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
         setupActions()
         setupPopupActions()
         
-        
-        followProfileView.updateCloseAccount(isClosed: isBlocking)
-        
         tapProfile()
     }
     
@@ -184,9 +181,10 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                     self.followProfileView.followingCountButton.setTitle("\(userProfile.followingCount)", for: .normal)
                     self.followingCount = userProfile.followingCount
                     self.followProfileView.descriptionLabel.text = userProfile.bio
-//                    self.isBlocking = userProfile.isBlocking
                     self.isBlocking = userProfile.isBlocking ?? false
                     self.isMe = userProfile.isMe
+                    
+                    self.followProfileView.updateCloseAccount(isClosed: self.isBlocking)
                     
                     self.followProfileView.touchMyProfile(isMine: self.isMe)
                     if !self.isMe {
