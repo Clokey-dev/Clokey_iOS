@@ -178,6 +178,7 @@ final class PopUpViewController: UIViewController {
                 }
             case .failure(let error):
                 print("팝업 상세 정보를 가져오는데 실패했습니다: \(error)")
+                self?.showAlert(title: "네트워크 오류", message: "인터넷 연결이 끊겼습니다.")
             }
         }
     }

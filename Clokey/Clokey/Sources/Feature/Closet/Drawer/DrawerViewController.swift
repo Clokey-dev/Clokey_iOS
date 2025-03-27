@@ -117,7 +117,7 @@ class DrawerViewController: UIViewController, UICollectionViewDataSource, UIColl
                     self.hasMorePages = newItems.count >= self.pageSize
                     self.drawerView.collectionView.reloadData()
                 case .failure(let error):
-                    self.showError(error)
+                    self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 끊겼습니다.")
                 }
             }
         }
@@ -169,11 +169,6 @@ class DrawerViewController: UIViewController, UICollectionViewDataSource, UIColl
         }
     }
     
-    private func showError(_ error: Error) {
-        let alert = UIAlertController(title: "오류", message: error.localizedDescription, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default))
-        present(alert, animated: true)
-    }
     
     // MARK: - UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
