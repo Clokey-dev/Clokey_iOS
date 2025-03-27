@@ -190,6 +190,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                 }
             case .failure(let error):
                 print("히스토리 상세 조회 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
@@ -472,6 +473,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     
                 case .failure(let error):
                     print("팝업 의류 데이터 로드 실패: \(error.localizedDescription)")
+                    self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
                 }
             }
         }
@@ -550,6 +552,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     print("추천 의상 데이터 가져오기 실패: \(error.localizedDescription)")
                     self.pickView.updateEmptyState(isEmpty: true)
                     self.hideLoadingOverlay()
+                    self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
                 }
             }
         }
@@ -856,6 +859,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     }
                 case .failure(let error):
                     print("데이터 로드 실패: \(error.localizedDescription)")
+                    self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
                 }
             }
         }

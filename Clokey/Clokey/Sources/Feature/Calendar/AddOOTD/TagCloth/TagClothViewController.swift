@@ -213,6 +213,7 @@ class TagClothViewController: UIViewController, UIGestureRecognizerDelegate {
                 }
             case .failure(let error):
                 print("Error loading clothes: \(error)")
+                self?.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
@@ -269,23 +270,10 @@ class TagClothViewController: UIViewController, UIGestureRecognizerDelegate {
                 }
             case .failure(let error):
                 print("검색 실패: \(error)")
+                self?.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
-    
-    // 선택된 아이템 다시 불러와서 표시 함수 - 중요한 역할을 함.
-//    private func restoreSelectionStates() {
-//        for (index, item) in clothItems.enumerated() {
-//            if selectedItems.contains(where: { $0.id == item.id }) { // id로 구분
-//                let indexPath = IndexPath(item: index, section: 0)
-//                tagClothView.collectionView.selectItem(
-//                    at: indexPath,
-//                    animated: false,
-//                    scrollPosition: []
-//                )
-//            }
-//        }
-//    }
     
     // MARK: - UI Updates
     // 전체보기 or 특정 카테고리 보기 설정

@@ -196,6 +196,7 @@ class NewsViewController: UIViewController {
                 
             case .failure(let error):
                 print("Failed to fetch hot data: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
@@ -285,6 +286,7 @@ class NewsViewController: UIViewController {
                     self.newsView.friendClothesImageView2.image = nil
                     self.newsView.friendClothesImageView3.image = nil
                 }
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
@@ -571,6 +573,7 @@ class NewsViewController: UIViewController {
                     
                 case .failure(let error):
                     print("팝업 의류 데이터 로드 실패: \(error.localizedDescription)")
+                    self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
                 }
             }
         }
@@ -683,6 +686,7 @@ class NewsViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.newsView.updateFriendCalendarEmptyState(isEmpty: true)
                 }
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
@@ -721,6 +725,7 @@ class NewsViewController: UIViewController {
             case .failure(let error):
                 print("Failed to load recommend data: \(error.localizedDescription)")
                 self.hideLoadingOverlay()
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
@@ -919,6 +924,7 @@ class NewsViewController: UIViewController {
                 
             case .failure(let error):
                 print("히스토리 상세 조회 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }

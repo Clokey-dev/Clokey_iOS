@@ -132,6 +132,7 @@ class LikeListViewController: UIViewController {
                 }
             case .failure(let error):
                 print("좋아요 목록 조회 에러: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
@@ -191,5 +192,8 @@ extension LikeListViewController: LikeUserCellDelegate {
     func didTapProfileImage(with clokeyId: String) {
         // 프로파일 이미지 탭 시 handleNotificationFollow 호출
         handleProfile(clokeyId: clokeyId)
+    }
+    func didRequestAlert(title: String, message: String) {
+        showAlert(title: title, message: message)
     }
 }
