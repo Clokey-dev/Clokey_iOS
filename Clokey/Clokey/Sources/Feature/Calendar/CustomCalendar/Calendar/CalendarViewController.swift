@@ -135,6 +135,16 @@ class CalendarViewController: UIViewController {
         loadingIndicator.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
+        
+        // 스와이프로 캘린더 이동 
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
+        swipeLeft.direction = .left
+        view.addGestureRecognizer(swipeLeft)
+
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
+        swipeRight.direction = .right
+        view.addGestureRecognizer(swipeRight)
+
     }
     
     private func setupBindings() {
@@ -165,6 +175,19 @@ class CalendarViewController: UIViewController {
                     $0.trailing.equalToSuperview().offset(-25)
                 }
             }
+        }
+    }
+    
+    // MARK: - Actions
+
+    @objc private func handleSwipe(_ gesture: UISwipeGestureRecognizer) {
+        switch gesture.direction {
+        case .left:
+            changeMonth(by: 1)
+        case .right:
+            changeMonth(by: -1)
+        default:
+            break
         }
     }
     
@@ -261,6 +284,7 @@ extension CalendarViewController: CalendarViewDelegate {
 
             case .failure(let error):
                 print("히스토리 상세 조회 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
