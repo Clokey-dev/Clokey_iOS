@@ -206,7 +206,7 @@ final class PopUpViewController: UIViewController {
             popupView.springButton.setTitleColor(.white, for: .normal)
             popupView.springButton.layer.borderWidth = 0
         } else {
-            popupView.springButton.backgroundColor = UIColor(named: "mainBrown50")
+            popupView.springButton.backgroundColor = UIColor(red: 255/255, green: 254/255, blue: 252/255, alpha: 1)
             popupView.springButton.setTitleColor(.black, for: .normal)
             popupView.springButton.layer.borderWidth = 1
             popupView.springButton.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
@@ -217,7 +217,7 @@ final class PopUpViewController: UIViewController {
             popupView.summerButton.setTitleColor(.white, for: .normal)
             popupView.summerButton.layer.borderWidth = 0
         } else {
-            popupView.summerButton.backgroundColor = UIColor(named: "mainBrown50")
+            popupView.summerButton.backgroundColor = UIColor(red: 255/255, green: 254/255, blue: 252/255, alpha: 1)
             popupView.summerButton.setTitleColor(.black, for: .normal)
             popupView.summerButton.layer.borderWidth = 1
             popupView.summerButton.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
@@ -228,7 +228,7 @@ final class PopUpViewController: UIViewController {
             popupView.fallButton.setTitleColor(.white, for: .normal)
             popupView.fallButton.layer.borderWidth = 0
         } else {
-            popupView.fallButton.backgroundColor = UIColor(named: "mainBrown50")
+            popupView.fallButton.backgroundColor = UIColor(red: 255/255, green: 254/255, blue: 252/255, alpha: 1)
             popupView.fallButton.setTitleColor(.black, for: .normal)
             popupView.fallButton.layer.borderWidth = 1
             popupView.fallButton.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
@@ -239,7 +239,7 @@ final class PopUpViewController: UIViewController {
             popupView.winterButton.setTitleColor(.white, for: .normal)
             popupView.winterButton.layer.borderWidth = 0
         } else {
-            popupView.winterButton.backgroundColor = UIColor(named: "mainBrown50")
+            popupView.winterButton.backgroundColor = UIColor(red: 255/255, green: 254/255, blue: 252/255, alpha: 1)
             popupView.winterButton.setTitleColor(.black, for: .normal)
             popupView.winterButton.layer.borderWidth = 1
             popupView.winterButton.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor

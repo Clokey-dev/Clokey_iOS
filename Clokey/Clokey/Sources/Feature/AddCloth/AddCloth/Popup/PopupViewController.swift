@@ -121,6 +121,7 @@ class PopupViewController: UIViewController {
         }
         
         popupView.categoryButton1.setTitle(categoryName, for: .normal)
+        
         popupView.categoryButton2.setTitle(categoryCloth, for: .normal)
         
         popupView.brandNameLabel.text = (brand?.isEmpty ?? true) ? "지정 없음" : brand
