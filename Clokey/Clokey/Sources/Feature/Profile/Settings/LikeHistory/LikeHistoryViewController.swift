@@ -99,22 +99,6 @@ class LikeHistoryViewController: UIViewController {
                 }
             }
         }
-  /*  private func setupEdgePanGesture() {
-        let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleEdgePan(_:)))
-        edgePan.edges = .left
-        view.addGestureRecognizer(edgePan)
-    }
-
-    @objc private func handleEdgePan(_ gesture: UIScreenEdgePanGestureRecognizer) {
-        let translation = gesture.translation(in: view)
-        if gesture.state == .ended && translation.x > 100 {
-            if let nav = navigationController {
-                nav.popViewController(animated: true)
-            } else {
-                dismiss(animated: true, completion: nil)
-            }
-        }
-    }*/
     }
 
     extension LikeHistoryViewController: UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate {
