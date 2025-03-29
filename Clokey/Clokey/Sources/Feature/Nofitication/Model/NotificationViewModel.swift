@@ -5,6 +5,7 @@ import Foundation
 class NotificationViewModel {
     var notifications: [NotificationItem] = []
     let notificationService = NotificationService()
+    var onError: ((String) -> Void)?
     
     // 페이징 관련 변수 추가
     private(set) var currentPage: Int = 1
@@ -75,6 +76,7 @@ class NotificationViewModel {
                 NotificationCenter.default.post(name: NSNotification.Name("ReloadNotifications"), object: nil)
             case .failure(let error):
                 print("❌ 알림 목록 조회 실패: \(error.localizedDescription)")
+                self.onError?("알림 목록을 불러올 수 없습니다.\n네트워크 상태를 확인해주세요.")
             }
         }
     
@@ -111,6 +113,7 @@ class NotificationViewModel {
                 NotificationCenter.default.post(name: NSNotification.Name("ReloadNotifications"), object: nil)
             case .failure(let error):
                 print("❌ 읽음 처리 실패: \(error.localizedDescription)")
+                self?.onError?("알림을 읽음 처리하는 데 실패했습니다.")
             }
         }
     }
@@ -129,6 +132,7 @@ class NotificationViewModel {
                 completion()
             case .failure(let error):
                 print("❌ 전체 읽음 처리 실패: \(error.localizedDescription)")
+                self?.onError?("전체 읽음 처리 중 문제가 발생했습니다.")
                 completion()
             }
         }

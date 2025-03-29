@@ -458,10 +458,12 @@ extension MyFollowListViewController: UICollectionViewDataSource, UICollectionVi
         if collectionView == followerCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyFollowerUserCell.identifier, for: indexPath) as! MyFollowerUserCell
             cell.configure(with: followerusers[indexPath.item])
+            cell.delegate = self
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyFollowingUserCell.identifier, for: indexPath) as! MyFollowingUserCell
             cell.configure(with: followingusers[indexPath.item])
+            cell.delegate = self
             return cell
         }
     }
@@ -482,3 +484,10 @@ extension MyFollowListViewController: UICollectionViewDataSource, UICollectionVi
     }
 }
 
+extension MyFollowListViewController: MyFollowerUserCellDelegate, FollowUserCellDelegate {
+    func showFollowErrorAlert(message: String) {
+        let alert = UIAlertController(title: "오류", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default))
+        present(alert, animated: true)
+    }
+}

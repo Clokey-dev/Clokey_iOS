@@ -84,7 +84,7 @@ class PopUpDropdownViewController: UIViewController, PopUpDropdownViewDelegate, 
             case .failure(let error):
                 DispatchQueue.main.async {
                     print("옷 삭제 실패: \(error)")
-                    self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 끊겼습니다.")
+                    self?.showAlert(title: "네트워크 오류", message: "인터넷 연결이 끊겼습니다.")
                 }
             }
         }
