@@ -335,7 +335,10 @@ extension CustomGalleryViewController: UICollectionViewDataSource, UICollectionV
 // MARK: - Gallery Cell
 class GalleryCell: UICollectionViewCell {
     
-    let imageView = UIImageView()
+    let imageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFill
+        $0.clipsToBounds = true
+    }
     
     // 선택 순서 표시
     private let orderLabel = UILabel().then {

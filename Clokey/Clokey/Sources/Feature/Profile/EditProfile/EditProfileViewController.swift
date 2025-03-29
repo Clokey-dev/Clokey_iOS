@@ -339,6 +339,7 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
                     self.isIdChecked = false
                     self.editProfileView.idCheckButton.setTitleColor(.gray, for: .normal)
                     self.validateForm()
+                    self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
                 }
             }
         }
@@ -454,6 +455,7 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
                 }
             case .failure(let error):
                 print("프로필 업데이트 실패 - 네트워크 오류: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }

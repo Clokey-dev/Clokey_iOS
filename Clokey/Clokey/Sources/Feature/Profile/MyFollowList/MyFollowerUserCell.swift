@@ -11,11 +11,16 @@ import SnapKit
 import Then
 import Kingfisher
 
+protocol MyFollowerUserCellDelegate: AnyObject {
+    func showFollowErrorAlert(message: String)
+}
+
 // MARK: - Like User Cell
 class MyFollowerUserCell: UICollectionViewCell {
     static let identifier = "MyFollowerUserCell"
     
     private var isFollowing: Bool = false
+    weak var delegate: MyFollowerUserCellDelegate?
     
     // MARK: - UI Components
     private let profileImageView = UIImageView().then {
@@ -124,6 +129,9 @@ class MyFollowerUserCell: UICollectionViewCell {
                 }
             case .failure(let error):
                 print("팔로우 실패: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    self.delegate?.showFollowErrorAlert(message: "팔로우 요청에 실패했습니다.\n네트워크를 확인해주세요.")
+                }
             }
         }
     }

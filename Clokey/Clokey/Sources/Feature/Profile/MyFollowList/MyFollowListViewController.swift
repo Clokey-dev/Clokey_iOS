@@ -345,6 +345,7 @@ class MyFollowListViewController: UIViewController, UIGestureRecognizerDelegate 
                 }
             case .failure(let error):
                 print("🚨 팔로워 데이터 가져오기 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
@@ -401,6 +402,7 @@ class MyFollowListViewController: UIViewController, UIGestureRecognizerDelegate 
                 }
             case .failure(let error):
                 print("팔로워 데이터 가져오기 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
@@ -456,10 +458,12 @@ extension MyFollowListViewController: UICollectionViewDataSource, UICollectionVi
         if collectionView == followerCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyFollowerUserCell.identifier, for: indexPath) as! MyFollowerUserCell
             cell.configure(with: followerusers[indexPath.item])
+            cell.delegate = self
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyFollowingUserCell.identifier, for: indexPath) as! MyFollowingUserCell
             cell.configure(with: followingusers[indexPath.item])
+            cell.delegate = self
             return cell
         }
     }
@@ -480,3 +484,10 @@ extension MyFollowListViewController: UICollectionViewDataSource, UICollectionVi
     }
 }
 
+extension MyFollowListViewController: MyFollowerUserCellDelegate, FollowUserCellDelegate {
+    func showFollowErrorAlert(message: String) {
+        let alert = UIAlertController(title: "오류", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default))
+        present(alert, animated: true)
+    }
+}

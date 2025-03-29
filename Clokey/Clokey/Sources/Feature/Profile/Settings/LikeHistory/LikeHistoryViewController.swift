@@ -95,25 +95,10 @@ class LikeHistoryViewController: UIViewController {
                     }
                 case .failure(let error):
                     print("❌ 좋아요한 게시물 조회 실패: \(error.localizedDescription)")
+                    self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
                 }
             }
         }
-  /*  private func setupEdgePanGesture() {
-        let edgePan = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleEdgePan(_:)))
-        edgePan.edges = .left
-        view.addGestureRecognizer(edgePan)
-    }
-
-    @objc private func handleEdgePan(_ gesture: UIScreenEdgePanGestureRecognizer) {
-        let translation = gesture.translation(in: view)
-        if gesture.state == .ended && translation.x > 100 {
-            if let nav = navigationController {
-                nav.popViewController(animated: true)
-            } else {
-                dismiss(animated: true, completion: nil)
-            }
-        }
-    }*/
     }
 
     extension LikeHistoryViewController: UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate {

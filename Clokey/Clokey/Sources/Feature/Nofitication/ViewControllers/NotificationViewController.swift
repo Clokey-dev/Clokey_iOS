@@ -40,6 +40,11 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // alert 처리
+        viewModel.onError = { [weak self] errorMessage in
+            self?.showAlert(title: "네트워크 오류", message: errorMessage)
+        }
+        
         // 네비게이션 바 숨김 제거
         // navigationController?.navigationBar.isHidden = true
         setupTableView()
@@ -239,6 +244,7 @@ class NotificationViewController: UIViewController, UITableViewDelegate, UITable
                 }
             case .failure(let error):
                 print("히스토리 상세 조회 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }

@@ -98,6 +98,7 @@ class CommentHistoryViewController: UIViewController, UITableViewDelegate, UITab
                     
                 case .failure(let error):
                     print("Error fetching comment histories: \(error)")
+                    self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
                 }
             }
         }
@@ -117,6 +118,10 @@ class CommentHistoryViewController: UIViewController, UITableViewDelegate, UITab
         if indexPath.row < histories.count {
             let history = histories[indexPath.row]
             cell.configure(with: history)
+            
+            cell.onRequestAlert = { [weak self] title, message in
+                self?.showAlert(title: title, message: message)
+            }
             
             // 마지막 셀에 도달하고 더 많은 페이지가 있는 경우 다음 페이지 로드
             if indexPath.row == histories.count - 1 && !isLastPage && !isLoading {
@@ -156,6 +161,7 @@ class CommentHistoryViewController: UIViewController, UITableViewDelegate, UITab
                 
             case .failure(let error):
                 print("히스토리 상세 조회 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }

@@ -202,6 +202,7 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
                 
             case .failure(let error):
                 print("카테고리 추천 데이터 로드 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
@@ -366,6 +367,7 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
                 }
             case .failure(let error):
                 print("옷 정보 로드 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }

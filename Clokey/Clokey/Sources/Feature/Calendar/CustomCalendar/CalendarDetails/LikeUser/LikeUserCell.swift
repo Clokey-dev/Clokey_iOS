@@ -13,6 +13,7 @@ import Kingfisher
 
 protocol LikeUserCellDelegate: AnyObject {
     func didTapProfileImage(with clokeyId: String)
+    func didRequestAlert(title: String, message: String)
 }
 
 // MARK: - Like User Cell
@@ -184,6 +185,10 @@ class LikeUserCell: UICollectionViewCell {
                 }
             case .failure(let error):
                 print("팔로우 실패: \(error.localizedDescription)")
+                delegate?.didRequestAlert(
+                    title: "팔로우 실패",
+                    message: "네트워크 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요."
+                )
             }
         }
     }

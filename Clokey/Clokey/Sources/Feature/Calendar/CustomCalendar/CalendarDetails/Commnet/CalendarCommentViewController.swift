@@ -157,6 +157,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
                     }
                 case .failure(let error):
                     print("삭제 실패: \(error)")
+                    self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
                 }
             }
         })
@@ -288,6 +289,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
 
             case .failure(let error):
                 print("댓글 작성 실패: \(error)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
@@ -433,6 +435,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
                 
             case .failure(let error):
                 print("댓글 조회 실패: \(error)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
@@ -462,6 +465,10 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
 }
 
 extension CalendarCommentViewController: LikeUserCellDelegate {
+    func didRequestAlert(title: String, message: String) {
+        showAlert(title: title, message: message)
+    }
+    
     func didTapProfileImage(with clokeyId: String) {
         // 프로파일 이미지 탭 시 handleNotificationFollow 호출
         handleProfile(clokeyId: clokeyId)

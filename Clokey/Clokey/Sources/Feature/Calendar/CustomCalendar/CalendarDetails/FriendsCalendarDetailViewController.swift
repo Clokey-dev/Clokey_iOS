@@ -127,6 +127,7 @@ class FriendsCalendarDetailViewController: UIViewController, UIGestureRecognizer
                 }
             case .failure(let error):
                 print("댓글 데이터 업데이트 실패: \(error)")
+                self?.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
@@ -262,6 +263,7 @@ class FriendsCalendarDetailViewController: UIViewController, UIGestureRecognizer
                 
             case .failure(let error):
                 print("좋아요 변경 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
@@ -391,6 +393,7 @@ extension FriendsCalendarDetailViewController: FriendsActionSheetDelegate {
                 }
             case .failure(let error):
                 print("차단 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
