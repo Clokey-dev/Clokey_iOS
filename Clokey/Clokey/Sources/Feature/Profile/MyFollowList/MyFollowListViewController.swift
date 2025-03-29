@@ -245,8 +245,6 @@ class MyFollowListViewController: UIViewController, UIGestureRecognizerDelegate 
 
     }
     
-
-    
     @objc private func followerButtonTapped() {
         updateCollectionView(for: .follower)
         updateButtonColors(selectedButton: followerButton, unselectedButton: followingButton)

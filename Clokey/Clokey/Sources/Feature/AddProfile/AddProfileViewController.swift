@@ -187,7 +187,6 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
     
     func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
         print("사용자가 크롭을 취소했습니다.")
-//        isSelectingProfileImage = false //  프로필 이미지 선택 상태 해제
         if isSelectingProfileImage {
             addProfileView.profileImageView.image = UIImage(named: "profile_basic")
         } else {
@@ -198,8 +197,6 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
     
     
     private func addActions() {
-        
-//        addProfileView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         
         addProfileView.nicknameTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         addProfileView.nicknameTextField.addTarget(self, action: #selector(validateNickname), for: .editingChanged)
@@ -212,10 +209,6 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
         addProfileView.completeButton.addTarget(self, action: #selector(didTapCompleteButton), for: .touchUpInside)
     }
     
-    
-//    @objc private func didTapBackButton() {
-//        self.dismiss(animated: true, completion: nil)
-//    }
     
     // 텍스트 필드 변경 시 호출되는 메서드
     @objc private func textFieldDidChange(_ textField: UITextField) {
@@ -235,8 +228,6 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
     
     @objc private func validateNickname() {
         guard let text = addProfileView.nicknameTextField.text, !text.isEmpty else {
-//            addProfileView.nicknameStatusLabel.text = ""
-//            addProfileView.nicknameStatusLabel.isHidden = true // 입력 없으면 숨김
             addProfileView.nickNameError(hidden: true)
             return
         }
@@ -246,12 +237,10 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
         if text.count > 6 {
             addProfileView.nicknameStatusLabel.text = "6글자 이내로 입력해주세요."
             addProfileView.nicknameStatusLabel.textColor = .pointOrange800
-//            addProfileView.nicknameStatusLabel.isHidden = false // 🚀 오류 메시지 보이게 설정
             
         } else {
             addProfileView.nicknameStatusLabel.text = "사용 가능한 닉네임입니다."
             addProfileView.nicknameStatusLabel.textColor = .pointOrange800
-//            addProfileView.nicknameStatusLabel.isHidden = false // 🚀 유효한 경우에도 표시
         }
         
         validateForm() // 🚀 폼 유효성 검사 실행

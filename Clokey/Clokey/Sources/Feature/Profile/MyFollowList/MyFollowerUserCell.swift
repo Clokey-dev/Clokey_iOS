@@ -105,7 +105,8 @@ class MyFollowerUserCell: UICollectionViewCell {
     }
     
     // 팔로우/언팔로우
-    private func followUser(clokeyId: String) {
+    /*private */
+    func followUser(clokeyId: String) {
         let membersService = MembersService()
         
         let wasFollowing = isFollowing
