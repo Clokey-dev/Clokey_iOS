@@ -22,7 +22,6 @@ class MyFollowerUserCell: UICollectionViewCell {
     weak var delegate: MyFollowerUserCellDelegate?
     
     private var isFollowing: Bool = false
-    weak var delegate: MyFollowerUserCellDelegate?
     
     // MARK: - UI Components
     private let profileImageView = UIImageView().then {

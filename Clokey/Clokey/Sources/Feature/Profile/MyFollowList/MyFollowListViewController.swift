@@ -518,12 +518,12 @@ extension MyFollowListViewController: UICollectionViewDataSource, UICollectionVi
         // 팔로잉 버튼의 텍스트 업데이트
         self.followingButton.setTitle("팔로잉(\(self.followingCount))", for: .normal)
     }
-}
-
-extension MyFollowListViewController: MyFollowerUserCellDelegate, FollowUserCellDelegate {
+    
+    
     func showFollowErrorAlert(message: String) {
         let alert = UIAlertController(title: "오류", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default))
         present(alert, animated: true)
     }
 }
+

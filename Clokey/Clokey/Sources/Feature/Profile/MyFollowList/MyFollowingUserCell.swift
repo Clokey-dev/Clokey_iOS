@@ -13,10 +13,11 @@ import Kingfisher
 
 protocol MyFollowingUserCellDelegate: AnyObject {
     func myFollowingUserCell(_ cell: MyFollowingUserCell, didChangeFollowStatus isFollowing: Bool)
-}
-protocol FollowUserCellDelegate: AnyObject {
     func showFollowErrorAlert(message: String)
 }
+//protocol FollowUserCellDelegate: AnyObject {
+//    
+//}
 
 // MARK: - Like User Cell
 class MyFollowingUserCell: UICollectionViewCell {
@@ -24,7 +25,6 @@ class MyFollowingUserCell: UICollectionViewCell {
     weak var delegate: MyFollowingUserCellDelegate?
     
     private var isFollowing: Bool = false
-    weak var delegate: FollowUserCellDelegate?
 
     // MARK: - UI Components
     private let profileImageView = UIImageView().then {
