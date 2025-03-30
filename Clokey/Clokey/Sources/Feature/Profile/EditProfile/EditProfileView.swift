@@ -19,17 +19,6 @@ final class EditProfileView: UIView {
         $0.backgroundColor = .white // 배경색 흰색
     }
     
-//    let backButton: UIButton = UIButton().then {
-//        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-//        $0.tintColor = UIColor.brown
-//    }
-//    
-//    let profileSettingLabel = UILabel().then {
-//        $0.text = "프로필 설정"
-//        $0.font = UIFont.systemFont(ofSize: 20)
-//        $0.textAlignment = .center
-//    }
-    
     var backgroundImageView = UIImageView().then {
         $0.image = UIImage(named: "profile_background")
         $0.backgroundColor = UIColor(red: 255/255, green: 248/255, blue: 235/255, alpha: 1)
@@ -53,8 +42,6 @@ final class EditProfileView: UIView {
         $0.tintColor = UIColor.brown
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-//        $0.layer.cornerRadius = 50
-//        $0.layer.masksToBounds = true
     }
     
     let addImageButton2 = UIButton().then {
@@ -88,7 +75,6 @@ final class EditProfileView: UIView {
     let nicknameStatusLabel = UILabel().then {
         $0.text = "" // 기본적으로 숨김
         $0.font = UIFont.ptdRegularFont(ofSize: 16)
-//        $0.isHidden = true
         $0.textColor = .pointOrange800 // 오류 시 빨간색
     }
     
@@ -230,8 +216,6 @@ final class EditProfileView: UIView {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
         
-//        contentView.addSubview(backButton)
-//        contentView.addSubview(profileSettingLabel)
         contentView.addSubview(backgroundImageView)
         contentView.addSubview(addImageButton1)
         contentView.addSubview(profileContainer)
@@ -285,9 +269,6 @@ final class EditProfileView: UIView {
         
         profileImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-//            make.centerX.equalToSuperview()
-//            make.centerY.equalToSuperview()
-//            make.size.equalTo(45)
         }
         
         addImageButton2.snp.makeConstraints { make in
@@ -323,7 +304,6 @@ final class EditProfileView: UIView {
         }
         
         idCheckButton.snp.makeConstraints { make in
-//            make.centerY.equalTo(idTextField)
             make.top.equalTo(idLabel.snp.bottom).offset(3)
             make.trailing.equalToSuperview().inset(20)
             make.width.equalTo(76)
@@ -366,7 +346,6 @@ final class EditProfileView: UIView {
         }
         
         completeButton.snp.makeConstraints { make in
-//            make.top.equalTo(privateButton.snp.bottom).offset(80)
             make.top.equalTo(privateButton.snp.bottom).offset(160)
             make.centerX.equalToSuperview()
             make.height.equalTo(54)

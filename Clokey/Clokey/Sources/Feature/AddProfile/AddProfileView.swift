@@ -22,17 +22,6 @@ final class AddProfileView: UIView {
         $0.backgroundColor = .white // 배경색 흰색
     }
     
-//    let backButton: UIButton = UIButton().then {
-//        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-//        $0.tintColor = UIColor.brown
-//    }
-//    
-//    let profileSettingLabel = UILabel().then {
-//        $0.text = "프로필 설정"
-//        $0.font = UIFont.systemFont(ofSize: 20)
-//        $0.textAlignment = .center
-//    }
-    
     var backgroundImageView = UIImageView().then {
         $0.image = UIImage(named: "background_basic")
         $0.backgroundColor = UIColor(red: 255/255, green: 248/255, blue: 235/255, alpha: 1)
@@ -56,8 +45,6 @@ final class AddProfileView: UIView {
         $0.tintColor = UIColor.brown
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-//        $0.layer.cornerRadius = 50
-//        $0.layer.masksToBounds = true
     }
     
     let addImageButton2 = UIButton().then {
@@ -91,7 +78,6 @@ final class AddProfileView: UIView {
     let nicknameStatusLabel = UILabel().then {
         $0.text = "" // 기본적으로 숨김
         $0.font = UIFont.ptdRegularFont(ofSize: 16)
-//        $0.isHidden = true
         $0.textColor = .pointOrange800 // 오류 시 빨간색
     }
     
@@ -232,9 +218,7 @@ final class AddProfileView: UIView {
         
         addSubview(scrollView)
         scrollView.addSubview(contentView)
-        
-//        contentView.addSubview(backButton)
-//        contentView.addSubview(profileSettingLabel)
+
         contentView.addSubview(backgroundImageView)
         contentView.addSubview(addImageButton1)
         contentView.addSubview(profileContainer)
@@ -257,7 +241,8 @@ final class AddProfileView: UIView {
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.bottom.equalToSuperview()
         }
         
         contentView.snp.makeConstraints { make in
@@ -266,21 +251,8 @@ final class AddProfileView: UIView {
             make.bottom.equalTo(completeButton.snp.bottom)
         }
         
-//        backButton.snp.makeConstraints { make in
-//            make.leading.equalToSuperview().offset(20)
-//            make.top.equalTo(contentView.safeAreaLayoutGuide).offset(11)
-//            make.width.height.equalTo(24)
-//        }
-//        
-//        profileSettingLabel.snp.makeConstraints { make in
-//            make.centerX.equalToSuperview()
-//            make.centerY.equalTo(backButton)
-//        }
-        
-        // 4. Background Image
         backgroundImageView.snp.makeConstraints { make in
-//            make.top.equalTo(profileSettingLabel.snp.bottom).offset(11)
-            make.top.equalTo(safeAreaLayoutGuide).offset(11)
+            make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(393) // 이미지 높이 조정 (원하는 값으로)
         }
@@ -299,9 +271,6 @@ final class AddProfileView: UIView {
         
         profileImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-//            make.centerX.equalToSuperview()
-//            make.centerY.equalToSuperview()
-//            make.size.equalTo(45)
         }
         
         addImageButton2.snp.makeConstraints { make in
@@ -337,7 +306,6 @@ final class AddProfileView: UIView {
         }
         
         idCheckButton.snp.makeConstraints { make in
-//            make.centerY.equalTo(idTextField)
             make.top.equalTo(idLabel.snp.bottom).offset(3)
             make.trailing.equalToSuperview().inset(20)
             make.width.equalTo(76)
@@ -380,7 +348,6 @@ final class AddProfileView: UIView {
         }
         
         completeButton.snp.makeConstraints { make in
-//            make.top.equalTo(privateButton.snp.bottom).offset(80)
             make.top.equalTo(privateButton.snp.bottom).offset(160)
             make.centerX.equalToSuperview()
             make.height.equalTo(54)

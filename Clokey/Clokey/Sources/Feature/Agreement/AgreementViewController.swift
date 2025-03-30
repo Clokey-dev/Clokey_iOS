@@ -61,7 +61,6 @@ class AgreementViewController: UIViewController {
     let backButton = UIButton().then {
         let largeConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium) // 아이콘 크기 설정
         $0.setImage(UIImage(systemName: "chevron.left", withConfiguration: largeConfig), for: .normal)
-//        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
         $0.tintColor = .black
     }
     
@@ -169,11 +168,17 @@ class AgreementViewController: UIViewController {
         }
         
         // 버튼 클릭 이벤트 연결
+        backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         allAgreeButton.addTarget(self, action: #selector(didTapAllAgree), for: .touchUpInside) // 전체 동의 버튼 클릭 이벤트
         agreeButton.addTarget(self, action: #selector(didTapAgreeButton), for: .touchUpInside) // 가입 완료 버튼 클릭 이벤트
     }
     
-   
+    @objc private func didTapBackButton() {
+        guard let SceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
+            fatalError("SceneDelegate not found")
+        }
+        SceneDelegate.switchToLogin()
+    }
     
     // MARK: - Actions
     // 전체 동의 버튼 클릭 이벤트
@@ -187,7 +192,7 @@ class AgreementViewController: UIViewController {
         updateAgreeButtonState() // 가입 완료 버튼 상태 업데이트
         
         //  전체 동의를 눌렀을 때만 서버에 약관 동의 전송
-            sendTermsToServer()
+        sendTermsToServer()
     }
 
     
@@ -198,7 +203,7 @@ class AgreementViewController: UIViewController {
         print(" 약관 동의 완료. 프로필 설정 화면으로 이동")
         
         //  필수 약관 동의 시 서버로 전송
-            sendTermsToServer()
+        sendTermsToServer()
 
         let addProfileVC = AddProfileViewController()
         navigationController?.pushViewController(addProfileVC, animated: true) //  네비게이션 방식으로 변경
@@ -216,16 +221,6 @@ class AgreementViewController: UIViewController {
         agreeButton.backgroundColor = areAllRequiredChecked ? .mainBrown800 : .mainBrown400 // 버튼 색상 변경
         
     }
-    
-    // 약관 상세보기 화면 표시
-//    private func showAgreementDetail(for agreement: Agreement) {
-//        let detailVC = AgreementDetailViewController(
-//            title: agreement.title,
-//            content: agreement.content //  내용 추가 전달
-//        )
-//        detailVC.modalPresentationStyle = .overFullScreen
-//        present(detailVC, animated: true)
-//    }
     
     //  서버에서 약관 데이터를 가져와서 `agreements` 배열 업데이트
     private func showAgreementDetail(for agreement: Agreement) {
@@ -266,7 +261,7 @@ class AgreementViewController: UIViewController {
                     if failedTerms.isEmpty {
                         print(" 약관 동의 데이터가 성공적으로 서버에 전송되었습니다!")
                     } else {
-                        print("❌ 동의 실패 항목이 있습니다: \(failedTerms.map { $0.termId })")
+                        print("동의 실패 항목이 있습니다: \(failedTerms.map { $0.termId })")
                     }
                 case .failure(let error):
                     print("❌ 네트워크 오류: \(error.localizedDescription)")
@@ -292,10 +287,10 @@ class AgreementViewController: UIViewController {
         do {
             let jsonData = try JSONEncoder().encode(requestData)
             if let jsonString = String(data: jsonData, encoding: .utf8) {
-                print("📡 준비된 JSON 데이터:\n\(jsonString)") //  JSON 확인
+                print("준비된 JSON 데이터:\n\(jsonString)") //  JSON 확인
             }
         } catch {
-            print("🚨 JSON 변환 오류: \(error.localizedDescription)")
+            print("JSON 변환 오류: \(error.localizedDescription)")
         }
 
         return requestData
@@ -326,7 +321,7 @@ extension AgreementViewController: UITableViewDelegate, UITableViewDataSource {
             self.tableView.reloadRows(at: [indexPath], with: .none)
 
             //  체크한 항목을 서버에 즉시 전송
-            self.sendTermsToServer()
+//            self.sendTermsToServer()
             
             //  필수 약관 체크 여부 다시 계산
             self.updateAgreeButtonState()

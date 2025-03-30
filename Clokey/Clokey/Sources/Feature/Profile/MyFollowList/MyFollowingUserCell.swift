@@ -11,16 +11,20 @@ import SnapKit
 import Then
 import Kingfisher
 
-protocol FollowUserCellDelegate: AnyObject {
+protocol MyFollowingUserCellDelegate: AnyObject {
+    func myFollowingUserCell(_ cell: MyFollowingUserCell, didChangeFollowStatus isFollowing: Bool)
     func showFollowErrorAlert(message: String)
 }
+//protocol FollowUserCellDelegate: AnyObject {
+//    
+//}
 
 // MARK: - Like User Cell
 class MyFollowingUserCell: UICollectionViewCell {
     static let identifier = "MyFollowingUserCell"
+    weak var delegate: MyFollowingUserCellDelegate?
     
     private var isFollowing: Bool = false
-    weak var delegate: FollowUserCellDelegate?
 
     // MARK: - UI Components
     private let profileImageView = UIImageView().then {
@@ -122,6 +126,7 @@ class MyFollowingUserCell: UICollectionViewCell {
                 self.isFollowing.toggle()
                 DispatchQueue.main.async {
                     self.updateFollowButton(isFollower: self.isFollowing)
+                    self.delegate?.myFollowingUserCell(self, didChangeFollowStatus: self.isFollowing)
                 }
                 // 팔로우 걸때만
                 if !wasFollowing && self.isFollowing {

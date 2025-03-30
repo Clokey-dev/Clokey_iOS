@@ -12,15 +12,16 @@ import Then
 import Kingfisher
 
 protocol MyFollowerUserCellDelegate: AnyObject {
+    func myFollowerUserCell(_ cell: MyFollowerUserCell, didChangeFollowStatus isFollowing: Bool)
     func showFollowErrorAlert(message: String)
 }
 
 // MARK: - Like User Cell
 class MyFollowerUserCell: UICollectionViewCell {
     static let identifier = "MyFollowerUserCell"
+    weak var delegate: MyFollowerUserCellDelegate?
     
     private var isFollowing: Bool = false
-    weak var delegate: MyFollowerUserCellDelegate?
     
     // MARK: - UI Components
     private let profileImageView = UIImageView().then {
@@ -110,7 +111,8 @@ class MyFollowerUserCell: UICollectionViewCell {
     }
     
     // 팔로우/언팔로우
-    private func followUser(clokeyId: String) {
+    /*private */
+    func followUser(clokeyId: String) {
         let membersService = MembersService()
         
         let wasFollowing = isFollowing
@@ -122,6 +124,8 @@ class MyFollowerUserCell: UICollectionViewCell {
                 self.isFollowing.toggle()
                 DispatchQueue.main.async {
                     self.updateFollowButton(isFollower: self.isFollowing)
+                    // 팔로우 상태 변경 후 delegate에 알림 전달
+                    self.delegate?.myFollowerUserCell(self, didChangeFollowStatus: self.isFollowing)
                 }
                 // 팔로우 걸때만
                 if !wasFollowing && self.isFollowing {

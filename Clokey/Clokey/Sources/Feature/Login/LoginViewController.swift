@@ -184,8 +184,8 @@ final class LoginViewController: UIViewController {
             UserDefaults.standard.set(true, forKey: "isLoggedIn")
             print("자동로그인 ON")
             sceneDelegate.switchToMain()
-        case "AGREED_PROFILE_NOT_SET":
-            sceneDelegate.navigateToAddProfile()
+//        case "AGREED_PROFILE_NOT_SET":
+//            sceneDelegate.navigateToAddProfile()
         default:
             navigateToAgreement()
         }

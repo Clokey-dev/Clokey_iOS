@@ -286,7 +286,9 @@ final class ProfileView: UIView {
         backgroundImageView.snp.makeConstraints { make in
             make.top.equalTo(topContainer.snp.bottom)
             make.centerX.equalToSuperview()
-            make.height.width.equalTo(393)
+//            make.height.width.equalTo(393)
+            make.height.equalTo(393)
+            make.width.equalToSuperview()
         }
         
 

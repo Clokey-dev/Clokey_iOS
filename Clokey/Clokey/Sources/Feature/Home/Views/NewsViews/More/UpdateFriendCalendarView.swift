@@ -22,12 +22,6 @@ class UpdateFriendCalendarView: UIView {
         $0.backgroundColor = .white
     }
     
-    let subTitle: UILabel = UILabel().then {
-        $0.text = "dd"
-        $0.font = UIFont.ptdRegularFont(ofSize: 14)
-        $0.textColor = .black
-    }
-    
     let updateFriendCalendarCollectionView: UICollectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout().then {
@@ -57,7 +51,6 @@ class UpdateFriendCalendarView: UIView {
         
         addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubview(subTitle)
         contentView.addSubview(updateFriendCalendarCollectionView)
     }
     
@@ -74,17 +67,9 @@ class UpdateFriendCalendarView: UIView {
             make.bottom.equalTo(updateFriendCalendarCollectionView.snp.bottom).offset(20)
             
         }
-
-        
-        subTitle.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(10)
-            make.leading.equalToSuperview().offset(20)
-            make.width.equalTo(233)
-            make.height.equalTo(16)
-        }
         
         updateFriendCalendarCollectionView.snp.makeConstraints{ make in
-            make.top.equalTo(subTitle.snp.bottom).offset(15)
+            make.top.equalToSuperview().offset(10)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(300) // 초기 높이 (1로 설정하여 콘텐츠 크기 업데이트 유도)
             
