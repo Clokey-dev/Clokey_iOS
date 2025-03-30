@@ -64,8 +64,7 @@ class NewsView: UIView {
     }
     
     let profileImageView: UIImageView = UIImageView().then {
-        $0.image = UIImage(named: "profile_icon")
-        $0.tintColor = .gray
+        $0.tintColor = .clear
         $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 12
         $0.clipsToBounds = true
@@ -87,8 +86,6 @@ class NewsView: UIView {
         $0.axis = .horizontal
         $0.spacing = 21
         $0.distribution = .fillEqually
-//        $0.clipsToBounds = true
-//        $0.layer.cornerRadius = 5
     }
     
     // Image Views for Kingfisher
@@ -160,13 +157,11 @@ class NewsView: UIView {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
         $0.backgroundColor = .white
-//        $0.clipsToBounds = true
         $0.layer.cornerRadius = 5
     }
     
     let followingCalendarProfileIcon1: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
-        $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
         $0.layer.cornerRadius = 12
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 10
@@ -182,13 +177,11 @@ class NewsView: UIView {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
         $0.backgroundColor = .white
-//        $0.clipsToBounds = true
         $0.layer.cornerRadius = 5
     }
     
     let followingCalendarProfileIcon2: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
-        $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
         $0.layer.cornerRadius = 12
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 10
@@ -235,13 +228,11 @@ class NewsView: UIView {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
         $0.backgroundColor = .white
-//        $0.clipsToBounds = true
         $0.layer.cornerRadius = 5
     }
     
     let hotAccountProfileIcon1: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
-        $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
         $0.layer.cornerRadius = 12
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 10
@@ -257,13 +248,11 @@ class NewsView: UIView {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
         $0.backgroundColor = .white
-//        $0.clipsToBounds = true
         $0.layer.cornerRadius = 5
     }
     
     let hotAccountProfileIcon2: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
-        $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
         $0.layer.cornerRadius = 12
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 10
@@ -279,13 +268,11 @@ class NewsView: UIView {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
         $0.backgroundColor = .white
-//        $0.clipsToBounds = true
         $0.layer.cornerRadius = 5
     }
     
     let hotAccountProfileIcon3: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
-        $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
         $0.layer.cornerRadius = 12
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 10
@@ -301,13 +288,11 @@ class NewsView: UIView {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
         $0.backgroundColor = .white
-//        $0.clipsToBounds = true
         $0.layer.cornerRadius = 5
     }
     
     let hotAccountProfileIcon4: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
-        $0.image = UIImage(named: "profile_icon") // 아이콘 이미지 설정
         $0.layer.cornerRadius = 12
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 10
@@ -410,7 +395,6 @@ class NewsView: UIView {
         slideContainerView.snp.makeConstraints { make in
             make.top.equalTo(recommandTitle.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(44)
-//            make.width.equalTo(300)
             make.height.equalTo(300) // 슬라이드 뷰 높이 설정
         }
         
@@ -442,7 +426,6 @@ class NewsView: UIView {
         dateLabel.snp.makeConstraints { make in
             make.centerY.equalTo(profileImageView)
             make.trailing.equalToSuperview().inset(23)
-//            make.width.equalTo(60)
             make.height.equalTo(16)
         }
         
@@ -461,7 +444,6 @@ class NewsView: UIView {
         
         friendClothesBottomArrowIcon.snp.makeConstraints { make in
             make.centerY.equalTo(friendClothesBottomButtonLabel.snp.centerY)
-//            make.leading.equalTo(friendClothesBottomButtonLabel.snp.trailing).offset(10)
             make.trailing.equalToSuperview().inset(20)
             make.width.equalTo(6)
             make.height.equalTo(12)
@@ -491,7 +473,6 @@ class NewsView: UIView {
         // 첫 번째 이미지 뷰
         followingCalendarUpdateImageView1.snp.makeConstraints { make in
             make.top.leading.equalToSuperview()
-//            make.width.equalTo(followingCalendarUpdateImageView2)
             make.width.equalTo(followingCalendarUpdateContainerView.snp.width).multipliedBy(0.5).offset(-5) // 너비의 절반 - 간격
             make.height.equalTo(220) // 고정 높이 설정
         }
@@ -512,7 +493,6 @@ class NewsView: UIView {
         // 두 번째 이미지 뷰
         followingCalendarUpdateImageView2.snp.makeConstraints { make in
             make.top.trailing.equalToSuperview()
-//            make.width.equalTo(followingCalendarUpdateImageView1)
             make.width.equalTo(followingCalendarUpdateContainerView.snp.width).multipliedBy(0.5).offset(-5) // 너비의 절반 - 간격
             make.height.equalTo(220) // 고정 높이 설정
         }
@@ -565,7 +545,6 @@ class NewsView: UIView {
         
         hotAccountImageView1.snp.makeConstraints { make in
             make.top.leading.equalToSuperview()
-//            make.width.equalTo(hotAccountContainerView.snp.width).multipliedBy(0.5).offset(-5)
             make.width.equalTo(160)
             make.height.equalTo(220)
         }
@@ -578,14 +557,12 @@ class NewsView: UIView {
         
         // 제목 레이블 레이아웃
         hotAccountProfileName1.snp.makeConstraints {
-//            $0.centerY.equalTo(hotAccountProfileIcon1) // 아이콘과 수직 정렬
             $0.top.equalTo(hotAccountImageView1.snp.bottom).offset(13)
             $0.leading.equalTo(hotAccountProfileIcon1.snp.trailing).offset(8)
         }
         
         hotAccountImageView2.snp.makeConstraints { make in
             make.top.trailing.equalToSuperview()
-//            make.width.equalTo(hotAccountContainerView.snp.width).multipliedBy(0.5).offset(-5)
             make.width.equalTo(160)
             make.height.equalTo(220)
         }
@@ -598,7 +575,6 @@ class NewsView: UIView {
         
         // 제목 레이블 레이아웃
         hotAccountProfileName2.snp.makeConstraints {
-//            $0.centerY.equalTo(hotAccountProfileIcon2) // 아이콘과 수직 정렬
             $0.top.equalTo(hotAccountImageView2.snp.bottom).offset(13)
             $0.leading.equalTo(hotAccountProfileIcon2.snp.trailing).offset(8)
         }
@@ -606,7 +582,6 @@ class NewsView: UIView {
         hotAccountImageView3.snp.makeConstraints { make in
             make.top.equalTo(hotAccountProfileIcon1.snp.bottom).offset(18)
             make.leading.equalToSuperview()
-//            make.width.equalTo(hotAccountContainerView.snp.width).multipliedBy(0.5).offset(-5)
             make.width.equalTo(160)
             make.height.equalTo(220)
         }
@@ -619,7 +594,6 @@ class NewsView: UIView {
         
         // 제목 레이블 레이아웃
         hotAccountProfileName3.snp.makeConstraints {
-//            $0.centerY.equalTo(hotAccountProfileIcon2) // 아이콘과 수직 정렬
             $0.top.equalTo(hotAccountImageView3.snp.bottom).offset(13)
             $0.leading.equalTo(hotAccountProfileIcon3.snp.trailing).offset(8)
         }
@@ -627,7 +601,6 @@ class NewsView: UIView {
         hotAccountImageView4.snp.makeConstraints { make in
             make.top.equalTo(hotAccountProfileIcon2.snp.bottom).offset(18)
             make.trailing.equalToSuperview()
-//            make.width.equalTo(hotAccountContainerView.snp.width).multipliedBy(0.5).offset(-5)
             make.width.equalTo(160)
             make.height.equalTo(220)
         }
@@ -640,7 +613,6 @@ class NewsView: UIView {
         
         // 제목 레이블 레이아웃
         hotAccountProfileName4.snp.makeConstraints {
-//            $0.centerY.equalTo(hotAccountProfileIcon2) // 아이콘과 수직 정렬
             $0.top.equalTo(hotAccountImageView4.snp.bottom).offset(13)
             $0.leading.equalTo(hotAccountProfileIcon2.snp.trailing).offset(8)
         }

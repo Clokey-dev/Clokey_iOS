@@ -93,12 +93,10 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-//        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     // 네비게이션 설정
@@ -118,9 +116,9 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
         }
     
     // 뒤로가기
-        @objc private func didTapBackButton() {
-            navigationController?.popViewController(animated: true)
-        }
+    @objc private func didTapBackButton() {
+        navigationController?.popViewController(animated: true)
+    }
     
     @objc internal override func dismissKeyboard() {
         view.endEditing(true) //  현재 화면에서 키보드 내리기
@@ -131,7 +129,6 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
               let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
         
         let keyboardHeight = keyboardFrame.height
-//        let bottomInset = keyboardHeight - view.safeAreaInsets.bottom
         
         if let activeTextField = view.findFirstResponder() as? UITextField {
             let textFieldFrame = activeTextField.convert(activeTextField.bounds, to: view)
@@ -333,7 +330,6 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
                     self.validateForm()
                     
                 case .failure(_):
-//                    self.addProfileView.idError(hidden: false)
                     self.editProfileView.idStatusLabel.text = "중복된 아이디입니다."
                     self.editProfileView.idStatusLabel.textColor = .pointOrange800
                     self.isIdChecked = false
@@ -400,7 +396,6 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
             return
         }
         
-//        let formattedId = "@\(id)"
         let bio = editProfileView.bioTextField.text ?? ""
         let visibility = isPublic ? "PUBLIC" : "PRIVATE"
         
@@ -474,7 +469,7 @@ final class EditProfileViewController: UIViewController, TOCropViewControllerDel
         
         return resizedImage
     }
-//
+    
     deinit {
         // 키보드 옵저버 제거
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)

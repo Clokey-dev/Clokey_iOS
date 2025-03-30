@@ -56,7 +56,7 @@ class UpdateFriendCalendarViewController: UIViewController, UIGestureRecognizerD
         backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         
         let titleLabel: UILabel = UILabel().then {
-            let fullText = "친구의 캘린더 업데이트 소식"
+            let fullText = "팔로우 중인 캘린더 업데이트 소식"
             let targetText = "캘린더"
             let attributedString = NSMutableAttributedString(string: fullText)
             
@@ -118,9 +118,6 @@ class UpdateFriendCalendarViewController: UIViewController, UIGestureRecognizerD
             switch result {
             case .success(let responseDTO):
                 let newResult: [UpdateFriendCalendarModel] = responseDTO.dailyNewsResult.compactMap { item -> UpdateFriendCalendarModel? in
-                    DispatchQueue.main.async {
-                        self.updateFriendCalendarView.subTitle.text = item.date
-                    }
                     
                     guard let eventImageURLString = item.imageUrl,
                           let eventImageURL = URL(string: eventImageURLString) else {

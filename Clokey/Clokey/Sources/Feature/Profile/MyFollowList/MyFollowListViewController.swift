@@ -14,7 +14,9 @@ enum MyFollowTabType: Int {
     case following = 1
 }
 
-class MyFollowListViewController: UIViewController, UIGestureRecognizerDelegate {
+class MyFollowListViewController: UIViewController, UIGestureRecognizerDelegate, MyFollowerUserCellDelegate, MyFollowingUserCellDelegate {
+    
+    
     private let navBarManager = NavigationBarManager()
 
     
@@ -244,8 +246,6 @@ class MyFollowListViewController: UIViewController, UIGestureRecognizerDelegate 
         followingCollectionView.delegate = self
 
     }
-    
-
     
     @objc private func followerButtonTapped() {
         updateCollectionView(for: .follower)
@@ -482,12 +482,48 @@ extension MyFollowListViewController: UICollectionViewDataSource, UICollectionVi
             navigationController?.pushViewController(followProfileVC, animated: false)
         }
     }
-}
-
-extension MyFollowListViewController: MyFollowerUserCellDelegate, FollowUserCellDelegate {
+    
+    func myFollowerUserCell(_ cell: MyFollowerUserCell, didChangeFollowStatus isFollowing: Bool) {
+        // 셀의 indexPath를 찾음
+        if let indexPath = followerCollectionView.indexPath(for: cell) {
+            // 모델 배열의 해당 요소의 팔로우 상태를 업데이트
+            followerusers[indexPath.item].isFollowing = isFollowing
+        }
+        
+        // 팔로잉 수 업데이트 (팔로우이면 +1, 아니면 -1)
+        if isFollowing {
+            self.followingCount += 1
+        } else {
+            self.followingCount = max(0, self.followingCount - 1)
+        }
+        
+        // 팔로잉 버튼의 텍스트 업데이트
+        self.followingButton.setTitle("팔로잉(\(self.followingCount))", for: .normal)
+    }
+    
+    func myFollowingUserCell(_ cell: MyFollowingUserCell, didChangeFollowStatus isFollowing: Bool) {
+        // 셀의 indexPath를 찾음
+        if let indexPath = followingCollectionView.indexPath(for: cell) {
+            // 모델 배열의 해당 요소의 팔로우 상태를 업데이트
+            followingusers[indexPath.item].isFollowing = isFollowing
+        }
+        
+        // 팔로잉 수 업데이트 (팔로우이면 +1, 아니면 -1)
+        if isFollowing {
+            self.followingCount += 1
+        } else {
+            self.followingCount = max(0, self.followingCount - 1)
+        }
+        
+        // 팔로잉 버튼의 텍스트 업데이트
+        self.followingButton.setTitle("팔로잉(\(self.followingCount))", for: .normal)
+    }
+    
+    
     func showFollowErrorAlert(message: String) {
         let alert = UIAlertController(title: "오류", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default))
         present(alert, animated: true)
     }
 }
+

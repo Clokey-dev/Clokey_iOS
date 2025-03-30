@@ -703,11 +703,17 @@ class NewsViewController: UIViewController {
                         return
                     }
                     
-                    self.recommandNewsSlides = responseDTO.recommend.map { recommendItem in
+//                    self.recommandNewsSlides = responseDTO.recommend.map { recommendItem in
+                    self.recommandNewsSlides = responseDTO.recommend.compactMap { recommendItem in
+                        let hashtag = recommendItem.hashtag ?? "#해시태그 없음"
+                        if hashtag == "해시태그 없음" || hashtag == "NULL" {
+                            return nil
+                        }
                         return RecommandNewsSlideModel(
                             image: recommendItem.imageUrl,
                             title: recommendItem.subTitle,
-                            hashtag: recommendItem.hashtag ?? "#해시태그 없음",
+//                            hashtag: recommendItem.hashtag ?? "#해시태그 없음",
+                            hashtag: hashtag,
                             date: recommendItem.date
                         )
                     }

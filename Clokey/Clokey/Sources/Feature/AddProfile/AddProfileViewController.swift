@@ -57,12 +57,10 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-//        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     // 네비게이션 설정
@@ -95,7 +93,6 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
               let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
         
         let keyboardHeight = keyboardFrame.height
-//        let bottomInset = keyboardHeight - view.safeAreaInsets.bottom
         
         if let activeTextField = view.findFirstResponder() as? UITextField {
             let textFieldFrame = activeTextField.convert(activeTextField.bounds, to: view)
@@ -187,7 +184,6 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
     
     func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
         print("사용자가 크롭을 취소했습니다.")
-//        isSelectingProfileImage = false //  프로필 이미지 선택 상태 해제
         if isSelectingProfileImage {
             addProfileView.profileImageView.image = UIImage(named: "profile_basic")
         } else {
@@ -198,8 +194,6 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
     
     
     private func addActions() {
-        
-//        addProfileView.backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         
         addProfileView.nicknameTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         addProfileView.nicknameTextField.addTarget(self, action: #selector(validateNickname), for: .editingChanged)
@@ -212,10 +206,6 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
         addProfileView.completeButton.addTarget(self, action: #selector(didTapCompleteButton), for: .touchUpInside)
     }
     
-    
-//    @objc private func didTapBackButton() {
-//        self.dismiss(animated: true, completion: nil)
-//    }
     
     // 텍스트 필드 변경 시 호출되는 메서드
     @objc private func textFieldDidChange(_ textField: UITextField) {
@@ -235,8 +225,6 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
     
     @objc private func validateNickname() {
         guard let text = addProfileView.nicknameTextField.text, !text.isEmpty else {
-//            addProfileView.nicknameStatusLabel.text = ""
-//            addProfileView.nicknameStatusLabel.isHidden = true // 입력 없으면 숨김
             addProfileView.nickNameError(hidden: true)
             return
         }
@@ -246,15 +234,13 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
         if text.count > 6 {
             addProfileView.nicknameStatusLabel.text = "6글자 이내로 입력해주세요."
             addProfileView.nicknameStatusLabel.textColor = .pointOrange800
-//            addProfileView.nicknameStatusLabel.isHidden = false // 🚀 오류 메시지 보이게 설정
             
         } else {
             addProfileView.nicknameStatusLabel.text = "사용 가능한 닉네임입니다."
             addProfileView.nicknameStatusLabel.textColor = .pointOrange800
-//            addProfileView.nicknameStatusLabel.isHidden = false // 🚀 유효한 경우에도 표시
         }
         
-        validateForm() // 🚀 폼 유효성 검사 실행
+        validateForm()
     }
     
     
@@ -275,7 +261,6 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
             
             addProfileView.idStatusLabel.text = "잘못 입력했습니다. 소문자와 숫자만 입력하세요."
             addProfileView.idStatusLabel.textColor = .pointOrange800
-//            addProfileView.idStatusLabel.isHidden = false
             isIdChecked = false
             validateForm() //  유효성 검사 즉시 실행
             return
@@ -290,20 +275,16 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-//                    self.addProfileView.idError(hidden: false)
                     self.addProfileView.idStatusLabel.text = "사용 가능한 아이디입니다."
                     self.addProfileView.idStatusLabel.textColor = .pointOrange800
                     self.isIdChecked = true
-//                    self.addProfileView.idStatusLabel.isHidden = false
                     self.addProfileView.idCheckButton.setTitleColor(.gray, for: .normal)
                     self.validateForm()
                     
                 case .failure(_):
-//                    self.addProfileView.idError(hidden: false)
                     self.addProfileView.idStatusLabel.text = "중복된 아이디입니다."
                     self.addProfileView.idStatusLabel.textColor = .pointOrange800
                     self.isIdChecked = false
-//                    self.addProfileView.idStatusLabel.isHidden = false
                     self.addProfileView.idCheckButton.setTitleColor(.gray, for: .normal)
                     self.validateForm()
                     self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
@@ -343,8 +324,7 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
         let nicknameText = addProfileView.nicknameTextField.text ?? ""
         let isNicknameValid = !nicknameText.isEmpty && nicknameText.count <= 6 //  닉네임이 비어있지 않고 6글자 이하인 경우 유효
         let isIdValid = !(addProfileView.idTextField.text?.isEmpty ?? true) && isIdChecked
-        let isAccountSelected = isPublicAccount != nil //  공개/비공개 중 하나 선택 필수
-//        let isAnyImageSelected = isProfileImageSelected && isBackgroundImageSelected //  프로필 또는 배경 둘 중 하나만 선택되면 OK
+        let isAccountSelected = isPublicAccount != nil //  공개/비공개 중 하나 선택 필수 //  프로필 또는 배경 둘 중 하나만 선택되면 OK
         let isAnyImageSelected = true //  사진 선택 여부 상관없이 활성화
         
         let isFormValid = isNicknameValid && isIdValid && isAccountSelected && isAnyImageSelected
@@ -362,7 +342,6 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
             return
         }
         
-//        let formattedId = "@\(id)"
         let bio = addProfileView.bioTextField.text ?? ""
         let visibility = isPublic ? "PUBLIC" : "PRIVATE"
         
@@ -436,7 +415,6 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
         
         return resizedImage
     }
-// 
     deinit {
         // 키보드 옵저버 제거
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
