@@ -86,6 +86,7 @@ final class AddProfileViewController: UIViewController, TOCropViewControllerDele
     
     @objc internal override func dismissKeyboard() {
         view.endEditing(true) //  현재 화면에서 키보드 내리기
+        view.frame.origin.y = 0
     }
     
     @objc private func keyboardWillShow(_ notification: Notification) {

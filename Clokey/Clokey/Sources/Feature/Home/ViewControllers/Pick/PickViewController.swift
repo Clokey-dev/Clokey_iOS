@@ -779,8 +779,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     let imageUrls = historyResult.imageUrls
                     let nickName = historyResult.nickName
                     let historyId = historyResult.historyId
-                    self.dateString = historyResult.date
-                    
+                    self.dateString = historyResult.date ?? ""
                     self.dateFormatter()
                     
                     if imageUrls.count > 0 {

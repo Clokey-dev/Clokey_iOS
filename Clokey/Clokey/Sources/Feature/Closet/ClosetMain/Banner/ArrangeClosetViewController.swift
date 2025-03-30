@@ -178,8 +178,6 @@ class ArrangeClosetViewController: UIViewController, UICollectionViewDataSource,
                 }
             case .failure(let error):
                 print("클로키 아이디 받아오기 실패: \(error)")
-                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 끊겼습니다.")
-            
             }
         }
     }
