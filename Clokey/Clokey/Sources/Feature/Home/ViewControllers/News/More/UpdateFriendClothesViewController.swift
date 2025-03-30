@@ -59,7 +59,7 @@ class UpdateFriendClothesViewController: UIViewController, UIGestureRecognizerDe
         backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         
         let titleLabel: UILabel = UILabel().then {
-                let fullText = "친구의 옷장 업데이트 소식"
+                let fullText = "팔로우 중인 옷장 업데이트 소식"
                 let targetText = "옷장"
                 let attributedString = NSMutableAttributedString(string: fullText)
         

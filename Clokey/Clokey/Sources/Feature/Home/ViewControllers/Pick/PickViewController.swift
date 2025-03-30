@@ -14,6 +14,7 @@ import Moya
 import WeatherKit
 
 class PickViewController: UIViewController, CLLocationManagerDelegate {
+    private var timeUpdateTimer: Timer?
     
     private var backgroundView: UIView?// 배경 어둡게 하기 위해 선언
     
@@ -50,8 +51,8 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         if let date = formatter.date(from: dateString) {
             formatter.dateFormat = "MM"
             let month = formatter.string(from: date)
-            self.month = month
-            print(month) // 출력: "03"
+            self.month = String(Int(month) ?? 0)
+            print(month) 
         }
     }
     
@@ -85,12 +86,11 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         // 새로고침 기능 추가
         pickView.scrollView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
-        //        NotificationCenter.default.addObserver(self, selector: #selector(didPullToRefresh), name: NSNotification.Name("RefreshHomeNotification"), object: nil)
         
         
         setupActions()
-        
-        updateTimeLabel() // 현재 시간 업데이트
+
+        startPreciseMinuteTimer()
         self.fetchVisualCrossingWeatherData(for: latitude, longitude: longitude)
         self.updateYesterdayWeatherUI(for: latitude, longitude: longitude)
         setupBottomLabelTap()
@@ -327,28 +327,24 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     
                     if response.seasons.count > 0 {
                         if response.seasons[0] == "SPRING" {
-                            //                                configureButton(popUpView.springButton, title: "봄")
                             popUpView.springButton.setTitleColor(.white, for: .normal)
                             popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
                             popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.springButton.layer.cornerRadius = 5
                             popUpView.springButton.layer.borderWidth = 1
                         } else if response.seasons[0] == "SUMMER" {
-                            //                                configureButton(popUpView.summerButton, title: "여름")
                             popUpView.summerButton.setTitleColor(.white, for: .normal)
                             popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
                             popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.summerButton.layer.cornerRadius = 5
                             popUpView.summerButton.layer.borderWidth = 1
                         } else if response.seasons[0] == "FALL" {
-                            //                                configureButton(popUpView.fallButton, title: "가을")
                             popUpView.fallButton.setTitleColor(.white, for: .normal)
                             popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
                             popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.fallButton.layer.cornerRadius = 5
                             popUpView.fallButton.layer.borderWidth = 1
                         } else if response.seasons[0] == "WINTER" {
-                            //                                configureButton(popUpView.winterButton, title: "겨울")
                             popUpView.winterButton.setTitleColor(.white, for: .normal)
                             popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
                             popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
@@ -359,28 +355,24 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     
                     if response.seasons.count > 1 {
                         if response.seasons[1] == "SPRING" {
-                            //                                configureButton(popUpView.springButton, title: "봄")
                             popUpView.springButton.setTitleColor(.white, for: .normal)
                             popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
                             popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.springButton.layer.cornerRadius = 5
                             popUpView.springButton.layer.borderWidth = 1
                         } else if response.seasons[1] == "SUMMER" {
-                            //                                configureButton(popUpView.summerButton, title: "여름")
                             popUpView.summerButton.setTitleColor(.white, for: .normal)
                             popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
                             popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.summerButton.layer.cornerRadius = 5
                             popUpView.summerButton.layer.borderWidth = 1
                         } else if response.seasons[1] == "FALL" {
-                            //                                configureButton(popUpView.fallButton, title: "가을")
                             popUpView.fallButton.setTitleColor(.white, for: .normal)
                             popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
                             popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.fallButton.layer.cornerRadius = 5
                             popUpView.fallButton.layer.borderWidth = 1
                         } else if response.seasons[1] == "WINTER" {
-                            //                                configureButton(popUpView.winterButton, title: "겨울")
                             popUpView.winterButton.setTitleColor(.white, for: .normal)
                             popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
                             popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
@@ -391,28 +383,24 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     
                     if response.seasons.count > 2 {
                         if response.seasons[2] == "SPRING" {
-                            //                                configureButton(popUpView.springButton, title: "봄")
                             popUpView.springButton.setTitleColor(.white, for: .normal)
                             popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
                             popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.springButton.layer.cornerRadius = 5
                             popUpView.springButton.layer.borderWidth = 1
                         } else if response.seasons[2] == "SUMMER" {
-                            //                                configureButton(popUpView.summerButton, title: "여름")
                             popUpView.summerButton.setTitleColor(.white, for: .normal)
                             popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
                             popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.summerButton.layer.cornerRadius = 5
                             popUpView.summerButton.layer.borderWidth = 1
                         } else if response.seasons[2] == "FALL" {
-                            //                                configureButton(popUpView.fallButton, title: "가을")
                             popUpView.fallButton.setTitleColor(.white, for: .normal)
                             popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
                             popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.fallButton.layer.cornerRadius = 5
                             popUpView.fallButton.layer.borderWidth = 1
                         } else if response.seasons[2] == "WINTER" {
-                            //                                configureButton(popUpView.winterButton, title: "겨울")
                             popUpView.winterButton.setTitleColor(.white, for: .normal)
                             popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
                             popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
@@ -423,28 +411,24 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     
                     if response.seasons.count > 3 {
                         if response.seasons[3] == "SPRING" {
-                            //                                configureButton(popUpView.springButton, title: "봄")
                             popUpView.springButton.setTitleColor(.white, for: .normal)
                             popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
                             popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.springButton.layer.cornerRadius = 5
                             popUpView.springButton.layer.borderWidth = 1
                         } else if response.seasons[3] == "SUMMER" {
-                            //                                configureButton(popUpView.summerButton, title: "여름")
                             popUpView.summerButton.setTitleColor(.white, for: .normal)
                             popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
                             popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.summerButton.layer.cornerRadius = 5
                             popUpView.summerButton.layer.borderWidth = 1
                         } else if response.seasons[3] == "FALL" {
-                            //                                configureButton(popUpView.fallButton, title: "가을")
                             popUpView.fallButton.setTitleColor(.white, for: .normal)
                             popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
                             popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
                             popUpView.fallButton.layer.cornerRadius = 5
                             popUpView.fallButton.layer.borderWidth = 1
                         } else if response.seasons[3] == "WINTER" {
-                            //                                configureButton(popUpView.winterButton, title: "겨울")
                             popUpView.winterButton.setTitleColor(.white, for: .normal)
                             popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
                             popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
@@ -453,7 +437,6 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                         }
                     }
                     
-                    //                    popUpView.wearCountButton.titleLabel?.text = "\(response.wearNum)"
                     popUpView.wearCountButton.setTitle("\(response.wearNum)회", for: .normal)
                     popUpView.brandNameLabel.text = (response.brand?.isEmpty ?? true) ? "지정 없음" : response.brand
                     self.url = response.clothUrl ?? ""
@@ -908,6 +891,28 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         isDataLoaded = true
         hideLoadingOverlay()
     }
+    
+    func startPreciseMinuteTimer() {
+        let calendar = Calendar.current
+        let now = Date()
+        
+        // 다음 정각 (초단위 0)까지 남은 시간 계산
+        let nextMinute = calendar.nextDate(after: now, matching: DateComponents(second: 0), matchingPolicy: .nextTime)!
+        let delay = nextMinute.timeIntervalSince(now)
+        
+        // 정각까지 한 번 딜레이 후, 60초 간격 타이머 시작
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
+            self?.updateTimeLabel()
+            self?.timeUpdateTimer = Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true) { _ in
+                self?.updateTimeLabel()
+            }
+        }
+    }
+    
+    deinit {
+        timeUpdateTimer?.invalidate()
+    }
+    
 }
 
 

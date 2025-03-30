@@ -57,7 +57,6 @@ class UpdateFriendClothesView: UIView {
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints { make in
-//            make.edges.equalToSuperview() // 화면 전체에 ScrollView
             make.top.equalTo(safeAreaLayoutGuide)
             make.leading.trailing.bottom.equalToSuperview()
         }
