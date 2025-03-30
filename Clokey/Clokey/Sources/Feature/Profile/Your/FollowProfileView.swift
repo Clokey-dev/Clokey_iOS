@@ -261,7 +261,8 @@ class FollowProfileView: UIView {
         profileContainer.snp.makeConstraints { make in
             make.top.equalTo(backgroundImageView.snp.bottom).offset(-50)
             make.centerX.equalToSuperview()
-            make.width.height.equalTo(100)
+            make.height.equalTo(393)
+            make.width.equalToSuperview()
         }
         
         profileImageView.snp.makeConstraints { make in
