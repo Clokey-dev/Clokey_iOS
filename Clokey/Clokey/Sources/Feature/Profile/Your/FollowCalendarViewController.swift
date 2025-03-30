@@ -138,6 +138,16 @@ class FollowCalendarViewController: UIViewController {
         loadingIndicator.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
+        
+        // 스와이프로 캘린더 이동
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
+        swipeLeft.direction = .left
+        view.addGestureRecognizer(swipeLeft)
+
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
+        swipeRight.direction = .right
+        view.addGestureRecognizer(swipeRight)
+
     }
     
     private func setupBindings() {
@@ -171,6 +181,17 @@ class FollowCalendarViewController: UIViewController {
         }
     }
 
+    // MARK: - Action
+    @objc private func handleSwipe(_ gesture: UISwipeGestureRecognizer) {
+        switch gesture.direction {
+        case .left:
+            changeMonth(by: 1)
+        case .right:
+            changeMonth(by: -1)
+        default:
+            break
+        }
+    }
     
     // MARK: - Calendar Methods
     func updateCalendar() {
@@ -224,6 +245,7 @@ class FollowCalendarViewController: UIViewController {
                 
             case .failure(let error):
                 print("캘린더 데이터 로드 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
@@ -264,6 +286,7 @@ extension FollowCalendarViewController: CalendarViewDelegate {
 
             case .failure(let error):
                 print("히스토리 상세 조회 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }

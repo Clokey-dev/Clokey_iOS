@@ -152,6 +152,7 @@ class UpdateFriendCalendarViewController: UIViewController, UIGestureRecognizerD
                 
             case .failure(let error):
                 print("Failed to load calendar data: \(error)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
@@ -189,6 +190,7 @@ extension UpdateFriendCalendarViewController: UICollectionViewDataSource {
                         print("Profile Image loaded: \(value.source.url?.absoluteString ?? "")")
                     case .failure(let error):
                         print("Error loading profile image: \(error.localizedDescription)")
+                        self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
                     }
                 }
             )

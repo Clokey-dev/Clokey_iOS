@@ -128,8 +128,8 @@ class ClosetPopupView: UIView {
     let wearCountLabel: UILabel = {
         let label = UILabel()
         label.text = "착용횟수"
-        label.font = UIFont.ptdRegularFont(ofSize: 16)
-        label.textColor = .black
+        label.font = UIFont.ptdMediumFont(ofSize: 12)
+        label.textColor = .gray
         return label
     }()
     
@@ -144,24 +144,25 @@ class ClosetPopupView: UIView {
     let brandLabel: UILabel = {
         let label = UILabel()
         label.text = "브랜드"
-        label.font = UIFont.ptdRegularFont(ofSize: 16)
-        label.textColor = .black
+        label.font = UIFont.ptdMediumFont(ofSize: 12)
+        label.textColor = .gray
         return label
     }()
     
     var brandNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "" // API 데이터로 채워질 예정
-        label.font = UIFont.ptdRegularFont(ofSize: 16)
-        label.textColor = .black
+        label.text = ""
+        label.font = UIFont.ptdMediumFont(ofSize: 12)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byCharWrapping
         return label
     }()
     
     let urlLabel: UILabel = {
         let label = UILabel()
         label.text = "url"
-        label.font = UIFont.ptdRegularFont(ofSize: 16)
-        label.textColor = .black
+        label.font = UIFont.ptdMediumFont(ofSize: 12)
+        label.textColor = .gray
         return label
     }()
     
@@ -170,7 +171,7 @@ class ClosetPopupView: UIView {
         let attributes: [NSAttributedString.Key: Any] = [
             .underlineStyle: NSUnderlineStyle.single.rawValue,
             .foregroundColor: UIColor.mainBrown800,
-            .font: UIFont.ptdRegularFont(ofSize: 16)
+            .font: UIFont.ptdMediumFont(ofSize: 12)
         ]
         let attributedTitle = NSAttributedString(string: title, attributes: attributes)
         $0.setAttributedTitle(attributedTitle, for: .normal)

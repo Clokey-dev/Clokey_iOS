@@ -344,7 +344,8 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
                     self.updateFollowerCollectionViewHeight()
                 }
             case .failure(let error):
-                print("🚨 팔로워 데이터 가져오기 실패: \(error.localizedDescription)")
+                print("팔로워 데이터 가져오기 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
@@ -401,7 +402,8 @@ class YourFollowListViewController: UIViewController, UIGestureRecognizerDelegat
                     self.updateFollowingCollectionViewHeight()
                 }
             case .failure(let error):
-                print("🚨 팔로워 데이터 가져오기 실패: \(error.localizedDescription)")
+                print("팔로워 데이터 가져오기 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
@@ -448,15 +450,34 @@ extension YourFollowListViewController: UICollectionViewDataSource, UICollection
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == followerCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: YourFollowerUserCell.identifier, for: indexPath) as! YourFollowerUserCell
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: YourFollowerUserCell.identifier,
+                for: indexPath
+            ) as! YourFollowerUserCell
+
             cell.configure(with: followerusers[indexPath.item])
+
+            cell.onRequestAlert = { [weak self] title, message in
+                self?.showAlert(title: title, message: message)
+            }
+
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: YourFollowingUserCell.identifier, for: indexPath) as! YourFollowingUserCell
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: YourFollowingUserCell.identifier,
+                for: indexPath
+            ) as! YourFollowingUserCell
+
             cell.configure(with: followingusers[indexPath.item])
+
+            cell.onRequestAlert = { [weak self] title, message in
+                self?.showAlert(title: title, message: message)
+            }
+
             return cell
         }
     }
+
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == followerCollectionView {

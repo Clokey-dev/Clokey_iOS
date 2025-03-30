@@ -263,6 +263,7 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
                 self.filterItems()
             case .failure(let error):
                 print("Error loading clothes: \(error)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 끊겼습니다.")
             }
         }
     }
@@ -311,6 +312,7 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
                 }
             case .failure(let error):
                 print("Search API error: \(error)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 끊겼습니다.")
             }
         }
     }

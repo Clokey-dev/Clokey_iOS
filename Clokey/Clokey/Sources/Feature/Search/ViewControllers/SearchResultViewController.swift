@@ -281,6 +281,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
                 
             case .failure(let error):
                 print("❌ 검색 실패: \(error.localizedDescription)")
+                self?.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
@@ -329,6 +330,7 @@ class SearchResultViewController: UIViewController, UICollectionViewDelegate, UI
 
                 case .failure(let error):
                     print("❌ 해시태그 검색 실패: \(error.localizedDescription)")
+                    self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
                 }
             }
         }
@@ -499,6 +501,7 @@ extension SearchResultViewController: UITextFieldDelegate {
                     
                 case .failure(let error):
                     print("❌ 여기가 검색실팬가 검색 실패: \(error.localizedDescription)")
+                    self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
                 }
             }
         } else {
@@ -526,6 +529,7 @@ extension SearchResultViewController: UITextFieldDelegate {
                     
                 case .failure(let error):
                     print("❌ 해시태그 검색 실패: \(error.localizedDescription)")
+                    self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
                 }
             }
         }
@@ -649,6 +653,7 @@ extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
                 
             case .failure(let error):
                 print("히스토리 상세 조회 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }

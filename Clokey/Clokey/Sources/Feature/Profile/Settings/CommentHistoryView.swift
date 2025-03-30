@@ -12,7 +12,7 @@ import Then
 import Kingfisher
 
 final class CommentHistoryView: UIView {
-    
+        
     // 댓글 목록을 표시할 테이블 뷰
     let tableView = UITableView().then {
         $0.separatorStyle = .none
@@ -76,6 +76,8 @@ final class CommentHistoryView: UIView {
 
 // 댓글 셀 구현
 class CommentHistoryCell: UITableViewCell {
+    
+    var onRequestAlert: ((_ title: String, _ message: String) -> Void)?
     
     // 기록 대표 이미지
     let historyImageView = UIImageView().then {
@@ -218,6 +220,10 @@ class CommentHistoryCell: UITableViewCell {
                         break
                     case .failure(let error):
                         print("이미지 로딩 실패: \(error.localizedDescription)")
+                        self.onRequestAlert?(
+                            "이미지 로딩 실패",
+                            "네트워크 오류로 이미지를 불러올 수 없습니다.\n잠시 후 다시 시도해 주세요."
+                        )
                     }
                 }
             )

@@ -212,6 +212,7 @@ class DrawerInfoViewController: UIViewController, UICollectionViewDelegate, UICo
                 }
             case .failure(let error):
                 print("Error loading clothes: \(error)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 끊겼습니다.")
             }
         }
     }

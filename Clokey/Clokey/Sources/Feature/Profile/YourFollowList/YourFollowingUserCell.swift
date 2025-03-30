@@ -16,7 +16,8 @@ class YourFollowingUserCell: UICollectionViewCell {
     static let identifier = "YourFollowingUserCell"
     
     private var isFollowing: Bool = false
-    
+    var onRequestAlert: ((_ title: String, _ message: String) -> Void)?
+
     // MARK: - UI Components
     private let profileImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
@@ -123,6 +124,10 @@ class YourFollowingUserCell: UICollectionViewCell {
                 }
             case .failure(let error):
                 print("팔로우 실패: \(error.localizedDescription)")
+                self.onRequestAlert?(
+                    "팔로우 실패",
+                    "네트워크 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요."
+                )
             }
         }
     }

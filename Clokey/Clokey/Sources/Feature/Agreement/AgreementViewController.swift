@@ -264,7 +264,8 @@ class AgreementViewController: UIViewController {
                         print("동의 실패 항목이 있습니다: \(failedTerms.map { $0.termId })")
                     }
                 case .failure(let error):
-                    print("네트워크 오류: \(error.localizedDescription)")
+                    print("❌ 네트워크 오류: \(error.localizedDescription)")
+                    self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
                 }
             }
         }

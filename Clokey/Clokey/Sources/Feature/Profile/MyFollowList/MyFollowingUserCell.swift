@@ -14,6 +14,9 @@ import Kingfisher
 protocol MyFollowingUserCellDelegate: AnyObject {
     func myFollowingUserCell(_ cell: MyFollowingUserCell, didChangeFollowStatus isFollowing: Bool)
 }
+protocol FollowUserCellDelegate: AnyObject {
+    func showFollowErrorAlert(message: String)
+}
 
 // MARK: - Like User Cell
 class MyFollowingUserCell: UICollectionViewCell {
@@ -21,7 +24,8 @@ class MyFollowingUserCell: UICollectionViewCell {
     weak var delegate: MyFollowingUserCellDelegate?
     
     private var isFollowing: Bool = false
-    
+    weak var delegate: FollowUserCellDelegate?
+
     // MARK: - UI Components
     private let profileImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
@@ -130,6 +134,9 @@ class MyFollowingUserCell: UICollectionViewCell {
                 }
             case .failure(let error):
                 print("팔로우 실패: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    self.delegate?.showFollowErrorAlert(message: "팔로우 요청에 실패했습니다.\n네트워크를 확인해주세요.")
+                }
             }
         }
     }
