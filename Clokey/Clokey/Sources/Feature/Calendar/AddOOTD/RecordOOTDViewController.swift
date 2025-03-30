@@ -184,7 +184,7 @@ class RecordOOTDViewController: UIViewController, UIGestureRecognizerDelegate {
     // 기록하기의 확인 버튼
     @objc private func didTapOOTDButton() {
         if mainView.OOTDButton.isEnabled {
-            let content = mainView.contentInputView.textAddBox.text ?? ""
+            let content = mainView.contentInputView.getTextContent()
             let clothesIds = taggedItems.map { Int64($0.id) }
             let visibility = mainView.contentInputView.publicButton.isSelected ? "PUBLIC" : "PRIVATE"
             

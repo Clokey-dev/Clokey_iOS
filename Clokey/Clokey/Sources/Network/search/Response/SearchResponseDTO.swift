@@ -46,9 +46,6 @@ public struct SearchClothesResponseDTO: Codable{
     public let totalElements: Int64
     public let isFirst: Bool
     public let isLast: Bool
-    
-    
-    
 }
 
 public struct ClothPreviewDTO: Codable{
