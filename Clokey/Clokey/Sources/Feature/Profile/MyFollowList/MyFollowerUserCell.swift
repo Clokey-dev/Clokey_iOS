@@ -11,9 +11,14 @@ import SnapKit
 import Then
 import Kingfisher
 
+protocol MyFollowerUserCellDelegate: AnyObject {
+    func myFollowerUserCell(_ cell: MyFollowerUserCell, didChangeFollowStatus isFollowing: Bool)
+}
+
 // MARK: - Like User Cell
 class MyFollowerUserCell: UICollectionViewCell {
     static let identifier = "MyFollowerUserCell"
+    weak var delegate: MyFollowerUserCellDelegate?
     
     private var isFollowing: Bool = false
     
@@ -118,6 +123,8 @@ class MyFollowerUserCell: UICollectionViewCell {
                 self.isFollowing.toggle()
                 DispatchQueue.main.async {
                     self.updateFollowButton(isFollower: self.isFollowing)
+                    // 팔로우 상태 변경 후 delegate에 알림 전달
+                    self.delegate?.myFollowerUserCell(self, didChangeFollowStatus: self.isFollowing)
                 }
                 // 팔로우 걸때만
                 if !wasFollowing && self.isFollowing {
