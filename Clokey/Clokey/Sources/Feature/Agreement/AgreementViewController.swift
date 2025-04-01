@@ -57,13 +57,9 @@ class AgreementViewController: UIViewController {
         let requiredAgreements = agreements.filter { $0.isRequired } // 필수 항목만 필터링
         return requiredAgreements.allSatisfy { $0.isChecked } // 필수 항목이 모두 체크되었는지 확인
     }
-    
-    let backButton = UIButton().then {
-        let largeConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium) // 아이콘 크기 설정
-        $0.setImage(UIImage(systemName: "chevron.left", withConfiguration: largeConfig), for: .normal)
-        $0.tintColor = .black
-    }
-    
+
+    private let navBarManager = NavigationBarManager()
+
     
     // MARK: - UI Components
     private let titleLabel: UILabel = {
@@ -119,6 +115,8 @@ class AgreementViewController: UIViewController {
         tableView.delegate = self // 테이블뷰 델리게이트 연결
         tableView.dataSource = self // 테이블뷰 데이터소스 연결
      
+        navBarManager.setupWhiteNavigationBar(for: navigationController)
+        navBarManager.addBackButton(to: navigationItem, target: self, action: #selector(didTapBackButton))
     }
     
     // UI 구성
@@ -126,20 +124,15 @@ class AgreementViewController: UIViewController {
         view.backgroundColor = .white
         
         // UI 요소 추가
-        view.addSubview(backButton)
         view.addSubview(titleLabel)
         view.addSubview(allAgreeButton)
         view.addSubview(headerDivider)
         view.addSubview(tableView)
         view.addSubview(agreeButton)
-        
-        backButton.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(60)
-            $0.leading.equalToSuperview().offset(20)
-        }
+
         // 피그마 기준 레이아웃 적용
         titleLabel.snp.makeConstraints {
-            $0.top.equalTo(backButton.snp.bottom).offset(31) // 피그마에서 제공한 상단 간격
+            $0.top.equalToSuperview().offset(60) // 피그마에서 제공한 상단 간격
             $0.leading.trailing.equalToSuperview().inset(20) // 좌우 여백
         }
         
@@ -168,7 +161,6 @@ class AgreementViewController: UIViewController {
         }
         
         // 버튼 클릭 이벤트 연결
-        backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         allAgreeButton.addTarget(self, action: #selector(didTapAllAgree), for: .touchUpInside) // 전체 동의 버튼 클릭 이벤트
         agreeButton.addTarget(self, action: #selector(didTapAgreeButton), for: .touchUpInside) // 가입 완료 버튼 클릭 이벤트
     }
@@ -187,13 +179,18 @@ class AgreementViewController: UIViewController {
         for (index, _) in agreements.enumerated() {
             agreements[index].isChecked = newState
         }
-        tableView.reloadData() // 테이블뷰 데이터 새로고침
-        updateAllAgreeButtonState() // 전체 동의 버튼 상태 업데이트
-        updateAgreeButtonState() // 가입 완료 버튼 상태 업데이트
+        tableView.reloadData()
+        updateAllAgreeButtonState()
+        updateAgreeButtonState()
         
-        //  전체 동의를 눌렀을 때만 서버에 약관 동의 전송
-        sendTermsToServer()
+        // 동의 항목이 하나 이상 있을 때만 서버 전송
+        if agreements.contains(where: { $0.isChecked }) {
+            sendTermsToServer()
+        } else {
+            print("모든 항목이 해제됨 - 서버 전송 생략")
+        }
     }
+
 
     
     // 가입 완료 버튼 클릭 이벤트

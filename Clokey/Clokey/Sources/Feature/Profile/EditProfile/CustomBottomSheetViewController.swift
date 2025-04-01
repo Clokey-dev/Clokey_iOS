@@ -23,15 +23,10 @@ final class CustomBottomSheetViewController: UIViewController {
         $0.clipsToBounds = true
     }
     
-//     let closeButton = UIButton().then {
-//        $0.setImage(UIImage(systemName: "xmark"), for: .normal)
-//        $0.tintColor = .black
-//    }
-    
      let defaultProfileButton = {
          var configuration = UIButton.Configuration.plain()
          configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0)
-         configuration.image = UIImage(systemName: "person.fill")?.resized(to: CGSize(width: 36, height: 36))
+         configuration.image = UIImage(named: "profile_bw")?.resized(to: CGSize(width: 36, height: 36))
          configuration.imagePadding = 8
 
          // 폰트 & 텍스트 크기 조절
@@ -54,7 +49,7 @@ final class CustomBottomSheetViewController: UIViewController {
          
          var configuration = UIButton.Configuration.plain()
          configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0)
-         configuration.image = UIImage(systemName: "photo")?.resized(to: CGSize(width: 36, height: 36))
+         configuration.image = UIImage(named: "gall_bw")?.resized(to: CGSize(width: 36, height: 36))
          configuration.imagePadding = 8
 
          // 폰트 & 텍스트 크기 조절
@@ -110,12 +105,6 @@ final class CustomBottomSheetViewController: UIViewController {
             make.height.equalTo(140)
         }
         
-//        closeButton.snp.makeConstraints { make in
-//            make.top.equalToSuperview().offset(16)
-//            make.trailing.equalToSuperview().offset(-16)
-//            make.size.equalTo(16)
-//        }
-        
         defaultProfileButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(20)
             make.left.right.equalToSuperview()
@@ -133,7 +122,6 @@ final class CustomBottomSheetViewController: UIViewController {
     }
     
     private func setupActions() {
-//        closeButton.addTarget(self, action: #selector(dismissBottomSheet), for: .touchUpInside)
         let dimmedTap = UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped))
         dimmedView.addGestureRecognizer(dimmedTap)
         
@@ -163,13 +151,13 @@ final class CustomBottomSheetViewController: UIViewController {
     }
     
     @objc private func didTapDefaultProfileButton() {
-        dismiss(animated: true) {
+        dismiss(animated: false) {
             self.delegate?.didTapDefaultProfile() // Delegate 호출
         }
     }
     
     @objc private func didTapChoosePhotoButton() {
-        dismiss(animated: true) {
+        dismiss(animated: false) {
             self.delegate?.didTapChoosePhoto()
         }
     }

@@ -74,14 +74,14 @@ final class AddClothView: UIView {
             $0.bottom.equalToSuperview()
             $0.leading.equalToSuperview().offset(20)
             $0.height.equalTo(54)
-            $0.width.equalTo(170)
+            $0.width.equalTo(160)
         }
         
         endButton.snp.makeConstraints {
             $0.top.equalTo(addButton)
             $0.leading.equalTo(addButton.snp.trailing).offset(10)
             $0.height.equalTo(54)
-            $0.width.equalTo(170)
+            $0.width.equalTo(160)
         }
     }
 }

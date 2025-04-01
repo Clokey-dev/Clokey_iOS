@@ -15,7 +15,6 @@ import AuthenticationServices
 protocol Coordinator: AnyObject {
     func switchToMain()
     func getPresentationAnchor() -> ASPresentationAnchor
-    func navigateToAgreement() // 약관동의 화면으로 이동
 }
 
 final class LoginViewController: UIViewController {
@@ -129,12 +128,9 @@ final class LoginViewController: UIViewController {
     
     // 약관동의로..
     private func navigateToAgreement() {
-        guard let SceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
-            fatalError("SceneDelegate not found")
-        }
-        SceneDelegate.navigateToAgreement()
+        let agreementVC = AgreementViewController()
+        self.navigationController?.pushViewController(agreementVC, animated: true)
     }
-    //
     
     // MARK: - API
     
@@ -184,8 +180,6 @@ final class LoginViewController: UIViewController {
             UserDefaults.standard.set(true, forKey: "isLoggedIn")
             print("자동로그인 ON")
             sceneDelegate.switchToMain()
-//        case "AGREED_PROFILE_NOT_SET":
-//            sceneDelegate.navigateToAddProfile()
         default:
             navigateToAgreement()
         }

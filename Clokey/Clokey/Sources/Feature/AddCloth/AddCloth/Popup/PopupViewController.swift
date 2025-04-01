@@ -126,6 +126,7 @@ class PopupViewController: UIViewController {
         
         popupView.brandNameLabel.text = (brand?.isEmpty ?? true) ? "지정 없음" : brand
         
+        self.url = imageUrl
         updateUrlGoButtonTitle(with: url)
         
         popupView.urlGoButton.addTarget(self, action: #selector(urlGoButtonTapped), for: .touchUpInside)
@@ -186,14 +187,14 @@ class PopupViewController: UIViewController {
         addButton.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide)/*.offset(-44)*/
             $0.leading.equalToSuperview().offset(20)
-            $0.width.equalTo(170)
+            $0.width.equalTo(160)
             $0.height.equalTo(54)
         }
 
         completeButton.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide)/*.offset(-44)*/
             $0.trailing.equalToSuperview().offset(-20)
-            $0.width.equalTo(170)
+            $0.width.equalTo(160)
             $0.height.equalTo(54)
         }
     }

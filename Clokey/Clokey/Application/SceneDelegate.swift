@@ -169,22 +169,12 @@ extension SceneDelegate: Coordinator {
             navController.pushViewController(followProfileVC, animated: true)
         }
     }
-    
-    // 화면 전환 메서드 -> AgreementViewController
-    func navigateToAgreement() {
-        let agreementVC = AgreementViewController()
-        let navigationController = UINavigationController(rootViewController: agreementVC)
-        window?.rootViewController = navigationController
-        window?.makeKeyAndVisible()
-    }
-    
-    //#
+
     func navigateToMyCloset() {
         UserDefaults.standard.set(true, forKey: "navigateToCloset")
         UserDefaults.standard.synchronize()
         switchToMain()
     }
-    //#
     
     func navigateToAddProfile() {
         let addProfileVC = AddProfileViewController()
@@ -196,7 +186,8 @@ extension SceneDelegate: Coordinator {
     // 화면 전환 메서드 -> LoginViewController
     func switchToLogin() {
         let loginVC = LoginViewController(coordinator: self)
-        window?.rootViewController = loginVC
+        let navigationController = UINavigationController(rootViewController: loginVC)
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
     
