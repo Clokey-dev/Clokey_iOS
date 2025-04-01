@@ -126,6 +126,7 @@ class PopupViewController: UIViewController {
         
         popupView.brandNameLabel.text = (brand?.isEmpty ?? true) ? "지정 없음" : brand
         
+        self.url = imageUrl
         updateUrlGoButtonTitle(with: url)
         
         popupView.urlGoButton.addTarget(self, action: #selector(urlGoButtonTapped), for: .touchUpInside)
@@ -170,7 +171,6 @@ class PopupViewController: UIViewController {
         
         popupView.layer.cornerRadius = 30 // 원하는 둥글기 정도 (예: 20)
         popupView.clipsToBounds = true
-//        popupView.layer.shadowOffset = CGSize(width: 310, height: 495)
         popupView.layer.shadowOffset = CGSize(width: 0, height: 0)
         popupView.layer.shadowOpacity = 0.15
         popupView.layer.shadowRadius = 30
