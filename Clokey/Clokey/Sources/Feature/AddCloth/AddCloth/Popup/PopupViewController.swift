@@ -186,14 +186,14 @@ class PopupViewController: UIViewController {
         addButton.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide)/*.offset(-44)*/
             $0.leading.equalToSuperview().offset(20)
-            $0.width.equalTo(170)
+            $0.width.equalTo(160)
             $0.height.equalTo(54)
         }
 
         completeButton.snp.makeConstraints {
             $0.bottom.equalTo(view.safeAreaLayoutGuide)/*.offset(-44)*/
             $0.trailing.equalToSuperview().offset(-20)
-            $0.width.equalTo(170)
+            $0.width.equalTo(160)
             $0.height.equalTo(54)
         }
     }
