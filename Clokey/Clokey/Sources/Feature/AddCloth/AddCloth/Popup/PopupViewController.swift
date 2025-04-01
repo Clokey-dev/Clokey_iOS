@@ -126,6 +126,7 @@ class PopupViewController: UIViewController {
         
         popupView.brandNameLabel.text = (brand?.isEmpty ?? true) ? "지정 없음" : brand
         
+        self.url = imageUrl
         updateUrlGoButtonTitle(with: url)
         
         popupView.urlGoButton.addTarget(self, action: #selector(urlGoButtonTapped), for: .touchUpInside)
