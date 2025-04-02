@@ -49,6 +49,7 @@ class SmartSummationViewController: UIViewController {
         setupActions()
         setupCollectionViews()
         fetchSmartSummationData()
+        fetchNickname()
     }
     
     private func setupUI() {
@@ -82,7 +83,7 @@ class SmartSummationViewController: UIViewController {
 
     // seeAllButton2 (잘 안 착용한 옷)
     @objc private func seeAllButton2Tapped() {
-        guard let result = self.frequentResult else { return }
+        guard let result = self.infrequentResult else { return }
         let displayAllVC = DisplayAllViewController()
         displayAllVC.loadViewIfNeeded() // viewDidLoad가 호출되도록 함
         displayAllVC.didSelectCategory(
@@ -111,26 +112,22 @@ class SmartSummationViewController: UIViewController {
             case .success(let response):
                 let frequent = response.frequentResult
                 let infrequent = response.infrequentResult
-                let nickname = response.nickname
                 
                 // 저장
                 self.frequentResult = frequent
                 self.infrequentResult = infrequent
                 
                 DispatchQueue.main.async {
-                    self.summationView.bannerDescription.text =
-                        "지난 7일 간 \(nickname)님의 옷 데이터를 모았어요!\n자주 착용한 옷과 착용하지 않은 옷입니다!"
-                    
                     self.summationView.categoryButton1.setTitle(frequent.baseCategoryName, for: .normal)
                     self.summationView.categoryButton2.setTitle(frequent.coreCategoryName, for: .normal)
-                    self.summationView.frequentTitleLabel.text = " - 일주일간 평균 \(frequent.usage)회 착용"
+                    self.summationView.frequentTitleLabel.text = " - 한달간 \(frequent.usage)회 착용"
                     self.frequentClothes = Array(frequent.clothPreviews.prefix(3))
                     self.summationView.seeAllButton.setTitle("\(frequent.coreCategoryName)말고 다른 옷 보러가기", for: .normal)
                     self.summationView.freCollectionView.reloadData()
                     
                     self.summationView.categoryButton3.setTitle(infrequent.baseCategoryName, for: .normal)
                     self.summationView.categoryButton4.setTitle(infrequent.coreCategoryName, for: .normal)
-                    self.summationView.infrequentTitleLabel.text = " - 일주일간 평균 \(infrequent.usage)회 착용"
+                    self.summationView.infrequentTitleLabel.text = " - 한달간 \(infrequent.usage)회 착용"
                     self.infrequentClothes = Array(infrequent.clothPreviews.prefix(3))
                     self.summationView.seeAllButton2.setTitle("옷장 구석에서 \(infrequent.coreCategoryName) 찾아보기", for: .normal)
                     self.summationView.infreCollectionView.reloadData()
@@ -141,24 +138,45 @@ class SmartSummationViewController: UIViewController {
             case .failure(let error):
                 print("스마트 요약 API 호출 실패: \(error.localizedDescription)")
                 DispatchQueue.main.async {
-                    // API 실패 시 더미 데이터 대신 EmptyStateView 표시
                     self.updateEmptyState()
                 }
             }
         }
     }
     
+    /// 기존 스마트 요약 API에서 닉네임을 받아오는 걸 이걸로 대체.
+    private func fetchNickname() {
+        clothesService.getClothes(
+            clokeyId: nil,
+            categoryId: 0, 
+            season: "ALL",
+            sort: "WEAR",
+            page: 1,
+            size: 1
+        ) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                DispatchQueue.main.async {
+                    self.summationView.bannerDescription.text =
+                        "지난 30일 간 \(response.nickname)님의 옷 데이터를 모았어요!\n자주 착용한 옷과 착용하지 않은 옷입니다!"
+                }
+            case .failure(let error):
+                print("닉네임 호출 실패: \(error.localizedDescription)")
+//                self.showErrorAlert()
+
+            }
+        }
+    }
+    
     // MARK: - Empty State Handling
     private func updateEmptyState() {
-        // 빈 데이터인 경우에만 EmptyStateView를 표시합니다.
         if frequentClothes.isEmpty && infrequentClothes.isEmpty {
-            // 기존 EmptyStateView가 있다면 제거
             for subview in summationView.subviews {
                 if subview is EmptyStateView {
                     subview.removeFromSuperview()
                 }
             }
-            // 배너영역은 유지하므로, EmptyStateView의 top은 bannerView의 bottom부터 시작합니다.
             let emptyView = EmptyStateView(
                 mainMessage: "아직 캘린더에 기록을 추가하지 않았어요!",
                 subMessage: "캘린더에 기록을 추가해 나만의 스타일을 자랑하고,\n 스마트 요약 기능도 이용해 보세요."
@@ -169,7 +187,6 @@ class SmartSummationViewController: UIViewController {
                 make.leading.trailing.bottom.equalToSuperview()
             }
         } else {
-            // 데이터가 있을 경우, EmptyStateView가 있다면 제거합니다.
             for subview in summationView.subviews {
                 if subview is EmptyStateView {
                     subview.removeFromSuperview()
