@@ -59,12 +59,12 @@ class DisplayAllView: UIView {
         
         let totalMargin: CGFloat = 40
         let interitemSpacing: CGFloat = 10 * 2
-        let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing
-        let itemWidth = availableWidth / 3
-        let imageHeight = itemWidth * (4.0/3.0)
-        let labelHeight: CGFloat = 20
-        let itemHeight = imageHeight + 5 + labelHeight
-        $0.itemSize = CGSize(width: itemWidth, height: itemHeight)
+        let extraSpacing: CGFloat = 5            // 여유 공간
+        
+        let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing - extraSpacing
+        let itemWidth = floor(availableWidth / 3)
+        let itemHeight = itemWidth * 4 / 3       // 3:4 비율
+        $0.itemSize = CGSize(width: itemWidth, height: itemHeight + 15)
     }).then {
         $0.backgroundColor = .clear
         $0.isScrollEnabled = true
