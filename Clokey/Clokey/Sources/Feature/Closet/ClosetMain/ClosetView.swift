@@ -17,14 +17,18 @@ final class ClosetView: UIView {
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 10
-        layout.minimumLineSpacing = 20
+        layout.minimumLineSpacing = 25
         layout.sectionInset = .zero  // 섹션 인셋 0으로 설정해 왼쪽부터 배치
         layout.estimatedItemSize = .zero
         let totalMargin: CGFloat = 40   // 좌우 inset 20씩
         let interitemSpacing: CGFloat = 10 * 2 // 아이템 간 간격 10씩 2칸
-        let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing
+        let extraSpacing: CGFloat = 5            // 여유 공간
+        let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing - extraSpacing
         let itemWidth = availableWidth / 3
-        layout.itemSize = CGSize(width: itemWidth, height: 167)
+        let imageHeight = itemWidth * 4 / 3
+        let cellHeight = imageHeight + 25  // 이미지 아래 5 + 라벨 20
+        layout.itemSize = CGSize(width: itemWidth, height: cellHeight)
+
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .clear
@@ -159,8 +163,21 @@ final class ClosetView: UIView {
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(customTotalSegmentView.snp.bottom).offset(15)
             make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(354)
+            
+            let totalMargin: CGFloat = 40   // 좌우 inset 20씩
+            let interitemSpacing: CGFloat = 10 * 2  // 셀 사이 간격 10pt씩 2칸
+            let extraSpacing: CGFloat = 5     // 추가 여유 공간
+            let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing - extraSpacing
+            let itemWidth = availableWidth / 3
+            
+            let imageHeight = itemWidth * 4 / 3  // 이미지 3:4 비율
+            let cellHeight = imageHeight + 25    // 이미지 아래 간격 5pt + 라벨 높이 20pt = 25pt
+            let totalCollectionViewHeight = 2 * cellHeight + 30  // 2줄 셀 높이 + 행 간 간격 25pt
+            
+            make.height.equalTo(totalCollectionViewHeight)
         }
+
+
         
         seeAllButton.snp.makeConstraints { make in
             make.top.equalTo(collectionView.snp.bottom).offset(4)

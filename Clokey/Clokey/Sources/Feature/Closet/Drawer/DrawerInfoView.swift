@@ -40,18 +40,15 @@ class DrawerInfoView: UIView {
         $0.minimumLineSpacing = 20
         $0.estimatedItemSize = .zero  // 셀 크기 자동 조정 비활성화
         
-        // 한 줄에 3개 배치
-        let totalMargin: CGFloat = 40  // 좌우 inset 20씩
-        let interitemSpacing: CGFloat = 10 * 2  // 아이템 간 간격
-        let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing
-        let itemWidth = availableWidth / 3  // 3등분
-
-        // 4:3 비율 유지
-        let imageHeight = itemWidth * (4.0/3.0)
-        let labelHeight: CGFloat = 20
-        let itemHeight = imageHeight + 5 + labelHeight
-
-        $0.itemSize = CGSize(width: itemWidth, height: itemHeight) // 셀 크기 고정
+        let totalMargin: CGFloat = 40   // 좌우 inset 20씩
+        let interitemSpacing: CGFloat = 10 * 2 // 아이템 간 간격 10씩 2칸
+        let extraSpacing: CGFloat = 5            // 여유 공간
+        let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing - extraSpacing
+        let itemWidth = availableWidth / 3
+        let imageHeight = itemWidth * 4 / 3
+        let cellHeight = imageHeight + 25  // 이미지 아래 5 + 라벨 20
+        
+        $0.itemSize = CGSize(width: itemWidth, height: cellHeight)
     }).then {
         $0.backgroundColor = .clear
         $0.isScrollEnabled = true  // 스크롤 활성화

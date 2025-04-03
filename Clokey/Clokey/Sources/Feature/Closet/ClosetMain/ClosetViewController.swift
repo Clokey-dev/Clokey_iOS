@@ -204,8 +204,18 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
         closetView.collectionView.snp.remakeConstraints { make in
             make.top.equalTo(closetView.customTotalSegmentView.divideLine.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview().inset(20)
-            make.width.equalTo(353)
-            make.height.equalTo(354)
+            
+            let totalMargin: CGFloat = 40   // 좌우 inset 20씩
+            let interitemSpacing: CGFloat = 10 * 2  // 셀 사이 간격 10pt씩 2칸
+            let extraSpacing: CGFloat = 5     // 추가 여유 공간
+            let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing - extraSpacing
+            let itemWidth = availableWidth / 3
+            
+            let imageHeight = itemWidth * 4 / 3  // 이미지 3:4 비율
+            let cellHeight = imageHeight + 25    // 이미지 아래 간격 5pt + 라벨 높이 20pt = 25pt
+            let totalCollectionViewHeight = 2 * cellHeight + 30  // 2줄 셀 높이 + 행 간 간격 25pt
+            
+            make.height.equalTo(totalCollectionViewHeight)
         }
     }
     
@@ -216,8 +226,17 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
         closetView.collectionView.snp.remakeConstraints { make in
             make.top.equalTo(closetView.customTotalSegmentView.categoryScrollView.snp.bottom)
             make.leading.trailing.equalToSuperview().inset(20)
-            make.width.equalTo(353)
-            make.height.equalTo(354)
+            let totalMargin: CGFloat = 40   // 좌우 inset 20씩
+            let interitemSpacing: CGFloat = 10 * 2  // 셀 사이 간격 10pt씩 2칸
+            let extraSpacing: CGFloat = 5     // 추가 여유 공간
+            let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing - extraSpacing
+            let itemWidth = availableWidth / 3
+            
+            let imageHeight = itemWidth * 4 / 3  // 이미지 3:4 비율
+            let cellHeight = imageHeight + 25    // 이미지 아래 간격 5pt + 라벨 높이 20pt = 25pt
+            let totalCollectionViewHeight = 2 * cellHeight + 30  // 2줄 셀 높이 + 행 간 간격 25pt
+               
+            make.height.equalTo(totalCollectionViewHeight)
         }
     }
     
@@ -455,8 +474,18 @@ extension ClosetViewController: AddCategoryViewControllerDelegate {
                     closetView.collectionView.snp.remakeConstraints { make in
                         make.top.equalTo(closetView.customTotalSegmentView.categoryScrollView.snp.bottom)
                         make.centerX.equalToSuperview()
-                        make.width.equalTo(353)
-                        make.height.equalTo(354)
+                        // 동적으로 계산된 높이로 설정
+                        let totalMargin: CGFloat = 40   // 좌우 inset 20씩
+                        let interitemSpacing: CGFloat = 10 * 2  // 셀 사이 간격 10pt씩 2칸
+                        let extraSpacing: CGFloat = 5     // 추가 여유 공간
+                        let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing - extraSpacing
+                        let itemWidth = availableWidth / 3
+                        
+                        let imageHeight = itemWidth * 4 / 3  // 이미지 3:4 비율
+                        let cellHeight = imageHeight + 25    // 이미지 아래 간격 5pt + 라벨 높이 20pt = 25pt
+                        let totalCollectionViewHeight = 2 * cellHeight + 30  // 2줄 셀 높이 + 행 간 간격 25pt
+                        
+                        make.height.equalTo(totalCollectionViewHeight)
                     }
                 }
                 closetView.customTotalSegmentView.segmentedControl.selectedSegmentIndex = mainIndex
