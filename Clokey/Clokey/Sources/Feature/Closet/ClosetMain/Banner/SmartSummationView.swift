@@ -40,23 +40,25 @@ class SmartSummationView: UIView {
         $0.textAlignment = .center
     }
     
-    let categoryButton1 = UIButton().then {
-        $0.setTitle("상의", for: .normal)
-        $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 16)
-        $0.backgroundColor = UIColor.mainBrown800
-        $0.layer.cornerRadius = 10
-        $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
-        if #available(iOS 15.0, *) {
-            var config = UIButton.Configuration.plain()
-            config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
-            $0.configuration = config
-        } else {
-            $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+    let categoryButton1 = UIButton().then { button in
+        var config = UIButton.Configuration.filled()
+        config.title = ""
+        config.baseBackgroundColor = .mainBrown800
+        config.baseForegroundColor = .white
+        config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
+        
+        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = UIFont.ptdRegularFont(ofSize: 16)
+            return outgoing
         }
-        $0.sizeToFit()
-    }
+        
+    config.background.strokeColor = UIColor(named: "mainBrown800") ?? .brown
+    config.background.strokeWidth = 1
+    config.background.cornerRadius = 10
+    
+    button.configuration = config
+}
 
     let TitleLabel1 = UILabel().then {
         $0.text = "카테고리의"
@@ -64,23 +66,26 @@ class SmartSummationView: UIView {
         $0.textColor = .black
     }
     
-    let categoryButton2 = UIButton().then {
-        $0.setTitle("후드/맨투맨", for: .normal)
-        $0.setTitleColor(.white, for: .normal)
-        $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 16)
-        $0.backgroundColor = UIColor.mainBrown800
-        $0.layer.cornerRadius = 10
-        $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(named: "mainBrown800")?.cgColor
-        if #available(iOS 15.0, *) {
-            var config = UIButton.Configuration.plain()
-            config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
-            $0.configuration = config
-        } else {
-            $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+    let categoryButton2 = UIButton().then { button in
+        var config = UIButton.Configuration.filled()
+        config.title = ""
+        config.baseBackgroundColor = .mainBrown800
+        config.baseForegroundColor = .white
+        config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
+        
+        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = UIFont.ptdRegularFont(ofSize: 16)
+            return outgoing
         }
-        $0.sizeToFit()
-    }
+        
+    config.background.strokeColor = UIColor(named: "mainBrown800") ?? .brown
+    config.background.strokeWidth = 1
+    config.background.cornerRadius = 10
+    
+    button.configuration = config
+}
+
     let TitleLabel2 = UILabel().then {
         $0.text = "를(을) 즐겨입었어요!"
         $0.font = UIFont.ptdSemiBoldFont(ofSize: 14)
@@ -130,23 +135,26 @@ class SmartSummationView: UIView {
         $0.contentMode = .scaleAspectFit
     }
     
-    let categoryButton3 = UIButton().then {
-        $0.setTitle("상의", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
-        $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 16)
-        $0.backgroundColor = UIColor.mainBrown200
-        $0.layer.cornerRadius = 10
-        $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(named: "mainBrown200")?.cgColor
-        if #available(iOS 15.0, *) {
-            var config = UIButton.Configuration.plain()
-            config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
-            $0.configuration = config
-        } else {
-            $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+    let categoryButton3 = UIButton().then { button in
+        var config = UIButton.Configuration.filled()
+        config.title = ""
+        config.baseBackgroundColor = .mainBrown200
+        config.baseForegroundColor = .black
+        config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
+        
+        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = UIFont.ptdRegularFont(ofSize: 16)
+            return outgoing
         }
-        $0.sizeToFit()
-    }
+        
+    config.background.strokeColor = UIColor(named: "mainBrown200") ?? .brown
+    config.background.strokeWidth = 1
+    config.background.cornerRadius = 10
+    
+    button.configuration = config
+}
+
 
     let TitleLabel3 = UILabel().then {
         $0.text = "카테고리의"
@@ -154,23 +162,26 @@ class SmartSummationView: UIView {
         $0.textColor = .black
     }
     
-    let categoryButton4 = UIButton().then {
-        $0.setTitle("후드/맨투맨", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
-        $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 16)
-        $0.backgroundColor = UIColor.mainBrown200
-        $0.layer.cornerRadius = 10
-        $0.layer.borderWidth = 1
-        $0.layer.borderColor = UIColor(named: "mainBrown200")?.cgColor
-        if #available(iOS 15.0, *) {
-            var config = UIButton.Configuration.plain()
-            config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
-            $0.configuration = config
-        } else {
-            $0.contentEdgeInsets = UIEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)
+    let categoryButton4 = UIButton().then { button in
+        var config = UIButton.Configuration.filled()
+        config.title = ""
+        config.baseBackgroundColor = .mainBrown200
+        config.baseForegroundColor = .black
+        config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
+        
+        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = UIFont.ptdRegularFont(ofSize: 16)
+            return outgoing
         }
-        $0.sizeToFit()
-    }
+        
+    config.background.strokeColor = UIColor(named: "mainBrown200") ?? .brown
+    config.background.strokeWidth = 1
+    config.background.cornerRadius = 10
+    
+    button.configuration = config
+}
+
     let TitleLabel4 = UILabel().then {
         $0.text = "를(을) 안입었어요."
         $0.font = UIFont.ptdSemiBoldFont(ofSize: 14)

@@ -118,6 +118,7 @@ class SmartSummationViewController: UIViewController {
                 self.infrequentResult = infrequent
                 
                 DispatchQueue.main.async {
+                    // Frequent UI updates
                     self.summationView.categoryButton1.setTitle(frequent.baseCategoryName, for: .normal)
                     self.summationView.categoryButton2.setTitle(frequent.coreCategoryName, for: .normal)
                     self.summationView.frequentTitleLabel.text = " - 한달간 \(frequent.usage)회 착용"
@@ -125,16 +126,27 @@ class SmartSummationViewController: UIViewController {
                     self.summationView.seeAllButton.setTitle("\(frequent.coreCategoryName)말고 다른 옷 보러가기", for: .normal)
                     self.summationView.freCollectionView.reloadData()
                     
-                    self.summationView.categoryButton3.setTitle(infrequent.baseCategoryName, for: .normal)
-                    self.summationView.categoryButton4.setTitle(infrequent.coreCategoryName, for: .normal)
-                    self.summationView.infrequentTitleLabel.text = " - 한달간 \(infrequent.usage)회 착용"
-                    self.infrequentClothes = Array(infrequent.clothPreviews.prefix(3))
-                    self.summationView.seeAllButton2.setTitle("옷장 구석에서 \(infrequent.coreCategoryName) 찾아보기", for: .normal)
-                    self.summationView.infreCollectionView.reloadData()
+                    if frequent.coreCategoryName != infrequent.coreCategoryName {
+                        self.summationView.categoryButton3.setTitle(infrequent.baseCategoryName, for: .normal)
+                        self.summationView.categoryButton4.setTitle(infrequent.coreCategoryName, for: .normal)
+                        self.summationView.infrequentTitleLabel.text = " - 한달간 \(infrequent.usage)회 착용"
+                        self.infrequentClothes = Array(infrequent.clothPreviews.prefix(3))
+                        self.summationView.seeAllButton2.setTitle("옷장 구석에서 \(infrequent.coreCategoryName) 찾아보기", for: .normal)
+                        self.summationView.infreCollectionView.reloadData()
+                    } else {
+                        self.summationView.TitleLabel3.isHidden = true
+                        self.summationView.TitleLabel4.isHidden = true
+                        self.summationView.categoryButton3.isHidden = true
+                        self.summationView.categoryButton4.isHidden = true
+                        self.summationView.infrequentTitleLabel.isHidden = true
+                        self.summationView.seeAllButton2.isHidden = true
+                        self.summationView.infreCollectionView.isHidden = true
+                        self.summationView.frontIconView2.isHidden = true
+                    }
                     
-                    // 데이터가 없다면 EmptyStateView 표시 (배너영역은 유지)
                     self.updateEmptyState()
                 }
+
             case .failure(let error):
                 print("스마트 요약 API 호출 실패: \(error.localizedDescription)")
                 DispatchQueue.main.async {
