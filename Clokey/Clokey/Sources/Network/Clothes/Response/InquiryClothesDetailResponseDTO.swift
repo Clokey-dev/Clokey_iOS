@@ -55,6 +55,7 @@ public struct AddClothesResponseDTO: Codable {
 
 // 유저 옷장 조회
 public struct GetClothesByCategoryResponseDTO: Codable {
+    public let nickname: String
     public let clothPreviews: [ClothPreview]
     public let totalPage: Int
     public let totalElements: CLong
