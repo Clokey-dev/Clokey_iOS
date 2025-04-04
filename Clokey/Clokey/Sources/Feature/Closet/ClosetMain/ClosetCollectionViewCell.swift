@@ -15,7 +15,7 @@ class ClosetCollectionViewCell: UICollectionViewCell {
     
     // 상품 이미지
     let productImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFill
+        $0.contentMode = .scaleAspectFit
         $0.backgroundColor = .clear
         $0.layer.cornerRadius = 5
         $0.clipsToBounds = true
@@ -85,11 +85,18 @@ class ClosetCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(overlayView)
         contentView.addSubview(checkmarkImageView)
         
+        // productImageView: 셀 상단에 가로 전체, 3:4 비율
         productImageView.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.centerX.equalToSuperview()
-            $0.height.equalTo(148)
-            $0.width.equalTo(111)
+            $0.top.leading.trailing.equalToSuperview()
+            $0.height.equalTo(productImageView.snp.width).multipliedBy(4.0/3.0)
+        }
+        
+        // nameLabel: 이미지 아래에 배치 (예: 고정 높이 20)
+        nameLabel.snp.makeConstraints {
+            $0.top.equalTo(productImageView.snp.bottom).offset(5)
+            $0.leading.trailing.equalToSuperview().inset(5)
+            $0.bottom.equalToSuperview().inset(5)
+            $0.height.equalTo(15)
         }
         
         numberLabel.snp.makeConstraints {
@@ -106,11 +113,6 @@ class ClosetCollectionViewCell: UICollectionViewCell {
             $0.height.equalTo(17)
         }
         
-        nameLabel.snp.makeConstraints {
-            $0.top.equalTo(productImageView.snp.bottom).offset(5)
-            $0.leading.equalToSuperview()
-        }
-        
         overlayView.snp.makeConstraints {
             $0.edges.equalTo(productImageView)
         }
@@ -123,7 +125,6 @@ class ClosetCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Public Methods
     func configureCell(with product: ClosetModel, hideNumberLabel: Bool, hideCountLabel: Bool) {
-        // 이미지 URL을 Kingfisher로 비동기로 로드
         if let url = URL(string: product.image) {
             productImageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholderImage"))
         } else {
@@ -137,7 +138,6 @@ class ClosetCollectionViewCell: UICollectionViewCell {
         countLabel.isHidden = hideCountLabel
     }
     
-    // 선택/해제 메서드
     func setSelected(_ isSelected: Bool) {
         guard isSelectable else { return }
         overlayView.isHidden = !isSelected
