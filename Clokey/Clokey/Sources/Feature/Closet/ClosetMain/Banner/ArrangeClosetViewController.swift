@@ -46,7 +46,7 @@ class ArrangeClosetViewController: UIViewController, UICollectionViewDataSource,
         loadInitialData()             // 초기 세그먼트에 맞는 데이터 로드
         
         // clokeyId를 API에서 받아와 배너 텍스트 업데이트
-        fetchClokeyId()
+//        fetchClokeyId()
     }
     
     // MARK: - Setup Methods
@@ -136,14 +136,21 @@ class ArrangeClosetViewController: UIViewController, UICollectionViewDataSource,
             clokeyId: nil,
             categoryId: categoryId,
             season: "WINTER",
-            sort: currentSort.rawValue,      // 정렬 기능이 필요 없으므로 빈 문자열 전달
-            page: 1,       // 항상 첫 페이지 (고정)
-            size: 12       // 12개의 cell만 표시
+            sort: currentSort.rawValue,
+            page: 1,
+            size: 12
         ) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case .success(let response):
+                // 새로 추가된 nickname을 사용
+                self.clokeyId = response.nickname
+                DispatchQueue.main.async {
+                    self.arrangeClosetView.bannerDescription.text =
+                        "겨울 옷을 정리할 시간입니다!\n\(self.clokeyId)님의 겨울 옷들을 보여드릴게요."
+                }
+                
                 let newItems = response.clothPreviews.map { preview in
                     ClosetModel(
                         id: preview.id,
@@ -160,24 +167,6 @@ class ArrangeClosetViewController: UIViewController, UICollectionViewDataSource,
             case .failure(let error):
                 print("Error loading clothes: \(error)")
                 self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 끊겼습니다.")
-            }
-        }
-    }
-    
-    /// API를 통해 clokeyId(혹은 사용자의 닉네임)를 받아와 배너 텍스트를 업데이트합니다.
-    private func fetchClokeyId() {
-        clothesService.getSmartSummationClothes { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let response):
-                // 여기서는 API 응답의 nickname을 clokeyId로 활용한다고 가정합니다.
-                self.clokeyId = response.nickname
-                DispatchQueue.main.async {
-                    self.arrangeClosetView.bannerDescription.text =
-                        "겨울 옷을 정리할 시간입니다!\n\(self.clokeyId)님의 겨울 옷들을 보여드릴게요."
-                }
-            case .failure(let error):
-                print("클로키 아이디 받아오기 실패: \(error)")
             }
         }
     }

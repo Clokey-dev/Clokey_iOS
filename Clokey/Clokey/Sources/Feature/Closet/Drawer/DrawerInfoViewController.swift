@@ -59,9 +59,6 @@ class DrawerInfoViewController: UIViewController, UICollectionViewDelegate, UICo
         setupUI()
         setupCollectionView()
         setupActions()
-        
-        loadClothesData()
-        
         // 폴더 생성 vs 수정에 따라 네비게이션 타이틀 설정
         if let folderId = existingFolderId, folderId != 0 {
             navigationItem.title = "서랍 수정"
@@ -179,43 +176,7 @@ class DrawerInfoViewController: UIViewController, UICollectionViewDelegate, UICo
         present(alert, animated: true)
     }
     
-    // MARK: - API Data Loading
-    
-    /// clothesService를 통해 옷 데이터를 불러와 products에 저장합니다.
-    private func loadClothesData(categoryId: Int = 1, season: String = "ALL") {
-        clothesService.getClothes(
-            clokeyId: nil,
-            categoryId: categoryId,
-            season: season,
-            sort: "",     // 정렬 기능 없이 빈 문자열 전달
-            page: 1,      // 항상 첫 페이지
-            size: 6       // 필요에 따라 표시할 cell 개수 (예시)
-        ) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let response):
-                let newItems = response.clothPreviews.map { preview in
-                    ClosetModel(
-                        id: preview.id,
-                        image: preview.imageUrl,
-                        count: preview.wearNum,
-                        name: preview.name
-                    )
-                }
-                
-                // 현재는 서버에서 받은 데이터로 products를 덮어씀
-                // 만약 기존 selectedClothes + 서버 데이터 병합이 필요하다면, 여기서 merge 로직 추가
-                self.products = newItems
-                
-                DispatchQueue.main.async {
-                    self.drawerInfoView.collectionView.reloadData()
-                }
-            case .failure(let error):
-                print("Error loading clothes: \(error)")
-                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 끊겼습니다.")
-            }
-        }
-    }
+
     
     // MARK: - UICollectionViewDataSource & UICollectionViewDelegate
     

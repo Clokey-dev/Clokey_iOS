@@ -1815,8 +1815,8 @@
 		1EF33C5D2D665FFB00142954 /* DisplayAll */ = {
 			isa = PBXGroup;
 			children = (
-				1EF33C5B2D665FFB00142954 /* DisplayAllView.swift */,
 				1EF33C5C2D665FFB00142954 /* DisplayAllViewController.swift */,
+				1EF33C5B2D665FFB00142954 /* DisplayAllView.swift */,
 			);
 			path = DisplayAll;
 			sourceTree = "<group>";

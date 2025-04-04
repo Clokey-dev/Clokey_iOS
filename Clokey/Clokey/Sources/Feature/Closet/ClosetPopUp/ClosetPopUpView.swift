@@ -120,7 +120,6 @@ class ClosetPopupView: UIView {
         $0.backgroundColor = UIColor(named: "mainBrown800")
         $0.layer.cornerRadius = 5
 
-        
     }
     
     // MARK: - Grouped Info UI Components
