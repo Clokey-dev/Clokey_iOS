@@ -170,8 +170,7 @@ class FollowProfileActionViewController: UIViewController {
     
     // 신고 버튼
     @objc private func reportButtonTapped() {
-//        hideSheet()
-        dismiss(animated: true) {
+        dismiss(animated: false) {
             self.delegate?.didReportUser() // Delegate 호출
         }
         print("신고해~")
@@ -179,8 +178,7 @@ class FollowProfileActionViewController: UIViewController {
     
     // 차단 버튼
     @objc private func blockButtonTapped() {
-//        hideSheet()
-        dismiss(animated: true) {
+        dismiss(animated: false) {
             self.delegate?.didBlockUser() // Delegate 호출
         }
         print("차단해~")
