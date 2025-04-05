@@ -262,6 +262,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                     }
                     
                     guard let isFollowing = userProfile.isFollowing else {
+                        self.hideLoadingOverlay()
                         self.followProfileView.followButton.setTitle("팔로우", for: .normal)
                         self.followProfileView.followButton.backgroundColor = .mainBrown800
                         self.followProfileView.followButton.setTitleColor(.white, for: .normal)
@@ -285,10 +286,15 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                         self.followProfileView.followButton.layer.borderWidth = 1
                     }
                     
-                    if userProfile.visibility == "PRIVATE" {
+                    if userProfile.visibility == "PRIVATE" && !self.isMe {
                         self.followProfileView.updateClothesPrivateState(isPrivate: true, isBlocked: self.isBlocking)
+                        self.followProfileView.updateClothesPrivateState(isPrivate: true)
+                        self.followProfileView.updateCalendarPrivateState(isPrivate: true)
+                        
                     } else {
                         self.followProfileView.updateClothesPrivateState(isPrivate: false, isBlocked: self.isBlocking)
+                        self.followProfileView.updateClothesPrivateState(isPrivate: false)
+                        self.followProfileView.updateCalendarPrivateState(isPrivate: false)
                     }
 
                     

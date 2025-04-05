@@ -49,16 +49,16 @@ class SmartSummationView: UIView {
         
         config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
             var outgoing = incoming
-            outgoing.font = UIFont.ptdRegularFont(ofSize: 16)
+            outgoing.font = UIFont.ptdRegularFont(ofSize: 13)
             return outgoing
         }
         
-    config.background.strokeColor = UIColor(named: "mainBrown800") ?? .brown
-    config.background.strokeWidth = 1
-    config.background.cornerRadius = 10
-    
-    button.configuration = config
-}
+        config.background.strokeColor = UIColor(named: "mainBrown800") ?? .brown
+        config.background.strokeWidth = 1
+        config.background.cornerRadius = 10
+        
+        button.configuration = config
+    }
 
     let TitleLabel1 = UILabel().then {
         $0.text = "카테고리의"
@@ -75,7 +75,7 @@ class SmartSummationView: UIView {
         
         config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
             var outgoing = incoming
-            outgoing.font = UIFont.ptdRegularFont(ofSize: 16)
+            outgoing.font = UIFont.ptdRegularFont(ofSize: 13)
             return outgoing
         }
         
@@ -105,13 +105,14 @@ class SmartSummationView: UIView {
         layout.minimumLineSpacing = 20
         layout.sectionInset = .zero  // 섹션 인셋 0으로 설정해 왼쪽부터 배치
         layout.estimatedItemSize = .zero
-        // 한 줄에 3개씩 배치하려면:
         let totalMargin: CGFloat = 40   // 좌우 inset 20씩
         let interitemSpacing: CGFloat = 10 * 2 // 아이템 간 간격 10씩 2칸
-        let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing
+        let extraSpacing: CGFloat = 5            // 여유 공간
+        let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing - extraSpacing
         let itemWidth = availableWidth / 3
-        // 높이는 167로 고정하거나, 원하는 비율(예: 4:3 이미지, 레이블 높이 등)로 설정 가능
-        layout.itemSize = CGSize(width: itemWidth, height: 167)
+        let imageHeight = itemWidth * 4 / 3
+        let cellHeight = imageHeight + 25  // 이미지 아래 5 + 라벨 20
+        layout.itemSize = CGSize(width: itemWidth-10, height: cellHeight)
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .clear
@@ -121,7 +122,7 @@ class SmartSummationView: UIView {
     }()
     
     let seeAllButton = UIButton().then {
-        $0.setTitle("후드/맨투먄 전체보기", for: .normal)
+        $0.setTitle("후드/맨투맨 전체보기", for: .normal)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
         $0.contentHorizontalAlignment = .left//text 왼쪽 정렬
@@ -144,7 +145,7 @@ class SmartSummationView: UIView {
         
         config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
             var outgoing = incoming
-            outgoing.font = UIFont.ptdRegularFont(ofSize: 16)
+            outgoing.font = UIFont.ptdRegularFont(ofSize: 13)
             return outgoing
         }
         
@@ -171,7 +172,7 @@ class SmartSummationView: UIView {
         
         config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
             var outgoing = incoming
-            outgoing.font = UIFont.ptdRegularFont(ofSize: 16)
+            outgoing.font = UIFont.ptdRegularFont(ofSize: 13)
             return outgoing
         }
         
@@ -204,10 +205,12 @@ class SmartSummationView: UIView {
         // 한 줄에 3개씩 배치하려면:
         let totalMargin: CGFloat = 40   // 좌우 inset 20씩
         let interitemSpacing: CGFloat = 10 * 2 // 아이템 간 간격 10씩 2칸
-        let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing
+        let extraSpacing: CGFloat = 5            // 여유 공간
+        let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing - extraSpacing
         let itemWidth = availableWidth / 3
-        // 높이는 167로 고정하거나, 원하는 비율(예: 4:3 이미지, 레이블 높이 등)로 설정 가능
-        layout.itemSize = CGSize(width: itemWidth, height: 167)
+        let imageHeight = itemWidth * 4 / 3
+        let cellHeight = imageHeight + 25  // 이미지 아래 5 + 라벨 20
+        layout.itemSize = CGSize(width: itemWidth, height: cellHeight)
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .clear
