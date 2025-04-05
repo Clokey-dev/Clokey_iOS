@@ -111,6 +111,8 @@ class RecordOOTDViewController: UIViewController, UIGestureRecognizerDelegate {
         // 내용 설정
         mainView.contentInputView.textAddBox.text = viewModel.content
         mainView.contentInputView.textAddBox.textColor = viewModel.content.isEmpty ? .placeholderText : .black
+        mainView.contentInputView.isPlaceholderActive = viewModel.content.isEmpty
+
 
         // 해시태그 설정
         let hashtagsArray = viewModel.hashtags.components(separatedBy: "#")

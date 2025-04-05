@@ -24,7 +24,7 @@ class ContentInputView: UIView, UITextFieldDelegate {
     
     weak var delegate: ContentInputViewDelegate?
     private var hashtags: [String] = []
-    private var isPlaceholderActive = true
+    var isPlaceholderActive = true
     
     // MARK: - UI Components
     
@@ -305,8 +305,10 @@ class ContentInputView: UIView, UITextFieldDelegate {
     }
     
     func getTextContent() -> String {
-        return isPlaceholderActive ? "" : textAddBox.text
+        if textAddBox.textColor == .placeholderText { return "" }
+        return textAddBox.text
     }
+
 
     func isPublic() -> Bool {
         return publicButton.isSelected
