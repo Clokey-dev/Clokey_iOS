@@ -219,7 +219,7 @@ class NewsViewController: UIViewController {
                         self.newsView.updateFriendClothesEmptyState(isEmpty: isEmpty)
                     } else {
                         self.newsView.updateFriendClothesEmptyState(isEmpty: isEmpty)
-                        self.newsView.emptyStackView1.emptyClothesMessageTitle.text = "팔로워한 계정의 옷장 업데이트가 없어요!"
+                        self.newsView.emptyStackView1.emptyClothesMessageTitle.text = "팔로우한 계정의 옷장 업데이트가 없어요!"
                         self.newsView.emptyStackView1.emptyClothesMessageSubTitle.text = "다른 사용자들을 팔로우하고\n어떤 옷들이 있는지 옷장을 구경해보세요"
                     }
                     
@@ -615,7 +615,7 @@ class NewsViewController: UIViewController {
                         self.newsView.updateFriendClothesEmptyState(isEmpty: isEmpty)
                     } else {
                         self.newsView.updateFriendClothesEmptyState(isEmpty: isEmpty)
-                        self.newsView.emptyStackView2.emptyClothesMessageTitle.text = "팔로워한 계정의 기록 업데이트가 없어요!"
+                        self.newsView.emptyStackView2.emptyClothesMessageTitle.text = "팔로우한 계정의 기록 업데이트가 없어요!"
                         self.newsView.emptyStackView2.emptyClothesMessageSubTitle.text = "다른 사용자들을 팔로우하고\n어떤 옷들이 있는지 옷장을 구경해보세요"
                     }
                     
