@@ -61,8 +61,8 @@ class TaggedClothCell: UICollectionViewCell {
     }
 }
 
-class RecordTagClothViewController: UIViewController {
-    
+class RecordTagClothViewController: UIViewController, UIGestureRecognizerDelegate {
+
     // MARK: - Properties
     private struct TaggedCloth {
         let clothId: Int
@@ -128,7 +128,7 @@ class RecordTagClothViewController: UIViewController {
     // MARK: - Setup
     private func setupUI() {
         view.backgroundColor = .black.withAlphaComponent(0.5)
-        
+
         view.addSubview(containerView)
         containerView.addSubview(titleLabel)
         containerView.addSubview(collectionView)
@@ -151,10 +151,17 @@ class RecordTagClothViewController: UIViewController {
         
         // 바깥 영역 탭하면 닫히도록
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapOutside))
+        tapGesture.delegate = self
         view.addGestureRecognizer(tapGesture)
+        
         containerView.isUserInteractionEnabled = true
     }
-    
+
+    // 델리게이트 추가 - containerView 터치는 무시
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        // 터치한 뷰가 containerView거나 그 하위 뷰라면 false 리턴
+        return !containerView.bounds.contains(touch.location(in: containerView))
+    }
     // 옷 데이터 불러오기
     private func setupClothsData() {
         taggedClothes = cloths.map { cloth in

@@ -97,7 +97,8 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         // 필요 시 카테고리 인디케이터 위치 업데이트 (주석 해제)
-        // updateInitialIndicatorPosition()
+        let selectedIndex = displayAllView.customTotalSegmentView.segmentedControl.selectedSegmentIndex
+        displayAllView.customTotalSegmentView.updateIndicatorPosition(for: selectedIndex)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -544,6 +545,11 @@ extension DisplayAllViewController: SmartSummationViewControllerDelegate {
         loadClothesData(categoryId: Int(coreCategoryId), isNextPage: false, season: season ?? "ALL")
         currentSearchText = ""
         displayAllView.searchField.textField.text = ""
+        
+        DispatchQueue.main.async {
+            self.displayAllView.customTotalSegmentView.toggleCategoryButtons(isHidden: false)
+            self.updateContentViewConstraints(forTotal: false)
+        }
     }
 }
 

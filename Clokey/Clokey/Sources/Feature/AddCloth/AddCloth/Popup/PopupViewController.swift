@@ -171,7 +171,6 @@ class PopupViewController: UIViewController {
         
         popupView.layer.cornerRadius = 30 // 원하는 둥글기 정도 (예: 20)
         popupView.clipsToBounds = true
-//        popupView.layer.shadowOffset = CGSize(width: 310, height: 495)
         popupView.layer.shadowOffset = CGSize(width: 0, height: 0)
         popupView.layer.shadowOpacity = 0.15
         popupView.layer.shadowRadius = 30
@@ -233,11 +232,15 @@ class PopupViewController: UIViewController {
     func updateUrlGoButtonTitle(with url: String?) {
         let title = (url?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty != false) ? "없음" : "바로가기"
         
-        let attributes: [NSAttributedString.Key: Any] = [
-            .underlineStyle: NSUnderlineStyle.single.rawValue,
+        var attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.mainBrown800,
-            .font: UIFont.ptdMediumFont(ofSize: 16)
+            .font: UIFont.ptdMediumFont(ofSize: 12)
         ]
+
+        if title != "없음" {
+            attributes[.underlineStyle] = NSUnderlineStyle.single.rawValue
+        }
+        
         
         let attributedTitle = NSAttributedString(string: title, attributes: attributes)
         popupView.urlGoButton.setAttributedTitle(attributedTitle, for: .normal)
