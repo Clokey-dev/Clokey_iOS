@@ -119,8 +119,8 @@ class SmartSummationViewController: UIViewController {
                 
                 DispatchQueue.main.async {
                     // Frequent UI updates
-                    self.summationView.categoryButton1.setTitle(frequent.baseCategoryName, for: .normal)
-                    self.summationView.categoryButton2.setTitle(frequent.coreCategoryName, for: .normal)
+                    self.summationView.categoryButton1.configuration?.title = frequent.baseCategoryName
+                    self.summationView.categoryButton2.configuration?.title = frequent.coreCategoryName
                     self.summationView.frequentTitleLabel.text = " - 한달간 \(frequent.usage)회 착용"
                     self.frequentClothes = Array(frequent.clothPreviews.prefix(3))
                     self.summationView.seeAllButton.setTitle("\(frequent.coreCategoryName)말고 다른 옷 보러가기", for: .normal)
@@ -131,7 +131,7 @@ class SmartSummationViewController: UIViewController {
                         self.summationView.categoryButton4.setTitle(infrequent.coreCategoryName, for: .normal)
                         self.summationView.infrequentTitleLabel.text = " - 한달간 \(infrequent.usage)회 착용"
                         self.infrequentClothes = Array(infrequent.clothPreviews.prefix(3))
-                        self.summationView.seeAllButton2.setTitle("옷장 구석에서 \(infrequent.coreCategoryName) 찾아보기", for: .normal)
+                        self.summationView.seeAllButton2.setTitle("옷장 구석에서 옷 찾아보기", for: .normal)
                         self.summationView.infreCollectionView.reloadData()
                     } else {
                         self.summationView.TitleLabel3.isHidden = true
@@ -232,8 +232,21 @@ extension SmartSummationViewController: UICollectionViewDataSource, UICollection
     }
     
     func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 111, height: 167)
+                       layout collectionViewLayout: UICollectionViewLayout,
+                       sizeForItemAt indexPath: IndexPath) -> CGSize {
+        // 총 여백 계산
+        let totalMargin: CGFloat = 40   // 좌우 inset 20씩
+        let interitemSpacing: CGFloat = 10 * 2 // 아이템 간 간격 10씩 2칸
+        let extraSpacing: CGFloat = 5            // 여유 공간
+        let availableWidth = UIScreen.main.bounds.width - totalMargin - interitemSpacing - extraSpacing
+        let itemWidth = availableWidth / 3
+        let imageHeight = itemWidth * 4 / 3
+        let cellHeight = imageHeight + 25  // 이미지 아래 5 + 라벨 20
+        
+        if collectionView == summationView.freCollectionView {
+            return CGSize(width: itemWidth, height: cellHeight)
+        } else {
+            return CGSize(width: itemWidth, height: cellHeight)
+        }
     }
 }

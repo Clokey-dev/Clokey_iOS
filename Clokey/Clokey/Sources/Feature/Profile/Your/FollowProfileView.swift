@@ -382,11 +382,16 @@ class FollowProfileView: UIView {
         }
     }
     
-    func followPrivateState(isPrivate: Bool) {
-        if isPrivate {
-            followButton.isHidden = true
+    func updateClothesPrivateState(isPrivate: Bool, isBlocked: Bool) {
+        if isPrivate || isBlocked {
+            // 둘 중 하나라도 true면 숨김
+            privateStackView1.removeFromSuperview()
+            bottomButtonLabel.isHidden = true
+            bottomArrowIcon.isHidden = true
         } else {
-            followButton.isHidden = false
+            // 둘 다 false일 때만 보여줌
+            bottomButtonLabel.isHidden = false
+            bottomArrowIcon.isHidden = false
         }
     }
     
