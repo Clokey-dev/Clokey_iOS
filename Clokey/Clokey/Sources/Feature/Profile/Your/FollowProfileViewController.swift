@@ -194,12 +194,16 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                     
                     self.followProfileView.touchMyProfile(isMine: self.isMe)
                     if !self.isMe {
-                        self.navBarManager.setOption(
-                            to: self.navigationItem,
-                            target: self,
-                            action: #selector(self.didTapReportButton))
+                        if self.isBlocking {
+                            self.navigationItem.rightBarButtonItem = nil
+                        } else {
+                            self.navBarManager.setOption(
+                                to: self.navigationItem,
+                                target: self,
+                                action: #selector(self.didTapReportButton)
+                            )
+                        }
                     }
-                    
                     if let profileImageUrl = userProfile.profileImageUrl,
                        let url = URL(string: profileImageUrl) {
                         self.followProfileView.profileImageView.kf.setImage(with: url)
@@ -264,6 +268,7 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                     }
                     
                     guard let isFollowing = userProfile.isFollowing else {
+                        self.hideLoadingOverlay()
                         self.followProfileView.followButton.setTitle("팔로우", for: .normal)
                         self.followProfileView.followButton.backgroundColor = .mainBrown800
                         self.followProfileView.followButton.setTitleColor(.white, for: .normal)
@@ -287,15 +292,17 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                         self.followProfileView.followButton.layer.borderWidth = 1
                     }
                     
-                    if userProfile.visibility == "PRIVATE" {
+                    if userProfile.visibility == "PRIVATE" && !self.isMe {
+                        self.followProfileView.updateClothesPrivateState(isPrivate: true, isBlocked: self.isBlocking)
                         self.followProfileView.updateClothesPrivateState(isPrivate: true)
                         self.followProfileView.updateCalendarPrivateState(isPrivate: true)
-//                        self.followProfileView.followPrivateState(isPrivate: true)
+                        
                     } else {
+                        self.followProfileView.updateClothesPrivateState(isPrivate: false, isBlocked: self.isBlocking)
                         self.followProfileView.updateClothesPrivateState(isPrivate: false)
                         self.followProfileView.updateCalendarPrivateState(isPrivate: false)
-//                        self.followProfileView.followPrivateState(isPrivate: false)
                     }
+
                     
                     self.setupNavigationBar()
                     self.hideLoadingOverlay()
@@ -421,6 +428,8 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                 DispatchQueue.main.async {
                     self.followProfileView.blockButton(isBlock: false)
                     self.followProfileView.updateCloseAccount(isClosed: false)
+                    self.isBlocking = false  
+                    self.loadData()
                 }
             case .failure(let error):
                 print("차단 해제 실패: \(error.localizedDescription)")
@@ -876,8 +885,11 @@ extension FollowProfileViewController: FollowProfileActionDelegate {
             case .success:
                 print("\(clokeyId) 차단 성공")
                 DispatchQueue.main.async {
+                    // 기존 UI 업데이트 작업들
                     self.followProfileView.blockButton(isBlock: true)
                     self.followProfileView.updateCloseAccount(isClosed: true)
+                    self.isBlocking = true
+                    self.loadData()
                 }
             case .failure(let error):
                 print("차단 실패: \(error.localizedDescription)")
