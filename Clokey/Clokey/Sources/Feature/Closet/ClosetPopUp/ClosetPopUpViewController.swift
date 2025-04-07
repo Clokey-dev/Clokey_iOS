@@ -250,7 +250,7 @@ final class PopUpViewController: UIViewController {
         popupView.wearCountButton.setTitle("\(detail.wearNum)회", for: .normal)
         
         // Brand
-        popupView.brandNameLabel.text = (detail.brand?.isEmpty ?? true) ? "지정 없음" : detail.brand
+        popupView.brandNameLabel.text = (detail.brand?.isEmpty ?? true) ? "없음" : detail.brand
         
         // clothUrl 처리: detail.clothUrl이 nil 또는 빈 값이면 "설정하지 않음", 유효한 URL이면 "바로가기"로 표시 후 클릭 시 해당 URL로 이동
         if let urlString = detail.clothUrl, !urlString.isEmpty, let _ = URL(string: urlString) {
@@ -265,7 +265,7 @@ final class PopUpViewController: UIViewController {
             popupView.urlGoButton.removeTarget(nil, action: nil, for: .allEvents)
             popupView.urlGoButton.addTarget(self, action: #selector(openUrl(_:)), for: .touchUpInside)
         } else {
-            let title = "지정 없음"
+            let title = "없음"
             let attributes: [NSAttributedString.Key: Any] = [
                 .underlineStyle: NSUnderlineStyle.single.rawValue,
                 .foregroundColor: UIColor.mainBrown800,

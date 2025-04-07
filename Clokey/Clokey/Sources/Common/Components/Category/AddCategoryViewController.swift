@@ -15,7 +15,8 @@ class AddCategoryViewController: UIViewController, UICollectionViewDataSource, U
     // 카테고리/계절 데이터 델리게이트
     weak var delegate: AddCategoryViewControllerDelegate?
 
-    
+    var defaultSeason: String?
+
     override func loadView() {
         view = addCategoryView
     }
@@ -36,7 +37,12 @@ class AddCategoryViewController: UIViewController, UICollectionViewDataSource, U
         
         updateCompleteButtonState() // 완료 버튼 초기 상태 설정
         setupSeasonTapGestures()
+        if let season = defaultSeason, season == "WINTER" {
+            selectedSeason = addCategoryView.winterImageView
+            addCategoryView.updateSelectedSeason(addCategoryView.winterImageView)
+        }
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

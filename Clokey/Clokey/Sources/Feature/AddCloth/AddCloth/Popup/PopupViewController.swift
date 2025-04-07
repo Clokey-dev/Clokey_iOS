@@ -124,7 +124,7 @@ class PopupViewController: UIViewController {
         
         popupView.categoryButton2.setTitle(categoryCloth, for: .normal)
         
-        popupView.brandNameLabel.text = (brand?.isEmpty ?? true) ? "지정 없음" : brand
+        popupView.brandNameLabel.text = (brand?.isEmpty ?? true) ? "없음" : brand
         
         self.url = imageUrl
         updateUrlGoButtonTitle(with: url)
@@ -231,7 +231,7 @@ class PopupViewController: UIViewController {
     }
     
     func updateUrlGoButtonTitle(with url: String?) {
-        let title = (url?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty != false) ? "지정 없음" : "바로가기"
+        let title = (url?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty != false) ? "없음" : "바로가기"
         
         let attributes: [NSAttributedString.Key: Any] = [
             .underlineStyle: NSUnderlineStyle.single.rawValue,

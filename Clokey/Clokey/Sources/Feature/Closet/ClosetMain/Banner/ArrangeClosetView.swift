@@ -93,8 +93,9 @@ class ArrangeClosetView: UIView {
         }
 
         bannerDescription.snp.makeConstraints { make in
-            make.top.equalTo(BannerView.snp.top).offset(16)
-            make.leading.equalTo(bannerImage.snp.trailing).offset(16)
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(bannerImage.snp.trailing).offset(5)
+            make.trailing.equalTo(BannerView.snp.trailing).offset(-10)
         }
 
         customTotalSegmentView.snp.makeConstraints { make in

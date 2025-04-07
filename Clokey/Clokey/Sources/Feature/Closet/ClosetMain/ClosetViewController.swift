@@ -485,6 +485,8 @@ extension ClosetViewController: AddCategoryViewControllerDelegate {
                         let cellHeight = imageHeight + 25    // 이미지 아래 간격 5pt + 라벨 높이 20pt = 25pt
                         let totalCollectionViewHeight = 2 * cellHeight + 30  // 2줄 셀 높이 + 행 간 간격 25pt
                         
+                        print("확인해봐 :", totalCollectionViewHeight)
+                        
                         make.height.equalTo(totalCollectionViewHeight)
                     }
                 }

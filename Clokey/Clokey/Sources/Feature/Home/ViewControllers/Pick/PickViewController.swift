@@ -439,10 +439,10 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     }
                     
                     popUpView.wearCountButton.setTitle("\(response.wearNum)회", for: .normal)
-                    popUpView.brandNameLabel.text = (response.brand?.isEmpty ?? true) ? "지정 없음" : response.brand
+                    popUpView.brandNameLabel.text = (response.brand?.isEmpty ?? true) ? "없음" : response.brand
                     self.url = response.clothUrl ?? ""
                     if response.clothUrl == nil {
-                        popUpView.urlGoButton.titleLabel?.text = "지정 안됨"
+                        popUpView.urlGoButton.titleLabel?.text = "없음"
                     }
                     
                     
