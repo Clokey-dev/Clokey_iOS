@@ -390,7 +390,7 @@ final class ProfileViewController: UIViewController {
                         print("유효하지 않은 이미지 URL: \(response.imageUrl)")
                     }
                     if response.visibility == "PUBLIC" {
-                        self.popUpView.publicButton.setImage(UIImage(named: "lock_off"), for: .normal)
+                        self.popUpView.publicButton.setImage(UIImage(named: "public_icon"), for: .normal)
                     } else {
                         self.popUpView.publicButton.setImage(UIImage(named: "lock_on"), for: .normal)
                     }

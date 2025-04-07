@@ -21,11 +21,12 @@ class PopupView: UIView {
     let publicButton = UIButton().then {
         $0.setImage(UIImage(named: "public_icon"), for: .normal)
         $0.tintColor = UIColor(named: "mainBrown800")
+        $0.isUserInteractionEnabled = false
     }
     
     var imageView = UIImageView().then {
         $0.image = UIImage(named: "top")
-        $0.contentMode = .scaleAspectFit
+        $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 5
         $0.clipsToBounds = true
     }
