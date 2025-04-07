@@ -488,6 +488,7 @@ extension ClosetViewController: AddCategoryViewControllerDelegate {
                         print("확인해봐 :", totalCollectionViewHeight)
                         
                         make.height.equalTo(totalCollectionViewHeight)
+                        make.width.equalTo(UIScreen.main.bounds.width - 40)
                     }
                 }
                 closetView.customTotalSegmentView.segmentedControl.selectedSegmentIndex = mainIndex

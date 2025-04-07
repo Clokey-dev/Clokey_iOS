@@ -244,6 +244,7 @@ extension ArrangeClosetViewController: AddCategoryViewControllerDelegate {
                         let totalCollectionViewHeight = 2 * cellHeight + 30  // 2줄 셀 높이 + 행 간 간격 25pt
                         
                         make.height.equalTo(totalCollectionViewHeight)
+                        make.width.equalTo(UIScreen.main.bounds.width - 40)
                     }
                 }
                 arrangeClosetView.customTotalSegmentView.segmentedControl.selectedSegmentIndex = mainIndex

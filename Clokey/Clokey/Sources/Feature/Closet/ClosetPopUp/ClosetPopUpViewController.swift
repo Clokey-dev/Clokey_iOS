@@ -252,11 +252,12 @@ final class PopUpViewController: UIViewController {
         // Brand
         popupView.brandNameLabel.text = (detail.brand?.isEmpty ?? true) ? "없음" : detail.brand
         
-        // clothUrl 처리: detail.clothUrl이 nil 또는 빈 값이면 "설정하지 않음", 유효한 URL이면 "바로가기"로 표시 후 클릭 시 해당 URL로 이동
-        if let urlString = detail.clothUrl, !urlString.isEmpty, let _ = URL(string: urlString) {
+        if let urlString = detail.clothUrl,
+           !urlString.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+           let _ = URL(string: urlString) {
             let title = "바로가기"
             let attributes: [NSAttributedString.Key: Any] = [
-                .underlineStyle: NSUnderlineStyle.single.rawValue,
+                .underlineStyle: NSUnderlineStyle.single.rawValue,  // 밑줄 적용
                 .foregroundColor: UIColor.mainBrown800,
                 .font: UIFont.ptdMediumFont(ofSize: 12)
             ]
@@ -267,7 +268,6 @@ final class PopUpViewController: UIViewController {
         } else {
             let title = "없음"
             let attributes: [NSAttributedString.Key: Any] = [
-                .underlineStyle: NSUnderlineStyle.single.rawValue,
                 .foregroundColor: UIColor.mainBrown800,
                 .font: UIFont.ptdMediumFont(ofSize: 12)
             ]
@@ -275,6 +275,7 @@ final class PopUpViewController: UIViewController {
             currentClothUrl = nil
             popupView.urlGoButton.removeTarget(nil, action: nil, for: .allEvents)
         }
+
         
         // Category
         popupView.categoryButton2.setTitle(detail.category, for: .normal)
