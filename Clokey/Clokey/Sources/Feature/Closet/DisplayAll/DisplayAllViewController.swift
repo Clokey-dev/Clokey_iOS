@@ -73,6 +73,12 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
                                                selector: #selector(handleClothDeleted),
                                                name: Notification.Name("clothDeleted"),
                                                object: nil)
+        NotificationCenter.default.addObserver(self,
+            selector: #selector(handleClothEdit(_:)),
+            name: Notification.Name("clothEditFromDisplayAll"),
+            object: nil)
+
+
         // Delegate 설정
         displayAllView.customTotalSegmentView.delegate = self
         displayAllView.sortDropdownDelegate = self
@@ -390,6 +396,14 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.refreshControl.endRefreshing()
         }
+    }
+    
+    @objc private func handleClothEdit(_ notification: Notification) {
+        guard let clothId = notification.userInfo?["clothId"] as? Int64 else { return }
+
+        let editVC = AddClothViewController()
+        editVC.clothId = clothId
+        self.navigationController?.pushViewController(editVC, animated: true)
     }
 }
 

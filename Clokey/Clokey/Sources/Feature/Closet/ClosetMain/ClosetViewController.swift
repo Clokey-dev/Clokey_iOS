@@ -66,9 +66,10 @@ final class ClosetViewController: UIViewController, UICollectionViewDataSource, 
                                                object: nil)
         
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handleClothEdit(_:)),
-                                               name: Notification.Name("clothEdit"),
-                                               object: nil)
+            selector: #selector(handleClothEdit(_:)),
+            name: Notification.Name("clothEditFromCloset"),
+            object: nil)
+
     }
     
     // NotificationCenter 콜백

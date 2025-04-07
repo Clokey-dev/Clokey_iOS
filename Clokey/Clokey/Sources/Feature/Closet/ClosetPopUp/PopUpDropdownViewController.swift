@@ -45,13 +45,14 @@ class PopUpDropdownViewController: UIViewController, PopUpDropdownViewDelegate, 
     func didSelectEditCloth() {
         guard let popUpVC = presentingViewController as? PopUpViewController,
               let clothId = popUpVC.clothId else { return }
+
+        let isFromDisplayAll = popUpVC.presentingViewController is DisplayAllViewController
+        let notificationName = isFromDisplayAll ? "clothEditFromDisplayAll" : "clothEditFromCloset"
+
         DispatchQueue.main.async {
-            // 1) 먼저 드롭다운 닫기
             self.dismiss(animated: false) {
-                // 2) 그 후 팝업 닫기
                 popUpVC.dismiss(animated: true) {
-                    // 3) 최종적으로 NotificationCenter를 통해 “편집” 알림 전달 (clothId 포함)
-                    NotificationCenter.default.post(name: Notification.Name("clothEdit"),
+                    NotificationCenter.default.post(name: Notification.Name(notificationName),
                                                     object: nil,
                                                     userInfo: ["clothId": clothId])
                 }
