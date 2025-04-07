@@ -75,7 +75,6 @@
 		074401A02D5E1F9A00E60282 /* AddClothViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744018D2D5E1F9A00E60282 /* AddClothViewController.swift */; };
 		074401A72D5E1F9A00E60282 /* AddProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401A12D5E1F9A00E60282 /* AddProfileView.swift */; };
 		074401A82D5E1F9A00E60282 /* AddProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401A22D5E1F9A00E60282 /* AddProfileViewController.swift */; };
-		074401A92D5E1F9A00E60282 /* AddProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401A32D5E1F9A00E60282 /* AddProfileViewModel.swift */; };
 		074401AA2D5E1F9A00E60282 /* ProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401A42D5E1F9A00E60282 /* ProfileRequest.swift */; };
 		074401AB2D5E1F9A00E60282 /* ProfileResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401A52D5E1F9A00E60282 /* ProfileResponse.swift */; };
 		074401AE2D5E1F9A00E60282 /* AddClothingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401AC2D5E1F9A00E60282 /* AddClothingViewController.swift */; };
@@ -385,7 +384,6 @@
 		0744018D2D5E1F9A00E60282 /* AddClothViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothViewController.swift; sourceTree = "<group>"; };
 		074401A12D5E1F9A00E60282 /* AddProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProfileView.swift; sourceTree = "<group>"; };
 		074401A22D5E1F9A00E60282 /* AddProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProfileViewController.swift; sourceTree = "<group>"; };
-		074401A32D5E1F9A00E60282 /* AddProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProfileViewModel.swift; sourceTree = "<group>"; };
 		074401A42D5E1F9A00E60282 /* ProfileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRequest.swift; sourceTree = "<group>"; };
 		074401A52D5E1F9A00E60282 /* ProfileResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileResponse.swift; sourceTree = "<group>"; };
 		074401AC2D5E1F9A00E60282 /* AddClothingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothingViewController.swift; sourceTree = "<group>"; };
@@ -945,7 +943,6 @@
 			children = (
 				074401A12D5E1F9A00E60282 /* AddProfileView.swift */,
 				074401A22D5E1F9A00E60282 /* AddProfileViewController.swift */,
-				074401A32D5E1F9A00E60282 /* AddProfileViewModel.swift */,
 				074401A42D5E1F9A00E60282 /* ProfileRequest.swift */,
 				074401A52D5E1F9A00E60282 /* ProfileResponse.swift */,
 			);
@@ -1818,8 +1815,8 @@
 		1EF33C5D2D665FFB00142954 /* DisplayAll */ = {
 			isa = PBXGroup;
 			children = (
-				1EF33C5B2D665FFB00142954 /* DisplayAllView.swift */,
 				1EF33C5C2D665FFB00142954 /* DisplayAllViewController.swift */,
+				1EF33C5B2D665FFB00142954 /* DisplayAllView.swift */,
 			);
 			path = DisplayAll;
 			sourceTree = "<group>";
@@ -2256,7 +2253,6 @@
 				A66BA3352D636AD400E69A4F /* ProfileViewModel.swift in Sources */,
 				074401A72D5E1F9A00E60282 /* AddProfileView.swift in Sources */,
 				074401A82D5E1F9A00E60282 /* AddProfileViewController.swift in Sources */,
-				074401A92D5E1F9A00E60282 /* AddProfileViewModel.swift in Sources */,
 				074401AA2D5E1F9A00E60282 /* ProfileRequest.swift in Sources */,
 				074401AB2D5E1F9A00E60282 /* ProfileResponse.swift in Sources */,
 				07ECCB5F2D4E351E00AFF486 /* CustomTotalSegmentView.swift in Sources */,
@@ -2472,11 +2468,9 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
+				DEVELOPMENT_TEAM = BBVZV8T99P;
 				ENABLE_DEBUG_DYLIB = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
@@ -2498,7 +2492,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -2518,12 +2511,10 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BBVZV8T99P;
+				DEVELOPMENT_TEAM = BBVZV8T99P;
 				ENABLE_DEBUG_DYLIB = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Clokey/Supporting Files/Info.plist";
@@ -2545,7 +2536,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Clokey;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

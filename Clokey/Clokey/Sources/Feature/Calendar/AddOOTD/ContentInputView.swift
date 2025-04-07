@@ -24,6 +24,7 @@ class ContentInputView: UIView, UITextFieldDelegate {
     
     weak var delegate: ContentInputViewDelegate?
     private var hashtags: [String] = []
+    private var isPlaceholderActive = true
     
     // MARK: - UI Components
     
@@ -304,7 +305,7 @@ class ContentInputView: UIView, UITextFieldDelegate {
     }
     
     func getTextContent() -> String {
-        return textAddBox.text
+        return isPlaceholderActive ? "" : textAddBox.text
     }
 
     func isPublic() -> Bool {
@@ -446,18 +447,19 @@ class ContentInputView: UIView, UITextFieldDelegate {
 // placeholder 처리
 extension ContentInputView: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == .placeholderText {
-            textView.text = nil
+        if isPlaceholderActive {
+            textView.text = ""
             textView.textColor = .black
+            isPlaceholderActive = false
         }
     }
-    
+
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
             textView.text = "텍스트를 입력하세요"
             textView.textColor = .placeholderText
+            isPlaceholderActive = true
         }
-        // 델리게이트 호출 추가
         delegate?.contentInputView(self, didUpdateText: textView.text)
     }
     

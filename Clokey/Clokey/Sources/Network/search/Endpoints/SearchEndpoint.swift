@@ -54,7 +54,7 @@ extension SearchEndpoint: TargetType {
             ]
             // clokeyId가 nil이 아니고 비어있지 않으면 파라미터에 추가
             if let cId = clokeyId, !cId.isEmpty {
-                parameters["clokeyid"] = cId
+                parameters["clokeyId"] = cId
             }
             
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)

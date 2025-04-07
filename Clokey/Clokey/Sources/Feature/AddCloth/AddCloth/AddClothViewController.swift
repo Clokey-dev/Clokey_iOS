@@ -345,6 +345,11 @@ class AddClothViewController: UIViewController, UITextFieldDelegate /*UIGestureR
     private func loadEditCloth() {
         let clothesService = ClothesService()
         
+        guard clothId != 0 else {
+            print("clothId가 0이므로 옷수정 스킵")
+            return
+        }
+        
         clothesService.checkEditClothes(clothId: clothId) { [weak self] result in
             guard let self = self else { return }
             switch result {
