@@ -185,6 +185,12 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                     self.isMe = userProfile.isMe
                     
                     self.followProfileView.updateCloseAccount(isClosed: self.isBlocking)
+                    if !self.isBlocking {
+                        self.navBarManager.setOption(
+                            to: self.navigationItem,
+                            target: self,
+                            action: #selector(self.didTapReportButton))
+                    }
                     
                     self.followProfileView.touchMyProfile(isMine: self.isMe)
                     if !self.isMe {
