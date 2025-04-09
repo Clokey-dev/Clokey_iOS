@@ -157,7 +157,8 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
                     }
                 case .failure(let error):
                     print("삭제 실패: \(error)")
-                    self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
+                    let errorMessage = self.extractErrorMessage(from: error)
+                    self.showAlert(title: "삭제 실패", message: errorMessage)
                 }
             }
         })
@@ -243,7 +244,6 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
             }
         }
     }
-
 
     // 댓글 쓰기 버튼 눌렀을 때
     @objc func didTapSend() {
@@ -332,7 +332,13 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         }
     }
 
-   
+    // 에러 메세지
+    private func extractErrorMessage(from error: Error) -> String {
+        if case let NetworkError.serverError(_, message) = error {
+            return message
+        }
+        return error.localizedDescription
+    }
     
     // MARK: - CommentCellDelegate 구현
     func didTapReplyButton(commentId: Int64) {

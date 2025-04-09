@@ -103,6 +103,9 @@ final class DrawerEditView: UIView, SortDropdownViewDelegate {
 
         contentView.addSubview(sortButtonStack)
         contentView.addSubview(collectionView)
+        collectionView.contentInset.bottom = 20
+        collectionView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -7)
+        
         // 커스텀 세그먼트
         customTotalSegmentView.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide).offset(30)

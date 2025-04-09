@@ -99,6 +99,7 @@
 		0744FFD82D5B1DD500E60282 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FF9A2D5B1D6900E60282 /* ImageView.swift */; };
 		0744FFD92D5B1E0700E60282 /* UpdateFriendCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FF9D2D5B1D6900E60282 /* UpdateFriendCalendarView.swift */; };
 		0744FFDA2D5B1E1800E60282 /* UpdateFriendClothesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FF9E2D5B1D6900E60282 /* UpdateFriendClothesView.swift */; };
+		0759C8452DA674E3004E6B4D /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 0759C8442DA674E3004E6B4D /* IQKeyboardManagerSwift */; };
 		07649C292D4DDD5D00B6B2B2 /* UpdateFriendCalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649C252D4DDD5D00B6B2B2 /* UpdateFriendCalendarCollectionViewCell.swift */; };
 		07649C2A2D4DDD5D00B6B2B2 /* WeatherClothesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649C272D4DDD5D00B6B2B2 /* WeatherClothesCollectionViewCell.swift */; };
 		07649C2B2D4DDD5D00B6B2B2 /* UpdateFriendClothesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649C262D4DDD5D00B6B2B2 /* UpdateFriendClothesCollectionViewCell.swift */; };
@@ -314,7 +315,6 @@
 		A676619B2D5B367B006AAB63 /* DeleteAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661962D5B367B006AAB63 /* DeleteAccountViewController.swift */; };
 		A676619C2D5B367B006AAB63 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661972D5B367B006AAB63 /* SettingView.swift */; };
 		A676619D2D5B367B006AAB63 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661982D5B367B006AAB63 /* SettingViewController.swift */; };
-		A67661A22D5B367B006AAB63 /* FollowProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676619E2D5B367B006AAB63 /* FollowProfileModel.swift */; };
 		A67661A32D5B367B006AAB63 /* FollowProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A676619F2D5B367B006AAB63 /* FollowProfileView.swift */; };
 		A67661A42D5B367B006AAB63 /* FollowProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661A02D5B367B006AAB63 /* FollowProfileViewController.swift */; };
 		A67661A92D5B367B006AAB63 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67661A52D5B367B006AAB63 /* ProfileModel.swift */; };
@@ -612,7 +612,6 @@
 		A67661962D5B367B006AAB63 /* DeleteAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountViewController.swift; sourceTree = "<group>"; };
 		A67661972D5B367B006AAB63 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		A67661982D5B367B006AAB63 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
-		A676619E2D5B367B006AAB63 /* FollowProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowProfileModel.swift; sourceTree = "<group>"; };
 		A676619F2D5B367B006AAB63 /* FollowProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowProfileView.swift; sourceTree = "<group>"; };
 		A67661A02D5B367B006AAB63 /* FollowProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowProfileViewController.swift; sourceTree = "<group>"; };
 		A67661A52D5B367B006AAB63 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
@@ -650,6 +649,7 @@
 				072B3DC82D95592A00AA488D /* FirebaseAppCheck in Frameworks */,
 				072B3DDE2D95592A00AA488D /* FirebaseFunctionsCombine-Community in Frameworks */,
 				072B3DDA2D95592A00AA488D /* FirebaseFirestoreCombine-Community in Frameworks */,
+				0759C8452DA674E3004E6B4D /* IQKeyboardManagerSwift in Frameworks */,
 				072B3DD02D95592A00AA488D /* FirebaseCore in Frameworks */,
 				077DC8E42D6206A800C02FA4 /* ReactiveMoya in Frameworks */,
 				077DC8E22D6206A800C02FA4 /* Moya in Frameworks */,
@@ -2013,7 +2013,6 @@
 		A67661A12D5B367B006AAB63 /* Your */ = {
 			isa = PBXGroup;
 			children = (
-				A676619E2D5B367B006AAB63 /* FollowProfileModel.swift */,
 				A676619F2D5B367B006AAB63 /* FollowProfileView.swift */,
 				A67661A02D5B367B006AAB63 /* FollowProfileViewController.swift */,
 				A646C4D72D662DE800993FA5 /* FollowCalendarViewController.swift */,
@@ -2112,6 +2111,7 @@
 				072B3DEB2D95592A00AA488D /* FirebaseStorage */,
 				072B3DED2D95592A00AA488D /* FirebaseStorageCombine-Community */,
 				072B3DEF2D95592A00AA488D /* FirebaseVertexAI */,
+				0759C8442DA674E3004E6B4D /* IQKeyboardManagerSwift */,
 			);
 			productName = Clokey;
 			productReference = 07F093102D2418380075659F /* Clokey.app */;
@@ -2152,6 +2152,7 @@
 				071D4C3F2D620C2600A6286D /* XCRemoteSwiftPackageReference "RxSwift" */,
 				489FCD6A2D64936B0030A185 /* XCRemoteSwiftPackageReference "RxGesture" */,
 				072B3DC02D95592A00AA488D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				0759C8432DA674E3004E6B4D /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 07F093112D2418380075659F /* Products */;
@@ -2247,7 +2248,6 @@
 				07F859942D61D73500DD5BF8 /* SearchViewController.swift in Sources */,
 				07ECCEA72D4E7ECA00AFF486 /* CalendarCommentViewController.swift in Sources */,
 				07ECCB5E2D4E351E00AFF486 /* CustomCategoryModel.swift in Sources */,
-				A67661A22D5B367B006AAB63 /* FollowProfileModel.swift in Sources */,
 				A67661A32D5B367B006AAB63 /* FollowProfileView.swift in Sources */,
 				A67661A42D5B367B006AAB63 /* FollowProfileViewController.swift in Sources */,
 				A66BA3352D636AD400E69A4F /* ProfileViewModel.swift in Sources */,
@@ -2727,6 +2727,14 @@
 				minimumVersion = 11.10.0;
 			};
 		};
+		0759C8432DA674E3004E6B4D /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.1;
+			};
+		};
 		077DC8CA2D62060900C02FA4 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
@@ -2917,6 +2925,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 072B3DC02D95592A00AA488D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseVertexAI;
+		};
+		0759C8442DA674E3004E6B4D /* IQKeyboardManagerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0759C8432DA674E3004E6B4D /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
+			productName = IQKeyboardManagerSwift;
 		};
 		077DC8CB2D62060900C02FA4 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;

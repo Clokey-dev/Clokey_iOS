@@ -11,6 +11,7 @@ import KakaoSDKAuth
 import FirebaseCore
 import FirebaseMessaging
 import UserNotifications
+import IQKeyboardManagerSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -31,6 +32,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             print("Kakao App Key: \(appKey)") // 디버그용
             KakaoSDK.initSDK(appKey: appKey)
         }
+        
+        let manager = IQKeyboardManager.shared
+           manager.isEnabled = true                // 키보드 자동 처리 활성화
+           manager.resignOnTouchOutside = true     // 화면 터치 시 키보드 자동 내림
 
         return true
     }
