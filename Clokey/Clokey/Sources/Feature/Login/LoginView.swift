@@ -113,10 +113,12 @@ final class LoginView: UIView {
         
         // 로그인 메인 이미지
         mainImageView.snp.makeConstraints {
-            $0.width.equalTo(259)
-            $0.height.equalTo(243)
-            $0.top.equalTo(titleLabel.snp.bottom).offset(74)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(40)
             $0.centerX.equalToSuperview()
+            $0.leading.greaterThanOrEqualToSuperview().offset(40)
+            $0.trailing.lessThanOrEqualToSuperview().offset(-40)
+            $0.width.lessThanOrEqualTo(360)
+            $0.height.equalTo(mainImageView.snp.width).multipliedBy(260.0 / 300.0)
         }
         
         // 소셜 로그인 버튼 스택

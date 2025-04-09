@@ -189,9 +189,9 @@ final class PopUpViewController: UIViewController {
         
         // Visibility: PUBLIC이면 lock_on, 그 외에는 lock_off 이미지
         if detail.visibility == "PUBLIC" {
-            popupView.publicButton.setImage(UIImage(named: "lock_off"), for: .normal)
+            popupView.publicButton.setImage(UIImage(named: "public_icon"), for: .normal)
         } else {
-            popupView.publicButton.setImage(UIImage(named: "lock_on"), for: .normal)
+            popupView.publicButton.setImage(UIImage(named: "private_icon"), for: .normal)
         }
         
         // 이미지

@@ -620,37 +620,39 @@ class NewsView: UIView {
     
     /// 데이터 상태에 따라 EmptyStackView 표시/숨김
     func updateFriendClothesEmptyState(isEmpty: Bool) {
+        print("✅ Empty State 호출됨: \(isEmpty)")
         if isEmpty {
-            // 데이터가 없으면 EmptyStackView 추가하고 관련 요소 숨김
+            // EmptyStackView 추가
             profileContainerView.addSubview(emptyStackView1)
-            emptyStackView1.emptyClothesMessageTitle.text = "아직 팔로우한 계정이 없어요!"
+            emptyStackView1.emptyClothesMessageTitle.text = "팔로우한 계정의 옷장 업데이트가 없어요!"
             emptyStackView1.emptyClothesMessageSubTitle.text = "다른 사용자들을 팔로우하고\n어떤 옷들이 있는지 옷장을 구경해보세요"
-            
-            profileContainerView.snp.remakeConstraints { make in
-                make.top.equalTo(friendClothesTitle.snp.bottom).offset(26)
-                make.leading.trailing.equalToSuperview().inset(20)
-                make.height.equalTo(179)
-            }
             
             emptyStackView1.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
             }
+
+            // 다른 요소들 숨김
+            profileImageView.isHidden = true
+            usernameLabel.isHidden = true
+            dateLabel.isHidden = true
+            imageStackView.isHidden = true
             friendClothesBottomButtonLabel.isHidden = true
             friendClothesBottomArrowIcon.isHidden = true
-
+            
         } else {
-            // 데이터가 있으면 EmptyStackView 제거하고 관련 요소 표시
+            // EmptyStackView 제거
             emptyStackView1.removeFromSuperview()
+
+            // 요소들 다시 보이게
+            profileImageView.isHidden = false
+            usernameLabel.isHidden = false
+            dateLabel.isHidden = false
+            imageStackView.isHidden = false
             friendClothesBottomButtonLabel.isHidden = false
             friendClothesBottomArrowIcon.isHidden = false
-            
-            profileContainerView.snp.remakeConstraints { make in
-                make.top.equalTo(friendClothesTitle.snp.bottom).offset(14)
-                make.leading.trailing.equalToSuperview().inset(20)
-                make.height.equalTo(179)
-            }
         }
     }
+
     
     func updateFriendCalendarEmptyState(isEmpty: Bool) {
         if isEmpty {

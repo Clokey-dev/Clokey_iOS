@@ -22,6 +22,8 @@ class NewsViewController: UIViewController {
     private let refreshControl = UIRefreshControl()
     private var loadingOverlay: UIView?
     
+    private var isFetchingFriendClothes = false
+    
     private lazy var pageControl: UIPageControl = UIPageControl().then {
         $0.numberOfPages = totalImages()
         $0.currentPage = currentIndexValue()
@@ -37,6 +39,7 @@ class NewsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.newsView.updateFriendClothesEmptyState(isEmpty: true)
         definesPresentationContext = true
         //새로고침 기능
         newsView.scrollView.refreshControl = refreshControl
@@ -214,25 +217,17 @@ class NewsViewController: UIViewController {
                     
                     
                     let isEmpty = closetItems.isEmpty
-                    
-                    if followingCount == 0 {
-                        self.newsView.updateFriendClothesEmptyState(isEmpty: isEmpty)
-                    } else {
-                        self.newsView.updateFriendClothesEmptyState(isEmpty: isEmpty)
-                        self.newsView.emptyStackView1.emptyClothesMessageTitle.text = "팔로우한 계정의 옷장 업데이트가 없어요!"
-                        self.newsView.emptyStackView1.emptyClothesMessageSubTitle.text = "다른 사용자들을 팔로우하고\n어떤 옷들이 있는지 옷장을 구경해보세요"
-                    }
-                    
-                    
+
+                    // 메시지는 항상 세팅
+                    self.newsView.emptyStackView1.emptyClothesMessageTitle.text = "팔로우한 계정의 옷장 업데이트가 없어요!"
+                    self.newsView.emptyStackView1.emptyClothesMessageSubTitle.text = "다른 사용자들을 팔로우하고\n어떤 옷들이 있는지 옷장을 구경해보세요"
+
                     if isEmpty {
                         print("Closet 데이터가 없습니다.")
-                        self.newsView.profileImageView.image = nil
-                        self.newsView.usernameLabel.text = "정보 없음"
-                        self.newsView.dateLabel.text = ""
-                        self.newsView.friendClothesImageView1.image = nil
-                        self.newsView.friendClothesImageView2.image = nil
-                        self.newsView.friendClothesImageView3.image = nil
+                        self.newsView.updateFriendClothesEmptyState(isEmpty: true)
                         return
+                    } else {
+                        self.newsView.updateFriendClothesEmptyState(isEmpty: false)
                     }
                     
                     guard let firstClosetItem = closetItems.first else {
@@ -620,25 +615,17 @@ class NewsViewController: UIViewController {
             case .success(let responseDTO):
                 DispatchQueue.main.async {
                     let calendarItems = responseDTO.calendar
-                    let followingCount = responseDTO.followingCount
-                    
                     let isEmpty = calendarItems.isEmpty
+                    
+                    // 캘린더 빈 상태만 업데이트
                     self.newsView.updateFriendCalendarEmptyState(isEmpty: isEmpty)
-                    
-                    if followingCount == 0 {
-                        self.newsView.updateFriendClothesEmptyState(isEmpty: isEmpty)
-                    } else {
-                        self.newsView.updateFriendClothesEmptyState(isEmpty: isEmpty)
-                        self.newsView.emptyStackView2.emptyClothesMessageTitle.text = "팔로우한 계정의 기록 업데이트가 없어요!"
-                        self.newsView.emptyStackView2.emptyClothesMessageSubTitle.text = "다른 사용자들을 팔로우하고\n어떤 옷들이 있는지 옷장을 구경해보세요"
-                    }
-                    
                     
                     if isEmpty {
                         print("Calendar 데이터가 없습니다.")
                         return
                     }
                     
+                    // 첫 번째 캘린더 아이템 UI 업데이트
                     if let firstCalendarItem = calendarItems.first {
                         if let firstImageUrl = firstCalendarItem.imageUrl {
                             self.newsView.followingCalendarUpdateImageView1.kf.setImage(with: URL(string: firstImageUrl))
@@ -646,53 +633,40 @@ class NewsViewController: UIViewController {
                         self.newsView.followingCalendarUpdateSubTitle.text = firstCalendarItem.date
                         self.newsView.followingCalendarProfileIcon1.kf.setImage(with: URL(string: firstCalendarItem.profileImage))
                         self.newsView.followingCalendarProfileName1.text = firstCalendarItem.clokeyId
-
+                        
                         self.newsView.followingCalendarUpdateImageView1.accessibilityIdentifier = "\(firstCalendarItem.historyId)"
                         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleCalendarImageTap))
                         self.newsView.followingCalendarUpdateImageView1.isUserInteractionEnabled = true
                         self.newsView.followingCalendarUpdateImageView1.addGestureRecognizer(tapGesture)
                         
-                        // 두 번째 요소(calendarItems[1])를 사용하지 않고 첫 번째 요소의 값을 사용하거나,
-                        // 두 번째 요소가 있을 때만 처리하도록 변경합니다.
                         self.newsView.followingCalendarProfileIcon1.accessibilityIdentifier = firstCalendarItem.clokeyId
                         let tapGesture1 = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileIconTap))
                         self.newsView.followingCalendarProfileIcon1.isUserInteractionEnabled = true
                         self.newsView.followingCalendarProfileIcon1.addGestureRecognizer(tapGesture1)
-                       
                     }
                     
-                    
+                    // 두 번째 캘린더 아이템 UI 업데이트 (존재하는 경우)
                     if calendarItems.count > 1 {
                         let secondCalendarItem = calendarItems[1]
-
+                        
                         if let secondImageUrl = secondCalendarItem.imageUrl {
                             self.newsView.followingCalendarUpdateImageView2.kf.setImage(with: URL(string: secondImageUrl))
                         }
-
+                        
                         self.newsView.followingCalendarProfileIcon2.kf.setImage(with: URL(string: secondCalendarItem.profileImage))
                         self.newsView.followingCalendarProfileName2.text = secondCalendarItem.clokeyId
-
+                        
                         self.newsView.followingCalendarUpdateImageView2.accessibilityIdentifier = "\(secondCalendarItem.historyId)"
-
+                        
                         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleCalendarImageTap))
                         self.newsView.followingCalendarUpdateImageView2.isUserInteractionEnabled = true
                         self.newsView.followingCalendarUpdateImageView2.addGestureRecognizer(tapGesture)
                         
-
-                    }
-
-                    if calendarItems.count > 1, let secondImageUrl = calendarItems[1].imageUrl {
-                        self.newsView.followingCalendarUpdateImageView2.kf.setImage(with: URL(string: secondImageUrl))
-                        self.newsView.followingCalendarProfileIcon2.kf.setImage(with: URL(string: calendarItems[1].profileImage))
-                        self.newsView.followingCalendarProfileName2.text = calendarItems[1].clokeyId
-
-                        self.newsView.followingCalendarProfileIcon2.accessibilityIdentifier = calendarItems[1].clokeyId
-                        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileIconTap))
+                        self.newsView.followingCalendarProfileIcon2.accessibilityIdentifier = secondCalendarItem.clokeyId
+                        let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileIconTap))
                         self.newsView.followingCalendarProfileIcon2.isUserInteractionEnabled = true
-                        self.newsView.followingCalendarProfileIcon2.addGestureRecognizer(tapGesture)
+                        self.newsView.followingCalendarProfileIcon2.addGestureRecognizer(tapGesture2)
                     }
-
-                    
                 }
                 
             case .failure(let error):
