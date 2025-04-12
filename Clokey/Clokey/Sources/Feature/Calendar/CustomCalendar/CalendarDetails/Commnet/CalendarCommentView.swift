@@ -43,7 +43,7 @@ class CalendarCommentView: UIView, UIGestureRecognizerDelegate {
         $0.separatorStyle = .none
     }
     
-    private let inputContainerView = UIView().then {
+    let inputContainerView = UIView().then {
         $0.backgroundColor = .white
     }
     
@@ -70,7 +70,6 @@ class CalendarCommentView: UIView, UIGestureRecognizerDelegate {
         super.init(frame: frame)
         setupUI()
         setupActions()
-        setupKeyboardObservers()
         setupTapGesture()
     }
     
@@ -144,12 +143,6 @@ class CalendarCommentView: UIView, UIGestureRecognizerDelegate {
     }
     
     // MARK: - Method
-    // 댓글창이 키보드에 따라 업다운
-    private func setupKeyboardObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
     // 키보드 내리기 제스처 설정
     private func setupTapGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -165,33 +158,6 @@ class CalendarCommentView: UIView, UIGestureRecognizerDelegate {
     
     @objc private func didTapSend() {
         viewController?.didTapSend()
-    }
-    
-    // 키보드 올릴 때
-    @objc private func keyboardWillShow(_ notification: Notification) {
-        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-            let keyboardHeight = keyboardFrame.height
-            let safeAreaBottom = safeAreaInsets.bottom
-            let suggestionBarHeight: CGFloat = 40
-            let totalKeyboardHeight = keyboardHeight + suggestionBarHeight
-
-            inputContainerView.snp.remakeConstraints {
-                $0.leading.trailing.equalToSuperview()
-                $0.bottom.equalToSuperview().inset(totalKeyboardHeight - safeAreaBottom)
-                $0.height.equalTo(50)
-            }
-            UIView.animate(withDuration: 0.3) { self.layoutIfNeeded() }
-        }
-    }
-    
-    // 키보드 내릴때 댓글창 원래대로
-    @objc private func keyboardWillHide(_ notification: Notification) {
-        inputContainerView.snp.remakeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
-            $0.height.equalTo(50)
-        }
-        UIView.animate(withDuration: 0.3) { self.layoutIfNeeded() }
     }
     
     // 키보드 내리기
