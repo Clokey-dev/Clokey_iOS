@@ -248,17 +248,17 @@ final class ProfileView: UIView {
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview() // 화면 전체에 ScrollView
+            make.edges.equalTo(self.safeAreaLayoutGuide) 
         }
         
         // ContentView 제약 설정
         contentView.snp.makeConstraints { make in
-            make.edges.equalTo(scrollView) // ScrollView 내부에 맞춤
-            make.width.equalToSuperview() // 가로 크기는 화면 크기와 동일
+            make.edges.equalTo(scrollView.contentLayoutGuide)
+            make.width.equalTo(scrollView.frameLayoutGuide)
         }
         
         topContainer.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(61)
+            make.top.equalToSuperview()
             make.width.equalToSuperview()
             make.height.width.equalTo(45)
         }

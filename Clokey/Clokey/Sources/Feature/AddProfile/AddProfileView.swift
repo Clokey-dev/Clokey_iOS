@@ -244,114 +244,114 @@ final class AddProfileView: UIView {
             make.top.equalTo(safeAreaLayoutGuide.snp.top)
             make.leading.trailing.bottom.equalToSuperview()
         }
-        
+
         contentView.snp.makeConstraints { make in
             make.edges.equalTo(scrollView)
             make.width.equalToSuperview()
-            make.bottom.equalTo(completeButton.snp.bottom)
+            make.bottom.equalTo(completeButton.snp.bottom).offset(20)
         }
-        
+
         backgroundImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(393) // 이미지 높이 조정 (원하는 값으로)
+            make.top.leading.trailing.equalToSuperview()
+            make.height.equalTo(393)
         }
-        
+
         addImageButton1.snp.makeConstraints { make in
             make.size.equalTo(28)
             make.trailing.equalTo(backgroundImageView).inset(20)
             make.top.equalTo(backgroundImageView).offset(20)
         }
-        
+
         profileContainer.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(backgroundImageView.snp.bottom).offset(-50)
-            make.size.equalTo(CGSize(width: 100, height: 100)) // 원형 크기 지정
+            make.size.equalTo(100)
         }
-        
+
         profileImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+
         addImageButton2.snp.makeConstraints { make in
-            make.size.equalTo(24) // 버튼 크기
-            make.trailing.equalTo(profileContainer.snp.trailing).offset(-6) //  오른쪽 아래 정렬
+            make.size.equalTo(24)
+            make.trailing.equalTo(profileContainer.snp.trailing).offset(-6)
             make.bottom.equalTo(profileContainer.snp.bottom).offset(-6)
         }
-        
-        nicknameLabel.snp.makeConstraints { make in
-            make.top.equalTo(backgroundImageView.snp.bottom).offset(67)
-            make.leading.equalToSuperview().offset(20)
+
+        nicknameLabel.snp.makeConstraints {
+            $0.top.equalTo(backgroundImageView.snp.bottom).offset(67)
+            $0.leading.equalToSuperview().offset(20)
         }
-        
-        nicknameTextField.snp.makeConstraints { make in
-            make.top.equalTo(nicknameLabel.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(30)
+
+        nicknameTextField.snp.makeConstraints {
+            $0.top.equalTo(nicknameLabel.snp.bottom).offset(10)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(30)
         }
-        nicknameStatusLabel.snp.makeConstraints { make in
-            make.top.equalTo(nicknameTextField.snp.bottom).offset(6)
-            make.leading.equalTo(nicknameTextField.snp.leading)
+
+        nicknameStatusLabel.snp.makeConstraints {
+            $0.top.equalTo(nicknameTextField.snp.bottom).offset(6)
+            $0.leading.equalTo(nicknameTextField)
         }
-        
-        idLabel.snp.makeConstraints { make in
-            make.top.equalTo(nicknameTextField.snp.bottom).offset(28)
-            make.leading.equalToSuperview().offset(20)
+
+        idLabel.snp.makeConstraints {
+            $0.top.equalTo(nicknameTextField.snp.bottom).offset(28)
+            $0.leading.equalToSuperview().offset(20)
         }
-        
-        idTextField.snp.makeConstraints { make in
-            make.top.equalTo(idLabel.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(30)
+
+        idTextField.snp.makeConstraints {
+            $0.top.equalTo(idLabel.snp.bottom).offset(10)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(30)
         }
-        
-        idCheckButton.snp.makeConstraints { make in
-            make.top.equalTo(idLabel.snp.bottom).offset(3)
-            make.trailing.equalToSuperview().inset(20)
-            make.width.equalTo(76)
-            make.height.equalTo(30)
+
+        idCheckButton.snp.makeConstraints {
+            $0.top.equalTo(idLabel.snp.bottom).offset(3)
+            $0.trailing.equalToSuperview().inset(20)
+            $0.width.equalTo(76)
+            $0.height.equalTo(30)
         }
-        
+
         idStatusLabel.snp.makeConstraints {
             $0.top.equalTo(idTextField.snp.bottom).offset(6)
-            $0.leading.equalTo(idTextField.snp.leading)
+            $0.leading.equalTo(idTextField)
         }
-        
-        bioLabel.snp.makeConstraints { make in
-            make.top.equalTo(idTextField.snp.bottom).offset(28)
-            make.leading.equalToSuperview().offset(20)
+
+        bioLabel.snp.makeConstraints {
+            $0.top.equalTo(idTextField.snp.bottom).offset(28)
+            $0.leading.equalToSuperview().offset(20)
         }
-        
-        bioTextField.snp.makeConstraints { make in
-            make.top.equalTo(bioLabel.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(30)
+
+        bioTextField.snp.makeConstraints {
+            $0.top.equalTo(bioLabel.snp.bottom).offset(10)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(30)
         }
-        
-        accountTypeLabel.snp.makeConstraints { make in
-            make.top.equalTo(bioTextField.snp.bottom).offset(25)
-            make.leading.equalToSuperview().offset(20)
+
+        accountTypeLabel.snp.makeConstraints {
+            $0.top.equalTo(bioTextField.snp.bottom).offset(25)
+            $0.leading.equalToSuperview().offset(20)
         }
-        
-        publicButton.snp.makeConstraints { make in
-            make.top.equalTo(accountTypeLabel.snp.bottom).offset(16)
-            make.leading.equalToSuperview().inset(20)
-            make.width.equalTo(76)
-            make.height.equalTo(30)
+
+        publicButton.snp.makeConstraints {
+            $0.top.equalTo(accountTypeLabel.snp.bottom).offset(16)
+            $0.leading.equalToSuperview().inset(20)
+            $0.width.equalTo(76)
+            $0.height.equalTo(30)
         }
-        
-        privateButton.snp.makeConstraints { make in
-            make.centerY.equalTo(publicButton)
-            make.leading.equalTo(publicButton.snp.trailing).offset(10)
-            make.width.equalTo(76)
-            make.height.equalTo(30)
+
+        privateButton.snp.makeConstraints {
+            $0.centerY.equalTo(publicButton)
+            $0.leading.equalTo(publicButton.snp.trailing).offset(10)
+            $0.width.equalTo(76)
+            $0.height.equalTo(30)
         }
-        
-        completeButton.snp.makeConstraints { make in
-            make.top.equalTo(privateButton.snp.bottom).offset(160)
-            make.centerX.equalToSuperview()
-            make.height.equalTo(54)
-            make.width.equalTo(353)
+
+        completeButton.snp.makeConstraints {
+            $0.top.equalTo(privateButton.snp.bottom).offset(160)
+            $0.centerX.equalToSuperview()
+            $0.height.equalTo(54)
+            $0.width.equalTo(353)
         }
     }
     

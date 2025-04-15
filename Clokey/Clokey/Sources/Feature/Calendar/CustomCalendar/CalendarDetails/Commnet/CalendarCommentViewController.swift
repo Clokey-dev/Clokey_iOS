@@ -10,6 +10,7 @@ import SnapKit
 import Then
 import UIKit
 import Kingfisher
+import IQKeyboardManagerSwift
 
 protocol CalendarCommentDelegate: AnyObject {
     func didUpdateComment(count: Int)  // 댓글 수 업데이트
@@ -22,6 +23,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     
     weak var delegate: CalendarCommentDelegate?
     weak var reportDelegate: CalendarCommentDelegate?
+    private var inputViewBottomConstraint: Constraint?
 
     private let backgroundView = UIView().then {
         $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -78,6 +80,18 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        IQKeyboardManager.shared.isEnabled = false
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        IQKeyboardManager.shared.isEnabled = true
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    }
+
     private func setupUI() {
         view.backgroundColor = .clear
         view.addSubview(backgroundView)
@@ -87,6 +101,12 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         
         commentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+        
+        commentView.inputContainerView.snp.remakeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            inputViewBottomConstraint = $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).constraint
+            $0.height.equalTo(40)
         }
         
         commentView.viewController = self
@@ -100,6 +120,21 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         commentView.commentTableView.dataSource = self
         commentView.commentTableView.delegate = self
     }
+    
+    @objc private func keyboardWillChangeFrame(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let endFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
+              let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double,
+              let curve = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt else { return }
+
+        let keyboardHeight = UIScreen.main.bounds.height - endFrame.origin.y
+        inputViewBottomConstraint?.update(offset: -keyboardHeight)
+
+        UIView.animate(withDuration: duration, delay: 0, options: UIView.AnimationOptions(rawValue: curve << 16)) {
+            self.view.layoutIfNeeded()
+        }
+    }
+
     
     // 댓글 새로고침
     private func updateComments(_ newComments: [Comment]) {
@@ -157,7 +192,8 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
                     }
                 case .failure(let error):
                     print("삭제 실패: \(error)")
-                    self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
+                    let errorMessage = self.extractErrorMessage(from: error)
+                    self.showAlert(title: "삭제 실패", message: errorMessage)
                 }
             }
         })
@@ -243,7 +279,6 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
             }
         }
     }
-
 
     // 댓글 쓰기 버튼 눌렀을 때
     @objc func didTapSend() {
@@ -332,7 +367,13 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         }
     }
 
-   
+    // 에러 메세지
+    private func extractErrorMessage(from error: Error) -> String {
+        if case let NetworkError.serverError(_, message) = error {
+            return message
+        }
+        return error.localizedDescription
+    }
     
     // MARK: - CommentCellDelegate 구현
     func didTapReplyButton(commentId: Int64) {

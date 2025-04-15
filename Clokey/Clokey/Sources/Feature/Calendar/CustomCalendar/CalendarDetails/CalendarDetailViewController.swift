@@ -14,8 +14,6 @@ protocol RecordOOTDViewControllerDelegate: AnyObject {
 
 class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegate {
 
-    
-    var historyId: Int?
     // MARK: - Properties
     private let calendarDetailView = CalendarDetailView()
     private var viewModel: CalendarDetailViewModel?
@@ -27,7 +25,7 @@ class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegat
     private let notificationService = NotificationService()
     
     let navBarManager = NavigationBarManager()
-    
+    var historyId: Int?
     
     // MARK: - Lifecycle
 
@@ -37,11 +35,11 @@ class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegat
         setupUI()
         setupNavigationBar()
         if let id = historyId {
-               print("받은 historyId: \(id)")
-               refreshHistoryDetail()  // historyId를 기반으로 상세 데이터를 불러옴
-           } else {
-               print("historyId가 nil")
-           }
+           print("받은 historyId: \(id)")
+           refreshHistoryDetail()  // historyId를 기반으로 상세 데이터를 불러옴
+       } else {
+           print("historyId가 nil")
+       }
            
         
         updateView()

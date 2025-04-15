@@ -24,7 +24,7 @@ class FriendsCalendarDetailViewController: UIViewController, UIGestureRecognizer
     private let notificationService = NotificationService()
     
     let navBarManager = NavigationBarManager()
-    
+    var historyId: Int?
     
     // MARK: - Lifecycle
 
@@ -38,6 +38,12 @@ class FriendsCalendarDetailViewController: UIViewController, UIGestureRecognizer
         updateView()
         navBarManager.setupWhiteNavigationBar(for: navigationController)
 
+        if let id = historyId {
+           print("받은 historyId: \(id)")
+           refreshHistoryDetail()
+       } else {
+           print("historyId가 nil")
+       }
         
         calendarDetailView.likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         
@@ -71,6 +77,12 @@ class FriendsCalendarDetailViewController: UIViewController, UIGestureRecognizer
        
         // 델리게이트 할당
         calendarDetailView.hashtagsTextView.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: false)
+        navigationController?.navigationBar.alpha = 1
     }
 
     // MARK: - Setup
@@ -112,12 +124,14 @@ class FriendsCalendarDetailViewController: UIViewController, UIGestureRecognizer
     }
     // 댓글 업데이트를 위한 API
     private func refreshHistoryDetail() {
-        guard let viewModel = viewModel else { return }
-        let historyId = Int(viewModel.historyId)
+        guard let id = historyId else {
+            print("historyId가 nil입니다.")
+            return
+        }
 
-        print("댓글 변경 감지 → 최신 히스토리 데이터 가져오는 중...")
+        print("API 호출: historyId \(id)")
 
-        historyService.historyDetail(historyId: historyId) { [weak self] result in
+        historyService.historyDetail(historyId: id) { [weak self] result in
             switch result {
             case .success(let response):
                 DispatchQueue.main.async {
@@ -126,12 +140,11 @@ class FriendsCalendarDetailViewController: UIViewController, UIGestureRecognizer
                     print("최신 댓글 데이터 업데이트 완료!")
                 }
             case .failure(let error):
-                print("댓글 데이터 업데이트 실패: \(error)")
+                print("댓글 데이터 업데이트 실패: \(error.localizedDescription)")
                 self?.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
-
     
     // MARK: - Action
     

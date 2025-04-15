@@ -183,7 +183,6 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                     self.followProfileView.descriptionLabel.text = userProfile.bio
                     self.isBlocking = userProfile.isBlocking ?? false
                     self.isMe = userProfile.isMe
-                    
                     self.followProfileView.updateCloseAccount(isClosed: self.isBlocking)
                     if !self.isBlocking {
                         self.navBarManager.setOption(
@@ -203,6 +202,8 @@ class FollowProfileViewController: UIViewController, UIGestureRecognizerDelegate
                                 action: #selector(self.didTapReportButton)
                             )
                         }
+                    } else {
+                        self.navigationItem.rightBarButtonItem = nil
                     }
                     if let profileImageUrl = userProfile.profileImageUrl,
                        let url = URL(string: profileImageUrl) {

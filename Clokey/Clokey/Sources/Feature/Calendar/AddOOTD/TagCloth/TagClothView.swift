@@ -105,6 +105,8 @@ final class TagClothView: UIView, SortDropdownViewDelegate {
 
         contentView.addSubview(sortButtonStack)
         contentView.addSubview(collectionView)
+        collectionView.contentInset.bottom = 20
+        collectionView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -7)
 
         // 내 옷 검색하기
         searchField.snp.makeConstraints {

@@ -97,7 +97,8 @@ class DisplayAllView: UIView {
         
         contentView.addSubview(sortButtonStack)
         contentView.addSubview(collectionView)
-        
+        collectionView.contentInset.bottom = 20
+        collectionView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -7)
         sortButtonStack.addArrangedSubview(sortButtonLabel)
         sortButtonStack.addArrangedSubview(sortButtonIcon)
         sortButtonStack.addSubview(sortButton)
@@ -119,7 +120,9 @@ class DisplayAllView: UIView {
         
         collectionView.snp.makeConstraints {
             $0.top.equalTo(sortButtonStack.snp.bottom).offset(5)
-            $0.leading.trailing.bottom.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
         
         searchField.snp.makeConstraints {

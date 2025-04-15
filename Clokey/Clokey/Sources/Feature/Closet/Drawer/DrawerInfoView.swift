@@ -71,6 +71,8 @@ class DrawerInfoView: UIView {
         addSubview(folderUnderline)
         addSubview(selectItemLabel)
         addSubview(collectionView)
+        collectionView.contentInset.bottom = 20
+        collectionView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -7)
         addSubview(errorText)
         
         folderTextField.snp.makeConstraints {

@@ -220,7 +220,7 @@ class PopupView: UIView {
         publicButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
-            make.size.equalTo(30)
+            make.size.equalTo(20)
         }
 
         imageView.snp.makeConstraints { make in

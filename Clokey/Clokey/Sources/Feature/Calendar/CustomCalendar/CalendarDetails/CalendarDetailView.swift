@@ -608,7 +608,7 @@ extension CalendarDetailView {
         }
         
         // 공개/비공개
-        let lockImage = viewModel.visibility ? "lock_off" : "lock_on"
+        let lockImage = viewModel.visibility ? "public_icon" : "private_icon"
         lockCheckImageView.image = UIImage(named: lockImage)
     }
 }

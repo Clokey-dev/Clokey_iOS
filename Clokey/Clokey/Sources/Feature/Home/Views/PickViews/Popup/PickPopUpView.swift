@@ -154,7 +154,6 @@ class PickPopUpView: UIView {
         $0.layer.cornerRadius = 5
     }
     
-    let brandContainerView = UIView()
     
     let brandLabel: UILabel = {
         let label = UILabel()
@@ -195,6 +194,33 @@ class PickPopUpView: UIView {
         $0.layer.cornerRadius = 5
     }
     
+    // Group horizontal stack views
+    private lazy var wearStackView = UIStackView(arrangedSubviews: [wearCountLabel, wearCountButton]).then {
+        $0.axis = .horizontal
+        $0.spacing = 10
+        $0.alignment = .center
+        
+    }
+    
+    private lazy var brandStackView = UIStackView(arrangedSubviews: [brandLabel, brandNameLabel]).then {
+        $0.axis = .horizontal
+        $0.spacing = 10
+        $0.alignment = .center
+    }
+    
+    private lazy var urlStackView = UIStackView(arrangedSubviews: [urlLabel, urlGoButton]).then {
+        $0.axis = .horizontal
+        $0.spacing = 10
+        $0.alignment = .center
+    }
+    
+    // Vertical stack view to hold all grouped info
+    private lazy var infoStackView = UIStackView(arrangedSubviews: [wearStackView, brandStackView, urlStackView]).then {
+        $0.axis = .vertical
+        $0.spacing = 10
+        $0.alignment = .center
+    }
+    
     // MARK: - Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -217,17 +243,13 @@ class PickPopUpView: UIView {
         categoryStackView.addArrangedSubview(frontButton)
         categoryStackView.addArrangedSubview(categoryButton2)
         addSubview(seasonStackView)
+        addSubview(urlStackView)
+        addSubview(seasonStackView)
         seasonStackView.addArrangedSubview(springButton)
         seasonStackView.addArrangedSubview(summerButton)
         seasonStackView.addArrangedSubview(fallButton)
         seasonStackView.addArrangedSubview(winterButton)
-        addSubview(wearCountLabel)
-        addSubview(wearCountButton)
-        addSubview(brandContainerView)
-        brandContainerView.addSubview(brandLabel)
-        brandContainerView.addSubview(brandNameLabel)
-        addSubview(urlLabel)
-        addSubview(urlGoButton)
+        addSubview(infoStackView)
     }
     // MARK: - Setup Constraints
     private func setupConstraints() {
@@ -251,7 +273,7 @@ class PickPopUpView: UIView {
         publicButton.snp.makeConstraints { make in
             make.top.equalTo(imageView.snp.top).offset(10)
             make.trailing.equalTo(imageView.snp.trailing).offset(-10)
-            make.size.equalTo(24)
+            make.size.equalTo(20)
         }
         
         categoryStackView.snp.makeConstraints { make in
@@ -289,44 +311,20 @@ class PickPopUpView: UIView {
             }
         } //스택 내 버튼 한번에 처리
         
-        wearCountLabel.snp.makeConstraints { make in
-            make.top.equalTo(seasonStackView.snp.bottom).offset(20)
-            make.leading.equalToSuperview().offset(92)
-        }
-        
-        wearCountButton.snp.makeConstraints { make in
-            make.centerY.equalTo(wearCountLabel)
-            make.leading.equalTo(wearCountLabel.snp.trailing).offset(10)
-            make.height.equalTo(18)
-            make.width.equalTo(39)
-        }
-        
-        brandContainerView.snp.makeConstraints { make in
-            make.top.equalTo(wearCountLabel.snp.bottom).offset(24)
-            make.leading.greaterThanOrEqualToSuperview().offset(20) // 고정이 아닌 최소값 설정 (왼쪽 이동 가능)
-            make.trailing.lessThanOrEqualToSuperview().offset(-20) // 너무 길어지지 않도록 제한
-            make.centerX.equalToSuperview() //  중앙 정렬 유지 (왼쪽으로 이동할 수 있도록)
+        infoStackView.snp.makeConstraints { make in
+            make.top.equalTo(seasonStackView.snp.bottom).offset(15)
+            make.centerX.equalToSuperview()
         }
 
-        brandLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview() // brandContainerView 내부의 왼쪽 고정
-            make.centerY.equalToSuperview()
+        // 각 서브 스택뷰의 높이를 22로 고정 (팝업창 UI 변경 - 조금 더 수정 반영)
+        wearStackView.snp.makeConstraints { make in
+            make.height.equalTo(22)
         }
-
-        brandNameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(brandLabel.snp.trailing).offset(23) // 브랜드명은 브랜드 라벨 오른쪽에서 시작
-            make.centerY.equalToSuperview()
-            make.trailing.lessThanOrEqualToSuperview() // 최대 길이 제한
+        brandStackView.snp.makeConstraints { make in
+            make.height.equalTo(22)
         }
-        
-        urlLabel.snp.makeConstraints { make in
-            make.top.equalTo(brandContainerView.snp.bottom).offset(24)
-            make.leading.equalToSuperview().offset(92)
-        }
-        
-        urlGoButton.snp.makeConstraints { make in
-            make.centerY.equalTo(urlLabel)
-            make.leading.equalTo(urlLabel.snp.trailing).offset(32)
+        urlStackView.snp.makeConstraints { make in
+            make.height.equalTo(22)
         }
         
     }

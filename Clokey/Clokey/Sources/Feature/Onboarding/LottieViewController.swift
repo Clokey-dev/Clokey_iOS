@@ -32,21 +32,23 @@ class LottieViewController: UIViewController {
     }
 
     private func setupAnimation() {
-        // 애니메이션 뷰 설정
-        animationView.animation = LottieAnimation.named(animationName)
-        animationView.frame = view.bounds
-        animationView.contentMode = .scaleAspectFit
-        animationView.loopMode = .playOnce
-        animationView.animationSpeed = 1.7
-        view.addSubview(animationView)
-        
-        // 배경색 설정 (선택사항)
         view.backgroundColor = .white
 
-        // 애니메이션 실행
+        animationView.do {
+            $0.animation = LottieAnimation.named(animationName)
+            $0.contentMode = .scaleAspectFit
+            $0.loopMode = .playOnce
+            $0.animationSpeed = 1.7
+        }
+
+        view.addSubview(animationView)
+
+        animationView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+
         animationView.play { [weak self] finished in
             if finished {
-                print("Animation finished")
                 self?.animationCompletionHandler?()
             }
         }

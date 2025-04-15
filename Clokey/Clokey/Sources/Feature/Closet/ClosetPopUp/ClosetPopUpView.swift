@@ -20,6 +20,7 @@ class ClosetPopupView: UIView {
     let publicButton = UIButton().then {
         $0.setImage(UIImage(named: "public_icon"), for: .normal)
         $0.tintColor = UIColor(named: "mainBrown800")
+        $0.isUserInteractionEnabled = false
     }
     
     let imageView = UIImageView().then {
