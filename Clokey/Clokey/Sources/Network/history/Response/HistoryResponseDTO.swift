@@ -111,6 +111,13 @@ public struct LikedHistoriesResponseDTO: Codable {
     public struct HistoryPreviewDTO: Codable {
         public let id: Int
         public let imageUrl: String
+        public let isMine: Bool
+        
+        enum CodingKeys: String, CodingKey {
+            case id
+            case imageUrl
+            case isMine
+        }
     }
     
 }
