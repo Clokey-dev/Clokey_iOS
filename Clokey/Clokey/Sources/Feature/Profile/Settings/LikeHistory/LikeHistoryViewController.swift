@@ -111,8 +111,16 @@ class LikeHistoryViewController: UIViewController {
             let selectedPost = likedPosts[indexPath.item]
             print("선택된 게시물 ID: \(selectedPost.id)")
             
-            let detailVC = CalendarDetailViewController()
-            detailVC.historyId = selectedPost.id
+            let detailVC: UIViewController
+            if selectedPost.isMine {
+                let vc = CalendarDetailViewController()
+                vc.historyId = selectedPost.id
+                detailVC = vc
+            } else {
+                let vc = FriendsCalendarDetailViewController()
+                vc.historyId = selectedPost.id
+                detailVC = vc
+            }
             
             if let nav = navigationController {
                 nav.pushViewController(detailVC, animated: true)
