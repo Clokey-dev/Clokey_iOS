@@ -324,11 +324,11 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
         }
     }
     
+
     @objc private func handleClothDeleted() {
-        // 현재 카테고리의 데이터를 새로 로드합니다.
+        print("[DisplayAll] handleClothDeleted 받음")
         loadClothesData(categoryId: currentMainCategoryId, isNextPage: false)
     }
-
     
     // MARK: - CollectionView DataSource & Delegate
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -400,10 +400,9 @@ class DisplayAllViewController: UIViewController, UICollectionViewDataSource, UI
     
     @objc private func handleClothEdit(_ notification: Notification) {
         guard let clothId = notification.userInfo?["clothId"] as? Int64 else { return }
-
         let editVC = AddClothViewController()
         editVC.clothId = clothId
-        self.navigationController?.pushViewController(editVC, animated: true)
+        navigationController?.pushViewController(editVC, animated: true)
     }
 }
 
