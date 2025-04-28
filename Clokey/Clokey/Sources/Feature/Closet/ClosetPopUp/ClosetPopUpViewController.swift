@@ -2,30 +2,18 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-final class PopUpViewController: UIViewController {
-    
+final class PopUpViewController: UIViewController, PopUpDropdownViewDelegate {
     // MARK: - Properties
-    /// API 호출 시 사용할 옷 아이템의 ID (checkPopUpClothes API 사용)
     var clothId: Int64? {
-        didSet {
-            // clothId가 변경될 때마다 API 호출
-            fetchPopUpClothesDetail()
-        }
+        didSet { fetchPopUpClothesDetail() }
     }
-    var clokeyId: String = ""  // 추가된 프로퍼티
-
-    
-    /// 전체 옷 모델 배열 (clothPreviews)
+    var clokeyId: String = ""
     var clothPreviews: [ClothPreview] = []
-    /// 현재 선택된 아이템 인덱스
     var currentIndex: Int = 0
-    
-    // clothesService의 접근 수준은 PopUpDropdownViewController에서 접근 가능하도록 internal(let)로 선언
     let clothesService = ClothesService()
-    
-    /// 현재 버튼에 할당된 옷 URL (유효한 경우)
     private var currentClothUrl: String?
-    
+    private var dropdownView: PopUpDropdownView?
+
     // MARK: - UI Components
     private let dimmingView: UIView = {
         let view = UIView()
@@ -33,49 +21,38 @@ final class PopUpViewController: UIViewController {
         view.alpha = 0
         return view
     }()
-    
-    private let popupView: ClosetPopupView = {
+
+    let popupView: ClosetPopupView = {
         let view = ClosetPopupView()
         view.alpha = 0
         return view
     }()
-    
+
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupActions()
-        
-        if !clokeyId.isEmpty {
-            popupView.optionButton.isHidden = true
-        } else {
-            popupView.optionButton.isHidden = false
-        }
+        popupView.optionButton.isHidden = !clokeyId.isEmpty
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("Popup view did appear, currentIndex: \(currentIndex)")
         updateArrowButtonStates()
         UIView.animate(withDuration: 0.3) {
             self.dimmingView.alpha = 1
             self.popupView.alpha = 1
         }
     }
-    
-    // MARK: - Setup Methods
+
+    // MARK: - Setup
     private func setupViews() {
         view.backgroundColor = .clear
-        
         view.addSubview(dimmingView)
-        dimmingView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        
-        // 추가: dimmingView 탭 제스처 추가
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dimmingViewTapped))
-        dimmingView.addGestureRecognizer(tapGesture)
-        
+        dimmingView.snp.makeConstraints { make in make.edges.equalToSuperview() }
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dimmingViewTapped))
+        dimmingView.addGestureRecognizer(tap)
+
         view.addSubview(popupView)
         popupView.snp.makeConstraints { make in
             make.center.equalToSuperview()
@@ -83,212 +60,198 @@ final class PopUpViewController: UIViewController {
             make.height.equalTo(489)
         }
     }
-    
+
     private func setupActions() {
         popupView.closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
         popupView.optionButton.addTarget(self, action: #selector(optionButtonTapped), for: .touchUpInside)
         popupView.leftArrowButton.addTarget(self, action: #selector(leftArrowButtonTapped), for: .touchUpInside)
         popupView.rightArrowButton.addTarget(self, action: #selector(rightArrowButtonTapped), for: .touchUpInside)
     }
-    
+
     // MARK: - Actions
     @objc private func closeButtonTapped() {
         dismissPopup()
     }
-    
+
     @objc private func optionButtonTapped() {
-        let dropdownVC = PopUpDropdownViewController()
-        dropdownVC.modalPresentationStyle = .overCurrentContext
-        dropdownVC.modalTransitionStyle = .crossDissolve
-        self.present(dropdownVC, animated: true, completion: nil)
+        if let dropdown = dropdownView {
+            dropdown.removeFromSuperview()
+            dropdownView = nil
+        } else {
+            let dropdown = PopUpDropdownView()
+            dropdown.delegate = self
+            popupView.addSubview(dropdown)
+            dropdown.snp.makeConstraints { make in
+                make.top.equalTo(popupView.optionButton.snp.bottom).offset(8)
+                make.trailing.equalTo(popupView.optionButton.snp.trailing)
+                make.width.equalTo(92)
+                make.height.equalTo(64)
+            }
+            dropdownView = dropdown
+        }
     }
-    
+
     @objc private func leftArrowButtonTapped() {
         if currentIndex > 0 {
             currentIndex -= 1
             clothId = Int64(clothPreviews[currentIndex].id)
-            print("Left arrow tapped: currentIndex = \(currentIndex), clothId = \(clothId!)")
-            // API 재호출로 팝업 업데이트
-            fetchPopUpClothesDetail()
-        } else {
-            print("첫 번째 항목입니다.")
         }
         updateArrowButtonStates()
     }
-    
+
     @objc private func rightArrowButtonTapped() {
         if currentIndex < clothPreviews.count - 1 {
             currentIndex += 1
             clothId = Int64(clothPreviews[currentIndex].id)
-            print("Right arrow tapped: currentIndex = \(currentIndex), clothId = \(clothId!)")
-            // API 재호출로 팝업 업데이트
-            fetchPopUpClothesDetail()
-        } else {
-            print("마지막 항목입니다.")
         }
         updateArrowButtonStates()
     }
-    
-    // 추가: dimmingView 탭 시 dismiss 처리
+
     @objc private func dimmingViewTapped() {
         dismissPopup()
     }
-    
-    private func updateArrowButtonStates() {
-        // 왼쪽 화살표 업데이트: currentIndex가 0이면 비활성화, 아니면 활성화
-        if currentIndex == 0 {
-            popupView.leftArrowButton.isUserInteractionEnabled = false
-            popupView.leftArrowButton.tintColor = UIColor(named: "mainBrown50")
-        } else {
-            popupView.leftArrowButton.isUserInteractionEnabled = true
-            popupView.leftArrowButton.tintColor = UIColor(named: "mainBrown800")
-        }
-        
-        // 오른쪽 화살표 업데이트: currentIndex가 마지막이면 비활성화, 아니면 활성화
-        if currentIndex == clothPreviews.count - 1 {
-            popupView.rightArrowButton.isUserInteractionEnabled = false
-            popupView.rightArrowButton.tintColor = UIColor(named: "mainBrown600")
-        } else {
-            popupView.rightArrowButton.isUserInteractionEnabled = true
-            popupView.rightArrowButton.tintColor = UIColor(named: "mainBrown800")
-        }
-    }
-    
+
     private func dismissPopup() {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: 0.3) {
             self.dimmingView.alpha = 0
             self.popupView.alpha = 0
-        }) { _ in
-            self.dismiss(animated: false, completion: nil)
+        } completion: { _ in
+            self.dismiss(animated: false)
         }
     }
-    
-    // MARK: - API 연동: 옷 상세 정보 조회
-    private func fetchPopUpClothesDetail() {
-        print("Fetching popup clothes detail, currentIndex: \(currentIndex)")
-        guard let clothId = clothId else {
-            print("clothId가 설정되지 않았습니다.")
-            return
+
+    // MARK: - PopUpDropdownViewDelegate
+    func didSelectEditCloth() {
+        guard let id = clothId else { return }
+        
+        // 1) presentingViewController가 UINavigationController라면 그 안의 topViewController를 사용
+        let rawPresenter = presentingViewController
+        let presenter: UIViewController = {
+            if let nav = rawPresenter as? UINavigationController {
+                return nav.topViewController ?? nav
+            }
+            return rawPresenter!
+        }()
+        
+        // 2) 진짜 호출한 VC가 DisplayAll인지 검사
+        let name = (presenter is DisplayAllViewController)
+            ? "clothEditFromDisplayAll"
+            : "clothEditFromCloset"
+        
+        // 드롭다운 닫기
+        dropdownView?.removeFromSuperview()
+        dropdownView = nil
+        
+        // 3) 팝업 닫고(애니=false), 완료 콜백에서 알림 전송
+        dismiss(animated: false) {
+            NotificationCenter.default.post(
+                name: Notification.Name(name),
+                object: nil,
+                userInfo: ["clothId": id]
+            )
         }
-        clothesService.checkPopUpClothes(clothId: clothId) { [weak self] result in
+    }
+
+
+    func didSelectDeleteCloth() {
+        guard let id = clothId else { return }
+        clothesService.deleteClothes(cloth_id: Int(id)) { [weak self] result in
             switch result {
-            case .success(let response):
+            case .success:
                 DispatchQueue.main.async {
-                    self?.configurePopupView(with: response)
+                    self?.dropdownView?.removeFromSuperview()
+                    self?.dismiss(animated: false) {
+                        print("[PopUp] didSelectDeleteCloth → posting clothDeleted for id \(id)")
+                        NotificationCenter.default.post(
+                            name: .init("clothDeleted"),
+                            object: nil,
+                            userInfo: ["clothId": id]
+                        )
+                    }
                 }
-            case .failure(let error):
-                print("팝업 상세 정보를 가져오는데 실패했습니다: \(error)")
-                self?.showAlert(title: "네트워크 오류", message: "인터넷 연결이 끊겼습니다.")
+            case .failure:
+                DispatchQueue.main.async {
+                    self?.showAlert(title: "네트워크 오류",
+                                    message: "인터넷 연결이 끊겼습니다.")
+                }
             }
         }
     }
-    
+
+
+
+    // MARK: - API
+    private func fetchPopUpClothesDetail() {
+        guard let id = clothId else { return }
+        clothesService.checkPopUpClothes(clothId: id) { [weak self] result in
+            if case .success(let detail) = result {
+                DispatchQueue.main.async { self?.configurePopupView(with: detail) }
+            }
+        }
+    }
+
     private func configurePopupView(with detail: checkPopUpClothesResponseDTO) {
-        // 이름
         popupView.nameLabel.text = detail.name
-        
-        // Visibility: PUBLIC이면 lock_on, 그 외에는 lock_off 이미지
         if detail.visibility == "PUBLIC" {
             popupView.publicButton.setImage(UIImage(named: "public_icon"), for: .normal)
         } else {
             popupView.publicButton.setImage(UIImage(named: "private_icon"), for: .normal)
         }
-        
-        // 이미지
         if let url = URL(string: detail.imageUrl) {
             popupView.imageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholderImage"))
         } else {
             popupView.imageView.image = UIImage(named: "placeholderImage")
         }
-        
-        // 계절 버튼 업데이트
-        if detail.seasons.contains("SPRING") {
-            popupView.springButton.backgroundColor = UIColor(named: "mainBrown800")
-            popupView.springButton.setTitleColor(.white, for: .normal)
-            popupView.springButton.layer.borderWidth = 0
-        } else {
-            popupView.springButton.backgroundColor = UIColor(red: 255/255, green: 254/255, blue: 252/255, alpha: 1)
-            popupView.springButton.setTitleColor(.black, for: .normal)
-            popupView.springButton.layer.borderWidth = 1
-            popupView.springButton.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
+        ["SPRING","SUMMER","FALL","WINTER"].forEach { season in
+            let button: UIButton
+            switch season {
+            case "SPRING": button = popupView.springButton
+            case "SUMMER": button = popupView.summerButton
+            case "FALL": button = popupView.fallButton
+            default: button = popupView.winterButton
+            }
+            if detail.seasons.contains(season) {
+                button.backgroundColor = UIColor(named: "mainBrown800")
+                button.setTitleColor(.white, for: .normal)
+                button.layer.borderWidth = 0
+            } else {
+                button.backgroundColor = UIColor(red: 255/255, green: 254/255, blue: 252/255, alpha: 1)
+                button.setTitleColor(.black, for: .normal)
+                button.layer.borderWidth = 1
+                button.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
+            }
         }
-        
-        if detail.seasons.contains("SUMMER") {
-            popupView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
-            popupView.summerButton.setTitleColor(.white, for: .normal)
-            popupView.summerButton.layer.borderWidth = 0
-        } else {
-            popupView.summerButton.backgroundColor = UIColor(red: 255/255, green: 254/255, blue: 252/255, alpha: 1)
-            popupView.summerButton.setTitleColor(.black, for: .normal)
-            popupView.summerButton.layer.borderWidth = 1
-            popupView.summerButton.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
-        }
-        
-        if detail.seasons.contains("FALL") {
-            popupView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
-            popupView.fallButton.setTitleColor(.white, for: .normal)
-            popupView.fallButton.layer.borderWidth = 0
-        } else {
-            popupView.fallButton.backgroundColor = UIColor(red: 255/255, green: 254/255, blue: 252/255, alpha: 1)
-            popupView.fallButton.setTitleColor(.black, for: .normal)
-            popupView.fallButton.layer.borderWidth = 1
-            popupView.fallButton.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
-        }
-        
-        if detail.seasons.contains("WINTER") {
-            popupView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
-            popupView.winterButton.setTitleColor(.white, for: .normal)
-            popupView.winterButton.layer.borderWidth = 0
-        } else {
-            popupView.winterButton.backgroundColor = UIColor(red: 255/255, green: 254/255, blue: 252/255, alpha: 1)
-            popupView.winterButton.setTitleColor(.black, for: .normal)
-            popupView.winterButton.layer.borderWidth = 1
-            popupView.winterButton.layer.borderColor = UIColor(named: "mainBrown600")?.cgColor
-        }
-        
-        // WearNum
         popupView.wearCountButton.setTitle("\(detail.wearNum)회", for: .normal)
-        
-        // Brand
-        popupView.brandNameLabel.text = (detail.brand?.isEmpty ?? true) ? "없음" : detail.brand
-        
+        popupView.brandNameLabel.text = detail.brand?.isEmpty == false ? detail.brand : "없음"
         if let urlString = detail.clothUrl,
-           !urlString.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
-           let _ = URL(string: urlString) {
+           let _ = URL(string: urlString), !urlString.trimmingCharacters(in: .whitespaces).isEmpty {
             let title = "바로가기"
-            let attributes: [NSAttributedString.Key: Any] = [
-                .underlineStyle: NSUnderlineStyle.single.rawValue,  // 밑줄 적용
-                .foregroundColor: UIColor.mainBrown800,
-                .font: UIFont.ptdMediumFont(ofSize: 12)
-            ]
-            popupView.urlGoButton.setAttributedTitle(NSAttributedString(string: title, attributes: attributes), for: .normal)
+            let attrs: [NSAttributedString.Key: Any] = [.underlineStyle: NSUnderlineStyle.single.rawValue,
+                                                       .foregroundColor: UIColor.mainBrown800,
+                                                       .font: UIFont.ptdMediumFont(ofSize: 12)]
+            popupView.urlGoButton.setAttributedTitle(NSAttributedString(string: title, attributes: attrs), for: .normal)
             currentClothUrl = urlString
-            popupView.urlGoButton.removeTarget(nil, action: nil, for: .allEvents)
             popupView.urlGoButton.addTarget(self, action: #selector(openUrl(_:)), for: .touchUpInside)
         } else {
             let title = "없음"
-            let attributes: [NSAttributedString.Key: Any] = [
-                .foregroundColor: UIColor.mainBrown800,
-                .font: UIFont.ptdMediumFont(ofSize: 12)
-            ]
-            popupView.urlGoButton.setAttributedTitle(NSAttributedString(string: title, attributes: attributes), for: .normal)
-            currentClothUrl = nil
+            let attrs: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.mainBrown800,
+                                                       .font: UIFont.ptdMediumFont(ofSize: 12)]
+            popupView.urlGoButton.setAttributedTitle(NSAttributedString(string: title, attributes: attrs), for: .normal)
             popupView.urlGoButton.removeTarget(nil, action: nil, for: .allEvents)
         }
-
-        
-        // Category
         popupView.categoryButton2.setTitle(detail.category, for: .normal)
-        
-        if let categoryName = CategoryModel.getCategoryNameByClothName(detail.category) {
-            print(categoryName) // 출력: "상의"
-            popupView.categoryButton1.setTitle("\(categoryName)", for: .normal)
+        if let name = CategoryModel.getCategoryNameByClothName(detail.category) {
+            popupView.categoryButton1.setTitle(name, for: .normal)
         }
     }
-    
-    // MARK: - URL 열기 액션
+
     @objc private func openUrl(_ sender: UIButton) {
         guard let urlString = currentClothUrl, let url = URL(string: urlString) else { return }
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        UIApplication.shared.open(url)
+    }
+
+    private func updateArrowButtonStates() {
+        popupView.leftArrowButton.isUserInteractionEnabled = currentIndex > 0
+        popupView.rightArrowButton.isUserInteractionEnabled = currentIndex < clothPreviews.count - 1
     }
 }
