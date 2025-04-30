@@ -691,18 +691,6 @@ class NewsViewController: UIViewController {
                         return
                     }
                     
-//                    self.recommandNewsSlides = responseDTO.recommend.compactMap { recommendItem in
-//                        let hashtag = recommendItem.hashtag ?? "#해시태그 없음"
-//                        if hashtag == "해시태그 없음" || hashtag == "NULL" {
-//                            return nil
-//                        }
-//                        return RecommandNewsSlideModel(
-//                            image: recommendItem.imageUrl,
-//                            title: recommendItem.subTitle,
-//                            hashtag: hashtag,
-//                            date: recommendItem.date
-//                        )
-//                    }
                     self.recommandNewsSlides = responseDTO.recommend.compactMap { recommendItem in
                         // Ensure the image URL is valid and not null
                         guard let imageUrl = recommendItem.imageUrl, imageUrl.lowercased() != "null" else {
