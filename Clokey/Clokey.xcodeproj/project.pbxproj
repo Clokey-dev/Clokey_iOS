@@ -243,7 +243,6 @@
 		1EF33C6C2D665FFB00142954 /* SmartSummationBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C4B2D665FFB00142954 /* SmartSummationBannerView.swift */; };
 		1EF33C6D2D665FFB00142954 /* DrawerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C652D665FFB00142954 /* DrawerViewController.swift */; };
 		1EF33C6E2D665FFB00142954 /* PopUpDropdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C582D665FFB00142954 /* PopUpDropdownView.swift */; };
-		1EF33C6F2D665FFB00142954 /* PopUpDropdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C592D665FFB00142954 /* PopUpDropdownViewController.swift */; };
 		1EF33C702D665FFB00142954 /* DrawerInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C622D665FFB00142954 /* DrawerInfoViewController.swift */; };
 		1EF33C712D665FFB00142954 /* SmartSummationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C4D2D665FFB00142954 /* SmartSummationView.swift */; };
 		1EF33C722D665FFB00142954 /* DrawerInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF33C612D665FFB00142954 /* DrawerInfoView.swift */; };
@@ -550,7 +549,6 @@
 		1EF33C562D665FFB00142954 /* ClosetPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetPopUpView.swift; sourceTree = "<group>"; };
 		1EF33C572D665FFB00142954 /* ClosetPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetPopUpViewController.swift; sourceTree = "<group>"; };
 		1EF33C582D665FFB00142954 /* PopUpDropdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpDropdownView.swift; sourceTree = "<group>"; };
-		1EF33C592D665FFB00142954 /* PopUpDropdownViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpDropdownViewController.swift; sourceTree = "<group>"; };
 		1EF33C5B2D665FFB00142954 /* DisplayAllView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayAllView.swift; sourceTree = "<group>"; };
 		1EF33C5C2D665FFB00142954 /* DisplayAllViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayAllViewController.swift; sourceTree = "<group>"; };
 		1EF33C5E2D665FFB00142954 /* DrawerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -1807,7 +1805,6 @@
 				1EF33C562D665FFB00142954 /* ClosetPopUpView.swift */,
 				1EF33C572D665FFB00142954 /* ClosetPopUpViewController.swift */,
 				1EF33C582D665FFB00142954 /* PopUpDropdownView.swift */,
-				1EF33C592D665FFB00142954 /* PopUpDropdownViewController.swift */,
 			);
 			path = ClosetPopUp;
 			sourceTree = "<group>";
@@ -2266,7 +2263,6 @@
 				1EF33C6C2D665FFB00142954 /* SmartSummationBannerView.swift in Sources */,
 				1EF33C6D2D665FFB00142954 /* DrawerViewController.swift in Sources */,
 				1EF33C6E2D665FFB00142954 /* PopUpDropdownView.swift in Sources */,
-				1EF33C6F2D665FFB00142954 /* PopUpDropdownViewController.swift in Sources */,
 				1EF33C702D665FFB00142954 /* DrawerInfoViewController.swift in Sources */,
 				1EF33C8E2D66613500142954 /* FolderEndpoint.swift in Sources */,
 				0794EA8A2D81A6C500D204B6 /* ReportResponseDTO.swift in Sources */,
