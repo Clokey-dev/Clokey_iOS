@@ -18,6 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
+        checkAndResetIfVersionChanged()
+        
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
 
@@ -84,6 +86,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // 씬이 백그라운드에서 포그라운드로 전환될 때 호출
     func sceneWillEnterForeground(_ scene: UIScene) {
         let isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
+        print("SceneDelegate: isLoggedIn = \(isLoggedIn)")
         
         if !isLoggedIn {
             print("로그인 상태 아님 -> 토큰 검사 패스")
@@ -198,4 +201,18 @@ extension SceneDelegate: Coordinator {
         }
         return window
     }
+    
+    private func checkAndResetIfVersionChanged() {
+        let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+        let savedVersion = UserDefaults.standard.string(forKey: "appVersion")
+
+        if currentVersion != savedVersion {
+            print("SceneDelegate: 앱 버전 변경 감지됨 → 세션 초기화")
+            UserDefaults.standard.set(false, forKey: "isLoggedIn")
+            KeychainHelper.shared.delete(forKey: "accessToken")
+            KeychainHelper.shared.delete(forKey: "refreshToken")
+            UserDefaults.standard.set(currentVersion, forKey: "appVersion")
+        }
+    }
+
 }
