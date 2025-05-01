@@ -35,16 +35,29 @@ class ImageViewController: UIViewController {
     }
     
     private func updateUI() {
-        guard let slideModel = slideModel else { return }
-        
-        if let imageUrlString = slideModel.image,
-           let imageURL = URL(string: imageUrlString),
-           !imageUrlString.isEmpty {
-            imageView.imageView.kf.setImage(with: imageURL)
-        } else {
-            imageView.imageView.image = UIImage(named: "placeholder")
+        guard let slideModel = slideModel else {
+            self.view.removeFromSuperview()
+            self.removeFromParent()
+            return
         }
-        
+
+        if let imageUrlString = slideModel.image,
+           !imageUrlString.trimmingCharacters(in: .whitespaces).isEmpty,
+           let imageURL = URL(string: imageUrlString) {
+            imageView.imageView.kf.setImage(with: imageURL) { result in
+                switch result {
+                case .success(_):
+                    break
+                case .failure(_):
+                    self.view.removeFromSuperview()
+                    self.removeFromParent()
+                }
+            }
+        } else {
+            self.view.removeFromSuperview()
+            self.removeFromParent()
+        }
+
         imageView.titleLabel.text = slideModel.title ?? "제목 없음"
         imageView.hashtagLabel.text = slideModel.hashtag ?? "해시태그 없음"
     }
