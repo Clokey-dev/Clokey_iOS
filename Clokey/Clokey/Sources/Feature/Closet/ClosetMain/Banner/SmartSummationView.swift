@@ -10,7 +10,18 @@ import SnapKit
 import Then
 
 class SmartSummationView: UIView {
-
+    
+    // 스크롤뷰 추가
+    let scrollView = UIScrollView().then {
+        $0.showsVerticalScrollIndicator = true
+        $0.alwaysBounceVertical = true
+    }
+    
+    // 스크롤뷰 내부의 컨텐츠 뷰
+    let contentView = UIView().then {
+        $0.backgroundColor = .white
+    }
+    
     // 배너 영역
     let bannerView = UIView().then {
         $0.backgroundColor = UIColor(named: "mainBrown50")
@@ -79,12 +90,12 @@ class SmartSummationView: UIView {
             return outgoing
         }
         
-    config.background.strokeColor = UIColor(named: "mainBrown800") ?? .brown
-    config.background.strokeWidth = 1
-    config.background.cornerRadius = 10
-    
-    button.configuration = config
-}
+        config.background.strokeColor = UIColor(named: "mainBrown800") ?? .brown
+        config.background.strokeWidth = 1
+        config.background.cornerRadius = 10
+        
+        button.configuration = config
+    }
 
     let TitleLabel2 = UILabel().then {
         $0.text = "를(을) 즐겨입었어요!"
@@ -149,12 +160,12 @@ class SmartSummationView: UIView {
             return outgoing
         }
         
-    config.background.strokeColor = UIColor(named: "mainBrown200") ?? .brown
-    config.background.strokeWidth = 1
-    config.background.cornerRadius = 10
-    
-    button.configuration = config
-}
+        config.background.strokeColor = UIColor(named: "mainBrown200") ?? .brown
+        config.background.strokeWidth = 1
+        config.background.cornerRadius = 10
+        
+        button.configuration = config
+    }
 
 
     let TitleLabel3 = UILabel().then {
@@ -176,12 +187,12 @@ class SmartSummationView: UIView {
             return outgoing
         }
         
-    config.background.strokeColor = UIColor(named: "mainBrown200") ?? .brown
-    config.background.strokeWidth = 1
-    config.background.cornerRadius = 10
-    
-    button.configuration = config
-}
+        config.background.strokeColor = UIColor(named: "mainBrown200") ?? .brown
+        config.background.strokeWidth = 1
+        config.background.cornerRadius = 10
+        
+        button.configuration = config
+    }
 
     let TitleLabel4 = UILabel().then {
         $0.text = "를(을) 안입었어요."
@@ -235,59 +246,76 @@ class SmartSummationView: UIView {
     
     // MARK: - Initializer
         
-        override init(frame: CGRect) {
-            super.init(frame: frame)
-            setupUI()
-            setupConstraints()
-        }
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+        setupConstraints()
+    }
     required init?(coder: NSCoder) {
-          super.init(coder: coder)
-          setupUI()
-          setupConstraints()
-      }
+        super.init(coder: coder)
+        setupUI()
+        setupConstraints()
+    }
       
       // MARK: - Setup
       
     private func setupUI() {
         backgroundColor = .white
+        
+        // 스크롤뷰 및 컨텐츠 뷰 추가
+        addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        
         // 배너 영역
-        addSubview(bannerView)
+        contentView.addSubview(bannerView)
         bannerView.addSubview(bannerImage)
         bannerView.addSubview(bannerDescription)
         
         // 날짜 라벨
-        addSubview(dateLabel)
+        contentView.addSubview(dateLabel)
         
-        // 첫 번째 라인 (categoryButton1, TitleLabel1, categoryButton2, TitleLabel2)
-        addSubview(categoryButton1)
-        addSubview(TitleLabel1)
-        addSubview(categoryButton2)
-        addSubview(TitleLabel2)
+        // 첫 번째 라인
+        contentView.addSubview(categoryButton1)
+        contentView.addSubview(TitleLabel1)
+        contentView.addSubview(categoryButton2)
+        contentView.addSubview(TitleLabel2)
         
         // 자주 입은 옷 섹션
-        addSubview(frequentTitleLabel)
-        addSubview(freCollectionView)
-        addSubview(seeAllButton)
-        addSubview(frontIconView)
+        contentView.addSubview(frequentTitleLabel)
+        contentView.addSubview(freCollectionView)
+        contentView.addSubview(seeAllButton)
+        contentView.addSubview(frontIconView)
         
-        // 두 번째 라인 (categoryButton3, TitleLabel3, categoryButton4, TitleLabel4)
-        addSubview(categoryButton3)
-        addSubview(TitleLabel3)
-        addSubview(categoryButton4)
-        addSubview(TitleLabel4)
+        // 두 번째 라인
+        contentView.addSubview(categoryButton3)
+        contentView.addSubview(TitleLabel3)
+        contentView.addSubview(categoryButton4)
+        contentView.addSubview(TitleLabel4)
         
         // 잘 안 입은 옷 섹션
-        addSubview(infrequentTitleLabel)
-        addSubview(infreCollectionView)
-        addSubview(seeAllButton2)
-        addSubview(frontIconView2)
+        contentView.addSubview(infrequentTitleLabel)
+        contentView.addSubview(infreCollectionView)
+        contentView.addSubview(seeAllButton2)
+        contentView.addSubview(frontIconView2)
     }
 
       
     private func setupConstraints() {
+        
+        // 스크롤뷰 제약 조건
+        scrollView.snp.makeConstraints {
+            $0.edges.equalTo(safeAreaLayoutGuide)
+        }
+        
+        // 컨텐츠 뷰 제약 조건
+        contentView.snp.makeConstraints {
+            $0.edges.equalTo(scrollView.contentLayoutGuide)
+            $0.width.equalTo(scrollView.frameLayoutGuide) // 가로 너비는 스크롤뷰와 동일하게
+        }
+
         // 배너 영역
         bannerView.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide).offset(10)
+            $0.top.equalToSuperview().offset(10)
             $0.centerX.equalToSuperview()
             $0.height.equalTo(72)
             $0.width.equalTo(353)
@@ -407,8 +435,14 @@ class SmartSummationView: UIView {
             $0.top.equalTo(infreCollectionView.snp.bottom).offset(24)
             $0.leading.equalTo(seeAllButton2.snp.trailing).offset(10)
             $0.width.height.equalTo(12)
+            $0.bottom.equalTo(contentView).offset(-20) // 이 줄이 중요합니다!
         }
         
+        // 중요: contentView의 bottom constraint 추가
+        // 스크롤 영역을 결정하기 위해 contentView의 마지막 요소와 contentView의 bottom 사이에 간격 설정
+        seeAllButton2.snp.makeConstraints {
+            $0.bottom.equalTo(contentView).offset(-20) // 하단 여백 20 추가
+        }
     }
 
     
