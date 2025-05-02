@@ -2,16 +2,17 @@
 //  ProfileView.swift
 //  Clokey
 //
-//  Created by 황상환 on 1/10/25.
+//  Created by 한금준 on 1/10/25.
 //
 
 import Foundation
 import UIKit
 import SnapKit
 import Then
-import Kingfisher
 
 final class ProfileView: UIView {
+    private let privateStackView1 = PrivateStackView()
+    private let privateStackView2 = PrivateStackView()
     /// 세로 스크롤을 지원하는 ScrollView
     let scrollView: UIScrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
@@ -19,6 +20,10 @@ final class ProfileView: UIView {
     
     /// ScrollView 내부 콘텐츠를 담는 ContentView
     let contentView: UIView = UIView().then {
+        $0.backgroundColor = .white // 배경색 흰색
+    }
+    
+    let topContainer: UIView = UIView().then {
         $0.backgroundColor = .white // 배경색 흰색
     }
     
@@ -37,6 +42,7 @@ final class ProfileView: UIView {
     let settingButton = UIButton().then {
         $0.setImage(UIImage(named: "setting_icon"), for: .normal)
         $0.tintColor = .black
+//        $0.isUserInteractionEnabled = true
     }
     
     let backgroundImageView = UIImageView().then {
@@ -61,7 +67,7 @@ final class ProfileView: UIView {
     
     let nicknameLabel: UILabel = {
         let label = UILabel()
-        label.text = "클루"
+        label.text = "초키(닉네임란)"
         label.font = UIFont.ptdMediumFont(ofSize: 18)
         label.textColor = .black
         label.textAlignment = .center
@@ -74,51 +80,49 @@ final class ProfileView: UIView {
     
     let writeLabel = UILabel().then {
         $0.text = "게시글"
-        $0.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.font = UIFont.ptdRegularFont(ofSize: 15)
         $0.textColor = .black
         $0.textAlignment = .center
     }
     
     let writeCountLabel = UILabel().then {
-        $0.text = "010"
-        $0.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.text = "000"
+        $0.font = UIFont.ptdRegularFont(ofSize: 15)
         $0.textColor = .black
         $0.textAlignment = .center
     }
     
     let followerLabel = UILabel().then {
         $0.text = "팔로워"
-        $0.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.font = UIFont.ptdRegularFont(ofSize: 15)
         $0.textColor = .black
         $0.textAlignment = .center
     }
     
     let followerCountButton = UIButton().then {
-        $0.setTitle("027", for: .normal)
-        $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.setTitle("000", for: .normal)
+        $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 15)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.textAlignment = .center
-        //        $0.addTarget(self, action: #selector(followingCountTapped), for: .touchUpInside)
     }
     
     let followingLabel = UILabel().then {
         $0.text = "팔로잉"
-        $0.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.font = UIFont.ptdRegularFont(ofSize: 15)
         $0.textColor = .black
         $0.textAlignment = .center
     }
     
     let followingCountButton = UIButton().then {
-        $0.setTitle("043", for: .normal)
-        $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 12)
+        $0.setTitle("000", for: .normal)
+        $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 15)
         $0.setTitleColor(.black, for: .normal)
         $0.titleLabel?.textAlignment = .center
-        //        $0.addTarget(self, action: #selector(followingCountTapped), for: .touchUpInside)
     }
     
     let descriptionLabel = UILabel().then {
-        $0.text = "나는야멋쟁이토마토"
-        $0.font = UIFont.ptdRegularFont(ofSize: 14)
+        $0.text = "한줄소개란입니다아아아아아아아아"
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .black
         $0.textAlignment = .center
         $0.numberOfLines = 2
@@ -126,7 +130,7 @@ final class ProfileView: UIView {
     
     let clothesLabel = UILabel().then {
         $0.text = "옷장"
-        $0.font = UIFont.ptdRegularFont(ofSize: 20)
+        $0.font = UIFont.ptdMediumFont(ofSize: 20)
         $0.textAlignment = .left
     }
     
@@ -139,28 +143,34 @@ final class ProfileView: UIView {
     let clothesImageView1: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .gray
+        $0.layer.cornerRadius = 5
+        $0.layer.masksToBounds = true
+        $0.backgroundColor = .white
     }
     
     /// 두 번째 의류 추천 이미지
     let clothesImageView2: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .gray
+        $0.layer.cornerRadius = 5
+        $0.layer.masksToBounds = true
+        $0.backgroundColor = .white
     }
     
     /// 세 번째 의류 추천 이미지
     let clothesImageView3: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .gray
+        $0.layer.cornerRadius = 5
+        $0.layer.masksToBounds = true
+        $0.backgroundColor = .white
     }
     
     /// '내 옷 보러가기' 버튼 텍스트 레이블
     let bottomButtonLabel: UILabel = UILabel().then {
         $0.text = "옷장 구경하기" // 버튼 텍스트
         $0.textColor = .black // 텍스트 색상
-        $0.font = UIFont.systemFont(ofSize: 12) // 폰트 크기
+        $0.font = UIFont.ptdMediumFont(ofSize: 12) // 폰트 크기
     }
     
     /// 버튼 옆의 화살표 아이콘
@@ -172,19 +182,25 @@ final class ProfileView: UIView {
     
     let recordLabel = UILabel().then {
         $0.text = "기록"
-        $0.font = UIFont.ptdRegularFont(ofSize: 20)
+        $0.font = UIFont.ptdMediumFont(ofSize: 20)
         $0.textAlignment = .left
     }
     
-    let calendarView = CalendarView()
+    // 캘린더 뷰컨이 들어갈 컨테이너 뷰
+    let calendarContainerView = UIView().then {
+        $0.backgroundColor = .clear
+    }
     
     let recordContainerView: UIView = UIView().then {
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .clear
     }
     
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        scrollView.subviews.forEach { $0.removeFromSuperview() }
+        contentView.subviews.forEach { $0.removeFromSuperview() }
         setupUI()
         setupConstraints()
     }
@@ -200,10 +216,12 @@ final class ProfileView: UIView {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
         
+        contentView.addSubview(topContainer)
+        topContainer.addSubview(usernameLabel)
+        topContainer.addSubview(editButton)
+        topContainer.addSubview(settingButton)
+        
         contentView.addSubview(backgroundImageView)
-        contentView.addSubview(usernameLabel)
-        contentView.addSubview(editButton)
-        contentView.addSubview(settingButton)
         contentView.addSubview(profileContainer)
         profileContainer.addSubview(profileImageView)
         contentView.addSubview(nicknameLabel)
@@ -223,47 +241,56 @@ final class ProfileView: UIView {
         contentView.addSubview(bottomButtonLabel)
         contentView.addSubview(bottomArrowIcon)
         contentView.addSubview(recordLabel)
-        contentView.addSubview(recordContainerView)
         
-        recordContainerView.addSubview(calendarView)
+        contentView.addSubview(calendarContainerView)
+
     }
-    
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview() // 화면 전체에 ScrollView
+            make.edges.equalTo(self.safeAreaLayoutGuide) 
         }
         
         // ContentView 제약 설정
         contentView.snp.makeConstraints { make in
-            make.edges.equalTo(scrollView) // ScrollView 내부에 맞춤
-            make.width.equalToSuperview() // 가로 크기는 화면 크기와 동일
+            make.edges.equalTo(scrollView.contentLayoutGuide)
+            make.width.equalTo(scrollView.frameLayoutGuide)
+        }
+        
+        topContainer.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.width.equalToSuperview()
+            make.height.width.equalTo(45)
+        }
+        
+        usernameLabel.snp.makeConstraints {
+            $0.centerY.equalTo(topContainer)
+            $0.leading.equalToSuperview().offset(20)
+            $0.height.equalTo(50)
+        }
+        
+        editButton.snp.makeConstraints {
+            $0.centerY.equalTo(topContainer)
+            $0.trailing.equalToSuperview().inset(67)
+            $0.width.equalTo(20)
+            $0.height.equalTo(20)
+        }
+        
+        settingButton.snp.makeConstraints {
+            $0.centerY.equalTo(topContainer)
+            $0.trailing.equalToSuperview().inset(20)
+            $0.width.equalTo(20)
+            $0.height.equalTo(20)
         }
         
         backgroundImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+            make.top.equalTo(topContainer.snp.bottom)
             make.centerX.equalToSuperview()
-            make.height.width.equalTo(393)
+            make.height.equalTo(393)
+            make.width.equalToSuperview()
         }
         
-        usernameLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(72)
-            make.leading.equalToSuperview().offset(20)
-        }
-        
-        editButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(72)
-            make.trailing.equalToSuperview().inset(67)
-            make.width.equalTo(19)
-            make.height.equalTo(20)
-        }
-        
-        settingButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(72)
-            make.trailing.equalToSuperview().inset(20)
-            make.width.equalTo(24)
-            make.height.equalTo(24)
-        }
+
         
         profileContainer.snp.makeConstraints { make in
             make.top.equalTo(backgroundImageView.snp.bottom).offset(-50)
@@ -284,7 +311,7 @@ final class ProfileView: UIView {
         }
         
         profileDetailContainer.snp.makeConstraints { make in
-            make.top.equalTo(nicknameLabel.snp.bottom).offset(4)
+            make.top.equalTo(nicknameLabel.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
             make.height.equalTo(24)
         }
@@ -305,23 +332,23 @@ final class ProfileView: UIView {
         }
         
         followerCountButton.snp.makeConstraints { make in
-            make.leading.equalTo(followerLabel.snp.trailing).offset(8)
+            make.leading.equalTo(followerLabel.snp.trailing).offset(0)
             make.centerY.equalTo(followerLabel)
         }
         
         followingLabel.snp.makeConstraints { make in
-            make.leading.equalTo(followerCountButton.snp.trailing).offset(20)
+            make.leading.equalTo(followerCountButton.snp.trailing).offset(12)
             make.centerY.equalTo(followerCountButton)
         }
         
         followingCountButton.snp.makeConstraints { make in
-            make.leading.equalTo(followingLabel.snp.trailing).offset(8)
+            make.leading.equalTo(followingLabel.snp.trailing).offset(0)
             make.centerY.equalTo(followingLabel)
             make.trailing.equalToSuperview()
         }
         
         descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(profileDetailContainer.snp.bottom).offset(4)
+            make.top.equalTo(profileDetailContainer.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
         }
         
@@ -339,19 +366,19 @@ final class ProfileView: UIView {
         clothesImageView1.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview() // 상하 배치 고정
             make.leading.equalToSuperview() // 좌측 고정
-            make.width.equalTo(112) // 고정 너비 설정
+            make.width.greaterThanOrEqualTo(110) // 고정 너비 설정
         }
         
         clothesImageView2.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview() // 상하 배치 고정
             make.leading.equalTo(clothesImageView1.snp.trailing).offset(9)
-            make.width.equalTo(112) // 고정 너비 설정
+            make.width.greaterThanOrEqualTo(110) // 고정 너비 설정
         }
         
         clothesImageView3.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview() // 상하 배치 고정
             make.leading.equalTo(clothesImageView2.snp.trailing).offset(9)
-            make.width.equalTo(112) // 고정 너비 설정
+            make.width.greaterThanOrEqualTo(110) // 고정 너비 설정
             make.trailing.equalToSuperview() // 우측 고정
         }
         
@@ -363,7 +390,7 @@ final class ProfileView: UIView {
         bottomArrowIcon.snp.makeConstraints { make in
             make.centerY.equalTo(bottomButtonLabel.snp.centerY)
             make.leading.equalTo(bottomButtonLabel.snp.trailing).offset(5)
-            make.trailing.equalToSuperview().inset(20)
+//            make.trailing.equalToSuperview().inset(20)
             make.width.equalTo(6)
             make.height.equalTo(12)
         }
@@ -373,44 +400,48 @@ final class ProfileView: UIView {
             make.leading.equalToSuperview().offset(20)
         }
         
-        recordContainerView.snp.makeConstraints { make in
-            make.top.equalTo(recordLabel.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(520)
-            make.bottom.equalToSuperview().offset(-40) // 스크롤 콘텐츠의 마지막 부분
+        calendarContainerView.snp.makeConstraints {
+            $0.top.equalTo(recordLabel.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(600)
+            $0.bottom.equalToSuperview().offset(20)
         }
         
-        calendarView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(10) // 내부 패딩 적용
-        }
     }
-}
+    
+    /// 데이터 상태에 따라 EmptyStackView 표시/숨김
+    func updateClothesPrivateState(isPrivate: Bool) {
+        if isPrivate {
+            // 데이터가 없으면 EmptyStackView 추가하고 관련 요소 숨김
+            clothesImageContainerView.addSubview(privateStackView1)
+            privateStackView1.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+            
+            bottomButtonLabel.isHidden = true
+            bottomArrowIcon.isHidden = true
+        } else {
+            // 데이터가 있으면 EmptyStackView 제거하고 관련 요소 표시
+            privateStackView1.removeFromSuperview()
 
-extension ProfileView {
-    func configure(with data: MembersInfoResponseDTO) {
-        // 클로키 ID 설정
-        usernameLabel.text = data.clokeyId
-        
-        // 프로필 이미지 설정
-        profileImageView.kf.setImage(with: URL(string: data.profileImageUrl), placeholder: UIImage(named: "profile_placeholder"))
-        
-        // 닉네임 설정
-        nicknameLabel.text = data.nickname
-        
-        // 게시글 개수 설정
-        writeCountLabel.text = "\(data.recordCount)"
-        
-        // 팔로워 수 설정
-        followerCountButton.setTitle("\(data.followerCount)", for: .normal)
-        
-        // 팔로잉 수 설정
-        followingCountButton.setTitle("\(data.followingCount)", for: .normal)
-        
-        // 한줄 소개 (bio) 설정
-        descriptionLabel.text = data.bio
-        
-        // 배경화면 이미지 설정 (Kingfisher 사용)
-        backgroundImageView.kf.setImage(with: URL(string: data.profileBackImageUrl), placeholder: UIImage(named: "profile_background"))
+            bottomButtonLabel.isHidden = false
+            bottomArrowIcon.isHidden = false
+        }
     }
+    
+    func updateCalendarPrivateState(isPrivate: Bool) {
+        if isPrivate {
+            // 데이터가 없으면 EmptyStackView 추가하고 관련 요소 숨김
+            calendarContainerView.addSubview(privateStackView2)
+            privateStackView2.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+    
+        } else {
+            // 데이터가 있으면 EmptyStackView 제거하고 관련 요소 표시
+            privateStackView2.removeFromSuperview()
+
+        }
+    }
+    
 }

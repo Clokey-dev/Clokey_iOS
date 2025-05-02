@@ -30,7 +30,7 @@ class UserCell: UICollectionViewCell {
     }
     
     private let userIdLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 14, weight: .medium)
+        $0.font = .ptdMediumFont(ofSize: 14)
         $0.textColor = .black
     }
     
@@ -79,4 +79,6 @@ class UserCell: UICollectionViewCell {
             profileImageView.kf.setImage(with: url, placeholder: UIImage(named: "profile_placeholder"))
         }
     }
+    
+    
 }

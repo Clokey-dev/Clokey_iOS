@@ -7,9 +7,11 @@
 
 import Foundation
 import Moya
+import UIKit
 
 public final class MembersService: NetworkManager {
     typealias Endpoint = MembersEndpoint
+    public typealias GetTermsResponseDTOList = [GetTermsResponseDTO]
     
     // MARK: - Provider 설정
     let provider: MoyaProvider<MembersEndpoint>
@@ -17,21 +19,22 @@ public final class MembersService: NetworkManager {
     public init(provider: MoyaProvider<MembersEndpoint>? = nil) {
         let plugins: [PluginType] = [
             NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)),
-            AccessTokenPlugin()
+            AccessTokenPlugin(),
+            TokenRefreshPlugin()
         ]
         self.provider = provider ?? MoyaProvider<MembersEndpoint>(plugins: plugins)
     }
     
     // MARK: - API funcs
     
-    // 카카오 로그인 POST API
-    public func kaKaoLogin(
-        data: KakaoLoginRequestDTO,
-        completion: @escaping (Result<KakaoLoginResponseDTO, NetworkError>) -> Void
+    // 소셜 로그인 POST API
+    public func SocialLogin(
+        data: LoginRequestDTO,
+        completion: @escaping (Result<LoginResponseDTO, NetworkError>) -> Void
     ) {
         request(
-            target: .kakaoLogin(data: data),
-            decodingType: KakaoLoginResponseDTO.self,
+            target: .SocialLogin(data: data),
+            decodingType: LoginResponseDTO.self,
             completion: completion
         )
     }
@@ -39,71 +42,80 @@ public final class MembersService: NetworkManager {
     // 토큰 재발급 POST API
     public func reissueToken(
         data: ReissueTokenRequestDTO,
-        completion: @escaping (Result<KakaoLoginResponseDTO, NetworkError>) -> Void
+        completion: @escaping (Result<LoginResponseDTO, NetworkError>) -> Void
     ) {
         request(
             target: .ReissueToken(data: data),
-            decodingType: KakaoLoginResponseDTO.self,
+            decodingType: LoginResponseDTO.self,
             completion: completion)
     }
     
     /// 약관 동의 POST API
     public func agreeToTerms(
-        userId: Int,
-        data: TermsAgreementRequestDTO,
-        completion: @escaping (Result<TermsAgreementResponseDTO, NetworkError>) -> Void
+        data: AgreementToTermsRequestDTO,
+        completion: @escaping (Result<AgreementToTermsResponseDTO, NetworkError>) -> Void
     ) {
         request(
-            target: .agreeToTerms(userId: userId, data: data),
-            decodingType: TermsAgreementResponseDTO.self,
+            target: .agreeToTerms(data: data),
+            decodingType: AgreementToTermsResponseDTO.self,
             completion: completion
         )
+    }
+    
+    public func getTerms(
+        completion: @escaping (Result<[GetTermsResponseDTO], NetworkError>) -> Void
+    ) {
+        request(
+            target: .getTerms,
+            decodingType: [GetTermsResponseDTO].self,
+            completion: completion)
     }
     
     /// 프로필 수정 PATCH API
     public func updateProfile(
         data: ProfileUpdateRequestDTO,
+        imageData1: Data,
+        imageData2: Data,
         completion: @escaping (Result<ProfileUpdateResponseDTO, NetworkError>) -> Void
     ) {
         request(
-            target: .updateProfile(data: data),
+            target: .updateProfile(data: data, imageData1: imageData1, imageData2: imageData2),
             decodingType: ProfileUpdateResponseDTO.self,
             completion: completion
         )
     }
-    
+
     /// 아이디 중복 확인 GET API
     public func checkIdAvailability (
-        id: String,
-        completion: @escaping (Result<Bool, NetworkError>) -> Void
+        checkId: String,
+        completion: @escaping (Result<Void, NetworkError>) -> Void
     ) {
-        request(
-            target: .checkIdAvailability(id: id),
-            decodingType: Bool.self,
+        requestStatusCode(
+            target: .checkIdAvailability(checkId: checkId),
             completion: completion
         )
     }
     
     /// 회원 조회 GET API
     public func getUserProfile (
-        clokeyId: String,
+        clokey_id: String?,
         completion: @escaping (Result<MembersInfoResponseDTO, NetworkError>) -> Void
     ) {
         request(
-            target: .getUserProfile(clokeyId: clokeyId),
+            target: .getUserProfile(clokey_id: clokey_id),
             decodingType: MembersInfoResponseDTO.self,
             completion: completion
         )
     }
     
+    
     /// 팔로우 POST API
     public func followUser (
-        data: FollowRequestDTO,
+        clokeyId: String,
         completion: @escaping (Result<Void, NetworkError>) -> Void
     ) {
-        request(
-            target: .followUser(data: data),
-            decodingType: EmptyResponse.self,
+        requestStatusCode(
+            target: .followUser(clokeyId: clokeyId),
             completion: { result in
                 switch result {
                 case .success:
@@ -133,5 +145,81 @@ public final class MembersService: NetworkManager {
             }
         )
     }
+    
+    public func getAgreedTerms(
+        completion: @escaping (Result<GetAgreedTermsResponseDTO, NetworkError>) -> Void
+    ){
+        request(
+            target: .getAgreedTerms,
+            decodingType: GetAgreedTermsResponseDTO.self,
+            completion: completion)
+    }
+    
+    public func optionalTermAgree(
+        data: OptionalTermAgreeRequestDTO,
+        completion: @escaping (Result<GetAgreedTermsResponseDTO, NetworkError>) -> Void
+    ){
+        request(
+            target: .optionalTermAgree(data: data),
+            decodingType: GetAgreedTermsResponseDTO.self,
+            completion: completion
+        )
+    }
+    
+    public func getFollowPeople(
+        clokeyId: String,
+        page: Int,
+        isFollowing: Bool,
+        completion: @escaping (Result<GetFollowPeopleResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .getFollowPeople(clokeyId: clokeyId, page: page, isFollowing: isFollowing),
+            decodingType: GetFollowPeopleResponseDTO.self,
+            completion: completion
+        )
+    }
+    
+    /// 차단/하제 POST API
+    public func blockOrUnblock(
+        clokeyId: String,
+        completion: @escaping (Result<Void, NetworkError>) -> Void
+    ) {
+        requestStatusCode(
+            target: .blockMember(clokeyId: clokeyId),
+            completion: { result in
+                switch result {
+                case .success:
+                    completion(.success(())) // 성공 처리
+                case .failure(let error):
+                    completion(.failure(error)) // 실패 처리
+                }
+            }
+        )
+    }
+    
+    // 본인확인 GET API
+    public func checkMySelf(
+        clokeyId: String,
+        completion: @escaping (Result<CheckMeResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .checkMySelf(clokeyId: clokeyId),
+            decodingType: CheckMeResponseDTO.self,
+            completion: completion
+        )
+    }
+    ///차단 목록 불러오기
+    public func getBlockMembers(
+        page: Int,
+        completion: @escaping (Result<GetBlockMembersResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .getBlockMembers(page: page),
+            decodingType: GetBlockMembersResponseDTO.self,
+            completion: completion
+        )
+    }
+
+
 
 }

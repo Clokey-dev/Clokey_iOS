@@ -10,10 +10,23 @@
 import UIKit
 import Kingfisher
 import MapKit
+import Moya
+import WeatherKit
 
 class PickViewController: UIViewController, CLLocationManagerDelegate {
+    private var timeUpdateTimer: Timer?
     
     private var backgroundView: UIView?// 배경 어둡게 하기 위해 선언
+    
+    var latitude : Double = 0
+    var longitude : Double = 0
+    
+    var nowTemp: Int?
+    var maxTemp: Int?
+    var minTemp: Int?
+    
+    private var recapHistoryId1: Int?
+    private var recapHistoryId2: Int?
     
     // 팝업 뷰
     private let popUpView = PickPopUpView()
@@ -22,7 +35,47 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     let locationManager = CLLocationManager()
     
     private let model = PickImageModel.dummy()
+    //새로고침 기능 추가
+    private let refreshControl = UIRefreshControl()
+    private var isDataLoaded: Bool = false // 데이터 로드 여부 플래그
+    private var loadingOverlay: UIView?
+
+    var dateString : String = ""
+    var month: String = ""
+    var date : String = ""
     
+    func dateFormatter() {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+
+        if let date = formatter.date(from: dateString) {
+            formatter.dateFormat = "MM"
+            let month = formatter.string(from: date)
+            self.month = String(Int(month) ?? 0)
+            print(month) 
+        }
+    }
+    
+    func isOneYearAgo(dateString: String) -> Bool {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.timeZone = TimeZone(abbreviation: "UTC") // 서버 시간이 UTC일 경우
+
+        guard let date = formatter.date(from: dateString) else {
+            print("날짜 변환 실패")
+            return false
+        }
+
+        let calendar = Calendar.current
+        guard let oneYearAgo = calendar.date(byAdding: .year, value: -1, to: Date()) else {
+            print("1년 전 날짜 계산 실패")
+            return false
+        }
+
+        return calendar.isDate(date, inSameDayAs: oneYearAgo)
+    }
+   
+
     override func loadView() {
         self.view = pickView
     }
@@ -30,16 +83,34 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         definesPresentationContext = true // 현재 컨텍스트에서 새로운 뷰 표시
+        // 새로고침 기능 추가
+        pickView.scrollView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh), for: .valueChanged)
         
-        //        setupUI()
+        
         setupActions()
-        
-        updateTimeLabel() // 현재 시간 업데이트
-        fetchWeatherData() // 날씨 데이터 가져오기
-        fetchVisualCrossingWeatherData(for: "Seoul") // 기본 위치: 서울
-        updateYesterdayWeatherUI()
+
+        startPreciseMinuteTimer()
+        self.fetchVisualCrossingWeatherData(for: latitude, longitude: longitude)
+        self.updateYesterdayWeatherUI(for: latitude, longitude: longitude)
         setupBottomLabelTap()
-        bindData()
+        
+        if isDataLoaded {
+            if loadingOverlay != nil {
+                hideLoadingOverlay()
+            }
+        } else {
+            // 데이터가 로드되지 않았고, 오버레이가 아직 없다면 오버레이 표시
+            if loadingOverlay == nil {
+                showLoadingOverlay()
+            }
+        }
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleHideLoadingOverlay),
+                                               name: NSNotification.Name("HideLoadingOverlayNotification"),
+                                               object: nil)
+        
         
         locationManager.delegate = self
         locationManager.distanceFilter = kCLDistanceFilterNone
@@ -48,9 +119,34 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.startUpdatingLocation()
         
         setupLocationIconTap()
-        
+        fetchWeatherRecommendations()
         loadRecapData()
+        
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+        
+        self.updateYesterdayWeatherUI(for: latitude, longitude: longitude)
+        fetchWeatherRecommendations()
+        
+        self.pickView.recapImageView1.image = nil
+        self.pickView.recapImageView2.image = nil
+        loadRecapData()
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        
+    }
+    
+    var clothId1:Int64?
+    var clothId2:Int64?
+    var clothId3:Int64?
     
     private func setupActions() {
         popUpView.deleteButton.addTarget(self, action: #selector(dismissPopup), for: .touchUpInside)
@@ -66,6 +162,37 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         let tapGesture3 = UITapGestureRecognizer(target: self, action: #selector(handleImageTap(_:)))
         pickView.weatherImageView3.isUserInteractionEnabled = true
         pickView.weatherImageView3.addGestureRecognizer(tapGesture3)
+        
+        // Recap 이미지 탭 제스처 추가
+        let recapTapGesture1 = UITapGestureRecognizer(target: self, action: #selector(handleRecapImageTap(_:)))
+        pickView.recapImageView1.isUserInteractionEnabled = true
+        pickView.recapImageView1.addGestureRecognizer(recapTapGesture1)
+        
+        let recapTapGesture2 = UITapGestureRecognizer(target: self, action: #selector(handleRecapImageTap(_:)))
+        pickView.recapImageView2.isUserInteractionEnabled = true
+        pickView.recapImageView2.addGestureRecognizer(recapTapGesture2)
+    }
+    
+    private func fetchHistoryDetail(historyId: Int) {
+        let historyService = HistoryService()
+        
+        historyService.historyDetail(historyId: historyId) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let response):
+                print("히스토리 상세 조회 성공: \(response)")
+                
+                DispatchQueue.main.async {
+                    let detailVC = FriendsCalendarDetailViewController()
+                    detailVC.setDetailData(response)
+                    self.navigationController?.pushViewController(detailVC, animated: true)
+                }
+            case .failure(let error):
+                print("히스토리 상세 조회 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
+            }
+        }
     }
     
     // 팝업 닫기 함수
@@ -87,18 +214,53 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
+    @objc private func handleRecapImageTap(_ sender: UITapGestureRecognizer) {
+        guard let tappedImageView = sender.view as? UIImageView else { return }
+        
+        var historyId: Int?
+        
+        if tappedImageView == pickView.recapImageView1 {
+            historyId = recapHistoryId1
+        } else if tappedImageView == pickView.recapImageView2 {
+            historyId = recapHistoryId2
+        }
+        
+        if let id = historyId {
+            fetchHistoryDetail(historyId: id)
+        }
+    }
+    
+    
     
     @objc private func handleImageTap(_ sender: UITapGestureRecognizer) {
         guard let tappedImageView = sender.view as? UIImageView else { return }
-        showPopup(with: tappedImageView.image)
+        
+        var selectedClothId: Int64?
+        
+        if tappedImageView == pickView.weatherImageView1 {
+            selectedClothId = clothId1
+        } else if tappedImageView == pickView.weatherImageView2 {
+            selectedClothId = clothId2
+        } else if tappedImageView == pickView.weatherImageView3 {
+            selectedClothId = clothId3
+        }
+        
+        guard let clothId = selectedClothId else {
+            print("clothId 값이 없습니다.")
+            return
+        }
+        
+        
+        showPopup(with: tappedImageView.image, clothId: clothId)
+        
     }
     
-    private func showPopup(with image: UIImage?) {
+    private func showPopup(with image: UIImage?, clothId: Int64) {
         guard let keyWindow = UIApplication.shared.connectedScenes
             .compactMap({ ($0 as? UIWindowScene)?.windows.first })
-            .first else { return }//keywindow설정 하단 상단 바도 다 포함하는
+            .first else { return } // keyWindow 설정
         
-        //뒷 배경 어둡게
+        // 뒷 배경 어둡게
         let bgView = UIView()
         bgView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
         bgView.alpha = 0
@@ -106,61 +268,311 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         bgView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
         backgroundView = bgView
         
-        let popUpView = PickPopUpView()
-        popUpView.alpha = 0
-        popUpView.setImage(image)
-        keyWindow.addSubview(popUpView)
-        
-        popUpView.snp.makeConstraints { make in
+        // 팝업 뷰 생성
+        self.popUpView.alpha = 0
+        self.popUpView.setImage(image)
+        keyWindow.addSubview(self.popUpView)
+
+        self.popUpView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview()
             make.width.equalTo(290)
-            make.height.equalTo(448)
+            make.height.equalTo(489)
         }
         
         // 팝업 애니메이션 효과
         UIView.animate(withDuration: 0.3) {
             bgView.alpha = 1
-            popUpView.alpha = 1
+            self.popUpView.alpha = 1
         }
         
-        //       //  closeButton 클릭 시 팝업 닫기 기능 추가
+        // closeButton 클릭 시 팝업 닫기 기능 추가
         popUpView.deleteButton.addTarget(self, action: #selector(dismissPopup), for: .touchUpInside)
-    }
-    
-    private func bindData() {
-        // 데이터를 PickView에 바인딩
-        pickView.weatherImageView1.kf.setImage(with: URL(string: model.weatherImageURLs[0]))
-        pickView.weatherImageView2.kf.setImage(with: URL(string: model.weatherImageURLs[1]))
-        pickView.weatherImageView3.kf.setImage(with: URL(string: model.weatherImageURLs[2]))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissPopup))
+        bgView.addGestureRecognizer(tap)
         
-        pickView.recapImageView1.kf.setImage(with: URL(string: model.recapImageURLs[0]))
-        pickView.recapImageView2.kf.setImage(with: URL(string: model.recapImageURLs[1]))
-    }
-    
-    // MARK: - 날씨 데이터 요청
-    func fetchVisualCrossingWeatherData(for location: String) {
-        WeatherAPI.shared.fetchVisualCrossingWeather(for: location) { [weak self] weatherResponse in
+        let clotehsService = ClothesService()
+        
+        // checkPopUpClothes API 호출 및 UI 업데이트
+        clotehsService.checkPopUpClothes(clothId: clothId) { [weak self] result in
             guard let self = self else { return }
             
             DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    // 응답 데이터를 popUpView에 반영
+                    self.popUpView.nameLabel.text = response.name
+                    if let imageUrl = URL(string: response.imageUrl) {
+                        self.popUpView.imageView.kf.setImage(with: imageUrl)
+                    } else {
+                        print("유효하지 않은 이미지 URL: \(response.imageUrl)")
+                    }
+                    if response.visibility == "PUBLIC" {
+                        self.popUpView.publicButton.setImage(UIImage(named: "public_icon"), for: .normal)
+                    } else {
+                        self.popUpView.publicButton.setImage(UIImage(named: "lock_on"), for: .normal)
+                    }
+                    
+                    
+                    self.popUpView.categoryButton2.setTitle("\(response.category)", for: .normal)
+                    print(response.category)
+                    
+                    if let categoryName = CategoryModel.getCategoryNameByClothName(response.category) {
+                        print(categoryName) // 출력: "상의"
+                        self.popUpView.categoryButton1.setTitle("\(categoryName)", for: .normal)
+                    }
+                    
+                    if response.seasons.count > 0 {
+                        if response.seasons[0] == "SPRING" {
+                            self.popUpView.springButton.setTitleColor(.white, for: .normal)
+                            self.popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            self.popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
+                            self.popUpView.springButton.layer.cornerRadius = 5
+                            self.popUpView.springButton.layer.borderWidth = 1
+                        } else if response.seasons[0] == "SUMMER" {
+                            self.popUpView.summerButton.setTitleColor(.white, for: .normal)
+                            self.popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            self.popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
+                            self.popUpView.summerButton.layer.cornerRadius = 5
+                            self.popUpView.summerButton.layer.borderWidth = 1
+                        } else if response.seasons[0] == "FALL" {
+                            self.popUpView.fallButton.setTitleColor(.white, for: .normal)
+                            self.popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            self.popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
+                            self.popUpView.fallButton.layer.cornerRadius = 5
+                            self.popUpView.fallButton.layer.borderWidth = 1
+                        } else if response.seasons[0] == "WINTER" {
+                            self.popUpView.winterButton.setTitleColor(.white, for: .normal)
+                            self.popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            self.popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
+                            self.popUpView.winterButton.layer.cornerRadius = 5
+                            self.popUpView.winterButton.layer.borderWidth = 1
+                        }
+                    }
+                    
+                    if response.seasons.count > 1 {
+                        if response.seasons[1] == "SPRING" {
+                            self.popUpView.springButton.setTitleColor(.white, for: .normal)
+                            self.popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            self.popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
+                            self.popUpView.springButton.layer.cornerRadius = 5
+                            self.popUpView.springButton.layer.borderWidth = 1
+                        } else if response.seasons[1] == "SUMMER" {
+                            self.popUpView.summerButton.setTitleColor(.white, for: .normal)
+                            self.popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            self.popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
+                            self.popUpView.summerButton.layer.cornerRadius = 5
+                            self.popUpView.summerButton.layer.borderWidth = 1
+                        } else if response.seasons[1] == "FALL" {
+                            self.popUpView.fallButton.setTitleColor(.white, for: .normal)
+                            self.popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            self.popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
+                            self.popUpView.fallButton.layer.cornerRadius = 5
+                            self.popUpView.fallButton.layer.borderWidth = 1
+                        } else if response.seasons[1] == "WINTER" {
+                            self.popUpView.winterButton.setTitleColor(.white, for: .normal)
+                            self.popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            self.popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
+                            self.popUpView.winterButton.layer.cornerRadius = 5
+                            self.popUpView.winterButton.layer.borderWidth = 1
+                        }
+                    }
+                    
+                    if response.seasons.count > 2 {
+                        if response.seasons[2] == "SPRING" {
+                            self.popUpView.springButton.setTitleColor(.white, for: .normal)
+                            self.popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            self.popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
+                            self.popUpView.springButton.layer.cornerRadius = 5
+                            self.popUpView.springButton.layer.borderWidth = 1
+                        } else if response.seasons[2] == "SUMMER" {
+                            self.popUpView.summerButton.setTitleColor(.white, for: .normal)
+                            self.popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            self.popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
+                            self.popUpView.summerButton.layer.cornerRadius = 5
+                            self.popUpView.summerButton.layer.borderWidth = 1
+                        } else if response.seasons[2] == "FALL" {
+                            self.popUpView.fallButton.setTitleColor(.white, for: .normal)
+                            self.popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            self.popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
+                            self.popUpView.fallButton.layer.cornerRadius = 5
+                            self.popUpView.fallButton.layer.borderWidth = 1
+                        } else if response.seasons[2] == "WINTER" {
+                            self.popUpView.winterButton.setTitleColor(.white, for: .normal)
+                            self.popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            self.popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
+                            self.popUpView.winterButton.layer.cornerRadius = 5
+                            self.popUpView.winterButton.layer.borderWidth = 1
+                        }
+                    }
+                    
+                    if response.seasons.count > 3 {
+                        if response.seasons[3] == "SPRING" {
+                            self.popUpView.springButton.setTitleColor(.white, for: .normal)
+                            self.popUpView.springButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            self.popUpView.springButton.backgroundColor = UIColor(named: "mainBrown800")
+                            self.popUpView.springButton.layer.cornerRadius = 5
+                            self.popUpView.springButton.layer.borderWidth = 1
+                        } else if response.seasons[3] == "SUMMER" {
+                            self.popUpView.summerButton.setTitleColor(.white, for: .normal)
+                            self.popUpView.summerButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            self.popUpView.summerButton.backgroundColor = UIColor(named: "mainBrown800")
+                            self.popUpView.summerButton.layer.cornerRadius = 5
+                            self.popUpView.summerButton.layer.borderWidth = 1
+                        } else if response.seasons[3] == "FALL" {
+                            self.popUpView.fallButton.setTitleColor(.white, for: .normal)
+                            self.popUpView.fallButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            self.popUpView.fallButton.backgroundColor = UIColor(named: "mainBrown800")
+                            self.popUpView.fallButton.layer.cornerRadius = 5
+                            self.popUpView.fallButton.layer.borderWidth = 1
+                        } else if response.seasons[3] == "WINTER" {
+                            self.popUpView.winterButton.setTitleColor(.white, for: .normal)
+                            self.popUpView.winterButton.titleLabel?.font = UIFont.ptdMediumFont(ofSize: 12)
+                            self.popUpView.winterButton.backgroundColor = UIColor(named: "mainBrown800")
+                            self.popUpView.winterButton.layer.cornerRadius = 5
+                            self.popUpView.winterButton.layer.borderWidth = 1
+                        }
+                    }
+                    
+                    self.popUpView.wearCountButton.setTitle("\(response.wearNum)회", for: .normal)
+                    self.popUpView.brandNameLabel.text = (response.brand?.isEmpty ?? true) ? "없음" : response.brand
+                    self.updateUrlGoButtonTitle(with: response.clothUrl)
+
+                    // 이미지가 있으면 업데이트
+                    if let imageUrl = URL(string: response.imageUrl) {
+                        self.popUpView.imageView.kf.setImage(with: imageUrl)
+                    }
+                    
+                    self.popUpView.urlGoButton.addTarget(self, action: #selector(self.urlGoButtonTapped), for: .touchUpInside)
+                    
+                case .failure(let error):
+                    print("팝업 의류 데이터 로드 실패: \(error.localizedDescription)")
+                    self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
+                }
+            }
+        }
+    }
+    
+    var url: String = ""
+    
+    @objc private func urlGoButtonTapped() {
+        guard let url = URL(string: url) else {
+            print("Invalid URL")
+            return
+        }
+        
+        // URL 열기
+        UIApplication.shared.open(url, options: [:]) { success in
+            if success {
+                print("Opened URL: \(url)")
+            } else {
+                print("Failed to open URL: \(url)")
+            }
+        }
+    }
+    
+    func updateUrlGoButtonTitle(with url: String?) {
+        let title = (url?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty != false) ? "없음" : "바로가기"
+        
+        var attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.mainBrown800,
+            .font: UIFont.ptdMediumFont(ofSize: 12)
+        ]
+
+        if title != "없음" {
+            attributes[.underlineStyle] = NSUnderlineStyle.single.rawValue
+        }
+        
+        
+        let attributedTitle = NSAttributedString(string: title, attributes: attributes)
+        popUpView.urlGoButton.setAttributedTitle(attributedTitle, for: .normal)
+    }
+    
+    
+    func fetchWeatherRecommendations() {
+        
+        guard let nowTemp = nowTemp,
+              let maxTemp = maxTemp,
+              let minTemp = minTemp else {
+            print("오류: 온도 값이 없습니다.")
+            return
+        }
+        let nowTemp32 = Int32(nowTemp)
+        let maxTemp32 = Int32(maxTemp)
+        let minTemp32 = Int32(minTemp)
+        
+        let homeService = HomeService()
+        
+        homeService.recommendClothes(nowTemp: nowTemp32, minTemp: minTemp32, maxTemp: maxTemp32) { [weak self] result in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    
+                    let recommendedClothes = response.recommendations
+                    
+                    self.pickView.updateEmptyState(isEmpty: response.recommendations.isEmpty)
+                    
+                    
+                    self.pickView.weatherImageView2.isHidden = recommendedClothes.isEmpty || recommendedClothes.count < 2
+                    self.pickView.weatherImageName2.isHidden = recommendedClothes.isEmpty || recommendedClothes.count < 2
+                    
+                    self.pickView.weatherImageView3.isHidden = recommendedClothes.isEmpty || recommendedClothes.count < 3
+                    self.pickView.weatherImageName3.isHidden = recommendedClothes.isEmpty || recommendedClothes.count < 3
+                    
+                    // 이미지 설정 (최대 3개)
+                    if recommendedClothes.count > 0 {
+                        self.pickView.weatherImageView1.kf.setImage(with: URL(string: recommendedClothes[0].imageUrl))
+                        self.pickView.weatherImageName1.text = recommendedClothes[0].clothName
+                        self.clothId1 = recommendedClothes[0].clothId
+                    }
+                    if recommendedClothes.count > 1 {
+                        self.pickView.weatherImageView2.kf.setImage(with: URL(string: recommendedClothes[1].imageUrl))
+                        self.pickView.weatherImageName2.text = recommendedClothes[1].clothName
+                        self.clothId2 = recommendedClothes[1].clothId
+                    }
+                    if recommendedClothes.count > 2 {
+                        self.pickView.weatherImageView3.kf.setImage(with: URL(string: recommendedClothes[2].imageUrl))
+                        self.pickView.weatherImageName3.text = recommendedClothes[2].clothName
+                        self.clothId3 = recommendedClothes[2].clothId
+                    }
+                    self.hideLoadingOverlay()
+                    self.isDataLoaded = true // 데이터 로드 완료
+                case .failure(let error):
+                    print("추천 의상 데이터 가져오기 실패: \(error.localizedDescription)")
+                    self.pickView.updateEmptyState(isEmpty: true)
+                    self.hideLoadingOverlay()
+                    self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
+                }
+            }
+        }
+    }
+    
+    // MARK: - 날씨 데이터 요청
+    func fetchVisualCrossingWeatherData(for latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+        WeatherAPI.shared.fetchVisualCrossingWeather(for: latitude, longitude: longitude) { [weak self] weatherResponse in
+            DispatchQueue.main.async {
                 if let weatherResponse = weatherResponse, let todayWeather = weatherResponse.days.first {
-                    self.updateWeatherHighLowUI(weather: todayWeather)
+                    self?.updateWeatherHighLowUI(weather: todayWeather)
                 } else {
-                    self.showError()
+                    self?.showError()
                 }
             }
         }
     }
     
     // MARK: - 날씨 데이터 가져오기
-    func fetchWeatherData() {
-        WeatherAPI.shared.fetchWeather(for: "Seoul") { [weak self] weatherData in
+    func fetchWeatherData(for latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+        WeatherAPI.shared.fetchWeather(for: latitude, longitude: longitude) { [weak self] weatherData in
             DispatchQueue.main.async {
                 if let weather = weatherData {
                     self?.updateTemperatureUI(weather: weather)
+                } else {
+                    print("API 호출 실패 또는 weatherData가 nil입니다.")
                 }
             }
         }
@@ -170,7 +582,6 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     func updateTimeLabel() {
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
-        //        pickView.timeLabel.text = formatter.string(from: Date()) + " 대한민국 서울시 기준"
         let currentTime = formatter.string(from: Date())
         pickView.timeLabel.text = "\(currentTime) 대한민국 \(address) 기준"
     }
@@ -178,8 +589,13 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     // address 값을 저장할 변수
     private var address: String = "" // 기본값 설정
     
+    private var englishAddress: String = ""
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
+        
+        // 한 번만 업데이트를 받도록 중단
+        locationManager.stopUpdatingLocation()
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
             if let error = error {
@@ -210,6 +626,34 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                     self.updateTimeLabel() // 주소 업데이트 후 시간 레이블 갱신
                 }
             }
+        }
+        
+        // 좌표 값 추출
+        let latitude = location.coordinate.latitude
+        let longitude = location.coordinate.longitude
+        let geocoderEnglish = CLGeocoder()
+        // (옵션) 주소 업데이트를 위해 reverse geocoding 수행
+        geocoderEnglish.reverseGeocodeLocation(location) { (placemarks, error) in
+            if let placemark = placemarks?.first {
+                var subAddress = ""
+                if let administrativeArea = placemark.administrativeArea {
+                    subAddress += administrativeArea
+                }
+                if let locality = placemark.locality {
+                    subAddress += " " + locality
+                }
+                DispatchQueue.main.async {
+                    self.englishAddress = subAddress
+                    self.updateTimeLabel()
+                    self.latitude = latitude
+                    self.longitude = longitude
+                    self.fetchVisualCrossingWeatherData(for: latitude, longitude: longitude)
+                    self.fetchWeatherData(for: latitude, longitude: longitude)
+                    self.updateYesterdayWeatherUI(for: latitude, longitude: longitude)
+                }
+            }
+            
+            
         }
     }
     
@@ -277,38 +721,48 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         }.resume()
     }
     
+    
     // MARK: - 날씨 데이터 업데이트
     func updateTemperatureUI(weather: WeatherData) {
+        print("updateTemperatureUI 호출됨, 온도: \(weather.main.temp)")
         pickView.temperatureLabel.text = "\(Int(weather.main.temp))°C"
+        
+        nowTemp = Int(weather.main.temp)
+        
+        isDataLoaded = true
+        hideLoadingOverlay()
         
         // 아이콘 가져오기
         if let icon = weather.weather.first?.icon {
             let iconURL = "https://openweathermap.org/img/wn/\(icon)@2x.png"
             fetchWeatherIcon(from: iconURL)
         }
+        
+        fetchWeatherRecommendations()
     }
     
     /// 최고/최저 온도 업데이트
     func updateWeatherHighLowUI(weather: DailyWeather) {
         pickView.tempDetailsLabel.text = " (최고: \(Int(weather.tempmax))° / 최저: \(Int(weather.tempmin))°)"
+        
+        maxTemp = Int(weather.tempmax)
+        minTemp = Int(weather.tempmin)
+        
+        fetchWeatherRecommendations()
     }
     
-    func updateYesterdayWeatherUI() {
-        // WeatherAPI에서 fetchTemperatureChange를 호출하고 결과를 처리
-        WeatherAPI.shared.fetchTemperatureChange(for: "Seoul") { [weak self] resultText in
-            guard let self = self else { return }
-            
+    func updateYesterdayWeatherUI(for latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+        WeatherAPI.shared.fetchTemperatureChange(for: latitude, longitude: longitude) { [weak self] resultText in
             DispatchQueue.main.async {
-                // 결과를 temperatureChangeLabel에 표시
-                self.pickView.temperatureChangeLabel.text = resultText
+                self?.pickView.temperatureChangeLabel.text = resultText
             }
         }
     }
     
     // MARK: - 에러 처리
     func showError() {
-        pickView.temperatureLabel.text = "데이터를 가져올 수 없음"
-        pickView.tempDetailsLabel.text = "최고/최저 기온 없음"
+        pickView.temperatureLabel.text = "데이터를 가져오는 중입니다."
+        pickView.tempDetailsLabel.text = "최고/최저 기온을 가져오는 중입니다."
         pickView.weatherIconView.image = nil
     }
     private func setupBottomLabelTap() {
@@ -318,29 +772,161 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     @objc private func handleBottomLabelTap() {
-        // Create an instance of the destination view controller
-        let closetViewController = ClosetViewController()
-        closetViewController.modalPresentationStyle = .fullScreen // Present it as a full-screen modal
-        
-        // Navigate without keeping the TabBar
-        self.present(closetViewController, animated: true, completion: nil)
+        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+            sceneDelegate.navigateToMyCloset()
+        }
     }
     
     // Recap 데이터를 로드하고 PickView에 전달
     private func loadRecapData() {
         let homeService = HomeService()
         
-        homeService.getOneYearAgoHistories { [weak self] result in
+        homeService.fetchOneYearAgoHistories { [weak self] result in
             DispatchQueue.main.async {
+                guard let self = self else { return }
+                
                 switch result {
                 case .success(let historyResult):
-                    self?.pickView.updateRecapImages(with: historyResult.images)
+                    let imageUrls = historyResult.imageUrls
+                    let nickName = historyResult.nickName
+                    let historyId = historyResult.historyId
+                    self.dateString = historyResult.date ?? ""
+                    self.dateFormatter()
+                    
+                    if imageUrls.count > 0 {
+                        self.recapHistoryId1 = Int(historyId!) // 첫 번째 이미지에 대한 historyId
+                        // 두 번째 이미지는 같은 historyId를 사용하거나 필요에 따라 다르게 처리
+                        if imageUrls.count > 1 {
+                            self.recapHistoryId2 = Int(historyId!) // 두 번째 이미지에 대한 historyId
+                        }
+                    }
+                    
+                    if self.isOneYearAgo(dateString: self.dateString) {
+                        if let isMine = historyResult.isMine {
+                            if isMine {
+                                // isMine == true
+                                if imageUrls.isEmpty {
+                                    print("사진이 없습니다")
+                                } else {
+                                    self.pickView.recapSubtitleLabel1.text = "1년 전 오늘, \(nickName)님은 이 옷을 착용하셨네요!"
+                                    self.pickView.recapNotMe(hidden: true)
+                                    
+                                    if imageUrls.count > 0 {
+                                        self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
+                                        if imageUrls.count > 1 {
+                                            self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
+                                        }
+                                    }
+                                    
+                                }
+                            } else {
+                                // isMine == false
+                                if imageUrls.isEmpty {
+                                    print("사진이 없습니다")
+                                } else {
+                                    self.pickView.recapSubtitleLabel1.text = "1년 전 오늘의 기록이 없어요!"
+                                    self.pickView.recapNotMe(hidden: false)
+                                    self.pickView.recapSubtitleLabel2.text = "\(nickName)님의 1년 전 오늘을 확인해보세요!"
+                                    if imageUrls.count > 0 {
+                                        self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
+                                        if imageUrls.count > 1 {
+                                            self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        // historyResult.isMine == nil 일 때 처리
+                        self.pickView.recapSubtitleLabel1.text = "1년 전 오늘의 기록이 없어요!"
+                        self.pickView.recapNotMe(hidden: false)
+                        self.pickView.recapSubtitleLabel2.text = "\(nickName)님의 \(self.month)월의 기록을 확인해보세요."
+                        
+                        
+                        if imageUrls.count > 0 {
+                            self.pickView.recapImageView1.kf.setImage(with: URL(string: imageUrls[0]))
+                            if imageUrls.count > 1 {
+                                self.pickView.recapImageView2.kf.setImage(with: URL(string: imageUrls[1]))
+                            }
+                        }
+                    }
                 case .failure(let error):
-                    print("❌ 데이터 로드 실패: \(error.localizedDescription)")
+                    print("데이터 로드 실패: \(error.localizedDescription)")
+                    self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
                 }
             }
         }
     }
+    
+
+    
+    
+    //새로고침 함수
+    @objc private func didPullToRefresh() {
+        // 필요에 따라 여러 API 호출을 재실행합니다.
+        fetchWeatherRecommendations()
+        
+        self.updateYesterdayWeatherUI(for: latitude, longitude: longitude)
+        self.pickView.recapImageView1.image = nil
+        self.pickView.recapImageView2.image = nil
+        loadRecapData()
+        
+        // 약간의 지연 후 refreshControl 종료
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.refreshControl.endRefreshing()
+        }
+    }
+    
+    private func showLoadingOverlay() {
+        let overlay = UIView()
+        overlay.backgroundColor = .white
+        view.addSubview(overlay)
+        
+        // SnapKit을 사용하여 전체화면 제약조건 추가
+        overlay.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        loadingOverlay = overlay
+    }
+    
+    private func hideLoadingOverlay() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.loadingOverlay?.alpha = 0
+        }) { _ in
+            self.loadingOverlay?.removeFromSuperview()
+            self.loadingOverlay = nil
+        }
+    }
+    
+    @objc private func handleHideLoadingOverlay() {
+        print("HideLoadingOverlayNotification received")
+        // 데이터 로드가 완료된 상태로 간주
+        isDataLoaded = true
+        hideLoadingOverlay()
+    }
+    
+    func startPreciseMinuteTimer() {
+        let calendar = Calendar.current
+        let now = Date()
+        
+        // 다음 정각 (초단위 0)까지 남은 시간 계산
+        let nextMinute = calendar.nextDate(after: now, matching: DateComponents(second: 0), matchingPolicy: .nextTime)!
+        let delay = nextMinute.timeIntervalSince(now)
+        
+        // 정각까지 한 번 딜레이 후, 60초 간격 타이머 시작
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
+            self?.updateTimeLabel()
+            self?.timeUpdateTimer = Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true) { _ in
+                self?.updateTimeLabel()
+            }
+        }
+    }
+    
+    deinit {
+        timeUpdateTimer?.invalidate()
+    }
+    
 }
 
 

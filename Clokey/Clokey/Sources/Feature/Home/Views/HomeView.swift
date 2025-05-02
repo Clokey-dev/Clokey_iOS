@@ -38,7 +38,7 @@ final class HomeView: UIView {
     /// 선택된 탭을 표시하는 인디케이터 뷰
     let indicatorView = UIView().then {
         $0.backgroundColor = .mainBrown800 // 기본 색상
-        $0.layer.cornerRadius = 2 // 모서리 반경
+//        $0.layer.cornerRadius = 2 // 모서리 반경
     }
     
     /// 탭 아래의 컨텐츠를 표시하는 컨테이너 뷰
@@ -76,17 +76,22 @@ final class HomeView: UIView {
         
         // MARK: - Layout Constraints
         
+        snp.makeConstraints { make in
+            make.height.greaterThanOrEqualTo(100) // 적절한 높이 설정
+        }
+        
         // PICK 버튼 레이아웃 설정
         pickButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview() // 왼쪽 끝에 배치
+            make.leading.equalToSuperview().offset(10) // 왼쪽 끝에 배치
             make.top.equalTo(safeAreaLayoutGuide).offset(12) // 안전 영역 위쪽에 배치
             make.width.equalToSuperview().multipliedBy(0.5) // 너비: 화면 절반
-            make.height.equalTo(28) // 높이: 50
+//            make.height.equalTo(28) // 높이: 50
+            make.height.equalTo(28).priority(.high) // 우선순위 조정
         }
         
         // 소식 버튼 레이아웃 설정
         newsButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview() // 오른쪽 끝에 배치
+            make.trailing.equalToSuperview().inset(10) // 오른쪽 끝에 배치
             make.top.equalTo(safeAreaLayoutGuide).offset(12) // 안전 영역 위쪽에 배치
             make.width.equalToSuperview().multipliedBy(0.5) // 너비: 화면 절반
             make.height.equalTo(28) // 높이: 50
@@ -103,17 +108,17 @@ final class HomeView: UIView {
         // 인디케이터 뷰 레이아웃 설정
         indicatorView.snp.makeConstraints { make in
             make.centerX.equalTo(pickButton.snp.centerX) // PICK 버튼 중앙에 위치
-//            make.bottom.equalTo(separatorLine.snp.top) // 구분선 바로 위
-            make.bottom.equalTo(pickButton.snp.bottom).offset(6)
+            make.bottom.equalTo(separatorLine.snp.top) // separatorLine 기준으로 수정
             make.height.equalTo(5) // 높이: 5
-//            make.width.equalTo(pickButton.snp.width).multipliedBy(0.5) // 너비: PICK 버튼 절반
-            make.width.equalTo(88)
+//            make.width.equalTo(88)
+            make.width.equalTo(separatorLine.snp.width).multipliedBy(0.5)
         }
         
         // 컨테이너 뷰 레이아웃 설정
         containerView.snp.makeConstraints { make in
             make.top.equalTo(separatorLine.snp.bottom) // 구분선 아래
             make.leading.trailing.bottom.equalToSuperview() // 화면의 좌우 및 아래쪽 끝까지 확장
+            make.bottom.equalToSuperview().priority(.low) // 충돌 방지
         }
         
     }

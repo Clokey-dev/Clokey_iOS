@@ -10,6 +10,9 @@ import SnapKit
 import Then
 
 class FollowProfileView: UIView {
+    private let privateStackView1 = PrivateStackView()
+    private let privateStackView2 = PrivateStackView()
+    private let privateStackView3 = PrivateStackView()
 
     /// 세로 스크롤을 지원하는 ScrollView
     let scrollView: UIScrollView = UIScrollView().then {
@@ -21,57 +24,86 @@ class FollowProfileView: UIView {
         $0.backgroundColor = .white // 배경색 흰색
     }
     
-    // MARK: - UI Components
-    let backButton = UIButton().then {
-        $0.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        $0.tintColor = .black
-    }
-    
-    let usernameLabel = UILabel().then {
-        $0.text = "cake123(아이디란)"
-        $0.font = UIFont.ptdMediumFont(ofSize: 20)
-        $0.textAlignment = .center
-    }
     
     let backgroundImageView = UIImageView().then {
         $0.image = UIImage(named: "profile_background")
-        $0.backgroundColor = .systemGray6
+        $0.backgroundColor = UIColor(red: 255/255, green: 248/255, blue: 235/255, alpha: 1.0)
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
     }
     
     let profileContainer: UIView = UIView().then {
-        $0.backgroundColor = .systemBlue
+        $0.backgroundColor = .white
         $0.layer.cornerRadius = 50 // 원형으로 만들기 위해 반지름을 절반으로 설정
         $0.layer.masksToBounds = true // 자식 콘텐츠가 코너를 넘지 않도록 설정
     }
     
     let profileImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
-        $0.layer.cornerRadius = 10
+        $0.layer.cornerRadius = 50
         $0.layer.masksToBounds = true
-        $0.image = UIImage(named: "profile_icon")
+        $0.image = UIImage(named: "profile_test")
     }
     
     let nicknameLabel: UILabel = {
         let label = UILabel()
-        label.text = "클루"
+        label.text = "초키(닉네임란)"
         label.font = UIFont.ptdMediumFont(ofSize: 18)
         label.textColor = .black
         label.textAlignment = .center
         return label
     }()
     
-    let statsLabel = UILabel().then {
-        $0.text = "게시글 008  팔로워 027  팔로잉 032"
-        $0.font = UIFont.ptdRegularFont(ofSize: 12)
+    let profileDetailContainer: UIView = UIView().then {
+        $0.backgroundColor = .clear
+    }
+    
+    let writeLabel = UILabel().then {
+        $0.text = "게시글"
+        $0.font = UIFont.ptdRegularFont(ofSize: 15)
         $0.textColor = .black
         $0.textAlignment = .center
     }
     
+    let writeCountLabel = UILabel().then {
+        $0.text = "000"
+        $0.font = UIFont.ptdRegularFont(ofSize: 15)
+        $0.textColor = .black
+        $0.textAlignment = .center
+    }
+    
+    let followerLabel = UILabel().then {
+        $0.text = "팔로워"
+        $0.font = UIFont.ptdRegularFont(ofSize: 15)
+        $0.textColor = .black
+        $0.textAlignment = .center
+    }
+    
+    let followerCountButton = UIButton().then {
+        $0.setTitle("000", for: .normal)
+        $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 15)
+        $0.setTitleColor(.black, for: .normal)
+        $0.titleLabel?.textAlignment = .center
+        //        $0.addTarget(self, action: #selector(followingCountTapped), for: .touchUpInside)
+    }
+    
+    let followingLabel = UILabel().then {
+        $0.text = "팔로잉"
+        $0.font = UIFont.ptdRegularFont(ofSize: 15)
+        $0.textColor = .black
+        $0.textAlignment = .center
+    }
+    
+    let followingCountButton = UIButton().then {
+        $0.setTitle("000", for: .normal)
+        $0.titleLabel?.font = UIFont.ptdRegularFont(ofSize: 15)
+        $0.setTitleColor(.black, for: .normal)
+        $0.titleLabel?.textAlignment = .center
+    }
+    
     let descriptionLabel = UILabel().then {
-        $0.text = "나는야공주"
-        $0.font = UIFont.ptdRegularFont(ofSize: 14)
+        $0.text = "한줄소개란입니다아아아아아아아아"
+        $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .black
         $0.textAlignment = .center
         $0.numberOfLines = 2
@@ -82,11 +114,24 @@ class FollowProfileView: UIView {
         $0.setTitleColor(.white, for: .normal)
         $0.backgroundColor = .mainBrown800
         $0.layer.cornerRadius = 10
+        
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.mainBrown800.cgColor
+    }
+    
+    let blockButton = UIButton().then {
+        $0.setTitle("차단 해제", for: .normal)
+        $0.setTitleColor(.white, for: .normal)
+        $0.backgroundColor = .mainBrown800
+        $0.layer.cornerRadius = 10
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.mainBrown800.cgColor
+        $0.isHidden = true
     }
     
     let clothesLabel = UILabel().then {
         $0.text = "옷장"
-        $0.font = UIFont.boldSystemFont(ofSize: 18)
+        $0.font = UIFont.ptdRegularFont(ofSize: 20)
         $0.textAlignment = .left
     }
     
@@ -99,21 +144,27 @@ class FollowProfileView: UIView {
     let clothesImageView1: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .gray
+        $0.layer.cornerRadius = 5
+        $0.layer.masksToBounds = true
+        $0.backgroundColor = .white
     }
     
     /// 두 번째 의류 추천 이미지
     let clothesImageView2: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .gray
+        $0.layer.cornerRadius = 5
+        $0.layer.masksToBounds = true
+        $0.backgroundColor = .white
     }
     
     /// 세 번째 의류 추천 이미지
     let clothesImageView3: UIImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill // 비율 유지
         $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .gray
+        $0.layer.cornerRadius = 5
+        $0.layer.masksToBounds = true
+        $0.backgroundColor = .white
     }
     
     /// '내 옷 보러가기' 버튼 텍스트 레이블
@@ -132,17 +183,21 @@ class FollowProfileView: UIView {
     
     let recordLabel = UILabel().then {
         $0.text = "기록"
-        $0.font = UIFont.boldSystemFont(ofSize: 18)
+        $0.font = UIFont.ptdRegularFont(ofSize: 20)
         $0.textAlignment = .left
     }
     
-    let recordContainerView: UIView = UIView().then {
-        $0.backgroundColor = .gray
+    let calendarContainerView = UIView().then {
+        $0.backgroundColor = .clear
     }
+    
     
     // MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        scrollView.subviews.forEach { $0.removeFromSuperview() }
+        contentView.subviews.forEach { $0.removeFromSuperview() }
         setupUI()
         setupConstraints()
     }
@@ -159,12 +214,17 @@ class FollowProfileView: UIView {
         scrollView.addSubview(contentView)
         
         contentView.addSubview(backgroundImageView)
-        contentView.addSubview(backButton)
-        contentView.addSubview(usernameLabel)
+        
         contentView.addSubview(profileContainer)
         profileContainer.addSubview(profileImageView)
         contentView.addSubview(nicknameLabel)
-        contentView.addSubview(statsLabel)
+        contentView.addSubview(profileDetailContainer)
+        profileDetailContainer.addSubview(writeLabel)
+        profileDetailContainer.addSubview(writeCountLabel)
+        profileDetailContainer.addSubview(followerLabel)
+        profileDetailContainer.addSubview(followerCountButton)
+        profileDetailContainer.addSubview(followingLabel)
+        profileDetailContainer.addSubview(followingCountButton)
         contentView.addSubview(descriptionLabel)
         contentView.addSubview(followButton)
         contentView.addSubview(clothesLabel)
@@ -175,13 +235,14 @@ class FollowProfileView: UIView {
         contentView.addSubview(bottomButtonLabel)
         contentView.addSubview(bottomArrowIcon)
         contentView.addSubview(recordLabel)
-        contentView.addSubview(recordContainerView)
+        contentView.addSubview(calendarContainerView)
     }
     
     
     private func setupConstraints() {
         scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview() // 화면 전체에 ScrollView
+            make.top.equalTo(safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.bottom.equalToSuperview()
         }
         
         // ContentView 제약 설정
@@ -194,18 +255,8 @@ class FollowProfileView: UIView {
         backgroundImageView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.centerX.equalToSuperview()
-            make.height.width.equalTo(393)
-        }
-        
-        backButton.snp.makeConstraints { make in
-            make.top.equalTo(backgroundImageView.snp.top).offset(60)
-            make.leading.equalToSuperview().offset(20)
-            make.size.equalTo(24)
-        }
-        
-        usernameLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(backButton)
-            make.leading.equalTo(backButton.snp.trailing).offset(15)
+            make.height.equalTo(393)
+            make.width.equalToSuperview()
         }
         
         profileContainer.snp.makeConstraints { make in
@@ -223,15 +274,48 @@ class FollowProfileView: UIView {
         nicknameLabel.snp.makeConstraints { make in
             make.top.equalTo(profileImageView.snp.bottom).offset(13)
             make.centerX.equalToSuperview()
+            make.height.equalTo(24)
         }
         
-        statsLabel.snp.makeConstraints { make in
-            make.top.equalTo(nicknameLabel.snp.bottom).offset(4)
+        profileDetailContainer.snp.makeConstraints { make in
+            make.top.equalTo(nicknameLabel.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
+            make.height.equalTo(24)
+        }
+        
+        writeLabel.snp.makeConstraints { make in
+            make.top.leading.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
+        
+        writeCountLabel.snp.makeConstraints { make in
+            make.leading.equalTo(writeLabel.snp.trailing).offset(8)
+            make.centerY.equalTo(writeLabel)
+        }
+        
+        followerLabel.snp.makeConstraints { make in
+            make.leading.equalTo(writeCountLabel.snp.trailing).offset(20)
+            make.centerY.equalTo(writeCountLabel)
+        }
+        
+        followerCountButton.snp.makeConstraints { make in
+            make.leading.equalTo(followerLabel.snp.trailing).offset(0)
+            make.centerY.equalTo(followerLabel)
+        }
+        
+        followingLabel.snp.makeConstraints { make in
+            make.leading.equalTo(followerCountButton.snp.trailing).offset(12)
+            make.centerY.equalTo(followerCountButton)
+        }
+        
+        followingCountButton.snp.makeConstraints { make in
+            make.leading.equalTo(followingLabel.snp.trailing).offset(0)
+            make.centerY.equalTo(followingLabel)
+            make.trailing.equalToSuperview()
         }
         
         descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(statsLabel.snp.bottom).offset(4)
+            make.top.equalTo(profileDetailContainer.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
         }
         
@@ -256,19 +340,19 @@ class FollowProfileView: UIView {
         clothesImageView1.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview() // 상하 배치 고정
             make.leading.equalToSuperview() // 좌측 고정
-            make.width.equalTo(112) // 고정 너비 설정
+            make.width.greaterThanOrEqualTo(110) // 고정 너비 설정
         }
         
         clothesImageView2.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview() // 상하 배치 고정
             make.leading.equalTo(clothesImageView1.snp.trailing).offset(9)
-            make.width.equalTo(112) // 고정 너비 설정
+            make.width.greaterThanOrEqualTo(110) // 고정 너비 설정
         }
         
         clothesImageView3.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview() // 상하 배치 고정
             make.leading.equalTo(clothesImageView2.snp.trailing).offset(9)
-            make.width.equalTo(112) // 고정 너비 설정
+            make.width.greaterThanOrEqualTo(110) // 고정 너비 설정
             make.trailing.equalToSuperview() // 우측 고정
         }
         
@@ -280,7 +364,7 @@ class FollowProfileView: UIView {
         bottomArrowIcon.snp.makeConstraints { make in
             make.centerY.equalTo(bottomButtonLabel.snp.centerY)
             make.leading.equalTo(bottomButtonLabel.snp.trailing).offset(5)
-            make.trailing.equalToSuperview().inset(20)
+//            make.trailing.equalToSuperview().inset(20)
             make.width.equalTo(6)
             make.height.equalTo(12)
         }
@@ -290,12 +374,152 @@ class FollowProfileView: UIView {
             make.leading.equalToSuperview().offset(20)
         }
         
-        recordContainerView.snp.makeConstraints { make in
-            make.top.equalTo(recordLabel.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(520)
-            make.bottom.equalToSuperview().offset(-40) // 스크롤 콘텐츠의 마지막 부분
+        calendarContainerView.snp.makeConstraints {
+            $0.top.equalTo(recordLabel.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(600)
+            $0.bottom.equalToSuperview().offset(20)
+        }
+    }
+    
+    func updateClothesPrivateState(isPrivate: Bool, isBlocked: Bool) {
+        if isPrivate || isBlocked {
+            // 둘 중 하나라도 true면 숨김
+            privateStackView1.removeFromSuperview()
+            bottomButtonLabel.isHidden = true
+            bottomArrowIcon.isHidden = true
+        } else {
+            // 둘 다 false일 때만 보여줌
+            bottomButtonLabel.isHidden = false
+            bottomArrowIcon.isHidden = false
+        }
+    }
+    
+    /// 데이터 상태에 따라 EmptyStackView 표시/숨김
+    func updateClothesPrivateState(isPrivate: Bool) {
+        if isPrivate {
+           
+            clothesImageContainerView.addSubview(privateStackView1)
+            
+            clothesImageContainerView.snp.remakeConstraints { make in
+                make.top.equalTo(clothesLabel.snp.bottom).offset(53)
+                make.leading.trailing.equalToSuperview().inset(20)
+                make.height.equalTo(164) // 고정 높이 설정
+            }
+            
+            privateStackView1.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+            
+            bottomButtonLabel.isHidden = true
+            bottomArrowIcon.isHidden = true
+        } else {
+            // 데이터가 있으면 EmptyStackView 제거하고 관련 요소 표시
+            privateStackView1.removeFromSuperview()
+            
+            clothesImageContainerView.snp.remakeConstraints { make in
+                make.top.equalTo(clothesLabel.snp.bottom).offset(16)
+                make.leading.trailing.equalToSuperview().inset(20)
+                make.height.equalTo(164) // 고정 높이 설정
+            }
+
+            bottomButtonLabel.isHidden = false
+            bottomArrowIcon.isHidden = false
+        }
+    }
+    
+    func updateCalendarPrivateState(isPrivate: Bool) {
+        if isPrivate {
+            
+            calendarContainerView.addSubview(privateStackView2)
+            
+            calendarContainerView.snp.remakeConstraints {
+                $0.top.equalTo(recordLabel.snp.bottom).offset(53)
+                $0.leading.trailing.equalToSuperview()
+                $0.height.equalTo(600)
+                $0.bottom.equalToSuperview().offset(20)
+            }
+            
+            privateStackView2.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+    
+        } else {
+            // 데이터가 있으면 EmptyStackView 제거하고 관련 요소 표시
+            privateStackView2.removeFromSuperview()
+            
+            calendarContainerView.snp.remakeConstraints {
+                $0.top.equalTo(recordLabel.snp.bottom)
+                $0.leading.trailing.equalToSuperview()
+                $0.height.equalTo(600)
+                $0.bottom.equalToSuperview().offset(20)
+            }
+
+        }
+    }
+    
+    func updateCloseAccount(isClosed: Bool) {
+        if isClosed {
+            privateStackView3.privateIcon.image = UIImage(named: "block")
+            privateStackView3.privateMessageTitle.text = "차단한 계정입니다.\n옷장과 기록을 보시려면\n차단을 해제해주세요."
+            clothesImageContainerView.addSubview(privateStackView3)
+            privateStackView3.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+            
+            clothesLabel.isHidden = true
+            bottomButtonLabel.isHidden = true
+            bottomArrowIcon.isHidden = true
+            
+            recordLabel.isHidden = true
+            calendarContainerView.isHidden = true
+        } else {
+            privateStackView3.removeFromSuperview()
+            
+            clothesLabel.isHidden = false
+            bottomButtonLabel.isHidden = false
+            bottomArrowIcon.isHidden = false
+            
+            recordLabel.isHidden = false
+            calendarContainerView.isHidden = false
+        }
+    }
+    
+    /// 차단 해제 버튼 생성
+    func blockButton(isBlock: Bool) {
+        if isBlock {
+            if blockButton.superview == nil {
+                contentView.addSubview(blockButton)
+            }
+            
+            followButton.isHidden = true
+            
+            blockButton.snp.remakeConstraints { make in
+                make.top.equalTo(descriptionLabel.snp.bottom).offset(13)
+                make.centerX.equalToSuperview()
+                make.width.equalTo(86)
+                make.height.equalTo(30)
+            }
+            blockButton.isHidden = false
+        } else {
+            followButton.isHidden = false
+            blockButton.removeFromSuperview()
+        }
+    }
+    
+    func touchMyProfile(isMine:Bool){
+        if isMine {
+            followButton.isHidden = true
+            clothesLabel.snp.remakeConstraints { make in
+                make.top.equalTo(descriptionLabel.snp.bottom).offset(20)
+                make.leading.equalToSuperview().offset(20)
+            }
+        } else {
+            followButton.isHidden = false
+            clothesLabel.snp.remakeConstraints { make in
+                make.top.equalTo(followButton.snp.bottom).offset(36)
+                make.leading.equalToSuperview().offset(20)
+            }
         }
     }
 }

@@ -59,6 +59,13 @@ class CalendarViewController: UIViewController {
         $0.titleLabel?.font = .ptdBoldFont(ofSize: 16)
     }
     
+    // 로딩 인디케이터
+    private let loadingIndicator = UIActivityIndicatorView(style: .large).then {
+        $0.color = UIColor(named: "pointOrange800")
+        $0.hidesWhenStopped = true
+        $0.backgroundColor = .clear
+    }
+    
     // 달력 뷰 표시
     private let calendarView = CalendarView()
     
@@ -73,11 +80,26 @@ class CalendarViewController: UIViewController {
         updateCalendar()
         
         calendarView.delegate = self
+        if shouldHideUserNameLabel {
+            userNameLabel.isHidden = true
+            userNameLabel.snp.removeConstraints()
+            monthControlStack.snp.remakeConstraints {
+                $0.top.equalTo(view.safeAreaLayoutGuide).offset(16) 
+                $0.leading.equalToSuperview().offset(25)
+                $0.trailing.equalToSuperview().offset(-25)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchHistoryData()
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     // MARK: - Setup
@@ -87,6 +109,7 @@ class CalendarViewController: UIViewController {
         view.addSubview(userNameLabel)
         view.addSubview(monthControlStack)
         view.addSubview(calendarView)
+        view.addSubview(loadingIndicator)
         
         monthControlStack.addArrangedSubview(previousMonthButton)
         monthControlStack.addArrangedSubview(monthLabel)
@@ -98,7 +121,7 @@ class CalendarViewController: UIViewController {
         }
         
         monthControlStack.snp.makeConstraints {
-            $0.top.equalTo(userNameLabel.snp.bottom).offset(16)
+            $0.top.equalTo(userNameLabel.snp.bottom).offset(26)
             $0.leading.equalToSuperview().offset(25)
             $0.trailing.equalToSuperview().offset(-25)
         }
@@ -108,6 +131,20 @@ class CalendarViewController: UIViewController {
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(500)
         }
+        
+        loadingIndicator.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+        
+        // 스와이프로 캘린더 이동 
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
+        swipeLeft.direction = .left
+        view.addGestureRecognizer(swipeLeft)
+
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
+        swipeRight.direction = .right
+        view.addGestureRecognizer(swipeRight)
+
     }
     
     private func setupBindings() {
@@ -122,6 +159,36 @@ class CalendarViewController: UIViewController {
                 self?.changeMonth(by: 1)
             }
             .disposed(by: disposeBag)
+    }
+    
+    // MARK: - Methods
+    var shouldHideUserNameLabel: Bool = false {
+        didSet {
+            userNameLabel.isHidden = shouldHideUserNameLabel
+            userNameLabel.snp.removeConstraints()
+
+            // 숨겨지면 monthControlStack의 제약을 변경
+            if shouldHideUserNameLabel {
+                monthControlStack.snp.remakeConstraints {
+                    $0.top.equalTo(view.safeAreaLayoutGuide).offset(16) // 바로 safeArea 아래에 붙이기
+                    $0.leading.equalToSuperview().offset(25)
+                    $0.trailing.equalToSuperview().offset(-25)
+                }
+            }
+        }
+    }
+    
+    // MARK: - Actions
+
+    @objc private func handleSwipe(_ gesture: UISwipeGestureRecognizer) {
+        switch gesture.direction {
+        case .left:
+            changeMonth(by: 1)
+        case .right:
+            changeMonth(by: -1)
+        default:
+            break
+        }
     }
     
     // MARK: - Calendar Methods
@@ -151,8 +218,17 @@ class CalendarViewController: UIViewController {
         formatter.dateFormat = "yyyy-MM"
         let monthString = formatter.string(from: currentMonth)
         
+        // 로딩 시작 (UI 스레드에서 실행)
+        DispatchQueue.main.async {
+            self.loadingIndicator.startAnimating()
+        }
+        
         historyService.historyMonth(clokeyId: nil, month: monthString) { [weak self] result in
             guard let self = self else { return }
+            
+            DispatchQueue.main.async {
+                self.loadingIndicator.stopAnimating() // 로딩 완료되면 중지
+            }
             
             switch result {
             case .success(let response):
@@ -160,14 +236,18 @@ class CalendarViewController: UIViewController {
                     dict[history.date] = history.imageUrl
                 }
                 self.historyIdMap = response.histories.reduce(into: [:]) { dict, history in
-                    dict[history.date] = history.historyId  // historyId 저장
+                    dict[history.date] = history.historyId
                 }
+                self.userNameLabel.text = "\(response.nickName)의 스타일 캘린더"
                 self.updateCalendar()
+                
             case .failure(let error):
                 print("캘린더 데이터 로드 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
+
 }
 
 // MARK: - CalendarViewDelegate
@@ -191,6 +271,8 @@ extension CalendarViewController: CalendarViewDelegate {
     }
 
     private func fetchHistoryDetail(historyId: Int) {
+        let historyService = HistoryService()
+
         historyService.historyDetail(historyId: historyId) { [weak self] result in
             guard let self = self else { return }
 
@@ -203,7 +285,9 @@ extension CalendarViewController: CalendarViewDelegate {
 
             case .failure(let error):
                 print("히스토리 상세 조회 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
+
 }

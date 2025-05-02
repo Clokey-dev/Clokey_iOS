@@ -14,7 +14,7 @@ protocol PhotoEditViewControllerDelegate: AnyObject {
     func photoEditViewController(_ viewController: PhotoEditViewController, didFinishEditing images: [UIImage])
 }
 
-class PhotoEditViewController: UIViewController {
+class PhotoEditViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Properties
     
@@ -81,6 +81,7 @@ class PhotoEditViewController: UIViewController {
         
         // 터치 이벤트가 스크롤 동작으로 인해 취소되지 않도록 설정
         thumbnailCollectionView.canCancelContentTouches = false
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
     }
     
@@ -104,7 +105,7 @@ class PhotoEditViewController: UIViewController {
         navBarManager.setTitle(
             to: navigationItem,
             title: "사진 편집",
-            font: .systemFont(ofSize: 18, weight: .semibold), textColor: .black
+            font: .ptdSemiBoldFont(ofSize: 18), textColor: .black
         )
 
         view.addSubview(thumbnailCollectionView)
@@ -161,6 +162,7 @@ class PhotoEditViewController: UIViewController {
     // 편집 뷰를 열 때, 선택된 이미지를 전달받아 설정
     func configure(with images: [UIImage]) {
         self.selectedImages = images
+        self.currentEditingIndex = 0 // 첫 번째 이미지로 초기화
         thumbnailCollectionView.reloadData()
         updateMainImage()
     }
@@ -266,7 +268,8 @@ extension PhotoEditViewController: UICollectionViewDataSource, UICollectionViewD
             withReuseIdentifier: ImageCollectionViewCell.identifier,
             for: indexPath
         ) as! ImageCollectionViewCell
-        cell.configure(with: selectedImages[indexPath.item])
+        let image = selectedImages[indexPath.item] // 순서 반영
+        cell.configure(with: image)
         cell.hideDeleteButton()
         return cell
     }

@@ -19,8 +19,10 @@ public enum HistoryEndpoint {
     case historyDelete(historyId: Int)
     case historyLikeList(historyId: Int)
     case historyCreate(data: HistoryCreateRequestDTO, images: [Data])
-
-
+    //좋아요한 게시물
+    case likedHistories(page: Int)
+    case historyCommentList(page: Int)
+    
     // 추가적인 API는 여기 케이스로 정의
 }
 
@@ -55,6 +57,10 @@ extension HistoryEndpoint: TargetType {
             return "/histories/\(historyId)/likes"
         case .historyCreate:
             return "/histories"
+        case .likedHistories:
+            return "/histories/liked"
+        case .historyCommentList:
+            return "/histories/my-comments"
         }
     }
     
@@ -65,7 +71,7 @@ extension HistoryEndpoint: TargetType {
             return .post
         case .historyCommentUpdate:
             return .patch
-        case .historyMonth, .historyDetail, .historyComments, .historyLikeList:
+        case .historyMonth, .historyDetail, .historyComments, .historyLikeList, .likedHistories, .historyCommentList:
             return .get
         case .historyCommentDelete, .historyDelete:
             return .delete
@@ -104,18 +110,21 @@ extension HistoryEndpoint: TargetType {
             var formData: [MultipartFormData] = []
             // 이미지 데이터 추가
             for (index, imageData) in images.enumerated() {formData.append(
-                    MultipartFormData( provider: .data(imageData), name: "imageFile", fileName: "image\(index).jpg", mimeType: "image/jpeg")
-                )
+                MultipartFormData( provider: .data(imageData), name: "imageFile", fileName: "image\(index).jpg", mimeType: "image/jpeg")
+            )
             }
             // JSON 데이터 추가
             if let jsonData = try? JSONEncoder().encode(data) { formData.append(
-                    MultipartFormData( provider: .data(jsonData), name: "historyCreateRequest", mimeType: "application/json")
-                )
+                MultipartFormData( provider: .data(jsonData), name: "historyCreateRequest", mimeType: "application/json")
+            )
             }
             return .uploadMultipart(formData)
+        case .likedHistories(let page):
+            return .requestParameters(parameters: ["page": page], encoding: URLEncoding.queryString)
+        case .historyCommentList(let page):
+            return .requestParameters(parameters: ["page": page], encoding: URLEncoding.queryString)
         }
     }
-
     
     public var headers: [String: String]? {
         return [
@@ -123,3 +132,4 @@ extension HistoryEndpoint: TargetType {
         ]
     }
 }
+

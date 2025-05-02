@@ -12,4 +12,5 @@ struct LikeUserModel {
     let nickname: String
     let profileImageUrl: String
     var isFollowing: Bool
+    let isMe: Bool
 }

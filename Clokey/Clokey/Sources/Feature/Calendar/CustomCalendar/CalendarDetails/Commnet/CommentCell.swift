@@ -13,10 +13,16 @@ import Kingfisher
 
 protocol CommentCellDelegate: AnyObject {
     func didTapReplyButton(commentId: Int64)
+    func didTapProfile(with clokeyId: String)
+    func didTapDelete(commentId: Int64) 
+    func didTapReport(commentId: Int64)
+    func didTapBlock(clokeyId: String)
 }
 
 class CommentCell: UITableViewCell {
     static let identifier = "CommentCell"
+    
+    private var storedClokeyId: String?  // 추가
     
     weak var delegate: CommentCellDelegate? // 델리게이트 선언
 
@@ -27,12 +33,13 @@ class CommentCell: UITableViewCell {
     private let profileImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
-        $0.layer.cornerRadius = 17.5
+        $0.layer.cornerRadius = 20
         $0.backgroundColor = .lightGray
+        $0.isUserInteractionEnabled = true
     }
 
     private let nameLabel = UILabel().then {
-        $0.font = .boldSystemFont(ofSize: 14)
+        $0.font = .ptdBoldFont(ofSize: 14)
         $0.textColor = .black
     }
 
@@ -61,18 +68,23 @@ class CommentCell: UITableViewCell {
     let mainStackView = UIStackView().then {
         $0.axis = .horizontal
         $0.spacing = 8
-        $0.alignment = .top
+        $0.alignment = .leading
     }
+    
+    // MARK: - Init
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
+        setupContextMenu()
         selectionStyle = .none
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Method
 
     private func setupUI() {
         contentView.addSubview(containerView)
@@ -94,11 +106,14 @@ class CommentCell: UITableViewCell {
 
         profileImageView.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(20)
-            $0.width.height.equalTo(35)
+            $0.width.height.equalTo(40)
         }
+        
+        let cellTapGesture = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
+        profileImageView.addGestureRecognizer(cellTapGesture)
     }
 
-    func configure(profileImage: String, name: String, comment: String, isLastReply: Bool, commentId: Int) {
+    func configure(profileImage: String, name: String, comment: String, isLastReply: Bool, commentId: Int, clokeyId: String) {
         if let url = URL(string: profileImage) {
             profileImageView.kf.setImage(
                 with: url,
@@ -117,6 +132,7 @@ class CommentCell: UITableViewCell {
         commentLabel.text = comment
         replyButton.isHidden = !isLastReply
         self.tag = Int(commentId)
+        self.storedClokeyId = clokeyId
     }
     
     func setSelected(_ selected: Bool) {
@@ -135,9 +151,47 @@ class CommentCell: UITableViewCell {
             self.containerView.backgroundColor = .white
         }
     }
-    
+    // 댓글 꾹 누를 경우 이벤트
+    private func setupContextMenu() {
+        let interaction = UIContextMenuInteraction(delegate: self)
+        self.addInteraction(interaction)
+    }
 
+    // MARK: Action
     @objc private func didTapReply() {
         delegate?.didTapReplyButton(commentId: Int64(self.tag)) 
+    }
+    
+    @objc private func cellTapped() {
+        if let clokeyId = storedClokeyId {
+            print("프로필 선택됨: \(clokeyId)")  // 디버깅용 로그
+            delegate?.didTapProfile(with: clokeyId)
+        }
+    }
+
+}
+
+// 댓글 꾹 누를 시, 효과 처리
+extension CommentCell: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            let deleteAction = UIAction(title: "삭제하기", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+                self.delegate?.didTapDelete(commentId: Int64(self.tag))
+            }
+            
+            let reportAction = UIAction(title: "신고하기", image: UIImage(systemName: "exclamationmark.triangle")) { _ in
+                self.delegate?.didTapReport(commentId: Int64(self.tag))
+            }
+            
+            let blockAction = UIAction(title: "차단하기", image: UIImage(systemName: "nosign")) { _ in
+                if let clokeyId = self.storedClokeyId {
+                    self.delegate?.didTapBlock(clokeyId: clokeyId)
+                } else {
+                    print("clokeyId를 찾을 수 없음")
+                }
+            }
+
+            return UIMenu(title: "", children: [deleteAction, reportAction, blockAction])
+        }
     }
 }

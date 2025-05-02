@@ -139,7 +139,7 @@ class UploadModalView: UIView {
         selectedDateLabel.text = dateFormatter.string(from: date)
     }
     
-    // 기록 추가하기 네비게이션 작업 
+    // 기록 추가하기 네비게이션 작업
     func getAddButton() -> UIButton {
         return addButton
     }

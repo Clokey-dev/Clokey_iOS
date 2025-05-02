@@ -17,7 +17,8 @@ public final class HistoryService: NetworkManager {
     public init(provider: MoyaProvider<HistoryEndpoint>? = nil) {
         let plugins: [PluginType] = [
             NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)),
-            AccessTokenPlugin()
+            AccessTokenPlugin(),
+            TokenRefreshPlugin()
         ]
         self.provider = provider ?? MoyaProvider<HistoryEndpoint>(plugins: plugins)
     }
@@ -153,6 +154,30 @@ public final class HistoryService: NetworkManager {
         request(
             target: .historyCreate(data: data, images: images),
             decodingType: HistoryCreateResponseDTO.self,
+            completion: completion
+        )
+    }
+    
+    //좋아요한 기록 보기
+    public func likedHistories(
+            page: Int,
+            completion: @escaping (Result<LikedHistoriesResponseDTO, NetworkError>) -> Void
+        ) {
+        request(
+            target: .likedHistories(page: page),
+            decodingType: LikedHistoriesResponseDTO.self,
+            completion: completion
+        )
+    }
+    
+    // 내가 남긴 댓글 목록 조회 API
+    public func getMyCommentHistories(
+        page: Int,
+        completion: @escaping (Result<CommentHistoryResponse, NetworkError>) -> Void
+    ) {
+        request(
+            target: .historyCommentList(page: page),
+            decodingType: CommentHistoryResponse.self,
             completion: completion
         )
     }

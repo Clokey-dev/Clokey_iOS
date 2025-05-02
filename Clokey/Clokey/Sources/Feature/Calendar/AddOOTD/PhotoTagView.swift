@@ -30,6 +30,13 @@ class PhotoTagView: UIView {
         $0.font = .ptdMediumFont(ofSize: 20)
     }
     
+    // 사진 필수 표시 라벨
+    private let selectImageRequiredIndicator = UILabel().then {
+        $0.text = "*"
+        $0.font = .ptdMediumFont(ofSize: 20)
+        $0.textColor = .pointOrange800
+    }
+    
     // > 아이콘
     private let chevronImageView = UIImageView().then {
         $0.image = UIImage(systemName: "chevron.right")
@@ -122,23 +129,29 @@ class PhotoTagView: UIView {
     private func setupUI() {
         backgroundColor = .white
         
+        let spacerView = UIView()
+        
         addSubview(selectImageStack)
         addSubview(imageCollectionView)
-        
+
         selectImageStack.addArrangedSubview(selectImageLabel)
+        selectImageStack.addArrangedSubview(selectImageRequiredIndicator) // 여기에 추가
+        selectImageStack.addArrangedSubview(spacerView)
         selectImageStack.addArrangedSubview(chevronImageView)
         
         addSubview(tagImageStack)
         addSubview(tagCollectionView)
         addSubview(requiredIndicator)
                 
-        let spacerView = UIView() // 빈 공간 채우기
+         // 빈 공간 채우기
         
         tagImageStack.addArrangedSubview(tagImageLabel)
         tagImageStack.addArrangedSubview(spacerView) // 위치 중요
         tagImageStack.addArrangedSubview(tgChevronImageView)
         
         setupConstraints()
+        selectImageRequiredIndicator.transform = CGAffineTransform(translationX: 0, y: -5)
+
     }
     
     // 각 레이아웃 설정
@@ -150,6 +163,11 @@ class PhotoTagView: UIView {
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
             $0.height.equalTo(30)
+        }
+        
+        selectImageLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.width.equalTo(37)
         }
         
         imageCollectionView.snp.makeConstraints {
@@ -185,6 +203,16 @@ class PhotoTagView: UIView {
     func updateCollectionViewHeight(_ hasImages: Bool) {
         imageCollectionView.snp.updateConstraints {
             $0.height.equalTo(hasImages ? 160 : 0)
+        }
+        
+        // 레이아웃 즉시 업데이트
+        UIView.animate(withDuration: 0.3) {
+            self.layoutIfNeeded()
+        }
+        
+        // 컬렉션 뷰 리프레시
+        if hasImages {
+            imageCollectionView.reloadData()
         }
     }
     // 이미지 추가 되면 높이 0 -> 180

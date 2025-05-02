@@ -10,13 +10,16 @@ import Moya
 
 public enum ClothesEndpoint {
     case inquiryClothesDetail(cloth_id: Int)
-    case checkEditClothes(cloth_id: Int)
-    case checkPopUpClothes(cloth_id: Int)
+    case checkEditClothes(clothId: Int64)
+    case checkPopUpClothes(clothId: Int64)
+    case smartSummationClothes
     case getCategoryClothes(category: String, season: String, sort: String, page: Int) // 쿼리 매개변수 추가
-    case addClothes(category_id: Int, data: AddClothesRequestDTO) // category_id 추가
-    case editClothes(cloth_id: Int, category_id: Int, data: EditClothesRequestDTO)
+    case addClothes(image: Data, data: AddClothesRequestDTO) // category_id 추가
+    case editClothes(clothId: Int64, imageData: Data, clothUpdateRequest: EditClothesRequestDTO)
     case deleteClothes(cloth_id: Int)
-    case getClothes(clokeyId: String, categoryId: CLong, season: String, sort: String, page: Int, size: Int)
+    case getClothes(clokeyId: String?, categoryId: CLong, season: String, sort: String, page: Int, size: Int)
+    case searchByNameAndBrand(keyword: String, page: Int, size: Int)
+
 }
 
 extension ClothesEndpoint: TargetType {
@@ -32,20 +35,24 @@ extension ClothesEndpoint: TargetType {
         switch self {
         case .inquiryClothesDetail(let cloth_id):
             return "/clothes/\(cloth_id)"
-        case .checkEditClothes(cloth_id: let cloth_id):
-            return "/clothes/\(cloth_id)/edit-view"
-        case .checkPopUpClothes(cloth_id: let cloth_id):
-            return "/clothes/\(cloth_id)/popup-view"
+        case .checkEditClothes(let clothId):
+            return "/clothes/\(clothId)/edit-view"
+        case .checkPopUpClothes(let clothId):
+            return "/clothes/\(clothId)/popup-view"
+        case .smartSummationClothes:
+                    return "/clothes/smart-summary"
         case .getCategoryClothes:
             return "/clothes"
         case .addClothes:
             return "/clothes"
-        case .editClothes(cloth_id: let cloth_id):
-            return "/clothes/\(cloth_id)/edit"
+        case .editClothes(let clothId, _, _):
+            return "/clothes/\(clothId)"
         case .deleteClothes(let cloth_id):
             return "/clothes/\(cloth_id)"
-        case .getClothes(let clokeyId, _, _, _, _, _):
-            return "/clothes/\(clokeyId)"
+        case .getClothes:
+            return "/clothes/closet-view"
+        case .searchByNameAndBrand:
+            return "/clothes/search/name-and-brand"
         }
     }
     
@@ -62,7 +69,9 @@ extension ClothesEndpoint: TargetType {
              .inquiryClothesDetail,
              .checkEditClothes,
              .checkPopUpClothes,
-             .getCategoryClothes:
+             .getCategoryClothes,
+             .searchByNameAndBrand,
+             .smartSummationClothes:
             return .get
         }
     }
@@ -70,11 +79,13 @@ extension ClothesEndpoint: TargetType {
     // 요청 데이터(내가 서버로 보내야 하는 데이터)
     public var task: Moya.Task {
         switch self {
-        case .inquiryClothesDetail(let cloth_id):
+        case .inquiryClothesDetail(_):
             return .requestPlain
-        case .checkEditClothes(let cloth_id):
+        case .checkEditClothes(_):
             return .requestPlain
-        case .checkPopUpClothes(let cloth_id):
+        case .checkPopUpClothes(_):
+            return .requestPlain
+        case .smartSummationClothes:
             return .requestPlain
         case .getCategoryClothes(let category, let season, let sort, let page):
             // Query parameters를 설정
@@ -87,28 +98,85 @@ extension ClothesEndpoint: TargetType {
                 ],
                 encoding: URLEncoding.queryString // 쿼리 스트링 방식
             )
+        case .addClothes(let image, let data):
+            var multipartData = [MultipartFormData]()
+
+            do {
+                let jsonData = try JSONEncoder().encode(data)
+                
+                //  JSON 확인 로그 추가
+                let jsonString = String(data: jsonData, encoding: .utf8) ?? "JSON 변환 실패"
+                print(" JSON 데이터: \(jsonString)")
+
+                let jsonPart = MultipartFormData(provider: .data(jsonData), name: "clothCreateRequest", mimeType: "application/json")
+                multipartData.append(jsonPart)
+            } catch {
+                print("🚨 JSON 인코딩 실패: \(error.localizedDescription)")
+                return .requestPlain
+            }
+
+            //  이미지 파일 추가 (name을 "imageFile"로 변경)
+            let fileName = "clothes_image.jpg"
+            let imagePart = MultipartFormData(provider: .data(image), name: "imageFile", fileName: fileName, mimeType: "image/jpeg")
+
+            //  이미지 크기 로그 출력
+            print(" 이미지 크기: \(image.count) bytes")
+
+            multipartData.append(imagePart)
+
+            return .uploadMultipart(multipartData)
             
-        case .addClothes(let category_id, let data):
-            return .requestCompositeParameters(
-                bodyParameters: try! data.asDictionary(), // JSON Body
-                bodyEncoding: JSONEncoding.default,      // JSON 인코딩 방식
-                urlParameters: ["category_id": category_id] // Query String
-            )
-            
-        case .editClothes(let cloth_id, let category_id, let data):
-            return .requestCompositeParameters(
-                bodyParameters: try! data.asDictionary(),
-                bodyEncoding: JSONEncoding.default,
-                urlParameters: ["category_id": category_id]
-            )
-        case .deleteClothes(let cloth_id):
+        case .editClothes(_, let imageData, let clothUpdateRequest):
+            var multipartData = [MultipartFormData]()
+
+            do {
+                let jsonData = try JSONEncoder().encode(clothUpdateRequest)
+                
+                //  JSON 확인 로그 추가
+                let jsonString = String(data: jsonData, encoding: .utf8) ?? "JSON 변환 실패"
+                print(" JSON 데이터: \(jsonString)")
+
+                let jsonPart = MultipartFormData(provider: .data(jsonData), name: "clothUpdateRequest", mimeType: "application/json")
+                multipartData.append(jsonPart)
+            } catch {
+                print("🚨 JSON 인코딩 실패: \(error.localizedDescription)")
+                return .requestPlain
+            }
+
+            //  이미지 파일 추가 (name을 "imageFile"로 변경)
+            let fileName = "clothes_image.jpg"
+            let imagePart = MultipartFormData(provider: .data(imageData), name: "imageFile", fileName: fileName, mimeType: "image/jpeg")
+
+            //  이미지 크기 로그 출력
+            print(" 이미지 크기: \(imageData.count) bytes")
+
+            multipartData.append(imagePart)
+
+            return .uploadMultipart(multipartData)
+        case .deleteClothes(_):
             return .requestPlain
-        case let .getClothes(_, categoryId, season, sort, page, size):
+        case let .getClothes(clokeyId, categoryId, season, sort, page, size):
+            var parameters: [String: Any] = [
+                "categoryId": categoryId,
+                "season": season,
+                "sort": sort,
+                "page": page,
+                "size": size
+            ]
+            
+            // clokeyId가 있을 때만 파라미터에 추가
+            if let clokeyId = clokeyId {
+                parameters["clokeyId"] = clokeyId
+            }
+            
+            return .requestParameters(
+                parameters: parameters,
+                encoding: URLEncoding.queryString
+            )
+        case let .searchByNameAndBrand(keyword, page, size):
             return .requestParameters(
                 parameters: [
-                    "categoryId": categoryId,
-                    "season": season,
-                    "sort": sort,
+                    "keyword": keyword,
                     "page": page,
                     "size": size
                 ],
@@ -119,7 +187,7 @@ extension ClothesEndpoint: TargetType {
     
     public var headers: [String : String]? {
         switch self {
-        case .editClothes:
+        case .addClothes, .editClothes:
             return [
                 "Content-Type": "multipart/form-data"
             ]

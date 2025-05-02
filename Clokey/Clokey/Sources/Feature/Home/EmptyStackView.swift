@@ -48,6 +48,7 @@ class EmptyStackView: UIView {
     
     // MARK: - Setup Methods
     private func setupUI() {
+        backgroundColor = .white
         addSubview(emptyIcon)
         addSubview(emptyClothesMessageTitle)
         addSubview(emptyClothesMessageSubTitle)

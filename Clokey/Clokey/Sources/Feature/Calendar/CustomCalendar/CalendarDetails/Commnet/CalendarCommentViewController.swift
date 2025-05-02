@@ -10,23 +10,33 @@ import SnapKit
 import Then
 import UIKit
 import Kingfisher
+import IQKeyboardManagerSwift
 
 protocol CalendarCommentDelegate: AnyObject {
     func didUpdateComment(count: Int)  // 댓글 수 업데이트
     func didDeleteComment()  // 댓글 삭제됨
+    func CalendarCommentViewController(_ viewController: CalendarCommentViewController, didSelectProfileWith clokeyId: String)
+    func commentViewController(_ viewController: CalendarCommentViewController, didRequestReportForComment commentId: Int64)
 }
 
 class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     
     weak var delegate: CalendarCommentDelegate?
-    
+    weak var reportDelegate: CalendarCommentDelegate?
+    private var inputViewBottomConstraint: Constraint?
+
     private let backgroundView = UIView().then {
         $0.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         $0.alpha = 0
     }
     
+    // 블러 효과
+    private let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .dark)).then {
+        $0.alpha = 0
+    }
+    
     private let commentView = CalendarCommentView()
-    private var comments: [Comment] = Comment.sampleComments
+    private var comments: [Comment] = []
     private var selectedCommentId: Int64? = nil // 대댓글 대상 ID
     
     // 선택한 댓글
@@ -40,6 +50,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     
     // 서비스 및 히스토리 ID
     private let historyService = HistoryService()
+    private let notificationService = NotificationService()
     private let historyId: Int
     
     // MARK: - Init
@@ -69,6 +80,18 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        IQKeyboardManager.shared.isEnabled = false
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        IQKeyboardManager.shared.isEnabled = true
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    }
+
     private func setupUI() {
         view.backgroundColor = .clear
         view.addSubview(backgroundView)
@@ -80,9 +103,15 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
             $0.edges.equalToSuperview()
         }
         
+        commentView.inputContainerView.snp.remakeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            inputViewBottomConstraint = $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).constraint
+            $0.height.equalTo(40)
+        }
+        
         commentView.viewController = self
         commentView.comments = comments
-        
+        // 모달 닫기
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissView))
         backgroundView.addGestureRecognizer(tapGesture)
         
@@ -92,11 +121,26 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         commentView.commentTableView.delegate = self
     }
     
+    @objc private func keyboardWillChangeFrame(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let endFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
+              let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double,
+              let curve = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt else { return }
+
+        let keyboardHeight = UIScreen.main.bounds.height - endFrame.origin.y
+        inputViewBottomConstraint?.update(offset: -keyboardHeight)
+
+        UIView.animate(withDuration: duration, delay: 0, options: UIView.AnimationOptions(rawValue: curve << 16)) {
+            self.view.layoutIfNeeded()
+        }
+    }
+
+    
     // 댓글 새로고침
     private func updateComments(_ newComments: [Comment]) {
-       comments = newComments
-       commentView.comments = comments
-   }
+        comments = newComments
+        commentView.comments = comments
+    }
     
     // 댓글 정렬 메서드 추가
     private func organizeComments() {
@@ -114,10 +158,128 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         comments = organizedComments
     }
     
-    @objc func dismissView() {
-        self.dismiss(animated: true)
+    // 배경 블러처리 On
+    private func showBlurBackground() {
+        view.addSubview(blurView)
+        blurView.snp.makeConstraints { $0.edges.equalToSuperview() }
+        UIView.animate(withDuration: 0.3) {
+            self.blurView.alpha = 1
+        }
+    }
+    // 배경 블러처리 Off
+    private func hideBlurBackground() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.blurView.alpha = 0
+        }) { _ in
+            self.blurView.removeFromSuperview()
+        }
     }
     
+    // 삭제 API 함수
+    func didTapDelete(commentId: Int64) {
+        let alert = UIAlertController(title: "댓글 삭제", message: "정말 삭제하시겠습니까?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "삭제", style: .destructive) { _ in
+            self.historyService.historyCommentDelete(commentId: Int(commentId)) { result in
+                switch result {
+                case .success:
+                    DispatchQueue.main.async {
+                        // 삭제 후 UI 업데이트
+                        self.comments.removeAll { $0.id == commentId || $0.parentCommentId == Int(commentId) }
+                        self.commentView.commentTableView.reloadData()
+
+                        // 댓글 개수 업데이트 알림 보내기
+                        self.delegate?.didUpdateComment(count: self.comments.count)
+                    }
+                case .failure(let error):
+                    print("삭제 실패: \(error)")
+                    let errorMessage = self.extractErrorMessage(from: error)
+                    self.showAlert(title: "삭제 실패", message: errorMessage)
+                }
+            }
+        })
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+        present(alert, animated: true)
+    }
+
+
+    // 신고 API 함수
+    func didTapReport(commentId: Int64) {
+        print("신고 버튼 클릭")
+        self.dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            self.delegate?.commentViewController(self, didRequestReportForComment: commentId)
+        }
+    }
+    
+    // 차단 API 함수
+    func didTapBlock(clokeyId: String) {
+        print("\(clokeyId) 입니다요")
+
+        let confirmAlert = UIAlertController(
+            title: "사용자 차단",
+            message: "정말 이 사용자를 차단하시겠습니까?",
+            preferredStyle: .alert
+        )
+
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+        let confirmAction = UIAlertAction(title: "차단", style: .destructive) { [weak self] _ in
+            self?.executeBlockRequest(clokeyId: clokeyId)
+        }
+
+        confirmAlert.addAction(cancelAction)
+        confirmAlert.addAction(confirmAction)
+
+        present(confirmAlert, animated: true)
+    }
+    // 차단 API
+    private func executeBlockRequest(clokeyId: String) {
+        let membersService = MembersService()
+
+        membersService.blockOrUnblock(clokeyId: clokeyId) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success:
+                print("\(clokeyId) 차단 성공")
+
+                let successAlert = UIAlertController(
+                    title: "차단 완료",
+                    message: "해당 사용자가 차단되었습니다.",
+                    preferredStyle: .alert
+                )
+                successAlert.addAction(UIAlertAction(title: "확인", style: .default))
+
+                DispatchQueue.main.async {
+                    self.present(successAlert, animated: true, completion: nil)
+                }
+
+            case .failure(let error):
+                print("차단 실패: \(error.localizedDescription)")
+
+                let failureAlert = UIAlertController(
+                    title: "차단 실패",
+                    message: "차단 요청을 처리하는 중 오류가 발생했습니다.",
+                    preferredStyle: .alert
+                )
+                failureAlert.addAction(UIAlertAction(title: "확인", style: .default))
+
+                DispatchQueue.main.async {
+                    self.present(failureAlert, animated: true, completion: nil)
+                }
+            }
+        }
+    }
+
+    
+    @objc func dismissView() {
+        print("X 버튼으로 닫힘!")  // 로그 확인용
+        self.dismiss(animated: true) {
+            if let presentationController = self.presentationController {
+                self.presentationController?.delegate?.presentationControllerDidDismiss?(presentationController)
+            }
+        }
+    }
+
     // 댓글 쓰기 버튼 눌렀을 때
     @objc func didTapSend() {
         guard let text = commentView.commentTextField.text, !text.isEmpty else { return }
@@ -126,40 +288,92 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
             content: text,
             commentId: selectedCommentId
         )
-        
+
         historyService.historyCommentWrite(
             historyId: historyId,
             data: requestDTO
         ) { [weak self] result in
             guard let self = self else { return }
-           
+
             switch result {
-            case .success(_):
+            case .success(let response):
                 DispatchQueue.main.async {
-                    // 이전에 선택된 셀의 선택 상태 해제
-                    if let oldIndexPath = self.selectedIndexPath {
-                       let oldCell = self.commentView.commentTableView.cellForRow(at:   oldIndexPath) as? CommentCell
-                        oldCell?.setSelected(false)
-                    }
-                    
-                    self.selectedIndexPath = nil
-                    self.commentView.commentTextField.placeholder = "댓글 달기"
-                    self.commentView.commentTextField.text = ""
-                    self.selectedCommentId = nil
-                   
-                    // 댓글 목록 새로고침
+                    // UI 초기화
+                    self.resetCommentInput()
+
+                    // 첫 페이지부터 다시 불러오기
                     self.currentPage = 1
-                    self.comments = []
                     self.isLastPage = false
-                    self.fetchComments()
+                    self.comments = []
+                    self.fetchComments(scrollToTop: true)  // 댓글 목록 새로고침 및 스크롤
+
+                    // 댓글 개수 업데이트 알림 보내기
+                    self.delegate?.didUpdateComment(count: self.comments.count)
                 }
                 
+                // 댓글 성공 시 notificationComment 전송
+                let commentId = response.commentId
+                if self.selectedCommentId == nil {
+                    self.sendCommentNotification(historyId: self.historyId, commentId: commentId)
+                } else {
+                    // 대댓글 기록 주인
+                    self.sendCommentNotification(historyId: self.historyId, commentId: commentId)
+                    // 댓글에 대댓글 알림
+                    self.sendReplyNotification(commentId: self.selectedCommentId!, replyId: commentId)
+                }
+
             case .failure(let error):
                 print("댓글 작성 실패: \(error)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
-   
+
+
+    // 댓글 UI 초기화
+    private func resetCommentInput() {
+        if let oldIndexPath = selectedIndexPath {
+            let oldCell = commentView.commentTableView.cellForRow(at: oldIndexPath) as? CommentCell
+            oldCell?.setSelected(false)
+        }
+        
+        selectedIndexPath = nil
+        selectedCommentId = nil
+        commentView.commentTextField.placeholder = "댓글 달기"
+        commentView.commentTextField.text = ""
+    }
+
+    // 댓글 알림 전송
+    private func sendCommentNotification(historyId: Int, commentId: Int64) {
+        notificationService.notificationComment(historyId: Int64(historyId), commentId: commentId) { result in
+            switch result {
+            case .success:
+                print("댓글 알림 전송 성공")
+            case .failure(let error):   
+                print("댓글 알림 전송 실패: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    // 대댓글 알림 전송
+    private func sendReplyNotification(commentId: Int64, replyId: Int64) {
+        notificationService.notificationReply(commentId: commentId, replyId: replyId) { result in
+            switch result {
+            case .success:
+                print("대댓글 알림 전송 성공")
+            case .failure(let error):
+                print("대댓글 알림 전송 실패: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    // 에러 메세지
+    private func extractErrorMessage(from error: Error) -> String {
+        if case let NetworkError.serverError(_, message) = error {
+            return message
+        }
+        return error.localizedDescription
+    }
     
     // MARK: - CommentCellDelegate 구현
     func didTapReplyButton(commentId: Int64) {
@@ -181,6 +395,14 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
         commentView.commentTextField.placeholder = "답글 작성하기"
     }
     
+    // 프로필 이미지로 clokeyId 전달
+    func didTapProfile(with clokeyId: String) {
+        print("프로필 클릭됨: \(clokeyId)")
+        DispatchQueue.main.async {
+            self.navigateToProfile(clokeyId: clokeyId)
+        }
+    }
+    
     private func findIndexPath(for commentId: Int64) -> IndexPath? {
         if let index = comments.firstIndex(where: { $0.id == commentId }) {
             return IndexPath(row: index, section: 0)
@@ -189,7 +411,7 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
     }
     
     // MARK: - API
-    private func fetchComments() {
+    private func fetchComments(scrollToTop: Bool = false) {
         guard !isFetching && !isLastPage else { return }
         
         isFetching = true
@@ -201,12 +423,12 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
             
             switch result {
             case .success(let response):
-                self.delegate?.didUpdateComment(count: self.comments.count)
                 // Comment 모델로 변환
                 let newComments = response.comments.map { comment in
                     let mainComment = Comment(
                         id: comment.commentId,
-                        memberId: comment.memberId,
+                        clokeyId: comment.clokeyId,
+                        nickName: comment.nickName,
                         imageUrl: comment.userImageUrl,
                         content: comment.content,
                         parentCommentId: nil
@@ -216,7 +438,8 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
                     let replies = comment.replyResults.map { reply in
                         Comment(
                             id: reply.commentId,
-                            memberId: reply.memberId,
+                            clokeyId: reply.clokeyId,
+                            nickName: reply.nickName,
                             imageUrl: reply.userImageUrl,
                             content: reply.content,
                             parentCommentId: comment.commentId
@@ -227,24 +450,33 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
                 }.flatMap { $0 }
                 
                 DispatchQueue.main.async {
-                   // 첫 페이지면 교체, 아니면 추가
-                   if self.currentPage == 1 {
-                       self.comments = newComments
-                   } else {
-                       self.comments += newComments
-                   }
-                   
-                   self.organizeComments()  // 댓글 정렬
-                   self.delegate?.didUpdateComment(count: self.comments.count)
-                   self.commentView.comments = self.comments  // View 업데이트
-                   
-                   self.isLastPage = response.isLast
-                   self.currentPage += 1
-               }
+                    // 첫 페이지면 교체, 아니면 추가
+                    if self.currentPage == 1 {
+                        self.comments = newComments
+                    } else {
+                        self.comments += newComments
+                    }
+                    
+                    self.organizeComments()  // 댓글 정렬
+                    self.delegate?.didUpdateComment(count: self.comments.count)
+                    self.commentView.comments = self.comments  // View 업데이트
+                    
+                    if scrollToTop && !self.comments.isEmpty {
+                        // 스크롤을 맨 위로
+                        self.commentView.commentTableView.scrollToRow(
+                            at: IndexPath(row: 0, section: 0),
+                            at: .top,
+                            animated: true
+                        )
+                    }
+                    
+                    self.isLastPage = response.isLast
+                    self.currentPage += 1
+                }
                 
             case .failure(let error):
                 print("댓글 조회 실패: \(error)")
-                // 에러 처리 (필요시 alert 표시)
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
@@ -260,7 +492,30 @@ class CalendarCommentViewController: UIViewController, CommentCellDelegate {
            fetchComments()
        }
    }
+    
+    // 프로필로 이동
+    func handleProfile(clokeyId: String) {
+        DispatchQueue.main.async {
+            self.navigateToProfile(clokeyId: clokeyId)
+        }
+    }
+    
+    private func navigateToProfile(clokeyId: String) {
+        delegate?.CalendarCommentViewController(self, didSelectProfileWith: clokeyId)
+    }
 }
+
+extension CalendarCommentViewController: LikeUserCellDelegate {
+    func didRequestAlert(title: String, message: String) {
+        showAlert(title: title, message: message)
+    }
+    
+    func didTapProfileImage(with clokeyId: String) {
+        // 프로파일 이미지 탭 시 handleNotificationFollow 호출
+        handleProfile(clokeyId: clokeyId)
+    }
+}
+
 
 extension CalendarCommentViewController: UITableViewDataSource, UITableViewDelegate {
     
@@ -276,10 +531,11 @@ extension CalendarCommentViewController: UITableViewDataSource, UITableViewDeleg
 
         cell.configure(
             profileImage: comment.imageUrl,
-            name: "닉네임",
+            name: comment.nickName,
             comment: comment.content,
             isLastReply: comment.parentCommentId == nil, // parentCommentId가 nil인 경우에만 답글 달기 표시
-            commentId: comment.id
+            commentId: comment.id,
+            clokeyId: comment.clokeyId
         )
 
         cell.delegate = self
@@ -305,51 +561,5 @@ extension CalendarCommentViewController: UITableViewDataSource, UITableViewDeleg
 
     private func isLastReply(comment: Comment) -> Bool {
         return !comments.contains { $0.parentCommentId == comment.id }
-    }
-    
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true // 모든 셀 swipe 가능
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            let commentToDelete = comments[indexPath.row]
-            
-            // 삭제할 댓글과 관련된 모든 인덱스를 찾기
-            var indexesToDelete = [IndexPath]()
-            indexesToDelete.append(indexPath)
-            
-            // 만약 메인 댓글이라면, 관련된 대댓글들의 인덱스도 찾기
-            if commentToDelete.parentCommentId == nil {
-                for (index, comment) in comments.enumerated() {
-                    if comment.parentCommentId == commentToDelete.id {
-                        indexesToDelete.append(IndexPath(row: index, section: 0))
-                    }
-                }
-            }
-            
-            // 정렬된 인덱스(내림차순)
-            let sortedIndexes = indexesToDelete.sorted(by: { $0.row > $1.row })
-            
-            historyService.historyCommentDelete(commentId: commentToDelete.id) { [weak self] result in
-                guard let self = self else { return }
-                
-                switch result {
-                case .success:
-                    self.delegate?.didDeleteComment()
-                    DispatchQueue.main.async {
-                        // 내림차순으로 정렬된 인덱스를 사용하여 배열에서 항목들을 제거
-                        for indexPath in sortedIndexes {
-                            self.comments.remove(at: indexPath.row)
-                        }
-                        // 테이블뷰에서 해당 행들을 삭제
-                        tableView.deleteRows(at: sortedIndexes, with: .fade)
-                    }
-                    
-                case .failure(let error):
-                    print("댓글 삭제 실패: \(error)")
-                }
-            }
-        }
     }
 }

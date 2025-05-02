@@ -19,6 +19,6 @@ struct SearchResultModel {
     let profileImage: String?
     let clokeyID: String
     let nickname: String
-    let id: Int64
+    
 }
 

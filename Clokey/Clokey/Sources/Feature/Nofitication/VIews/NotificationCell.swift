@@ -6,26 +6,29 @@
 //
 
 
-//
-//  NotificationCell.swift
-//  Alarm
-//
-//  Created by 소민준 on 2/8/25.
-//
-
 
 
 import UIKit
 import SnapKit
 import Kingfisher // 서버에서 이미지 로드할 때 사용
 
+protocol NotificationCellDelegate: AnyObject {
+    func notificationCell(_ cell: NotificationCell, didTapProfileFor notification: NotificationItem)
+}
+
+
 class NotificationCell: UITableViewCell {
+    
+    weak var delegate: NotificationCellDelegate?
+       private var currentNotification: NotificationItem?
+    
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 18 // 36x36이므로 반으로 둥글게
         imageView.backgroundColor = .lightGray // 기본 배경 (서버 이미지 로딩 전)
+        imageView.isUserInteractionEnabled = true
         return imageView
     }()
 
@@ -63,7 +66,14 @@ class NotificationCell: UITableViewCell {
             $0.centerY.equalToSuperview()
         }
     }
-
+    private func addProfileTapGesture() {
+           let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleProfileTap))
+           profileImageView.addGestureRecognizer(tapGesture)
+       }
+    @objc private func handleProfileTap() {
+           guard let notification = currentNotification else { return }
+           delegate?.notificationCell(self, didTapProfileFor: notification)
+       }
     func configure(with notification: NotificationItem) {
         messageLabel.text = notification.title
         

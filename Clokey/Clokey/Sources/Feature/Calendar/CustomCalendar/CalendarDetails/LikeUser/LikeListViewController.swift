@@ -11,6 +11,10 @@ import SnapKit
 import Then
 import Kingfisher
 
+protocol LikeListViewControllerDelegate: AnyObject {
+    func likeListViewController(_ viewController: LikeListViewController, didSelectProfileWith clokeyId: String)
+}
+
 class LikeListViewController: UIViewController {
     
     // MARK: - Properties
@@ -18,6 +22,8 @@ class LikeListViewController: UIViewController {
     
     private let historyId: Int
     private let historyService = HistoryService()
+    
+    weak var delegate: LikeListViewControllerDelegate?
     
     // MARK: - Initializer
     init(historyId: Int) {
@@ -36,7 +42,7 @@ class LikeListViewController: UIViewController {
     
     private let titleLabel = UILabel().then {
         $0.text = "좋아요"
-        $0.font = .systemFont(ofSize: 16, weight: .semibold)
+        $0.font = .ptdSemiBoldFont(ofSize: 16)
     }
     
     private let closeButton = UIButton().then {
@@ -117,7 +123,8 @@ class LikeListViewController: UIViewController {
                         userId: like.clokeyId,
                         nickname: like.nickname,
                         profileImageUrl: like.imageUrl,
-                        isFollowing: like.followStatus
+                        isFollowing: like.followStatus,
+                        isMe: like.me
                     )
                 }
                 DispatchQueue.main.async {
@@ -125,11 +132,10 @@ class LikeListViewController: UIViewController {
                 }
             case .failure(let error):
                 print("좋아요 목록 조회 에러: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
-
-
     
     // MARK: - Actions
     @objc private func closeButtonTapped() {
@@ -140,26 +146,7 @@ class LikeListViewController: UIViewController {
     private func loadDummyData() {
         // 테스트용 더미 데이터
         users = [
-            LikeUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: false),
-            LikeUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            LikeUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: false),
-            LikeUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            LikeUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: false),
-            LikeUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            LikeUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: false),
-            LikeUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            LikeUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: false),
-            LikeUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            LikeUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: false),
-            LikeUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            LikeUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: false),
-            LikeUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            LikeUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: false),
-            LikeUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            LikeUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: false),
-            LikeUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true),
-            LikeUserModel(userId: "id_123", nickname: "닉네임1", profileImageUrl: "", isFollowing: false),
-            LikeUserModel(userId: "id_456", nickname: "닉네임2", profileImageUrl: "", isFollowing: true)
+           
             // Add more dummy data as needed
         ]
         collectionView.reloadData()
@@ -177,6 +164,7 @@ extension LikeListViewController: UICollectionViewDataSource, UICollectionViewDe
         cell.configure(with: users[indexPath.item])
         cell.followButton.tag = indexPath.item
         cell.followButton.addTarget(self, action: #selector(followButtonTapped(_:)), for: .touchUpInside)
+        cell.delegate = self
         return cell
     }
     
@@ -187,7 +175,25 @@ extension LikeListViewController: UICollectionViewDataSource, UICollectionViewDe
         if let cell = collectionView.cellForItem(at: IndexPath(item: index, section: 0)) as? LikeUserCell {
             cell.updateFollowButton(isFollowing: users[index].isFollowing)
         }
-        
-        // TODO: API 호출
+    }
+    
+    func handleProfile(clokeyId: String) {
+        DispatchQueue.main.async {
+            self.navigateToProfile(clokeyId: clokeyId)
+        }
+    }
+    
+    private func navigateToProfile(clokeyId: String) {
+        delegate?.likeListViewController(self, didSelectProfileWith: clokeyId)
+    }
+}
+
+extension LikeListViewController: LikeUserCellDelegate {
+    func didTapProfileImage(with clokeyId: String) {
+        // 프로파일 이미지 탭 시 handleNotificationFollow 호출
+        handleProfile(clokeyId: clokeyId)
+    }
+    func didRequestAlert(title: String, message: String) {
+        showAlert(title: title, message: message)
     }
 }

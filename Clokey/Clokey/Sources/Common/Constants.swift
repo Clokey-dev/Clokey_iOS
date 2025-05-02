@@ -18,6 +18,7 @@ struct Constants {
         static let mainBrown800 = UIColor(named: "mainBrown800")
         
         // Point Colors
+        static let pointOrange50 = UIColor(named: "pointOrange50")
         static let pointOrange200 = UIColor(named: "pointOrange200")
         static let pointOrange400 = UIColor(named: "pointOrange400")
         static let pointOrange600 = UIColor(named: "pointOrange600")

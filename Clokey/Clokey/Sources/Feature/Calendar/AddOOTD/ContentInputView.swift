@@ -24,6 +24,7 @@ class ContentInputView: UIView, UITextFieldDelegate {
     
     weak var delegate: ContentInputViewDelegate?
     private var hashtags: [String] = []
+    var isPlaceholderActive = true
     
     // MARK: - UI Components
     
@@ -122,7 +123,6 @@ class ContentInputView: UIView, UITextFieldDelegate {
         addSubview(publicButton)
         addSubview(privateButton)
         addSubview(publicInfoLabel)
-        
 
         
         setupConstraints()
@@ -305,8 +305,10 @@ class ContentInputView: UIView, UITextFieldDelegate {
     }
     
     func getTextContent() -> String {
+        if textAddBox.textColor == .placeholderText { return "" }
         return textAddBox.text
     }
+
 
     func isPublic() -> Bool {
         return publicButton.isSelected
@@ -330,12 +332,13 @@ class ContentInputView: UIView, UITextFieldDelegate {
     
     // 해시태그 텍스트필드 엔터 처리
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if string == "\n" {
+        if string == "\n" || string == " " {
             if let text = textField.text, !text.isEmpty {
                 let hashtag = text.hasPrefix("#") ? text : "#\(text)"
                 addHashtag(hashtag)
                 delegate?.contentInputView(self, didAddHashtag: hashtag)
                 textField.text = ""
+                return false
             }
         }
         return true
@@ -379,7 +382,7 @@ class ContentInputView: UIView, UITextFieldDelegate {
         let fieldBottom = fieldFrame.origin.y + fieldFrame.size.height
 
         // 겹치는 부분 계산
-        let overlap = fieldBottom - keyboardY + 10 // 여유공간
+        let overlap = fieldBottom - keyboardY + 50 // 여유공간
         let offset = overlap > 0 ? -overlap : 0
 
         // 키보드 애니메이션 적용
@@ -446,18 +449,24 @@ class ContentInputView: UIView, UITextFieldDelegate {
 // placeholder 처리
 extension ContentInputView: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == .placeholderText {
-            textView.text = nil
+        if isPlaceholderActive {
+            textView.text = ""
             textView.textColor = .black
+            isPlaceholderActive = false
         }
     }
-    
+
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
             textView.text = "텍스트를 입력하세요"
             textView.textColor = .placeholderText
+            isPlaceholderActive = true
         }
-        // 델리게이트 호출 추가
+        delegate?.contentInputView(self, didUpdateText: textView.text)
+    }
+    
+    // 텍스트 줄바꿈
+    func textViewDidChange(_ textView: UITextView) {
         delegate?.contentInputView(self, didUpdateText: textView.text)
     }
 }

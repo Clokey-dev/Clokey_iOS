@@ -22,8 +22,8 @@ class WeatherAPI {
         self.apiVisualKey = visualCrossingKey
     }
     
-    func fetchVisualCrossingWeather(for city: String, completion: @escaping (WeatherResponse?) -> Void) {
-        let urlString = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/\(city)?key=\(apiVisualKey)&unitGroup=metric"
+    func fetchVisualCrossingWeather(for latitude: Double, longitude: Double, completion: @escaping (WeatherResponse?) -> Void) {
+        let urlString = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/\(latitude),\(longitude)?key=\(apiVisualKey)&unitGroup=metric"
         
         guard let url = URL(string: urlString) else {
             print("Invalid URL")
@@ -53,9 +53,9 @@ class WeatherAPI {
             }
         }.resume()
     }
-    
-    func fetchWeather(for city: String, completion: @escaping (WeatherData?) -> Void) {
-        let urlString = "https://api.openweathermap.org/data/2.5/weather?q=\(city)&appid=\(apiKey)&units=metric&lang=kr"
+
+    func fetchWeather(for latitude: Double, longitude: Double, completion: @escaping (WeatherData?) -> Void) {
+        let urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)&units=metric&lang=kr"
         
         guard let url = URL(string: urlString) else {
             print("Invalid URL")
@@ -85,19 +85,19 @@ class WeatherAPI {
             }
         }.resume()
     }
-    
-    func fetchTemperatureChange(for city: String, completion: @escaping (String) -> Void) {
-        let baseURL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline"
-        let todayURL = "\(baseURL)/\(city)/today?unitGroup=metric&key=\(apiVisualKey)"
-        let yesterdayDate = getYesterdayDate()
-        let yesterdayURL = "\(baseURL)/\(city)/\(yesterdayDate)?unitGroup=metric&key=\(apiVisualKey)"
 
+    func fetchTemperatureChange(for latitude: Double, longitude: Double, completion: @escaping (String) -> Void) {
+        let baseURL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline"
+        let todayURL = "\(baseURL)/\(latitude),\(longitude)/today?unitGroup=metric&key=\(apiVisualKey)"
+        let yesterdayDate = getYesterdayDate()
+        let yesterdayURL = "\(baseURL)/\(latitude),\(longitude)/\(yesterdayDate)?unitGroup=metric&key=\(apiVisualKey)"
+        
         // 두 개의 온도를 비동기적으로 가져오기
         let dispatchGroup = DispatchGroup()
-
+        
         var currentMinTemp: Double?
         var yesterdayMinTemp: Double?
-
+        
         // 오늘 최저 온도 가져오기
         dispatchGroup.enter()
         fetchYesterdayVisualCrossingAPI(from: todayURL) { weatherResponse in
@@ -109,7 +109,7 @@ class WeatherAPI {
             }
             dispatchGroup.leave()
         }
-
+        
         // 어제 최저 온도 가져오기
         dispatchGroup.enter()
         fetchYesterdayVisualCrossingAPI(from: yesterdayURL) { weatherResponse in
@@ -121,18 +121,18 @@ class WeatherAPI {
             }
             dispatchGroup.leave()
         }
-
+        
         // 모든 데이터가 완료되면 결과 계산
         dispatchGroup.notify(queue: .main) {
             guard let currentMinTemp = currentMinTemp, let yesterdayMinTemp = yesterdayMinTemp else {
-                completion("온도 데이터를 가져오지 못했습니다.")
+                completion("온도 데이터를 가져오는 중입니다.")
                 return
             }
-
+            
             let temperatureDifference = yesterdayMinTemp - currentMinTemp
             let temperatureDifferenceAbs = abs(temperatureDifference)
             var resultText: String
-
+            
             if temperatureDifference > 0 {
                 resultText = "어제에 비해 기온이 \(Int(temperatureDifferenceAbs))° 떨어졌어요!"
             } else if temperatureDifference < 0 {
@@ -140,7 +140,7 @@ class WeatherAPI {
             } else {
                 resultText = "현재 최저 기온이 어제 최저 기온과 동일합니다."
             }
-
+            
             completion(resultText)
         }
     }

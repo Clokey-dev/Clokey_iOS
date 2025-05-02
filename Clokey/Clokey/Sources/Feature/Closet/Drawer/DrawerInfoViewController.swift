@@ -1,0 +1,208 @@
+import UIKit
+
+class DrawerInfoViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    // MARK: - Properties
+    
+    /// 선택된 옷 목록 (서버에 이미 등록된 옷이므로 clothIds만 전달)
+    private var products: [ClosetModel] = []
+    
+    /// 기존 폴더 ID (수정 시 사용); 새 폴더 생성 시에는 nil
+    private var existingFolderId: Int64?
+    
+    /// 폴더 생성/수정 API 호출 시 사용할 Service
+    private let folderService = FolderService()
+    
+    // API 서비스 (옷 데이터)
+    private let clothesService = ClothesService()
+    
+    // MARK: - UI
+    
+    /// "완료" 버튼 (폴더 생성/수정 API 호출)
+    private lazy var createButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(title: "완료", style: .done, target: self, action: #selector(createButtonTapped))
+        button.isEnabled = false
+        button.tintColor = .clear
+        return button
+    }()
+    
+    /// 커스텀 뷰 DrawerInfoView (폴더명 입력 텍스트필드, CollectionView 포함)
+    var drawerInfoView: DrawerInfoView {
+        return view as! DrawerInfoView
+    }
+    
+    // MARK: - Initializers
+    
+    /// - Parameters:
+    ///   - folderId: 편집 시 폴더 ID, 새 폴더 생성 시에는 nil
+    ///   - selectedClothes: 이전 화면에서 전달받은 옷 목록 (DrawerEditViewController 등)
+    init(folderId: Int64? = nil, selectedClothes: [ClosetModel] = []) {
+        self.existingFolderId = folderId
+        self.products = selectedClothes
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Lifecycle
+    
+    override func loadView() {
+        view = DrawerInfoView()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        print("existingFolderId: \(existingFolderId ?? -1)")
+        
+        setupUI()
+        setupCollectionView()
+        setupActions()
+        // 폴더 생성 vs 수정에 따라 네비게이션 타이틀 설정
+        if let folderId = existingFolderId, folderId != 0 {
+            navigationItem.title = "서랍 수정"
+        } else {
+            navigationItem.title = "서랍 생성"
+        }
+        drawerInfoView.errorText.isHidden = true
+    }
+    
+    // MARK: - UI Setup
+    
+    private func setupUI() {
+        navigationItem.rightBarButtonItem = createButton
+        
+        let navBarManager = NavigationBarManager()
+        navBarManager.addBackButton(to: navigationItem, target: self, action: #selector(backButtonTapped))
+        navBarManager.setTitle(
+            to: navigationItem,
+            title: (existingFolderId == nil || existingFolderId == 0) ? "서랍 생성" : "서랍 수정",
+            font: .ptdBoldFont(ofSize: 20),
+            textColor: .black
+        )
+        
+        drawerInfoView.folderTextField.placeholder = "폴더명을 입력하세요"
+    }
+    
+    private func setupCollectionView() {
+        let collectionView = drawerInfoView.collectionView
+        // **여기서 프로토콜 채택** (중요)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
+        collectionView.register(
+            ClosetCollectionViewCell.self,
+            forCellWithReuseIdentifier: ClosetCollectionViewCell.identifier
+        )
+    }
+    
+    private func setupActions() {
+        drawerInfoView.folderTextField.addTarget(self, action: #selector(folderTextFieldChanged(_:)), for: .editingChanged)
+    }
+    
+    // MARK: - Actions
+    
+    @objc private func folderTextFieldChanged(_ textField: UITextField) {
+        // 좌우 공백 제거
+        let text = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        
+        // 한글이 포함되어 있는지 체크 (정규식 이용)
+        let containsKorean = text.range(of: "\\p{Hangul}", options: .regularExpression) != nil
+        // 한글이면 7글자, 아니면 10글자 제한 (이상일 때 비활성화)
+        let limit = containsKorean ? 7 : 10
+        
+        // 폴더명이 비어있지 않고, 글자 수가 제한 미만일 때만 활성화
+        let isFilled = !text.isEmpty
+        let isWithinLimit = text.count < limit
+        
+        let enable = isFilled && isWithinLimit
+        createButton.isEnabled = enable
+        createButton.tintColor = enable ? UIColor(named: "pointOrange800") : .clear
+        
+        // 에러 메시지 표시 여부 (제한 초과시 보이도록)
+        drawerInfoView.errorText.isHidden = isWithinLimit
+    }
+
+    
+    @objc private func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    /// 폴더 생성/수정 API 호출 및 DrawerViewController로 전환
+    @objc private func createButtonTapped() {
+        // 1) 폴더명 추출
+        let folderName = drawerInfoView.folderTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "새 폴더"
+        
+        // 2) 현재 products 배열에 있는 옷들의 id 추출 (서버에 등록된 옷이므로 clothIds로 전달)
+        let clothIds = products.map { Int64($0.id) }
+        
+        // 3) 새 폴더 생성 vs 수정 분기
+        let idVal = existingFolderId ?? 0
+        let folderIdForRequest: Int64? = (idVal == 0) ? nil : idVal
+        
+        let requestDTO = FolderManageRequestDTO(
+            folderId: folderIdForRequest,  // nil이면 JSON에서 folderId 키 생략됨
+            folderName: folderName,
+            clothIds: clothIds
+        )
+        
+        // 4) API 호출
+        folderService.folderManage(data: requestDTO) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let responseDTO):
+                    print("폴더 생성/수정 성공: folderId = \(responseDTO.folderId)")
+                    // 5) API 응답으로 받은 folderId를 DrawerItem에 반영하여 DrawerViewController로 전환
+                    let newDrawerItem = DrawerModel(
+                        id: responseDTO.folderId,
+                        title: folderName,
+                        imageUrl: "",  // 이미지 URL이 없는 경우 빈 문자열
+                        itemCountText: "\(clothIds.count) 개"
+                    )
+                    let drawerVC = DrawerViewController(drawerItem: newDrawerItem)
+                    self?.navigationController?.pushViewController(drawerVC, animated: true)
+                    
+                case .failure(let error):
+                    self?.showErrorAlert(error)
+                }
+            }
+        }
+    }
+    
+    private func showErrorAlert(_ error: Error) {
+        let alert = UIAlertController(title: "오류", message: error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default))
+        present(alert, animated: true)
+    }
+    
+
+    
+    // MARK: - UICollectionViewDataSource & UICollectionViewDelegate
+    
+    // 표시할 아이템 수
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return products.count
+    }
+    
+    // 각 셀 구성
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: ClosetCollectionViewCell.identifier,
+            for: indexPath
+        ) as? ClosetCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        
+        let product = products[indexPath.item]
+        // ClosetCollectionViewCell에 맞춰 이미지를 로드하고, 라벨 설정
+        cell.configureCell(with: product, hideNumberLabel: true, hideCountLabel: true)
+        
+        return cell
+    }
+    
+    // (옵션) 셀 탭 시 추가 액션이 필요하다면 구현
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // 현재 화면에서는 선택/해제 로직이 없으므로 비워둠
+    }
+}

@@ -8,23 +8,50 @@
 import Foundation
 import UIKit
 
-class CalendarDetailViewController: UIViewController {
+protocol RecordOOTDViewControllerDelegate: AnyObject {
+    func didUpdateHistory()
+}
+
+class CalendarDetailViewController: UIViewController, UIGestureRecognizerDelegate {
 
     // MARK: - Properties
     private let calendarDetailView = CalendarDetailView()
     private var viewModel: CalendarDetailViewModel?
 
     private var detailData: HistoryDetailResponseDTO?
+    
+    // 서버 API Service
     private let historyService = HistoryService()
+    private let notificationService = NotificationService()
+    
     let navBarManager = NavigationBarManager()
+    var historyId: Int?
     
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("CalendarDetailViewController - navigationController: \(String(describing: navigationController))")
         setupUI()
         setupNavigationBar()
+        if let id = historyId {
+           print("받은 historyId: \(id)")
+           refreshHistoryDetail()  // historyId를 기반으로 상세 데이터를 불러옴
+       } else {
+           print("historyId가 nil")
+       }
+           
+        
         updateView()
+        
+        navBarManager.setupWhiteNavigationBar(for: navigationController)
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .white
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+
         
         calendarDetailView.likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
 
@@ -32,15 +59,34 @@ class CalendarDetailViewController: UIViewController {
         
         calendarDetailView.clothesIconButton.addTarget(self, action: #selector(didTapClothesIconButton), for: .touchUpInside)
         
-        // 댓글창
+        calendarDetailView.moreButton.addTarget(self, action: #selector(didTapMoreButton), for: .touchUpInside)
+        
+        // 댓글 버튼에 직접 target-action 추가
+        calendarDetailView.commentButton.addTarget(self, action: #selector(didTapCommentButton), for: .touchUpInside)
+        
+        // 댓글 컨테이너에 gesture recognizer 추가
         let commentTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapCommentButton))
+        calendarDetailView.commentContainerView.addGestureRecognizer(commentTapGesture)
+
         calendarDetailView.commentContainerView.addGestureRecognizer(commentTapGesture)
         
         // likeLabel에 탭 제스처 추가
         let likeTapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapLikeLabel))
         calendarDetailView.likeLabel.isUserInteractionEnabled = true
         calendarDetailView.likeLabel.addGestureRecognizer(likeTapGesture)
+        
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(false, animated: false)
+        navigationController?.navigationBar.alpha = 1
+
+    }
+   
 
     // MARK: - Setup
     
@@ -56,13 +102,14 @@ class CalendarDetailViewController: UIViewController {
         view.addSubview(calendarDetailView)
         
         calendarDetailView.snp.makeConstraints {
-            $0.edges.equalTo(view.safeAreaLayoutGuide)
+            $0.edges.equalToSuperview()
         }
     }
     
     private func setupNavigationBar() {
         navigationController?.navigationBar.isHidden = false
-        
+        navigationController?.navigationBar.barTintColor = .white
+
         navBarManager.addBackButton(
             to: navigationItem,
             target: self,
@@ -73,6 +120,28 @@ class CalendarDetailViewController: UIViewController {
     private func updateView() {
         if let viewModel = viewModel {
             calendarDetailView.configure(with: viewModel)
+        }
+    }
+    
+    // 댓글 업데이트를 위한 API
+    private func refreshHistoryDetail() {
+        guard let id = historyId else {
+            print("historyId가 nil입니다.")
+            return
+        }
+        print("API 호출: historyId \(id)")
+        historyService.historyDetail(historyId: id) { [weak self] result in
+            switch result {
+            case .success(let response):
+                DispatchQueue.main.async {
+                    self?.viewModel = CalendarDetailViewModel(data: response)
+                    self?.updateView()
+                    print("최신 댓글 데이터 업데이트 완료!")
+                }
+            case .failure(let error):
+                print("댓글 데이터 업데이트 실패: \(error.localizedDescription)")
+                self?.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
+            }
         }
     }
 
@@ -97,15 +166,30 @@ class CalendarDetailViewController: UIViewController {
     @objc private func didTapCommentButton() {
         guard let viewModel = viewModel else { return }
         let historyId = Int(viewModel.historyId)
-        
-        let commentVC = CalendarCommentViewController(historyId: historyId)
+
+        let commentVC = Clokey.CalendarCommentViewController(historyId: historyId)
+        commentVC.delegate = self
+        commentVC.reportDelegate = self
         commentVC.modalPresentationStyle = .pageSheet
+
+        // 모달 닫힘 감지
+        commentVC.presentationController?.delegate = self
+
         if let sheet = commentVC.sheetPresentationController {
-            sheet.detents = [.medium(), .large()]
+            sheet.detents = [UISheetPresentationController.Detent.medium(),
+                             UISheetPresentationController.Detent.large()]
             sheet.preferredCornerRadius = 20
         }
-        
+
         present(commentVC, animated: true)
+    }
+
+    
+    // 댓글에서 프로필 화면으로
+    func showProfile(for clokeyId: String) {
+        let followProfileVC = FollowProfileViewController(followId: clokeyId)
+        followProfileVC.followId = clokeyId
+        navigationController?.pushViewController(followProfileVC, animated: true)
     }
     
     // 편집뷰
@@ -114,7 +198,7 @@ class CalendarDetailViewController: UIViewController {
         let historyId = Int(viewModel.historyId)
         
         let actionSheet = CustomActionSheetViewController(historyId: historyId)
-        actionSheet.delegate = self // delegate 설정
+        actionSheet.delegate = self // delegate 설정 추가
         actionSheet.modalPresentationStyle = .overFullScreen
         present(actionSheet, animated: false)
     }
@@ -125,8 +209,9 @@ class CalendarDetailViewController: UIViewController {
         let historyId = Int(viewModel.historyId)
         
         let likeListVC = LikeListViewController(historyId: historyId)
-        likeListVC.modalPresentationStyle = .pageSheet
+        likeListVC.delegate = self // delegate 설정
         
+        likeListVC.modalPresentationStyle = .pageSheet
         if let sheet = likeListVC.sheetPresentationController {
             sheet.detents = [.medium(), .large()]
             sheet.preferredCornerRadius = 20
@@ -135,9 +220,17 @@ class CalendarDetailViewController: UIViewController {
         present(likeListVC, animated: true)
     }
     
+    @objc private func didTapMoreButton() {
+        calendarDetailView.expandContent()
+    }
+    
     // 뒤로가기
     @objc private func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
+        if let nav = navigationController, nav.viewControllers.count > 1 {
+            nav.popViewController(animated: true)
+        } else {
+            dismiss(animated: true, completion: nil)
+        }
     }
     
     // MARK: - Method
@@ -181,13 +274,92 @@ class CalendarDetailViewController: UIViewController {
                         self.calendarDetailView.updateLikeState(with: updatedViewModel)
                     }
                 }
+                // 좋아요 누르면 true일때 알림 전송
+                if response.liked {
+                    self.sendLikeNotification(historyId: historyId)
+                }
                 
             case .failure(let error):
                 print("좋아요 변경 실패: \(error.localizedDescription)")
+                self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
+            }
+        }
+    }
+    
+    // 좋아요 알림
+    private func sendLikeNotification(historyId: Int) {
+        notificationService.notificationLove(historyId: Int64(historyId)) { result in
+            switch result {
+            case .success:
+                print("좋아요 알림 전송 성공")
+            case .failure(let error):
+                print("좋아요 알림 전송 실패: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+}
+
+extension CalendarDetailViewController: LikeListViewControllerDelegate {
+    
+    func likeListViewController(_ viewController: LikeListViewController, didSelectProfileWith clokeyId: String) {
+        // 모달을 닫고 프로필 화면으로 이동
+        viewController.dismiss(animated: true) { [weak self] in
+            self?.showProfile(for: clokeyId)
+        }
+    }
+}
+
+extension CalendarDetailViewController: CalendarCommentDelegate {
+    func commentViewController(_ viewController: CalendarCommentViewController, didRequestReportForComment commentId: Int64) {
+        let commentReportVC = CustomReportViewController(commentId: commentId)
+        self.navigationController?.pushViewController(commentReportVC, animated: true)
+    }
+    
+    func CalendarCommentViewController(_ viewController: CalendarCommentViewController, didSelectProfileWith clokeyId: String) {
+        // 모달을 닫고 프로필 화면으로 이동
+        viewController.dismiss(animated: true) { [weak self] in
+            self?.showProfile(for: clokeyId)
+        }
+    }
+    
+    func didUpdateComment(count: Int) {
+        print("댓글 개수 변경 감지! 새로운 댓글 개수: \(count)")
+
+        // 댓글 개수를 UI에 반영 (라벨 업데이트)
+        calendarDetailView.commentButton.setTitle("\(count)", for: .normal)
+
+        // 최신 데이터를 가져오기 위해 API 호출
+        refreshHistoryDetail()
+    }
+
+    func didDeleteComment() {
+        print("댓글 삭제 감지!")
+        refreshHistoryDetail()
+    }
+}
+
+extension CalendarDetailViewController: RecordOOTDViewControllerDelegate {
+    func didUpdateHistory() {
+        // 히스토리 데이터 다시 불러오기
+        guard let viewModel = viewModel else { return }
+        let historyId = Int(viewModel.historyId)
+        
+        historyService.historyDetail(historyId: historyId) { [weak self] result in
+            switch result {
+            case .success(let response):
+                DispatchQueue.main.async {
+                    self?.viewModel = CalendarDetailViewModel(data: response)
+                    self?.updateView()
+                }
+            case .failure(let error):
+                print("Failed to refresh history: \(error)")
+                self?.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
         }
     }
 }
+
 
 extension CalendarDetailViewController: CustomActionSheetDelegate {
     func didDeleteHistory() {
@@ -210,5 +382,31 @@ extension CalendarDetailViewController: CustomActionSheetDelegate {
             }
         }
     }
-}
+    
+    // 데이터 확인
+    func didTapEdit() {
 
+        guard let viewModel = viewModel else {
+            print("viewModel이 없음")
+            return
+        }
+        
+        print("전달할 데이터 췤")
+        print("닉네임: \(viewModel.name)")
+        print("내용: \(viewModel.content)")
+        print("해시태그: \(viewModel.hashtags)")
+        print("이미지 URL: \(viewModel.images)")
+        
+        let recordOOTDVC = RecordOOTDViewController()
+        recordOOTDVC.delegate = self
+        recordOOTDVC.setEditData(viewModel) // 데이터 전달
+       
+        navigationController?.pushViewController(recordOOTDVC, animated: true)
+    }
+}
+// 댓글창 감지
+extension CalendarDetailViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        print("CalendarCommentViewController가 닫혔습니다!")
+    }
+}

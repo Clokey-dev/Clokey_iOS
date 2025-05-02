@@ -13,6 +13,7 @@ import Then
 protocol CustomActionSheetDelegate: AnyObject {
     // 글 삭제 후 현재 화면을 닫기 위한 delegte
     func didDeleteHistory()
+    func didTapEdit()
 }
 
 class CustomActionSheetViewController: UIViewController {
@@ -142,7 +143,7 @@ class CustomActionSheetViewController: UIViewController {
         let dimmedTap = UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped))
         dimmedView.addGestureRecognizer(dimmedTap)
         
-        editButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
+        editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
         deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
     }
     
@@ -168,27 +169,48 @@ class CustomActionSheetViewController: UIViewController {
         hideSheet()
     }
     
-    @objc private func shareButtonTapped() {
-        print("본문가기 tapped")
+    // 편집 버튼
+    @objc private func editButtonTapped() {
         hideSheet()
+        delegate?.didTapEdit()
     }
     
+    // 삭제 버튼
     @objc private func deleteButtonTapped() {
-        historyService.historyDelete(historyId: historyId) { [weak self] result in
+        let alertController = UIAlertController(
+            title: "기록을 삭제하시겠습니까?",
+            message: "삭제한 기록은 되돌릴 수 없습니다.",
+            preferredStyle: .alert
+        )
+        
+        let confirmAction = UIAlertAction(title: "확인", style: .destructive) { [weak self] _ in
             guard let self = self else { return }
             
-            switch result {
-            case .success:  
-                DispatchQueue.main.async {
-                    self.hideSheet { [weak self] in
-                        self?.delegate?.didDeleteHistory()
+            self.historyService.historyDelete(historyId: self.historyId) { [weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                case .success:
+                    DispatchQueue.main.async {
+                        self.hideSheet { [weak self] in
+                            self?.delegate?.didDeleteHistory()
+                        }
                     }
+                case .failure(let error):
+                    print("기록 삭제 에러: \(error.localizedDescription)")
+                    self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
                 }
-            case .failure(let error):
-                print("기록 삭제 에러: \(error.localizedDescription)")
             }
         }
+        
+        let cancelAction = UIAlertAction(title: "아니오", style: .cancel)
+        
+        alertController.addAction(confirmAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true)
     }
+
 }
 
 extension UIImage {

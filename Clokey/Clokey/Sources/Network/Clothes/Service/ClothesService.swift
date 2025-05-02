@@ -7,6 +7,7 @@
 
 import Foundation
 import Moya
+import UIKit
 
 public final class ClothesService : NetworkManager {
     typealias Endpoint = ClothesEndpoint
@@ -18,43 +19,44 @@ public final class ClothesService : NetworkManager {
         // 플러그인 추가
         let plugins: [PluginType] = [
             NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)), // 로그 플러그인
-            AccessTokenPlugin()
-
+            AccessTokenPlugin(),
+            TokenRefreshPlugin()
         ]
         
         // provider 초기화
         self.provider = provider ?? MoyaProvider<ClothesEndpoint>(plugins: plugins)
     }
     
-    public func inquiryClothesDetail (
-        cloth_id: Int,
-        completion: @escaping (Result<InquiryClothesDetailResponseDTO, NetworkError>) -> Void
-    ){
-        request(
-            target: .inquiryClothesDetail(cloth_id: cloth_id),
-            decodingType: InquiryClothesDetailResponseDTO.self,
-            completion: completion
-        )
-    }
+   
     
     public func checkEditClothes (
-        cloth_id: Int,
+        clothId: Int64,
         completion: @escaping (Result<checkEditClothesResponseDTO, NetworkError>) -> Void
     ){
         request(
-            target: .checkEditClothes(cloth_id: cloth_id),
+            target: .checkEditClothes(clothId: clothId),
             decodingType: checkEditClothesResponseDTO.self,
             completion: completion)
     }
     
     public func checkPopUpClothes (
-        cloth_id: Int,
+        clothId: Int64,
         completion: @escaping (Result<checkPopUpClothesResponseDTO, NetworkError>) -> Void
     ) {
         request(
-            target: .checkPopUpClothes(cloth_id: cloth_id),
+            target: .checkPopUpClothes(clothId: clothId),
             decodingType: checkPopUpClothesResponseDTO.self,
             completion: completion)
+    }
+    
+    public func getSmartSummationClothes(
+        completion: @escaping (Result<SmartSummationResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .smartSummationClothes,
+            decodingType: SmartSummationResponseDTO.self,
+            completion: completion
+        )
     }
     
     public func getCategoryClothes (
@@ -66,42 +68,51 @@ public final class ClothesService : NetworkManager {
             decodingType: getCategoryClothesResponseDTO.self,
             completion: completion)
     }
+
     
     public func addClothes (
-        category_id: Int,
+        imageData: Data,
         data: AddClothesRequestDTO,
-        completion: @escaping (Result<addClothesResponseDTO, NetworkError>) -> Void
+        completion: @escaping (Result<AddClothesResponseDTO, NetworkError>) -> Void
     ){
         request(
-            target: .addClothes(category_id: category_id, data: data),
-            decodingType: addClothesResponseDTO.self,
+            target: .addClothes(image: imageData, data: data),
+            decodingType: AddClothesResponseDTO.self,
             completion: completion)
     }
     
     public func editClothes (
-        cloth_id: Int, category_id: Int,
-        data: EditClothesRequestDTO,
-        completion: @escaping (Result<Bool, NetworkError>) -> Void
+        clothId: Int64,
+        imageData: Data,
+        clothUpdateRequest: EditClothesRequestDTO,
+        completion: @escaping (Result<Void, NetworkError>) -> Void
     ){
-        request(
-            target: .editClothes(cloth_id: cloth_id, category_id: category_id, data: data),
-            decodingType: Bool.self,
+        requestStatusCode(
+            target: .editClothes(clothId: clothId, imageData: imageData, clothUpdateRequest: clothUpdateRequest),
             completion: completion)
+            
     }
     
     public func deleteClothes (
         cloth_id: Int,
-        completion: @escaping (Result<Bool, NetworkError>) -> Void
+        completion: @escaping (Result<Void, NetworkError>) -> Void
     ){
-        request(
+        requestStatusCode(
             target: .deleteClothes(cloth_id: cloth_id),
-            decodingType: Bool.self,
-            completion: completion)
-    }
-    
+            completion: { result in
+                switch result {
+                case .success:
+                    completion(.success(())) // 성공 처리
+                case .failure(let error):
+                    completion(.failure(error)) // 실패 처리
+                }
+            }
+        )
+    }   
+
     // 내 옷장 조회 GET API
     public func getClothes(
-        clokeyId: String,
+        clokeyId: String?,  
         categoryId: CLong,
         season: String,
         sort: String,
@@ -122,6 +133,24 @@ public final class ClothesService : NetworkManager {
             completion: completion
         )
     }
-}
+    
+    // 유저 옷장 검색 GET API
+    public func searchClothes(
+        keyword: String,
+        page: Int,
+        size: Int,
+        completion: @escaping (Result<ClothSearchResponseDTO, NetworkError>) -> Void
+    ) {
+        request(
+            target: .searchByNameAndBrand(
+                keyword: keyword,
+                page: page,
+                size: size
+            ),
+            decodingType: ClothSearchResponseDTO.self,
+            completion: completion
+        )
+    }
 
+}
 
