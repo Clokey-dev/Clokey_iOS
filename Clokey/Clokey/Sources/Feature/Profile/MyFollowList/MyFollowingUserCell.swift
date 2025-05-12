@@ -15,9 +15,6 @@ protocol MyFollowingUserCellDelegate: AnyObject {
     func myFollowingUserCell(_ cell: MyFollowingUserCell, didChangeFollowStatus isFollowing: Bool)
     func showFollowErrorAlert(message: String)
 }
-//protocol FollowUserCellDelegate: AnyObject {
-//    
-//}
 
 // MARK: - Like User Cell
 class MyFollowingUserCell: UICollectionViewCell {
@@ -50,14 +47,14 @@ class MyFollowingUserCell: UICollectionViewCell {
         $0.textColor = .gray
     }
     
-    let followButton = {
-        var configuration = UIButton.Configuration.plain()
-        configuration.title = "팔로우"
-        configuration.baseForegroundColor = .white
-        configuration.background.backgroundColor = .black
-        configuration.cornerStyle = .medium
-        
-        let button = UIButton(configuration: configuration)
+    let followButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("팔로우", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .black
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        button.titleLabel?.adjustsFontForContentSizeCategory = false
+        button.layer.cornerRadius = 10
         return button
     }()
     
@@ -168,23 +165,21 @@ class MyFollowingUserCell: UICollectionViewCell {
     }
     
     func updateFollowButton(isFollower: Bool) {
-        var configuration = UIButton.Configuration.plain()
-        configuration.title = isFollower ? "팔로잉" : "팔로우"
-        configuration.baseForegroundColor = isFollower ? .black : .white
-        configuration.background.backgroundColor = isFollower ? .white : .mainBrown800
-        configuration.cornerStyle = .medium
-        
+        let title = isFollower ? "팔로잉" : "팔로우"
+        let titleColor = isFollower ? UIColor.black : UIColor.white
+        let backgroundColor = isFollower ? UIColor.white : UIColor.mainBrown800
+
+        followButton.setTitle(title, for: .normal)
+        followButton.setTitleColor(titleColor, for: .normal)
+        followButton.backgroundColor = backgroundColor
+        followButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        followButton.titleLabel?.adjustsFontForContentSizeCategory = false
+
         if isFollower {
             followButton.layer.borderWidth = 1
-            followButton.layer.masksToBounds = true
-            followButton.layer.cornerRadius = 10
             followButton.layer.borderColor = UIColor.mainBrown800.cgColor
         } else {
             followButton.layer.borderWidth = 0
-            followButton.layer.cornerRadius = 10
-            followButton.layer.masksToBounds = true
         }
-        
-        followButton.configuration = configuration
     }
 }
