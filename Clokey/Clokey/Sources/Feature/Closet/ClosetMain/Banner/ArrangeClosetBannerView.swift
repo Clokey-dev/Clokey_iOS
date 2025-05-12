@@ -45,15 +45,15 @@ class ArrangeClosetBannerView: UIControl {
 
     private func setupConstraints() {
         bannerImage.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(4)
-            make.trailing.equalToSuperview().offset(-26)
-            make.height.equalTo(79)
-            make.width.equalTo(75)
+            make.top.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().offset(-23)
+            make.height.equalTo(65)
+            make.width.equalTo(69)
         }
         
         bannerTitle.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(23)
-            make.leading.equalToSuperview().offset(33)
+            make.leading.equalToSuperview().offset(30)
             make.height.equalTo(20)
         }
         
