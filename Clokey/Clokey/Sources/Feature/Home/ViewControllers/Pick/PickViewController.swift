@@ -1,5 +1,5 @@
 //
-//  WeatherExample.swift
+//  PickViewController.swift
 //  Clokey
 //
 //  Created by 한금준 on 6/24/25.
@@ -12,6 +12,7 @@ import CoreLocation
 
 final class PickViewController: UIViewController, CLLocationManagerDelegate {
     private var timeUpdateTimer: Timer?
+    private var minuteCounter: Int = 0
     private var backgroundView: UIView?// 배경 어둡게 하기 위해 선언
     
     var latitude : Double = 0
@@ -939,9 +940,19 @@ final class PickViewController: UIViewController, CLLocationManagerDelegate {
         
         // 정각까지 한 번 딜레이 후, 60초 간격 타이머 시작
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
-            self?.updateTimeLabel()
-            self?.timeUpdateTimer = Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true) { _ in
-                self?.updateTimeLabel()
+            guard let self = self else { return }
+            self.updateTimeLabel()
+            self.minuteCounter = 1
+
+            self.timeUpdateTimer = Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true) { _ in
+                self.updateTimeLabel()
+                self.minuteCounter += 1
+
+                if self.minuteCounter % 30 == 0 {
+                    if let location = self.userLocation {
+                        self.fetchWeather(for: location)
+                    }
+                }
             }
         }
     }
