@@ -513,6 +513,7 @@ final class PickViewController: UIViewController, CLLocationManagerDelegate {
                 // 현재 날씨
                 let current = try await weatherService.weather(for: location, including: .current)
                 let currentTemp = current.temperature.value
+                let roundedTemp = Int(currentTemp.rounded())
                 let currentDesc = current.condition.description
                 let symbolName = current.symbolName
                 
@@ -539,28 +540,6 @@ final class PickViewController: UIViewController, CLLocationManagerDelegate {
                     }
                 }
                 
-                // Fallback: 오늘의 일별 레코드가 아직 없으면 시간별 예보로 최고/최저 계산
-                if todayHigh == nil || todayLow == nil {
-                    let hourly = try await weatherService.weather(
-                        for: location,
-                        including: .hourly(startDate: today, endDate: tomorrow)
-                    )
-                    
-                    var maxTemp: Double = -Double.greatestFiniteMagnitude
-                    var minTemp: Double =  Double.greatestFiniteMagnitude
-                    
-                    for hour in hourly.forecast where calendar.isDate(hour.date, inSameDayAs: today) {
-                        let temp = hour.temperature.value
-                        maxTemp = max(maxTemp, temp)
-                        minTemp = min(minTemp, temp)
-                    }
-                    
-                    if maxTemp != -Double.greatestFiniteMagnitude,
-                       minTemp != Double.greatestFiniteMagnitude {
-                        todayHigh = maxTemp
-                        todayLow  = minTemp
-                    }
-                }
 
                 // 결과 출력
                 var tempDetail = ""
@@ -574,9 +553,11 @@ final class PickViewController: UIViewController, CLLocationManagerDelegate {
                     yesterdayL = Int32(yLow)
                 }
                 if let tHigh = todayHigh, let tLow = todayLow {
-                    tempDetail += " (최고: \(Int(tHigh))° / 최저: \(Int(tLow))°)"
-                    maxTemp = Int32(tHigh)
-                    minTemp = Int32(tLow)
+                    let roundedHigh = Int(tHigh.rounded())
+                    let roundedLow = Int(tLow.rounded())
+                    tempDetail += " (최고: \(roundedHigh)° / 최저: \(roundedLow)°)"
+                    maxTemp = Int32(roundedHigh)
+                    minTemp = Int32(roundedLow)
                 }
                 
                 let temperatureDifference = yesterdayL - minTemp
@@ -591,10 +572,10 @@ final class PickViewController: UIViewController, CLLocationManagerDelegate {
                 }
 
                 await MainActor.run {
-                    self.pickView.temperatureLabel.text = "\(Int32(currentTemp))°C"
+                    self.pickView.temperatureLabel.text = "\(roundedTemp)°C"
                     self.pickView.tempDetailsLabel.text = tempDetail
                     self.pickView.temperatureChangeLabel.text = resultText
-                    fetchWeatherRecommendations(nowTemp: Int32(currentTemp), maxTemp: maxTemp, minTemp: minTemp)
+                    fetchWeatherRecommendations(nowTemp: Int32(roundedTemp), maxTemp: maxTemp, minTemp: minTemp)
                     
                     self.pickView.weatherIconView.tintColor = UIColor.mainBrown800
                     self.pickView.weatherIconView.image = iconImage
