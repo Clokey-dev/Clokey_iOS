@@ -25,6 +25,8 @@ main
         ├── feature/login
         ├── feature/calendar_view
         ├── feature/edit_profile
+	├── refactor/login-token-refresh
+	├── fix/profile 
         └── hotfix/critical_bug
 ```
 -  **main** 
@@ -33,14 +35,20 @@ main
 	- 개발 중인 모든 기능이 병합되는 브랜치로, 안정적인 상태를 유지합니다. 
 -  **feature/** 
 	- 새로운 기능 개발을 위한 브랜치입니다.
-	- 완료 후 develop 브랜치로 병합합니다. 
+	- 작업 완료 후 develop 브랜치에 병합합니다.
 -  **release/** 
 	- 배포 준비를 위한 브랜치입니다. 
-	- 버그를 수정하고 최종 테스트를 거친 후 main에 병합합니다. 
+	- 버그를 수정하고 최종 테스트를 거친 뒤, main에 병합합니다. 
+- **fix/** 
+	- devleop에서 발견된 버그를 수정하기 위한 브랜치입니다. 
+	- 수정 완료 후 develop에 병합합니다.
+- **refactor/**
+	- devleop에서 리팩토링을 위한 브랜치입니다.
+ 	- 작업 완료 후 develop에 병합합니다.	 	
 - **hotfix/** 
 	- main에서 발견된 긴급한 버그를 수정하기 위한 브랜치입니다. 
-	- 수정 후 main과 develop에 병합됩니다.
-
+	- 수정 완료 후 main과 develop에 병합합니다.
+   
 <br>
 
 ### 🔧 브랜치 생성 및 작업 흐름
