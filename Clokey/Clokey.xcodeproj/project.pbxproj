@@ -2130,11 +2130,11 @@
 				};
 			};
 			buildConfigurationList = 07F0930B2D2418380075659F /* Build configuration list for PBXProject "Clokey" */;
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
+				ko,
 			);
 			mainGroup = 07F093072D2418380075659F;
 			minimizedProjectReferenceProxies = 1;

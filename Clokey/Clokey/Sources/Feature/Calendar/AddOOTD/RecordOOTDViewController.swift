@@ -137,6 +137,29 @@ class RecordOOTDViewController: UIViewController, UIGestureRecognizerDelegate {
         mainView.OOTDButton.isEnabled = !selectedImages.isEmpty && !taggedItems.isEmpty
     }
 
+    /// 지정한 maxWidth에 맞춰 비율 유지 리사이즈 후 JPEG 압축 데이터 반환
+    func resizedImageData(
+        from image: UIImage,
+        maxWidth: CGFloat = 1080,
+        quality: CGFloat = 0.7
+        ) -> Data? {
+            
+        // 1) 비율 계산
+        let scale = maxWidth / max(image.size.width, image.size.height)
+        let newSize = CGSize(
+        width: image.size.width * scale,
+        height: image.size.height * scale
+        )
+
+        // 2) 비트맵 그래픽 컨텍스트 생성
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.draw(in: CGRect(origin: .zero, size: newSize))
+          let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        // 3) JPEG 압축 (quality 0.7)
+        return resizedImage?.jpegData(compressionQuality: quality)
+    }
 
     
     // MARK: - Actions
@@ -204,7 +227,8 @@ class RecordOOTDViewController: UIViewController, UIGestureRecognizerDelegate {
             
             // 이미지 압축 및 크기 제한
             let imageDataArray = selectedImages.compactMap { image in
-                return image.jpegData(compressionQuality: 1.0) ?? nil
+                // 최대 너비 1080px, 품질 0.7로 리사이즈+압축
+                return resizedImageData(from: image, maxWidth: 1080, quality: 0.7)
             }
             
             DispatchQueue.main.async {
