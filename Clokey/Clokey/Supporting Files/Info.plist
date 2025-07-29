@@ -94,5 +94,7 @@
 	<array>
 		<string>Default</string>
 	</array>
+    <key>CFBundleDisplayName</key>
+    <string>Clokey</string>
 </dict>
 </plist>
