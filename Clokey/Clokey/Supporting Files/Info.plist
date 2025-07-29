@@ -4,6 +4,8 @@
 <dict>
 	<key>Asset Catalog App Icon Set Name</key>
 	<string>AppIcon</string>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>ko</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>com.yourapp.backgroundTask</string>
