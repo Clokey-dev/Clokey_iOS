@@ -1,0 +1,23 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Build and upload to TestFlight with auto-incremented build number"
+  lane :beta do
+    match(
+      type: "appstore",
+      readonly: true,
+      git_url: "https://github.com/Clokey-dev/Clokey_iOS_Certificates"
+    )
+
+    increment_build_number(
+      xcodeproj: "Clokey.xcodeproj"
+    )
+
+    build_app(
+      scheme: "Clokey",
+      export_method: "app-store-connect"
+    )
+
+    upload_to_testflight
+  end
+end
