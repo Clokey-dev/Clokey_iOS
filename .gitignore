@@ -17,6 +17,9 @@ xcuserdata/
 build/
 DerivedData/
 *.log
+*.ipa
+*.dSYM.zip
+build/
 
 # Test 결과물
 *.plist
