@@ -5,418 +5,345 @@
 //  Created by 한금준 on 1/11/25.
 //
 
-// 완료
-
 import UIKit
 import Then
 import SnapKit
 
-/// `PickView`는 사용자가 선택한 날씨와 관련된 의류 추천 화면을 구성
-class PickView: UIView {
-    // EmptyStackView 선언
-    private let emptyStackView = EmptyStackView()
-    
-    
-    /// 세로 스크롤을 지원하는 ScrollView
-    let scrollView: UIScrollView = UIScrollView().then {
-        $0.showsVerticalScrollIndicator = false // 세로 스크롤바 숨김
+final class PickView: UIView {
+
+    // MARK: - Subviews
+
+    let scrollView = UIScrollView().then {
+        $0.showsVerticalScrollIndicator = false
     }
-    
-    /// ScrollView 내부 콘텐츠를 담는 ContentView
-    let contentView: UIView = UIView().then {
-        $0.backgroundColor = .white // 배경색 흰색
+
+    let contentView = UIView().then {
+        $0.backgroundColor = .white
     }
-    
-    /// 시간과 지역 정보를 표시하는 레이블
-    let timeLabel: UILabel = UILabel().then {
+
+    let timeLabel = UILabel().then {
         $0.font = UIFont.ptdMediumFont(ofSize: 14)
-        $0.textColor = .black // 텍스트 색상
-        $0.textAlignment = .center // 텍스트 중앙 정렬
-        $0.text = "12:00 PM 대한민국 ??? 기준" // 기본 텍스트
+        $0.textColor = .black
+        $0.textAlignment = .center
+        $0.text = "12:00 PM 대한민국 ??? 기준"
     }
 
-    /// 위치 아이콘을 표시하는 이미지 뷰
-    let locationIconView: UIImageView = UIImageView().then {
-        $0.image = UIImage(named: "location_icon") // 시스템 이미지 사용
-        $0.contentMode = .scaleAspectFit // 이미지 크기 비율 유지
+    let appleWeatherLabel = UILabel().then {
+        let text = " Weather"
+        let attr = NSMutableAttributedString(string: text)
+        attr.addAttribute(.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: text.count))
+        attr.addAttribute(.font, value: UIFont.ptdMediumFont(ofSize: 14), range: NSRange(location: 0, length: text.count))
+        $0.attributedText = attr
+        $0.textAlignment = .center
+        $0.isUserInteractionEnabled = true
     }
 
-    /// 날씨 상태를 표시하는 이미지 뷰
-    let weatherIconView: UIImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFit // 이미지 비율 유지
+    let locationIconView = UIImageView().then {
+        $0.image = UIImage(named: "location_icon")
+        $0.contentMode = .scaleAspectFit
     }
 
-    /// 현재 온도를 표시하는 레이블
-    let temperatureLabel: UILabel = UILabel().then {
+    let weatherIconView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+    }
+
+    let temperatureLabel = UILabel().then {
         $0.font = UIFont.ptdMediumFont(ofSize: 20)
-        $0.textAlignment = .center // 텍스트 중앙 정렬
-        $0.text = "-1°C" // 기본 텍스트
+        $0.textAlignment = .center
+        $0.text = "-1°C"
     }
 
-    /// 최고/최저 기온을 표시하는 레이블
-    let tempDetailsLabel: UILabel = UILabel().then {
+    let tempDetailsLabel = UILabel().then {
         $0.font = UIFont.ptdMediumFont(ofSize: 14)
-        $0.textColor = .black // 텍스트 색상
-        $0.textAlignment = .center // 텍스트 중앙 정렬
-        $0.text = "(최고: 3°, 최저: -3°)" // 기본 텍스트
+        $0.textColor = .black
+        $0.textAlignment = .center
+        $0.text = "(최고: 3°, 최저: -3°)"
     }
 
-    /// 어제와 비교한 기온 변화를 표시하는 레이블
-    let temperatureChangeLabel: UILabel = UILabel().then {
-        $0.text = "어제에 비해 기온이 변화 중..." // 기본 텍스트
-        $0.textColor = .black // 텍스트 색상
-        $0.backgroundColor = .clear
-        $0.layer.borderColor = UIColor.brown.cgColor // 경계선 색상
+    let temperatureChangeLabel = UILabel().then {
+        $0.text = "어제에 비해 기온이 변화 중..."
+        $0.textColor = .black
         $0.font = UIFont.ptdMediumFont(ofSize: 16)
-        $0.textAlignment = .center // 텍스트 중앙 정렬
-        $0.layer.borderWidth = 1 // 경계선 두께
-        $0.layer.cornerRadius = 10 // 모서리 둥글게 처리
-        $0.clipsToBounds = true // 코너 반경 적용
+        $0.textAlignment = .center
+        $0.backgroundColor = .clear
+        $0.layer.borderColor = UIColor.brown.cgColor
+        $0.layer.borderWidth = 1
+        $0.layer.cornerRadius = 10
+        $0.clipsToBounds = true
     }
-    
-    
-    
-    
-    /// 날씨에 따른 추천 의류 이미지 컨테이너 뷰
-    let weatherImageContainerView: UIView = UIView().then {
+
+    let weatherImageContainerView = UIView().then {
         $0.backgroundColor = .clear
     }
 
-    /// 첫 번째 의류 추천 이미지
-    let weatherImageView1: UIImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFill // 비율 유지
-        $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .white
-        $0.layer.cornerRadius = 5 // 원하는 반경 설정
-        $0.layer.masksToBounds = true // cornerRadius 적용 보장
-    }
-    
-    let weatherImageName1: UILabel = UILabel().then {
-        $0.font = UIFont.ptdRegularFont(ofSize: 12)
-        $0.textColor = .black // 텍스트 색상
-        $0.textAlignment = .left // 텍스트 중앙 정렬
-        $0.numberOfLines = 0
-        $0.lineBreakMode = .byCharWrapping
-        $0.text = "" // 기본 텍스트
+    let weatherImageView1 = PickView.imageView()
+    let weatherImageName1 = PickView.imageLabel()
+
+    let weatherImageView2 = PickView.imageView()
+    let weatherImageName2 = PickView.imageLabel()
+
+    let weatherImageView3 = PickView.imageView()
+    let weatherImageName3 = PickView.imageLabel()
+
+    let bottomButtonLabel = UILabel().then {
+        $0.text = "내 옷 보러가기"
+        $0.textColor = .black
+        $0.font = UIFont.ptdMediumFont(ofSize: 12)
     }
 
-    /// 두 번째 의류 추천 이미지
-    let weatherImageView2: UIImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFill // 비율 유지
-        $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .white
-        $0.layer.cornerRadius = 5 // 원하는 반경 설정
-        $0.layer.masksToBounds = true // cornerRadius 적용 보장
-    }
-    
-    let weatherImageName2: UILabel = UILabel().then {
-        $0.font = UIFont.ptdRegularFont(ofSize: 12)
-        $0.textColor = .black // 텍스트 색상
-        $0.textAlignment = .left // 텍스트 중앙 정렬
-        $0.numberOfLines = 0
-        $0.lineBreakMode = .byCharWrapping
-        $0.text = "" // 기본 텍스트
+    let bottomArrowIcon = UIImageView().then {
+        $0.image = UIImage(systemName: "chevron.right")
+        $0.tintColor = .black
+        $0.contentMode = .scaleAspectFill
     }
 
-    /// 세 번째 의류 추천 이미지
-    let weatherImageView3: UIImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFill // 비율 유지
-        $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .white
-        $0.layer.cornerRadius = 5 // 원하는 반경 설정
-        $0.layer.masksToBounds = true // cornerRadius 적용 보장
-    }
-    
-    let weatherImageName3: UILabel = UILabel().then {
-        $0.font = UIFont.ptdRegularFont(ofSize: 12)
-        $0.textColor = .black // 텍스트 색상
-        $0.textAlignment = .left // 텍스트 중앙 정렬
-        $0.numberOfLines = 0
-        $0.lineBreakMode = .byCharWrapping
-        $0.text = "" // 기본 텍스트
-    }
-    
-    /// '내 옷 보러가기' 버튼 텍스트 레이블
-    let bottomButtonLabel: UILabel = UILabel().then {
-        $0.text = "내 옷 보러가기" // 버튼 텍스트
-        $0.textColor = .black // 텍스트 색상
-        $0.font = UIFont.ptdMediumFont(ofSize: 12) // 폰트 크기
+    let recapTitleLabel = UILabel().then {
+        $0.text = "Recap"
+        $0.textColor = .black
+        $0.font = UIFont.ptdSemiBoldFont(ofSize: 20)
     }
 
-    /// 버튼 옆의 화살표 아이콘
-    let bottomArrowIcon: UIImageView = UIImageView().then {
-        $0.image = UIImage(systemName: "chevron.right") // 오른쪽 화살표
-        $0.tintColor = .black // 색상 설정
-        $0.contentMode = .scaleAspectFill // 크기 비율 유지
-    }
-
-    /// Recap 섹션의 타이틀 레이블
-    let recapTitleLabel: UILabel = UILabel().then {
-        $0.text = "Recap" // 타이틀 텍스트
-        $0.textColor = .black // 텍스트 색상
-        $0.font = UIFont.ptdSemiBoldFont(ofSize: 20) // 큰 폰트 크기
-    }
-
-    /// Recap 섹션의 부제목 레이블
-    let recapSubtitleLabel1: UILabel = UILabel().then {
+    let recapSubtitleLabel1 = UILabel().then {
         $0.text = "1년 전 오늘, 00님의 기록이 없어요!"
-        $0.textColor = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0) // 텍스트 색상
-        $0.font = UIFont.ptdMediumFont(ofSize: 14) // 작은 폰트 크기
-        $0.numberOfLines = 0 // 여러 줄 허용
-    }
-    
-    let recapSubtitleLabel2: UILabel = UILabel().then {
-        $0.text = "다른사용자들은 어떤 옷을 입었을까요?"
-        $0.textColor = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0) // 텍스트 색상
-        $0.font = UIFont.ptdMediumFont(ofSize: 14) // 작은 폰트 크기
-        $0.numberOfLines = 0 // 여러 줄 허용
+        $0.textColor = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0)
+        $0.font = UIFont.ptdMediumFont(ofSize: 14)
+        $0.numberOfLines = 0
     }
 
-    /// Recap 섹션의 이미지 컨테이너 뷰
-    let recapImageContainerView: UIView = UIView().then {
+    let recapSubtitleLabel2 = UILabel().then {
+        $0.text = "다른사용자들은 어떤 옷을 입었을까요?"
+        $0.textColor = UIColor(red: 38/255, green: 38/255, blue: 38/255, alpha: 1.0)
+        $0.font = UIFont.ptdMediumFont(ofSize: 14)
+        $0.numberOfLines = 0
+    }
+
+    let recapImageContainerView = UIView().then {
         $0.backgroundColor = .clear
     }
 
-    /// Recap 섹션의 첫 번째 이미지
-    let recapImageView1: UIImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFill // 비율 유지
-        $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .white
-        $0.layer.cornerRadius = 5 // 원하는 반경 설정
-        $0.layer.masksToBounds = true // cornerRadius 적용 보장
-    }
+    let recapImageView1 = PickView.imageView()
+    let recapImageView2 = PickView.imageView()
 
-    /// Recap 섹션의 두 번째 이미지
-    let recapImageView2: UIImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFill // 비율 유지
-        $0.clipsToBounds = true // 이미지가 뷰를 벗어나지 않게
-        $0.backgroundColor = .white
-        $0.layer.cornerRadius = 5 // 원하는 반경 설정
-        $0.layer.masksToBounds = true // cornerRadius 적용 보장
-    }
-    
-    // MARK: - Initializer
-    
-    /// 초기화 메서드
+    private let emptyStackView = EmptyStackView()
+
+    // MARK: - Init
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupUI() // UI 구성
-        setupConstraints() // 제약 조건 설정
+        setupUI()
+        setupConstraints()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - Setup Methods
-    
-    /// UI 구성 요소를 추가하는 메서드
+
+    // MARK: - Setup
+
     private func setupUI() {
-        backgroundColor = .white // 배경색 설정
-        
-        // ScrollView와 ContentView 추가
+        backgroundColor = .white
+
         addSubview(scrollView)
         scrollView.addSubview(contentView)
-        
-        // ContentView 내부에 기존 UI 요소 추가
-        contentView.addSubview(locationIconView)
-        contentView.addSubview(weatherIconView)
-        contentView.addSubview(temperatureLabel)
-        contentView.addSubview(timeLabel)
-        contentView.addSubview(tempDetailsLabel)
-        contentView.addSubview(temperatureChangeLabel)
-        contentView.addSubview(weatherImageContainerView)
-        weatherImageContainerView.addSubview(weatherImageView1)
-        weatherImageContainerView.addSubview(weatherImageName1)
-        weatherImageContainerView.addSubview(weatherImageView2)
-        weatherImageContainerView.addSubview(weatherImageName2)
-        weatherImageContainerView.addSubview(weatherImageView3)
-        weatherImageContainerView.addSubview(weatherImageName3)
-        contentView.addSubview(bottomButtonLabel)
-        contentView.addSubview(bottomArrowIcon)
-        contentView.addSubview(recapTitleLabel)
-        contentView.addSubview(recapSubtitleLabel1)
-        contentView.addSubview(recapSubtitleLabel2)
-        contentView.addSubview(recapImageContainerView)
-        recapImageContainerView.addSubview(recapImageView1)
-        recapImageContainerView.addSubview(recapImageView2)
+
+        [timeLabel, appleWeatherLabel, locationIconView, weatherIconView, temperatureLabel, tempDetailsLabel, temperatureChangeLabel, weatherImageContainerView, bottomButtonLabel, bottomArrowIcon, recapTitleLabel, recapSubtitleLabel1, recapSubtitleLabel2, recapImageContainerView].forEach {
+            contentView.addSubview($0)
+        }
+
+        [weatherImageView1, weatherImageName1, weatherImageView2, weatherImageName2, weatherImageView3, weatherImageName3].forEach {
+            weatherImageContainerView.addSubview($0)
+        }
+
+        [recapImageView1, recapImageView2].forEach {
+            recapImageContainerView.addSubview($0)
+        }
     }
-    
+
     private func setupConstraints() {
-        // ScrollView 제약 설정
-        scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview() // 화면 전체에 ScrollView
-        }
-        
-        // ContentView 제약 설정
-        contentView.snp.makeConstraints { make in
-            make.edges.equalTo(scrollView) // ScrollView 내부에 맞춤
-            make.width.equalToSuperview() // 가로 크기는 화면 크기와 동일
-        }
-        
-        timeLabel.snp.makeConstraints { make in
-            make.top.equalTo(contentView.safeAreaLayoutGuide).offset(21)
-            make.leading.equalToSuperview().offset(20)
-        }
-        
-        locationIconView.snp.makeConstraints { make in
-            make.centerY.equalTo(timeLabel.snp.centerY)
-            make.trailing.equalToSuperview().offset(-20)
-            make.width.height.equalTo(24)
-        }
-        
-        weatherIconView.snp.makeConstraints { make in
-            make.top.equalTo(timeLabel.snp.bottom).offset(8)
-            make.leading.equalToSuperview().offset(20)
-            make.width.height.equalTo(26)
-        }
-        
-        temperatureLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(weatherIconView.snp.centerY)
-            make.leading.equalTo(weatherIconView.snp.trailing).offset(0.89)
-        }
-        
-        tempDetailsLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(weatherIconView.snp.centerY)
-            make.leading.equalTo(temperatureLabel.snp.trailing).offset(3)
-        }
-        
-        temperatureChangeLabel.snp.makeConstraints { make in
-            make.top.equalTo(tempDetailsLabel.snp.bottom).offset(10.89)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(40)
-        }
-        
-        weatherImageContainerView.snp.makeConstraints { make in
-            make.top.equalTo(temperatureChangeLabel.snp.bottom).offset(10)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(170)/*.priority(.medium) // 우선순위를 낮춤*/
-        }
-        
-        weatherImageView1.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.leading.equalToSuperview()
-            make.width.equalTo(weatherImageView2)
-            make.height.equalTo(148) // 적절한 높이 설정
+        scrollView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
 
-        weatherImageName1.snp.makeConstraints { make in
-            make.top.equalTo(weatherImageView1.snp.bottom).offset(5)
-            make.leading.equalTo(weatherImageView1.snp.leading).offset(2)
-            make.width.equalTo(weatherImageView1).offset(-2)
+        contentView.snp.makeConstraints {
+            $0.edges.equalTo(scrollView)
+            $0.width.equalToSuperview()
         }
 
-        weatherImageView2.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.leading.equalTo(weatherImageView1.snp.trailing).offset(10)
-            make.width.equalTo(weatherImageView3)
-            make.height.equalTo(weatherImageView1)
+        timeLabel.snp.makeConstraints {
+            $0.top.equalTo(contentView.safeAreaLayoutGuide).offset(21)
+            $0.leading.equalToSuperview().offset(20)
         }
 
-        weatherImageName2.snp.makeConstraints { make in
-            make.top.equalTo(weatherImageView2.snp.bottom).offset(5)
-            make.leading.equalTo(weatherImageView2.snp.leading)
-            make.width.equalTo(weatherImageView2).offset(-2)
+        appleWeatherLabel.snp.makeConstraints {
+            $0.centerY.equalTo(timeLabel)
+            $0.trailing.equalTo(locationIconView.snp.leading).offset(-8)
         }
 
-        weatherImageView3.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.leading.equalTo(weatherImageView2.snp.trailing).offset(10)
-            make.trailing.equalToSuperview()
-            make.width.equalTo(weatherImageView1)
-            make.height.equalTo(weatherImageView1)
+        locationIconView.snp.makeConstraints {
+            $0.centerY.equalTo(timeLabel)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.size.equalTo(24)
         }
 
-        weatherImageName3.snp.makeConstraints { make in
-            make.top.equalTo(weatherImageView3.snp.bottom).offset(5)
-            make.leading.equalTo(weatherImageView3.snp.leading)
-            make.width.equalTo(weatherImageView3).offset(-2)
-        }
-        
-        bottomButtonLabel.snp.makeConstraints { make in
-            make.top.equalTo(weatherImageName3.snp.bottom).offset(15)
-            make.trailing.equalToSuperview().inset(30)
-        }
-        
-        bottomArrowIcon.snp.makeConstraints { make in
-            make.centerY.equalTo(bottomButtonLabel.snp.centerY)
-            make.leading.equalTo(bottomButtonLabel.snp.trailing).offset(5)
-            make.width.equalTo(6)
-            make.height.equalTo(12)
-        }
-        
-        recapTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(bottomButtonLabel.snp.bottom).offset(24)
-            make.leading.equalToSuperview().offset(20)
-        }
-        
-        recapSubtitleLabel1.snp.makeConstraints { make in
-            make.top.equalTo(recapTitleLabel.snp.bottom).offset(6)
-            make.leading.equalToSuperview().offset(20)
-        }
-        
-        recapSubtitleLabel2.snp.makeConstraints { make in
-            make.top.equalTo(recapSubtitleLabel1.snp.bottom).offset(4)
-            make.leading.equalToSuperview().offset(20)
+        weatherIconView.snp.makeConstraints {
+            $0.top.equalTo(timeLabel.snp.bottom).offset(8)
+            $0.leading.equalToSuperview().offset(20)
+            $0.size.equalTo(26)
         }
 
-        
-        recapImageContainerView.snp.makeConstraints { make in
-            make.top.equalTo(recapSubtitleLabel2.snp.bottom).offset(9)
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(223.22)
-            make.bottom.equalToSuperview().offset(-20) // 스크롤 콘텐츠의 마지막 부분
+        temperatureLabel.snp.makeConstraints {
+            $0.centerY.equalTo(weatherIconView)
+            $0.leading.equalTo(weatherIconView.snp.trailing).offset(1)
         }
-        
-        recapImageView1.snp.makeConstraints { make in
-            make.top.bottom.leading.equalToSuperview()
-            make.width.equalTo(recapImageContainerView.snp.width).multipliedBy(0.5).offset(-5)
+
+        tempDetailsLabel.snp.makeConstraints {
+            $0.centerY.equalTo(weatherIconView)
+            $0.leading.equalTo(temperatureLabel.snp.trailing).offset(3)
         }
-        
-        recapImageView2.snp.makeConstraints { make in
-            make.top.bottom.trailing.equalToSuperview()
-            make.width.equalTo(recapImageContainerView.snp.width).multipliedBy(0.5).offset(-5)
+
+        temperatureChangeLabel.snp.makeConstraints {
+            $0.top.equalTo(tempDetailsLabel.snp.bottom).offset(11)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(40)
+        }
+
+        weatherImageContainerView.snp.makeConstraints {
+            $0.top.equalTo(temperatureChangeLabel.snp.bottom).offset(10)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(170)
+        }
+
+        weatherImageView1.snp.makeConstraints {
+            $0.top.leading.equalToSuperview()
+            $0.width.equalTo(weatherImageView2)
+            $0.height.equalTo(148)
+        }
+
+        weatherImageName1.snp.makeConstraints {
+            $0.top.equalTo(weatherImageView1.snp.bottom).offset(5)
+            $0.leading.equalTo(weatherImageView1).offset(2)
+            $0.width.equalTo(weatherImageView1).offset(-2)
+        }
+
+        weatherImageView2.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalTo(weatherImageView1.snp.trailing).offset(10)
+            $0.width.equalTo(weatherImageView3)
+            $0.height.equalTo(weatherImageView1)
+        }
+
+        weatherImageName2.snp.makeConstraints {
+            $0.top.equalTo(weatherImageView2.snp.bottom).offset(5)
+            $0.leading.equalTo(weatherImageView2).offset(2)
+            $0.width.equalTo(weatherImageView2).offset(-2)
+        }
+
+        weatherImageView3.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalTo(weatherImageView2.snp.trailing).offset(10)
+            $0.trailing.equalToSuperview()
+            $0.width.equalTo(weatherImageView1)
+            $0.height.equalTo(weatherImageView1)
+        }
+
+        weatherImageName3.snp.makeConstraints {
+            $0.top.equalTo(weatherImageView3.snp.bottom).offset(5)
+            $0.leading.equalTo(weatherImageView3).offset(2)
+            $0.width.equalTo(weatherImageView3).offset(-2)
+        }
+
+        bottomButtonLabel.snp.makeConstraints {
+            $0.top.equalTo(weatherImageName3.snp.bottom).offset(15)
+            $0.trailing.equalToSuperview().inset(30)
+        }
+
+        bottomArrowIcon.snp.makeConstraints {
+            $0.centerY.equalTo(bottomButtonLabel)
+            $0.leading.equalTo(bottomButtonLabel.snp.trailing).offset(5)
+            $0.size.equalTo(CGSize(width: 6, height: 12))
+        }
+
+        recapTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(bottomButtonLabel.snp.bottom).offset(24)
+            $0.leading.equalToSuperview().offset(20)
+        }
+
+        recapSubtitleLabel1.snp.makeConstraints {
+            $0.top.equalTo(recapTitleLabel.snp.bottom).offset(6)
+            $0.leading.equalToSuperview().offset(20)
+        }
+
+        recapSubtitleLabel2.snp.makeConstraints {
+            $0.top.equalTo(recapSubtitleLabel1.snp.bottom).offset(4)
+            $0.leading.equalToSuperview().offset(20)
+        }
+
+        recapImageContainerView.snp.makeConstraints {
+            $0.top.equalTo(recapSubtitleLabel2.snp.bottom).offset(9)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(223.22)
+            $0.bottom.equalToSuperview().offset(-20)
+        }
+
+        recapImageView1.snp.makeConstraints {
+            $0.top.bottom.leading.equalToSuperview()
+            $0.width.equalTo(recapImageContainerView.snp.width).multipliedBy(0.5).offset(-5)
+        }
+
+        recapImageView2.snp.makeConstraints {
+            $0.top.bottom.trailing.equalToSuperview()
+            $0.width.equalTo(recapImageContainerView.snp.width).multipliedBy(0.5).offset(-5)
         }
     }
-    
-    /// 데이터 상태에 따라 EmptyStackView 표시/숨김
+
+    // MARK: - Methods
+
     func updateEmptyState(isEmpty: Bool) {
         if isEmpty {
-            // 데이터가 없으면 EmptyStackView 추가하고 관련 요소 숨김
             weatherImageContainerView.addSubview(emptyStackView)
-            emptyStackView.snp.makeConstraints { make in
-                make.edges.equalToSuperview()
+            emptyStackView.snp.makeConstraints {
+                $0.edges.equalToSuperview()
             }
-            
             temperatureChangeLabel.isHidden = true
             bottomButtonLabel.isHidden = true
             bottomArrowIcon.isHidden = true
         } else {
-            // 데이터가 있으면 EmptyStackView 제거하고 관련 요소 표시
             emptyStackView.removeFromSuperview()
-            
             temperatureChangeLabel.isHidden = false
             bottomButtonLabel.isHidden = false
             bottomArrowIcon.isHidden = false
         }
     }
-    
+
     func recapNotMe(hidden: Bool) {
         recapSubtitleLabel2.isHidden = hidden
-        recapImageContainerView.snp.remakeConstraints { make in
-            if hidden {
-                make.top.equalTo(recapSubtitleLabel1.snp.bottom).offset(9)
-            }
-            else {
-                recapImageContainerView.snp.remakeConstraints { make in
-                    make.top.equalTo(recapSubtitleLabel2.snp.bottom).offset(9)
-                }
-            }
-            make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(223.22)
-            make.bottom.equalToSuperview().offset(-20) // 스크롤 콘텐츠의 마지막 부분
+        recapImageContainerView.snp.remakeConstraints {
+            $0.top.equalTo(hidden ? recapSubtitleLabel1.snp.bottom : recapSubtitleLabel2.snp.bottom).offset(9)
+            $0.leading.trailing.equalToSuperview().inset(20)
+            $0.height.equalTo(223.22)
+            $0.bottom.equalToSuperview().offset(-20)
+        }
+    }
+
+    // MARK: - Factory
+
+    private static func imageView() -> UIImageView {
+        UIImageView().then {
+            $0.contentMode = .scaleAspectFill
+            $0.clipsToBounds = true
+            $0.backgroundColor = .white
+            $0.layer.cornerRadius = 5
+            $0.layer.masksToBounds = true
+        }
+    }
+
+    private static func imageLabel() -> UILabel {
+        UILabel().then {
+            $0.font = UIFont.ptdRegularFont(ofSize: 12)
+            $0.textColor = .black
+            $0.textAlignment = .left
+            $0.numberOfLines = 0
+            $0.lineBreakMode = .byCharWrapping
         }
     }
 }
-
-
