@@ -98,7 +98,7 @@ final class PickViewController: UIViewController, CLLocationManagerDelegate {
         
         
         setupActions()
-
+        setupAppleWeatherAttribution()
         startPreciseMinuteTimer()
         setupBottomLabelTap()
         
@@ -189,6 +189,17 @@ final class PickViewController: UIViewController, CLLocationManagerDelegate {
                 print("히스토리 상세 조회 실패: \(error.localizedDescription)")
                 self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
             }
+        }
+    }
+    
+    private func setupAppleWeatherAttribution() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(openAppleWeatherAttribution))
+        pickView.appleWeatherLabel.addGestureRecognizer(tap)
+    }
+
+    @objc private func openAppleWeatherAttribution() {
+        if let url = URL(string: "https://weatherkit.apple.com/legal-attribution.html") {
+            UIApplication.shared.open(url)
         }
     }
     
