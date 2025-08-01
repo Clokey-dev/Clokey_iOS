@@ -9,13 +9,28 @@ platform :ios do
       git_url: "https://github.com/Clokey-dev/Clokey_iOS_Certificates"
     )
 
-    increment_build_number(
+    # TestFlight에 올라간 최신 빌드 넘버 가져오기
+    latest_build = latest_testflight_build_number(
+      app_identifier: "com.clokeyteam.clokey"
+    )
+
+    # 현재 프로젝트의 빌드 넘버 가져오기
+    current_build = get_build_number(
       xcodeproj: "Clokey.xcodeproj"
+    ).to_i
+
+    # 둘 중 큰 값 + 1
+    new_build = [latest_build, current_build].max + 1
+
+    increment_build_number(
+      xcodeproj: "Clokey.xcodeproj",
+      build_number: new_build
     )
 
     build_app(
       scheme: "Clokey",
-      export_method: "app-store-connect"
+      export_method: "app-store",
+      output_directory: "fastlane/output"
     )
 
     upload_to_testflight
