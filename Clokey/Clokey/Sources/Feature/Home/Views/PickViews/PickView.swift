@@ -20,6 +20,10 @@ final class PickView: UIView {
     let contentView = UIView().then {
         $0.backgroundColor = .white
     }
+    
+    let weatherWrapperView = UIView().then {
+        $0.backgroundColor = .clear
+    }
 
     let timeLabel = UILabel().then {
         $0.font = UIFont.ptdMediumFont(ofSize: 14)
@@ -146,18 +150,39 @@ final class PickView: UIView {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
 
-        [timeLabel, appleWeatherLabel, locationIconView, weatherIconView, temperatureLabel, tempDetailsLabel, temperatureChangeLabel, weatherImageContainerView, bottomButtonLabel, bottomArrowIcon, recapTitleLabel, recapSubtitleLabel1, recapSubtitleLabel2, recapImageContainerView].forEach {
+        // 1. contentView에 직접 추가할 뷰들
+        [
+            weatherWrapperView,                     // 날씨 텍스트 영역
+            weatherImageContainerView,              // 날씨 사진 영역 (권한 허용 시만 표시됨)
+            bottomButtonLabel, bottomArrowIcon,     // '내 옷 보러가기' 버튼
+            recapTitleLabel, recapSubtitleLabel1, recapSubtitleLabel2,
+            recapImageContainerView
+        ].forEach {
             contentView.addSubview($0)
         }
 
-        [weatherImageView1, weatherImageName1, weatherImageView2, weatherImageName2, weatherImageView3, weatherImageName3].forEach {
+        // 2. 날씨 텍스트 관련 뷰들 (wrapper 내부에 포함)
+        [
+            timeLabel, appleWeatherLabel, locationIconView,
+            weatherIconView, temperatureLabel, tempDetailsLabel, temperatureChangeLabel
+        ].forEach {
+            weatherWrapperView.addSubview($0)
+        }
+
+        // 3. 날씨 추천 이미지들
+        [weatherImageView1, weatherImageName1,
+         weatherImageView2, weatherImageName2,
+         weatherImageView3, weatherImageName3
+        ].forEach {
             weatherImageContainerView.addSubview($0)
         }
 
+        // 4. Recap 이미지
         [recapImageView1, recapImageView2].forEach {
             recapImageContainerView.addSubview($0)
         }
     }
+
 
     private func setupConstraints() {
         scrollView.snp.makeConstraints {
@@ -169,8 +194,13 @@ final class PickView: UIView {
             $0.width.equalToSuperview()
         }
 
-        timeLabel.snp.makeConstraints {
+        weatherWrapperView.snp.makeConstraints {
             $0.top.equalTo(contentView.safeAreaLayoutGuide).offset(21)
+            $0.leading.trailing.equalToSuperview()
+        }
+
+        timeLabel.snp.makeConstraints {
+            $0.top.equalToSuperview()
             $0.leading.equalToSuperview().offset(20)
         }
 
@@ -208,7 +238,7 @@ final class PickView: UIView {
         }
 
         weatherImageContainerView.snp.makeConstraints {
-            $0.top.equalTo(temperatureChangeLabel.snp.bottom).offset(10)
+            $0.top.equalTo(weatherWrapperView.snp.bottom).offset(10)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(170)
         }
@@ -298,12 +328,21 @@ final class PickView: UIView {
 
     // MARK: - Methods
 
-    func updateEmptyState(isEmpty: Bool) {
+    func updateEmptyState(isEmpty: Bool, isLocationDenied: Bool = false) {
         if isEmpty {
             weatherImageContainerView.addSubview(emptyStackView)
             emptyStackView.snp.makeConstraints {
                 $0.edges.equalToSuperview()
             }
+
+            if isLocationDenied {
+                emptyStackView.emptyClothesMessageTitle.text = "설정에서 위치 권한을 허용해주세요!"
+                emptyStackView.emptyClothesMessageSubTitle.text = "위치 권한을 허용하여\n기온에 맞는 옷을 추천 받아 보세요!"
+            } else {
+                emptyStackView.emptyClothesMessageTitle.text = "아직 추가한 옷이 없어요!"
+                emptyStackView.emptyClothesMessageSubTitle.text = "내 옷장에 옷을 추가해서\n기온에 맞는 옷을 매일 추천받아 보세요."
+            }
+
             temperatureChangeLabel.isHidden = true
             bottomButtonLabel.isHidden = true
             bottomArrowIcon.isHidden = true
@@ -322,6 +361,24 @@ final class PickView: UIView {
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(223.22)
             $0.bottom.equalToSuperview().offset(-20)
+        }
+    }
+    
+    func toggleWeatherInfoVisible(_ isVisible: Bool) {
+        weatherWrapperView.isHidden = !isVisible
+
+        if isVisible {
+            weatherWrapperView.snp.remakeConstraints {
+                $0.top.equalTo(contentView.safeAreaLayoutGuide).offset(21)
+                $0.leading.trailing.equalToSuperview()
+                $0.bottom.equalTo(temperatureChangeLabel.snp.bottom)
+            }
+        } else {
+            weatherWrapperView.snp.remakeConstraints {
+                $0.top.equalTo(contentView.safeAreaLayoutGuide).offset(0)
+                $0.leading.trailing.equalToSuperview()
+                $0.height.equalTo(10)
+            }
         }
     }
 

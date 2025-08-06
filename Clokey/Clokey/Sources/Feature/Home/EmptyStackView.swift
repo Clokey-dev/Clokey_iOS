@@ -46,6 +46,11 @@ class EmptyStackView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configure(title: String, subtitle: String) {
+        emptyClothesMessageTitle.text = title
+        emptyClothesMessageSubTitle.text = subtitle
+    }
+    
     // MARK: - Setup Methods
     private func setupUI() {
         backgroundColor = .white

@@ -727,6 +727,7 @@ final class PickViewController: UIViewController, CLLocationManagerDelegate {
                 DispatchQueue.main.async {
                     self.englishAddress = subAddress
                     self.updateTimeLabel()
+                    self.pickView.toggleWeatherInfoVisible(true)
                     self.latitude = latitude
                     self.longitude = longitude
                 }
@@ -738,7 +739,38 @@ final class PickViewController: UIViewController, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Failed to get location: \(error.localizedDescription)")
+
+        DispatchQueue.main.async {
+            self.hideLoadingOverlay()
+            self.pickView.updateEmptyState(isEmpty: true, isLocationDenied: true)
+            self.pickView.toggleWeatherInfoVisible(false)
+        }
     }
+
+    
+    @available(iOS 14.0, *)
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        handleAuthorization(manager.authorizationStatus)
+    }
+
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        handleAuthorization(status)
+    }
+
+    private func handleAuthorization(_ status: CLAuthorizationStatus) {
+        switch status {
+        case .authorizedWhenInUse, .authorizedAlways:
+            locationManager.startUpdatingLocation()
+        case .denied, .restricted:
+            DispatchQueue.main.async {
+                self.hideLoadingOverlay()
+                self.pickView.updateEmptyState(isEmpty: true, isLocationDenied: true)
+            }
+        default:
+            break
+        }
+    }
+
     
     private func setupLocationIconTap() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleLocationIconTap))
