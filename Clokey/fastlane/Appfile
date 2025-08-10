@@ -1,0 +1,8 @@
+app_identifier("com.clokeyteam.clokey") # The bundle identifier of your app
+apple_id("dbrdldh11@naver.com") # Your Apple Developer Portal username
+
+itc_team_id("127412139") # App Store Connect Team ID
+team_id("BBVZV8T99P") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
