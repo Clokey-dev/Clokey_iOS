@@ -76,3 +76,4 @@ fastlane/test_output/
 Config.xcconfig
 
 
+.ruby-version
