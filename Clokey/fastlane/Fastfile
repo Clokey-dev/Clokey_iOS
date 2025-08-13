@@ -1,38 +1,53 @@
-default_platform(:ios)
+lane :beta do
+  app_id    = "com.clokeyteam.clokey"
+  xcodeproj = "Clokey.xcodeproj"
+  scheme    = "Clokey"
 
-platform :ios do
-  desc "Build and upload to TestFlight with auto-incremented build number"
-  lane :beta do
-    match(
-      type: "appstore",
-      readonly: true,
-      git_url: "https://github.com/Clokey-dev/Clokey_iOS_Certificates"
-    )
+  # 1) 인증서/프로파일 가져오기 (App Store)
+  match(
+    type: "appstore",
+    readonly: true,
+    app_identifier: [app_id],               # 확장/위젯 있으면 배열에 모두 추가
+    git_url: "https://github.com/Clokey-dev/Clokey_iOS_Certificates"
+  )
 
-    # TestFlight에 올라간 최신 빌드 넘버 가져오기
-    latest_build = latest_testflight_build_number(
-      app_identifier: "com.clokeyteam.clokey"
-    )
+  # 2) 마케팅 버전과 최신 빌드 조회 → +1
+  sv = get_version_number(xcodeproj: xcodeproj)
+  latest_build = (latest_testflight_build_number(app_identifier: app_id, version: sv) rescue 0).to_i
+  next_build   = latest_build + 1
+  UI.message("ASC latest build for #{sv}: #{latest_build} → next: #{next_build}")
 
-    # 현재 프로젝트의 빌드 넘버 가져오기
-    current_build = get_build_number(
-      xcodeproj: "Clokey.xcodeproj"
-    ).to_i
+  increment_build_number(
+    xcodeproj: xcodeproj,
+    build_number: next_build.to_s
+  )
 
-    # 둘 중 큰 값 + 1
-    new_build = [latest_build, current_build].max + 1
+  # 3) 혹시 모를 plist 경로 이슈 방지(앱 타겟 Info.plist 경로 맞게 수정)
+  update_info_plist(
+    plist_path: "Clokey/Supporting Files/Info.plist",
+    block: lambda { |plist|
+      plist['CFBundleVersion'] = next_build.to_s
+    }
+  )
 
-    increment_build_number(
-      xcodeproj: "Clokey.xcodeproj",
-      build_number: new_build
-    )
+  # 4) 빌드 + 내보내기(프로비저닝 프로파일 매핑 명시)
+  build_app(
+    scheme: scheme,
+    export_method: "app-store",
+    export_options: {
+      provisioningProfiles: {
+        "com.clokeyteam.clokey" => "match AppStore com.clokeyteam.clokey"
+      }
+    }
+  )
 
-    build_app(
-      scheme: "Clokey",
-      export_method: "app-store",
-      output_directory: "fastlane/output"
-    )
+  # (추가) 업로드 전에 수동으로 만든 압축해제 폴더 정리
+  sh("rm -rf fastlane/output/ipa_unzipped")
 
-    upload_to_testflight
-  end
+  # 5) 업로드
+  upload_to_testflight(skip_waiting_for_build_processing: true)
+
+  # (선택) 업로드 성공 후 빌드 산출물 정리(ipa/dSYM/xcarchive 등)
+  clean_build_artifacts
+
 end

@@ -2464,7 +2464,7 @@
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = BBVZV8T99P;
 				ENABLE_DEBUG_DYLIB = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -2484,7 +2484,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				OTHER_CFLAGS = "-g";
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2496,6 +2496,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -2509,7 +2510,7 @@
 				CODE_SIGN_ENTITLEMENTS = Clokey/Clokey.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BBVZV8T99P;
 				ENABLE_DEBUG_DYLIB = NO;
@@ -2530,7 +2531,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				OTHER_CFLAGS = "-g";
 				PRODUCT_BUNDLE_IDENTIFIER = com.clokeyteam.clokey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2542,6 +2543,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
