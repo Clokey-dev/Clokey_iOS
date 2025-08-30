@@ -16,15 +16,11 @@ public final class CategoriesService : NetworkManager {
     let provider: MoyaProvider<CategoriesEndPoint>
     
     public init(provider: MoyaProvider<CategoriesEndPoint>? = nil) {
-        // 플러그인 추가
+        let session = Session(interceptor: AuthInterceptor())
         let plugins: [PluginType] = [
-            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)), // 로그 플러그인
-            AccessTokenPlugin(),
-            TokenRefreshPlugin()
+            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
         ]
-        
-        // provider 초기화
-        self.provider = provider ?? MoyaProvider<CategoriesEndPoint>(plugins: plugins)
+        self.provider = provider ?? MoyaProvider<CategoriesEndPoint>(session: session, plugins: plugins)
     }
     
     public func getRecommendCategory(

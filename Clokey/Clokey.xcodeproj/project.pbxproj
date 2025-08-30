@@ -78,6 +78,7 @@
 		074401AA2D5E1F9A00E60282 /* ProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401A42D5E1F9A00E60282 /* ProfileRequest.swift */; };
 		074401AB2D5E1F9A00E60282 /* ProfileResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401A52D5E1F9A00E60282 /* ProfileResponse.swift */; };
 		074401AE2D5E1F9A00E60282 /* AddClothingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074401AC2D5E1F9A00E60282 /* AddClothingViewController.swift */; };
+		07442FA32E62E4AA0068A639 /* AuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07442FA22E62E4AA0068A639 /* AuthInterceptor.swift */; };
 		0744FFAC2D5B1D6900E60282 /* PickPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FFA12D5B1D6900E60282 /* PickPopUpView.swift */; };
 		0744FFC22D5B1D6900E60282 /* PickPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FFB72D5B1D6900E60282 /* PickPopUpViewController.swift */; };
 		0744FFC72D5B1D8B00E60282 /* UpdateFriendCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0744FFB32D5B1D6900E60282 /* UpdateFriendCalendarViewController.swift */; };
@@ -120,7 +121,6 @@
 		07649EF12D4DE58900B6B2B2 /* MembersInfoResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649ECE2D4DE58900B6B2B2 /* MembersInfoResponseDTO.swift */; };
 		07649EF22D4DE58900B6B2B2 /* HistoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649EC12D4DE58900B6B2B2 /* HistoryService.swift */; };
 		07649FF82D4DE9AC00B6B2B2 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649FF72D4DE9AC00B6B2B2 /* KeychainHelper.swift */; };
-		07649FFA2D4DEA9000B6B2B2 /* AccessTokenPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07649FF92D4DEA9000B6B2B2 /* AccessTokenPlugin.swift */; };
 		076973382D63686D00AEA5D1 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076973372D63686D00AEA5D1 /* NotificationService.swift */; };
 		0769733A2D63687200AEA5D1 /* NotificationEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076973392D63687200AEA5D1 /* NotificationEndpoints.swift */; };
 		0769733C2D63687800AEA5D1 /* NotificationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0769733B2D63687800AEA5D1 /* NotificationRequest.swift */; };
@@ -150,7 +150,6 @@
 		077DC9042D6206F000C02FA4 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 077DC9032D6206F000C02FA4 /* KakaoSDKUser */; };
 		077DC91C2D62085100C02FA4 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077DC91B2D62085100C02FA4 /* TokenManager.swift */; };
 		077DC91D2D62085100C02FA4 /* JWTHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077DC91A2D62085100C02FA4 /* JWTHelper.swift */; };
-		077DC91F2D62092700C02FA4 /* TokenRefreshPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 077DC91E2D62092700C02FA4 /* TokenRefreshPlugin.swift */; };
 		0794EA8A2D81A6C500D204B6 /* ReportResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794EA862D81A6C500D204B6 /* ReportResponseDTO.swift */; };
 		0794EA8B2D81A6C500D204B6 /* ReportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794EA882D81A6C500D204B6 /* ReportService.swift */; };
 		0794EA8C2D81A6C500D204B6 /* ReportRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794EA842D81A6C500D204B6 /* ReportRequestDTO.swift */; };
@@ -386,6 +385,7 @@
 		074401A42D5E1F9A00E60282 /* ProfileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRequest.swift; sourceTree = "<group>"; };
 		074401A52D5E1F9A00E60282 /* ProfileResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileResponse.swift; sourceTree = "<group>"; };
 		074401AC2D5E1F9A00E60282 /* AddClothingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClothingViewController.swift; sourceTree = "<group>"; };
+		07442FA22E62E4AA0068A639 /* AuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInterceptor.swift; sourceTree = "<group>"; };
 		0744FF8B2D5B1D6900E60282 /* NewsImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsImageModel.swift; sourceTree = "<group>"; };
 		0744FF8C2D5B1D6900E60282 /* OpenWeatherMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherMap.swift; sourceTree = "<group>"; };
 		0744FF8D2D5B1D6900E60282 /* PickImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickImageModel.swift; sourceTree = "<group>"; };
@@ -427,7 +427,6 @@
 		07649ECF2D4DE58900B6B2B2 /* MembersLoginResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembersLoginResponseDTO.swift; sourceTree = "<group>"; };
 		07649ED12D4DE58900B6B2B2 /* MembersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembersService.swift; sourceTree = "<group>"; };
 		07649FF72D4DE9AC00B6B2B2 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
-		07649FF92D4DEA9000B6B2B2 /* AccessTokenPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessTokenPlugin.swift; sourceTree = "<group>"; };
 		076973372D63686D00AEA5D1 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		076973392D63687200AEA5D1 /* NotificationEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEndpoints.swift; sourceTree = "<group>"; };
 		0769733B2D63687800AEA5D1 /* NotificationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationRequest.swift; sourceTree = "<group>"; };
@@ -442,7 +441,6 @@
 		07703AB32D77173900F704C9 /* FriendsActionSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsActionSheetViewController.swift; sourceTree = "<group>"; };
 		077DC91A2D62085100C02FA4 /* JWTHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWTHelper.swift; sourceTree = "<group>"; };
 		077DC91B2D62085100C02FA4 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
-		077DC91E2D62092700C02FA4 /* TokenRefreshPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenRefreshPlugin.swift; sourceTree = "<group>"; };
 		0794EA822D81A6C500D204B6 /* ReportEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportEndpoint.swift; sourceTree = "<group>"; };
 		0794EA842D81A6C500D204B6 /* ReportRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportRequestDTO.swift; sourceTree = "<group>"; };
 		0794EA862D81A6C500D204B6 /* ReportResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportResponseDTO.swift; sourceTree = "<group>"; };
@@ -1111,8 +1109,7 @@
 			isa = PBXGroup;
 			children = (
 				07649EAD2D4DE58900B6B2B2 /* CookiePlugin.swift */,
-				07649FF92D4DEA9000B6B2B2 /* AccessTokenPlugin.swift */,
-				077DC91E2D62092700C02FA4 /* TokenRefreshPlugin.swift */,
+				07442FA22E62E4AA0068A639 /* AuthInterceptor.swift */,
 			);
 			path = Plugins;
 			sourceTree = "<group>";
@@ -2202,7 +2199,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				07CF63E52D55DE6900CCF9F4 /* CalendarDetailViewModel.swift in Sources */,
-				077DC91F2D62092700C02FA4 /* TokenRefreshPlugin.swift in Sources */,
 				076FAB4E2D2EBB3A00FF3979 /* KakaoAuthService.swift in Sources */,
 				0709165D2D58BEE1008DC9EE /* ClothesEndpoint.swift in Sources */,
 				A646C4312D65ACB300993FA5 /* YourFollowerUserModel.swift in Sources */,
@@ -2226,6 +2222,7 @@
 				07ECCB5C2D4E351E00AFF486 /* CustomSortDropdownView.swift in Sources */,
 				077DC91C2D62085100C02FA4 /* TokenManager.swift in Sources */,
 				A6FBF9CB2D78BAE3000FC4EA /* CustomReportCompleteView.swift in Sources */,
+				07442FA32E62E4AA0068A639 /* AuthInterceptor.swift in Sources */,
 				077DC91D2D62085100C02FA4 /* JWTHelper.swift in Sources */,
 				0794EA902D86ABB800D204B6 /* CommentHistoryView.swift in Sources */,
 				07ECCB5D2D4E351E00AFF486 /* CustomSearchField.swift in Sources */,
@@ -2328,7 +2325,6 @@
 				07E1CB4B2D3668CE00F86BB8 /* Constants.swift in Sources */,
 				A672AEB72D572A6E003EF3FF /* EmptyStackView.swift in Sources */,
 				07ECCEB32D4EAF1C00AFF486 /* LikeListViewController.swift in Sources */,
-				07649FFA2D4DEA9000B6B2B2 /* AccessTokenPlugin.swift in Sources */,
 				07E1CB5F2D36A10000F86BB8 /* CustomButton.swift in Sources */,
 				07F8599E2D61D73500DD5BF8 /* NotificationType.swift in Sources */,
 				07F8599F2D61D73500DD5BF8 /* NotificationViewModel.swift in Sources */,

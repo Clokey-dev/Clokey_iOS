@@ -7,6 +7,7 @@
 
 import Foundation
 import Moya
+import Alamofire
 
 public final class ReportService: NetworkManager {
     typealias Endpoint = ReportEndpoint
@@ -14,14 +15,13 @@ public final class ReportService: NetworkManager {
     let provider: MoyaProvider<ReportEndpoint>
     
     public init(provider: MoyaProvider<ReportEndpoint>? = nil) {
+        let session = Session(interceptor: AuthInterceptor())
         let plugins: [PluginType] = [
-            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)),
-            AccessTokenPlugin(),
-            TokenRefreshPlugin()
+            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
         ]
-        self.provider = provider ?? MoyaProvider<ReportEndpoint>(plugins: plugins)
+        self.provider = provider ?? MoyaProvider<ReportEndpoint>(session: session, plugins: plugins)
     }
-    
+
     // 계정 신고 정보 조회 GET API
     public func getProfileReportInfo(
         clokeyId: String,
