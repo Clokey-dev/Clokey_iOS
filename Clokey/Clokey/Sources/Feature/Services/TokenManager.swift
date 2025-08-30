@@ -12,8 +12,7 @@ class TokenManager {
     private init() {}
     
     private let memberService = MembersService()
-    // 제한 시간 설정
-    private let THREE_HOURS: TimeInterval = 3 * 60 * 60
+    static let tokenRefreshThreshold: TimeInterval = 3 * 60 * 60 // 3시간 (초 단위)
     
     func validateAndRefreshTokenIfNeeded(completion: @escaping (Bool) -> Void) {
         guard let accessToken = KeychainHelper.shared.get(forKey: "accessToken"),
@@ -56,7 +55,7 @@ class TokenManager {
 
 
         // 10분 이하 남았을 때만 갱신 실행
-        if timeRemaining <= 10 * 60 {
+        if timeRemaining <= TokenManager.tokenRefreshThreshold {
             print("토큰 만료 임박.. 재발급 ON!")
             refreshToken(completion: completion)
         } else {

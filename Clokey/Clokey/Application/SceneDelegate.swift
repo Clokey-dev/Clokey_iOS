@@ -103,7 +103,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         print("Foreground 진입 - JWT 남은 시간: \(timeRemaining / 60)분")
 
-        if timeRemaining <= 10 * 60 { // 10분 이하 남았을 때 자동 갱신
+        if timeRemaining <= TokenManager.tokenRefreshThreshold {
             print("토큰 만료 임박.. 즉시 재발급 ON!")
             TokenManager.shared.validateAndRefreshTokenIfNeeded { isValid in
                 if !isValid {
