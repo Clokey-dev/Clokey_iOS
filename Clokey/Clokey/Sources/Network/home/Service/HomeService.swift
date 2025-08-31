@@ -15,14 +15,11 @@ public final class HomeService : NetworkManager {
     let provider: MoyaProvider<HomeEndPoint>
     
     public init(provider: MoyaProvider<HomeEndPoint>? = nil) {
-        // 플러그인 추가
+        let session = Session(interceptor: AuthInterceptor())
         let plugins: [PluginType] = [
-            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)), // 로그 플러그인
-            AccessTokenPlugin()
+            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
         ]
-        
-        // provider 초기화
-        self.provider = provider ?? MoyaProvider<HomeEndPoint>(plugins: plugins)
+        self.provider = provider ?? MoyaProvider<HomeEndPoint>(session: session, plugins: plugins)
     }
     
     func recommendClothes(

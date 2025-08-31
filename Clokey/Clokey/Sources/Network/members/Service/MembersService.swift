@@ -17,12 +17,11 @@ public final class MembersService: NetworkManager {
     let provider: MoyaProvider<MembersEndpoint>
     
     public init(provider: MoyaProvider<MembersEndpoint>? = nil) {
+        let session = Session(interceptor: AuthInterceptor())
         let plugins: [PluginType] = [
-            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)),
-            AccessTokenPlugin(),
-            TokenRefreshPlugin()
+            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
         ]
-        self.provider = provider ?? MoyaProvider<MembersEndpoint>(plugins: plugins)
+        self.provider = provider ?? MoyaProvider<MembersEndpoint>(session: session, plugins: plugins)
     }
     
     // MARK: - API funcs

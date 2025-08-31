@@ -16,18 +16,12 @@ public final class ClothesService : NetworkManager {
     let provider: MoyaProvider<ClothesEndpoint>
     
     public init(provider: MoyaProvider<ClothesEndpoint>? = nil) {
-        // 플러그인 추가
+        let session = Session(interceptor: AuthInterceptor())
         let plugins: [PluginType] = [
-            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)), // 로그 플러그인
-            AccessTokenPlugin(),
-            TokenRefreshPlugin()
+            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
         ]
-        
-        // provider 초기화
-        self.provider = provider ?? MoyaProvider<ClothesEndpoint>(plugins: plugins)
+        self.provider = provider ?? MoyaProvider<ClothesEndpoint>(session: session, plugins: plugins)
     }
-    
-   
     
     public func checkEditClothes (
         clothId: Int64,

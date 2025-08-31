@@ -15,12 +15,11 @@ public final class HistoryService: NetworkManager {
     let provider: MoyaProvider<HistoryEndpoint>
     
     public init(provider: MoyaProvider<HistoryEndpoint>? = nil) {
+        let session = Session(interceptor: AuthInterceptor())
         let plugins: [PluginType] = [
-            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)),
-            AccessTokenPlugin(),
-            TokenRefreshPlugin()
+            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
         ]
-        self.provider = provider ?? MoyaProvider<HistoryEndpoint>(plugins: plugins)
+        self.provider = provider ?? MoyaProvider<HistoryEndpoint>(session: session, plugins: plugins)
     }
     
     // MARK: - API funcs
