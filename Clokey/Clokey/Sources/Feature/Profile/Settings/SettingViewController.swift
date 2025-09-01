@@ -76,9 +76,7 @@ class SettingViewController: UIViewController, UIGestureRecognizerDelegate {
                     if let pushTerm = agreedTerms.terms.first(where: { $0.termId == 5 }) {
                         self.settingView.pushSwitch.isOn = pushTerm.agreed
                     }
-                    
-                    self.settingView.versionInfoLabel.text = agreedTerms.appVersion
-                }
+            }
             case .failure(let error):
                 print("설정 UI 업데이트 실패: \(error.localizedDescription)")
                 self.showAlert(title: "네트워크 오류", message: "인터넷 연결이 원활하지 않아요.\n잠시 후 다시 시도해 주세요.")
