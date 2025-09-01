@@ -75,7 +75,7 @@ class CustomReportCompleteView: UIView, UITextFieldDelegate {
     }
     
     private let warningText3 = UILabel().then {
-        $0.text = "허위 신고롤 확인된 경우 Clokey 고객 센터 측에서 회원관리정책에 명시한 바와 같이 사용자의 활동을 제한할 수 있습니다."
+        $0.text = "허위 신고를 확인된 경우 Clokey 고객 센터 측에서 회원관리정책에 명시한 바와 같이 사용자의 활동을 제한할 수 있습니다."
         $0.font = .ptdRegularFont(ofSize: 14)
         $0.textColor = .gray
         $0.numberOfLines = 0
