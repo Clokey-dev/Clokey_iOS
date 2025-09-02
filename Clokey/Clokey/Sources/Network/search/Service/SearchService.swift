@@ -6,12 +6,11 @@ public final class SearchService : NetworkManager {
     let provider: MoyaProvider<SearchEndpoint>
     
     public init(provider: MoyaProvider<SearchEndpoint>? = nil) {
+        let session = Session(interceptor: AuthInterceptor())
         let plugins: [PluginType] = [
-            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)),
-            AccessTokenPlugin(),
-            TokenRefreshPlugin()
+            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
         ]
-        self.provider = provider ?? MoyaProvider<SearchEndpoint>(plugins: plugins)
+        self.provider = provider ?? MoyaProvider<SearchEndpoint>(session: session, plugins: plugins)
     }
     
     // 사용자 검색 API

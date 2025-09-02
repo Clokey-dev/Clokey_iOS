@@ -15,15 +15,12 @@ public final class NotificationService : NetworkManager {
     let provider: MoyaProvider<NotificationEndpoints>
     
     public init(provider: MoyaProvider<NotificationEndpoints>? = nil) {
+        let session = Session(interceptor: AuthInterceptor())
         let plugins: [PluginType] = [
-            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)),
-            AccessTokenPlugin(),
-            TokenRefreshPlugin()
+            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
         ]
-        self.provider = provider ?? MoyaProvider<NotificationEndpoints>(plugins: plugins)
+        self.provider = provider ?? MoyaProvider<NotificationEndpoints>(session: session, plugins: plugins)
     }
-    
-    
     
     public func notificationList(
         page : Int,

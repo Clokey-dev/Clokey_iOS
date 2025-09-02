@@ -150,7 +150,11 @@ final class SettingView: UIView {
     }
     
     let versionInfoLabel = UILabel().then {
-        $0.text = "1.0.0"
+        if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            $0.text = appVersion
+        } else {
+            $0.text = "1.0.0"
+        }
         $0.font = UIFont.ptdRegularFont(ofSize: 16)
         $0.textColor = .gray
     }

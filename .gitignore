@@ -17,6 +17,9 @@ xcuserdata/
 build/
 DerivedData/
 *.log
+*.ipa
+*.dSYM.zip
+build/
 
 # Test 결과물
 *.plist
@@ -64,8 +67,13 @@ fastlane/test_output/
 *.env
 *.env.default
 
+# 빌드 산출물 무시
+*.ipa
+*.zip
+
 # xcconfig 파일 (환경 변수 설정)
 *.xcconfig
 Config.xcconfig
 
 
+.ruby-version

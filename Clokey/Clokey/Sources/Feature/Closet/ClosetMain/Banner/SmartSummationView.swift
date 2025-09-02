@@ -322,9 +322,9 @@ class SmartSummationView: UIView {
         }
         
         bannerImage.snp.makeConstraints {
-            $0.leading.equalTo(bannerView.snp.leading).offset(10)
+            $0.leading.equalTo(bannerView.snp.leading).offset(15)
             $0.centerY.equalToSuperview()
-            $0.width.height.equalTo(70)
+            $0.width.height.equalTo(43)
         }
         
         bannerDescription.snp.makeConstraints {
@@ -444,6 +444,4 @@ class SmartSummationView: UIView {
             $0.bottom.equalTo(contentView).offset(-20) // 하단 여백 20 추가
         }
     }
-
-    
 }

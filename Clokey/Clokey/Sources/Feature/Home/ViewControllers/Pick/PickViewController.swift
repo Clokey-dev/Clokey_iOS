@@ -2,20 +2,17 @@
 //  PickViewController.swift
 //  Clokey
 //
-//  Created by 한금준 on 1/8/25.
+//  Created by 한금준 on 6/24/25.
 //
 
-// 완료
-
 import UIKit
-import Kingfisher
-import MapKit
-import Moya
 import WeatherKit
+import CoreLocation
 
-class PickViewController: UIViewController, CLLocationManagerDelegate {
+
+final class PickViewController: UIViewController, CLLocationManagerDelegate {
     private var timeUpdateTimer: Timer?
-    
+    private var minuteCounter: Int = 0
     private var backgroundView: UIView?// 배경 어둡게 하기 위해 선언
     
     var latitude : Double = 0
@@ -31,18 +28,31 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     // 팝업 뷰
     private let popUpView = PickPopUpView()
     private let pickView = PickView()
-    
+
+    let weatherService = WeatherService.shared
     let locationManager = CLLocationManager()
+    var userLocation: CLLocation?
     
     private let model = PickImageModel.dummy()
     //새로고침 기능 추가
     private let refreshControl = UIRefreshControl()
     private var isDataLoaded: Bool = false // 데이터 로드 여부 플래그
     private var loadingOverlay: UIView?
-
+    
     var dateString : String = ""
     var month: String = ""
     var date : String = ""
+    
+    var clothId1:Int64?
+    var clothId2:Int64?
+    var clothId3:Int64?
+    
+    var url: String = ""
+    
+    // address 값을 저장할 변수
+    private var address: String = "" // 기본값 설정
+    
+    private var englishAddress: String = ""
     
     func dateFormatter() {
         let formatter = DateFormatter()
@@ -52,7 +62,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
             formatter.dateFormat = "MM"
             let month = formatter.string(from: date)
             self.month = String(Int(month) ?? 0)
-            print(month) 
+            print(month)
         }
     }
     
@@ -74,12 +84,11 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
 
         return calendar.isDate(date, inSameDayAs: oneYearAgo)
     }
-   
 
     override func loadView() {
         self.view = pickView
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         definesPresentationContext = true // 현재 컨텍스트에서 새로운 뷰 표시
@@ -89,10 +98,8 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         
         
         setupActions()
-
+        setupAppleWeatherAttribution()
         startPreciseMinuteTimer()
-        self.fetchVisualCrossingWeatherData(for: latitude, longitude: longitude)
-        self.updateYesterdayWeatherUI(for: latitude, longitude: longitude)
         setupBottomLabelTap()
         
         if isDataLoaded {
@@ -119,7 +126,6 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.startUpdatingLocation()
         
         setupLocationIconTap()
-        fetchWeatherRecommendations()
         loadRecapData()
         
     }
@@ -127,9 +133,6 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        
-        self.updateYesterdayWeatherUI(for: latitude, longitude: longitude)
-        fetchWeatherRecommendations()
         
         self.pickView.recapImageView1.image = nil
         self.pickView.recapImageView2.image = nil
@@ -140,13 +143,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
-        
-        
     }
-    
-    var clothId1:Int64?
-    var clothId2:Int64?
-    var clothId3:Int64?
     
     private func setupActions() {
         popUpView.deleteButton.addTarget(self, action: #selector(dismissPopup), for: .touchUpInside)
@@ -195,6 +192,17 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
+    private func setupAppleWeatherAttribution() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(openAppleWeatherAttribution))
+        pickView.appleWeatherLabel.addGestureRecognizer(tap)
+    }
+
+    @objc private func openAppleWeatherAttribution() {
+        if let url = URL(string: "https://weatherkit.apple.com/legal-attribution.html") {
+            UIApplication.shared.open(url)
+        }
+    }
+    
     // 팝업 닫기 함수
     @objc private func dismissPopup() {
         guard let keyWindow = UIApplication.shared.connectedScenes
@@ -229,8 +237,6 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
             fetchHistoryDetail(historyId: id)
         }
     }
-    
-    
     
     @objc private func handleImageTap(_ sender: UITapGestureRecognizer) {
         guard let tappedImageView = sender.view as? UIImageView else { return }
@@ -455,9 +461,7 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
             }
         }
     }
-    
-    var url: String = ""
-    
+
     @objc private func urlGoButtonTapped() {
         guard let url = URL(string: url) else {
             print("Invalid URL")
@@ -490,9 +494,113 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         let attributedTitle = NSAttributedString(string: title, attributes: attributes)
         popUpView.urlGoButton.setAttributedTitle(attributedTitle, for: .normal)
     }
+
+    private func setupLocationManager() {
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestLocation()
+    }
+
+
+    private func fetchWeather(for location: CLLocation) {
+        _Concurrency.Task {
+            let calendar = Calendar.current
+            let today = calendar.startOfDay(for: Date()) // 수정: 오늘 날짜를 00:00 기준으로 고정
+            guard let yesterday = calendar.date(byAdding: .day, value: -1, to: today),
+                  let tomorrow = calendar.date(byAdding: .day, value: 1, to: today) else { return }
+
+            do {
+                // 위치 이름 가져오기
+                let geocoder = CLGeocoder()
+                let placemarks = try await geocoder.reverseGeocodeLocation(location)
+
+                let locationName = placemarks.first.map { placemark in
+                    [placemark.locality, placemark.subLocality, placemark.name]
+                        .compactMap { $0 }
+                        .joined(separator: " ")
+                } ?? "알 수 없는 위치"
+
+                
+                // 현재 날씨
+                let current = try await weatherService.weather(for: location, including: .current)
+                let currentTemp = current.temperature.value
+                let roundedTemp = Int(currentTemp.rounded())
+                let currentDesc = current.condition.description
+                let symbolName = current.symbolName
+                
+                let config = UIImage.SymbolConfiguration(pointSize: 40, weight: .regular)
+                let iconImage = UIImage(systemName: symbolName, withConfiguration: config)?
+                    .withRenderingMode(.alwaysTemplate)
+
+                // 어제와 오늘의 일별 예보
+                let startDate = calendar.startOfDay(for: yesterday)
+                let endDate = calendar.startOfDay(for: tomorrow)
+                let daily = try await weatherService.weather(for: location, including: .daily(startDate: startDate, endDate: endDate))
+
+                var yesterdayLow: Double?
+                var todayHigh: Double?
+                var todayLow: Double?
+
+                for day in daily.forecast {
+
+                    if calendar.isDate(day.date, inSameDayAs: yesterday) {
+                        yesterdayLow = day.lowTemperature.value
+                    } else if calendar.isDate(day.date, inSameDayAs: today) {
+                        todayHigh = day.highTemperature.value
+                        todayLow = day.lowTemperature.value
+                    }
+                }
+                
+
+                // 결과 출력
+                var tempDetail = ""
+                var maxTemp: Int32 = 0
+                var minTemp: Int32 = 0
+                var resultText = ""
+                var yesterdayL: Int32 = 0
+                
+                
+                if let yLow = yesterdayLow {
+                    yesterdayL = Int32(yLow)
+                }
+                if let tHigh = todayHigh, let tLow = todayLow {
+                    let roundedHigh = Int(tHigh.rounded())
+                    let roundedLow = Int(tLow.rounded())
+                    tempDetail += " (최고: \(roundedHigh)° / 최저: \(roundedLow)°)"
+                    maxTemp = Int32(roundedHigh)
+                    minTemp = Int32(roundedLow)
+                }
+                
+                let temperatureDifference = yesterdayL - minTemp
+                let temperatureDifferenceAbs = abs(temperatureDifference)
+                
+                if temperatureDifference > 0 {
+                    resultText = "어제에 비해 기온이 \(Int(temperatureDifferenceAbs))° 떨어졌어요!"
+                } else if temperatureDifference < 0 {
+                    resultText = "어제에 비해 기온이 \(Int(temperatureDifferenceAbs))° 올라갔어요!"
+                } else {
+                    resultText = "현재 최저 기온이 어제 최저 기온과 동일합니다."
+                }
+
+                await MainActor.run {
+                    self.pickView.temperatureLabel.text = "\(roundedTemp)°C"
+                    self.pickView.tempDetailsLabel.text = tempDetail
+                    self.pickView.temperatureChangeLabel.text = resultText
+                    fetchWeatherRecommendations(nowTemp: Int32(roundedTemp), maxTemp: maxTemp, minTemp: minTemp)
+                    
+                    self.pickView.weatherIconView.tintColor = UIColor.mainBrown800
+                    self.pickView.weatherIconView.image = iconImage
+                }
+
+            } catch {
+                await MainActor.run {
+                    showError()
+                }
+            }
+        }
+    }
     
-    
-    func fetchWeatherRecommendations() {
+    func fetchWeatherRecommendations(nowTemp: Int32?, maxTemp: Int32?, minTemp: Int32?) {
         
         guard let nowTemp = nowTemp,
               let maxTemp = maxTemp,
@@ -552,32 +660,6 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    // MARK: - 날씨 데이터 요청
-    func fetchVisualCrossingWeatherData(for latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
-        WeatherAPI.shared.fetchVisualCrossingWeather(for: latitude, longitude: longitude) { [weak self] weatherResponse in
-            DispatchQueue.main.async {
-                if let weatherResponse = weatherResponse, let todayWeather = weatherResponse.days.first {
-                    self?.updateWeatherHighLowUI(weather: todayWeather)
-                } else {
-                    self?.showError()
-                }
-            }
-        }
-    }
-    
-    // MARK: - 날씨 데이터 가져오기
-    func fetchWeatherData(for latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
-        WeatherAPI.shared.fetchWeather(for: latitude, longitude: longitude) { [weak self] weatherData in
-            DispatchQueue.main.async {
-                if let weather = weatherData {
-                    self?.updateTemperatureUI(weather: weather)
-                } else {
-                    print("API 호출 실패 또는 weatherData가 nil입니다.")
-                }
-            }
-        }
-    }
-    
     // MARK: - 시간 업데이트
     func updateTimeLabel() {
         let formatter = DateFormatter()
@@ -586,13 +668,13 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         pickView.timeLabel.text = "\(currentTime) 대한민국 \(address) 기준"
     }
     
-    // address 값을 저장할 변수
-    private var address: String = "" // 기본값 설정
-    
-    private var englishAddress: String = ""
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
+        
+        if let location = locations.first {
+                    userLocation = location
+                    fetchWeather(for: location)
+                }
         
         // 한 번만 업데이트를 받도록 중단
         locationManager.stopUpdatingLocation()
@@ -645,11 +727,9 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
                 DispatchQueue.main.async {
                     self.englishAddress = subAddress
                     self.updateTimeLabel()
+                    self.pickView.toggleWeatherInfoVisible(true)
                     self.latitude = latitude
                     self.longitude = longitude
-                    self.fetchVisualCrossingWeatherData(for: latitude, longitude: longitude)
-                    self.fetchWeatherData(for: latitude, longitude: longitude)
-                    self.updateYesterdayWeatherUI(for: latitude, longitude: longitude)
                 }
             }
             
@@ -659,7 +739,38 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Failed to get location: \(error.localizedDescription)")
+
+        DispatchQueue.main.async {
+            self.hideLoadingOverlay()
+            self.pickView.updateEmptyState(isEmpty: true, isLocationDenied: true)
+            self.pickView.toggleWeatherInfoVisible(false)
+        }
     }
+
+    
+    @available(iOS 14.0, *)
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        handleAuthorization(manager.authorizationStatus)
+    }
+
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        handleAuthorization(status)
+    }
+
+    private func handleAuthorization(_ status: CLAuthorizationStatus) {
+        switch status {
+        case .authorizedWhenInUse, .authorizedAlways:
+            locationManager.startUpdatingLocation()
+        case .denied, .restricted:
+            DispatchQueue.main.async {
+                self.hideLoadingOverlay()
+                self.pickView.updateEmptyState(isEmpty: true, isLocationDenied: true)
+            }
+        default:
+            break
+        }
+    }
+
     
     private func setupLocationIconTap() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleLocationIconTap))
@@ -700,71 +811,13 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    // MARK: - 날씨 아이콘 가져오기
-    func fetchWeatherIcon(from urlString: String) {
-        guard let url = URL(string: urlString) else { return }
-        
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
-                print("Error fetching weather icon: \(error.localizedDescription)")
-                return
-            }
-            
-            guard let data = data, let image = UIImage(data: data) else {
-                print("Failed to load weather icon image")
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self.pickView.weatherIconView.image = image
-            }
-        }.resume()
-    }
-    
-    
-    // MARK: - 날씨 데이터 업데이트
-    func updateTemperatureUI(weather: WeatherData) {
-        print("updateTemperatureUI 호출됨, 온도: \(weather.main.temp)")
-        pickView.temperatureLabel.text = "\(Int(weather.main.temp))°C"
-        
-        nowTemp = Int(weather.main.temp)
-        
-        isDataLoaded = true
-        hideLoadingOverlay()
-        
-        // 아이콘 가져오기
-        if let icon = weather.weather.first?.icon {
-            let iconURL = "https://openweathermap.org/img/wn/\(icon)@2x.png"
-            fetchWeatherIcon(from: iconURL)
-        }
-        
-        fetchWeatherRecommendations()
-    }
-    
-    /// 최고/최저 온도 업데이트
-    func updateWeatherHighLowUI(weather: DailyWeather) {
-        pickView.tempDetailsLabel.text = " (최고: \(Int(weather.tempmax))° / 최저: \(Int(weather.tempmin))°)"
-        
-        maxTemp = Int(weather.tempmax)
-        minTemp = Int(weather.tempmin)
-        
-        fetchWeatherRecommendations()
-    }
-    
-    func updateYesterdayWeatherUI(for latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
-        WeatherAPI.shared.fetchTemperatureChange(for: latitude, longitude: longitude) { [weak self] resultText in
-            DispatchQueue.main.async {
-                self?.pickView.temperatureChangeLabel.text = resultText
-            }
-        }
-    }
-    
     // MARK: - 에러 처리
     func showError() {
         pickView.temperatureLabel.text = "데이터를 가져오는 중입니다."
         pickView.tempDetailsLabel.text = "최고/최저 기온을 가져오는 중입니다."
         pickView.weatherIconView.image = nil
     }
+    
     private func setupBottomLabelTap() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleBottomLabelTap))
         pickView.bottomButtonLabel.isUserInteractionEnabled = true
@@ -858,15 +911,10 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-
-    
-    
     //새로고침 함수
     @objc private func didPullToRefresh() {
         // 필요에 따라 여러 API 호출을 재실행합니다.
-        fetchWeatherRecommendations()
         
-        self.updateYesterdayWeatherUI(for: latitude, longitude: longitude)
         self.pickView.recapImageView1.image = nil
         self.pickView.recapImageView2.image = nil
         loadRecapData()
@@ -916,9 +964,19 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
         
         // 정각까지 한 번 딜레이 후, 60초 간격 타이머 시작
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
-            self?.updateTimeLabel()
-            self?.timeUpdateTimer = Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true) { _ in
-                self?.updateTimeLabel()
+            guard let self = self else { return }
+            self.updateTimeLabel()
+            self.minuteCounter = 1
+
+            self.timeUpdateTimer = Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true) { _ in
+                self.updateTimeLabel()
+                self.minuteCounter += 1
+
+                if self.minuteCounter % 30 == 0 {
+                    if let location = self.userLocation {
+                        self.fetchWeather(for: location)
+                    }
+                }
             }
         }
     }
@@ -926,7 +984,4 @@ class PickViewController: UIViewController, CLLocationManagerDelegate {
     deinit {
         timeUpdateTimer?.invalidate()
     }
-    
 }
-
-

@@ -8,11 +8,11 @@ public final class FolderService: NetworkManager {
     let provider: MoyaProvider<FolderEndpoint>
     
     public init(provider: MoyaProvider<FolderEndpoint>? = nil) {
+        let session = Session(interceptor: AuthInterceptor())
         let plugins: [PluginType] = [
-            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose)),
-            AccessTokenPlugin() // 필요에 따라 토큰 플러그인 사용
+            NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))
         ]
-        self.provider = provider ?? MoyaProvider<FolderEndpoint>(plugins: plugins)
+        self.provider = provider ?? MoyaProvider<FolderEndpoint>(session: session, plugins: plugins)
     }
     
     // MARK: - API funcs

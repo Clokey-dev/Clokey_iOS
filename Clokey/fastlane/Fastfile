@@ -1,0 +1,56 @@
+lane :beta do
+  app_id    = "com.clokeyteam.clokey"
+  xcodeproj = "Clokey.xcodeproj"
+  scheme    = "Clokey"
+
+  # 1) 인증서/프로파일 가져오기 (App Store)
+  match(
+    type: "appstore",
+    readonly: true,
+    app_identifier: [app_id],               # 확장/위젯 있으면 배열에 모두 추가
+    git_url: "git@github.com:Clokey-dev/Clokey_iOS_Certificates.git",
+    git_branch: "master",          # 실제 브랜치명 확인
+    shallow_clone: true,           # (권장) 히스토리 최소화
+    clone_branch_directly: true
+  )
+
+  # 2) 마케팅 버전과 최신 빌드 조회 → +1
+  sv = get_version_number(xcodeproj: xcodeproj)
+  latest_build = (latest_testflight_build_number(app_identifier: app_id, version: sv) rescue 0).to_i
+  next_build   = latest_build + 1
+  UI.message("ASC latest build for #{sv}: #{latest_build} → next: #{next_build}")
+
+  increment_build_number(
+    xcodeproj: xcodeproj,
+    build_number: next_build.to_s
+  )
+
+  # 3) 혹시 모를 plist 경로 이슈 방지(앱 타겟 Info.plist 경로 맞게 수정)
+  update_info_plist(
+    plist_path: "Clokey/Supporting Files/Info.plist",
+    block: lambda { |plist|
+      plist['CFBundleVersion'] = next_build.to_s
+    }
+  )
+
+  # 4) 빌드 + 내보내기(프로비저닝 프로파일 매핑 명시)
+  build_app(
+    scheme: scheme,
+    export_method: "app-store",
+    export_options: {
+      provisioningProfiles: {
+        "com.clokeyteam.clokey" => "match AppStore com.clokeyteam.clokey"
+      }
+    }
+  )
+
+  # (추가) 업로드 전에 수동으로 만든 압축해제 폴더 정리
+  sh("rm -rf fastlane/output/ipa_unzipped")
+
+  # 5) 업로드
+  upload_to_testflight(skip_waiting_for_build_processing: true)
+
+  # (선택) 업로드 성공 후 빌드 산출물 정리(ipa/dSYM/xcarchive 등)
+  clean_build_artifacts
+
+end

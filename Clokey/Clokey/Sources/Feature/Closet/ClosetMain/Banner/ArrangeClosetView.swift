@@ -88,8 +88,8 @@ class ArrangeClosetView: UIView {
 
         bannerImage.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().offset(10)
-            make.size.equalTo(CGSize(width: 70, height: 70))
+            make.leading.equalToSuperview().offset(20)
+            make.size.equalTo(CGSize(width: 50, height: 45))
         }
 
         bannerDescription.snp.makeConstraints { make in
