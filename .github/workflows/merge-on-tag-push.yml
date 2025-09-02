@@ -1,0 +1,44 @@
+name: Auto Merge on Tag Push
+
+# 언제 이 자동화를 실행할지 정하는 부분 (트리거)
+on:
+  push:
+    tags:
+      - 'v*'          # 'v'로 시작하는 모든 태그 (예: v1.0.4, v1.1.0)
+      - 'test/v*'     # 'test/v'로 시작하는 모든 태그 (테스트용)
+
+# 어떤 작업을 할지 정하는 부분
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 코드를 내려받습니다.
+      #    이때 2단계에서 등록한 PAT를 사용해야 브랜치 보호 규칙을 통과할 수 있습니다.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+          fetch-depth: 0 # 모든 브랜치와 태그 히스토리를 가져옵니다.
+
+      # 2. Git 사용자 정보를 설정합니다. (커밋 메시지에 남을 이름)
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions-bot@users.noreply.github.com"
+          
+      # 3. 푸시된 태그를 main 브랜치에 병합하고 푸시합니다.
+      - name: Merge tag into main
+        run: |
+          git checkout main
+          git pull origin main
+          # github.ref_name은 푸시된 태그의 이름(예: test/v1.0.4-alpha)을 의미합니다.
+          git merge ${{ github.ref_name }} --no-ff -m "Merge tag ${{ github.ref_name }} into main"
+          git push origin main
+
+      # 4. 방금 업데이트된 main 브랜치를 develop 브랜치에 병합하고 푸시합니다.
+      - name: Merge main into develop
+        run: |
+          git checkout develop
+          git pull origin develop
+          git merge main --no-ff -m "Merge main into develop after release ${{ github.ref_name }}"
+          git push origin develop
