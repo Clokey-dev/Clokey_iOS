@@ -5,47 +5,47 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: match" time="2.777113">
+      <testcase classname="fastlane.lanes" name="0: match" time="2.838018">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: get_version_number" time="0.048693">
+      <testcase classname="fastlane.lanes" name="1: get_version_number" time="0.0613">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: latest_testflight_build_number" time="2.914175">
+      <testcase classname="fastlane.lanes" name="2: latest_testflight_build_number" time="2.264564">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: increment_build_number" time="0.188648">
+      <testcase classname="fastlane.lanes" name="3: increment_build_number" time="0.17635">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: update_info_plist" time="0.003035">
+      <testcase classname="fastlane.lanes" name="4: update_info_plist" time="0.002931">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="5: build_app" time="102.359109">
+      <testcase classname="fastlane.lanes" name="5: build_app" time="139.095419">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="6: rm -rf fastlane/output/ipa_unzipped" time="0.00502">
+      <testcase classname="fastlane.lanes" name="6: rm -rf fastlane/output/ipa_unzipped" time="0.004155">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="7: upload_to_testflight" time="148.749893">
+      <testcase classname="fastlane.lanes" name="7: upload_to_testflight" time="215.39543">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="8: clean_build_artifacts" time="0.003181">
+      <testcase classname="fastlane.lanes" name="8: clean_build_artifacts" time="0.009688">
         
       </testcase>
     
